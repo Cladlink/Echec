@@ -5,4 +5,8 @@ public class Piece
 {
     protected boolean vivant;
 
+    public Piece()
+    {
+        this.vivant = true;
+    }
 }
