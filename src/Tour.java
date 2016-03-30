@@ -1,7 +1,7 @@
 /**
  * Created by cladlink on 30/03/16.
  */
-public class Tour
+public class Tour extends Piece
 {
 
 }
