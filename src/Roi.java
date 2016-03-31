@@ -5,20 +5,23 @@ import javax.swing.*;
  */
 public class Roi extends Piece
 {
-    private ImageIcon blanche;
-    private ImageIcon noire;
-    private Point coordonees;
+    private final String adressePieceNoire = "adresseNoire";
+    private final String adressePieceBlanche = "adresseBlanche";
 
-    // Todo plus tard
-    public Roi(){
-        super();
+
+    public Roi(int x, int y, boolean isBlanc){
+        super(x,y);
+        if (isBlanc)
+            super.figure = new ImageIcon(this.adressePieceBlanche);
+        else
+            super.figure = new ImageIcon(this.adressePieceNoire);
 
     }
 
-    public void verticalN(){ this.coordonees.setY(coordonees.getY()+1); }
-    public void verticalS(){ this.coordonees.setY(coordonees.getY()-1); }
-    public void horizontalO() { this.coordonees.setX(coordonees.getX()-1); }
-    public void horizontalE() { this.coordonees.setX(coordonees.getX()+1); }
+    public void verticalN(){ super.coordonnees.setY(coordonnees.getY()+1); }
+    public void verticalS(){ super.coordonnees.setY(coordonnees.getY()-1); }
+    public void horizontalO() { super.coordonnees.setX(coordonnees.getX()-1); }
+    public void horizontalE() { super.coordonnees.setX(coordonnees.getX()+1); }
 
 
 }
