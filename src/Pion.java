@@ -7,31 +7,26 @@ import javax.swing.*;
     Vu que l'on ne peut pas avoir un Pion étendu de plusieurs classe, et qu'on utilise la classe Pièce pour le définir en partie
     et la classe point pour connaitre son emplacement, ne devons-nous pas ajouter la classe Point entant que caractèristique de la classe pièce ?
  * IMPORTANT */
-
-/*
-    todo * evite d'envoyer un fichier avec autant d'erreur. Si tu veux proposer qqc, tu en parles et apres on met en place ou non
-    todo * un fichier envoyé doit être compatible avec le code de tes petits camarades :p
-    todo * algorithmiquement ton code doit être correct aussi, n'invente rien ;) Si tu as besoin d'aide sur la facon d'ecrire quelque chose
-    todo * tu demandes ;)
- */
 public class Pion extends Piece
 {
     /*************************
      * Variables d'instances *
      ************************/
-    private boolean noir; // todo le joueur définira la couleur
-    private int valeur; // todo la valeur n'a pas d'interet (sauf exemple contraire)
-    private ImageIcon image; // todo faut une image noire et une autre image blanche
-    private Point coordonnees; // Cette caractéristique sert à savoir où se trouve la pièce sur le plateau c'est bien ça ? // todo ok ca roule je l'ai monté
+    private final String adresseNoir = "";
+    private final String adresseBlanc = "";
 
     /*****************
      * Constructeurs *
      ****************/
-    public Pion()
+    public Pion(int x, int y, boolean isBlanc)
     {
-        this.noir = true; // todo meme commentaire qu'au dessus
-        this.valeur = 1; // todo meme commentaire qu'au dessus
-        super.Point(){} //todo ceci n'existe pas à écrire comme il faut
+        super(x, y);
+        super.isBlanc = isBlanc;
+        if (isBlanc)
+            super.skin = new ImageIcon(this.adresseBlanc);
+        else
+            super.skin = new ImageIcon(this.adresseNoir);
+
     }
 
     /************
@@ -39,100 +34,100 @@ public class Pion extends Piece
      ***********/
 
     /**
-     * Methode pour le déplacement avant qui utilise les methodes d'un objet Point pour se "situer".
-     * @return
+     * Methode pour le déplacement
      */
-    public Point depAvant()
-    {
-        // On récupére l'emplacement du pion courant
-        super.getX(); // todo getX appartient à la classe Point ;) je te laisse réfléchir à la facon d'écrire ;)
-        super.getY(); // todo idem
-
-        // Si la place en avant est innoccuper
-        if (this.x = this.x && this.y + 1 != true) // todo idem
-        {
-            // Définition de la nouvelle coordonnée
-            int newY = this.y + 1; // todo idem
-            // Attributions de la nouvelle coordonnée
-            this.coordonnees = super.setY(newY); // todo idem
-        }
-        // todo mettre un retour
-    }
 
     /**
-     * Methode pour le déplacement avant gauche qui utilise les methodes d'un objet Point pour se "situer".
-     * @return
+     * Méthode qui permet de se déplacer de deux cases uniquement au premier déplacment pour le pion blanc
      */
-    public Point depAvantGauche()
+    public void firstMooveWhite()
     {
-        // On récupére l'emplacement du pion courant
-        super.getX(); // todo idem
-        super.getY(); // todo idem
 
-        // Si la place en en diagonale gauche est occupée
-        if (this.x + 1 && this.y - 1 == true) // todo idem
+        // Si le pion est sur la deuxième ligne du plateau
+        if (super.coordonnees.getY() == 2)
         {
-            // Définition des nouvelles coordonnées
-            int newX = this.x + 1; // todo idem
-            int newY = this.y - 1; // todo idem
-            // Attributions des nouvelles coordonnées
-            this.coordonnees = super.setX(newX); // todo idem
-            this.coordonnees = super.setY(newY); // todo idem
+            //Déplacement de une case
+            super.coordonnees.setY(super.coordonnees.getY() + 1);
+        }
+        else if (super.coordonnees.getY() == 2)
+        {
+            super.coordonnees.setY(super.coordonnees.getY()+2);
         }
     }
 
     /**
-     * Methode pour le déplacement avant droit qui utilise les methodes d'un objet Point pour se "situer".
-     * @return
+     * Méthode qui permet au pion blanc de se déplacer vers l'avant
      */
-    public Point depAvantDroit() // todo mettre un return ou un void
+    public void mooveWhite()
     {
-        // On récupére l'emplacement du pion courant
-        super.getX(); // todo idem
-        super.getY(); // todo idem
+        //Déplacement de une case
+        super.coordonnees.setY(super.coordonnees.getY() + 1);
+    }
 
-        // Si la place en en diagonale droite est occupée
-        if (this.x + 1 && this.y + 1 == true){ // todo idem + ca ne vérifie pas que la case est occupée
-            // Définition des nouvelles coordonnées
-            int newX = this.x + 1; // todo idem
-            int newY = this.y + 1; // todo idem
-            // Attributions des nouvelles coordonnées
-            this.coordonnees = super.setX(newX); // todo idem
-            this.coordonnees = super.setY(newY); // todo idem
+    /**
+     * Méthode qui permet au pion blanc d'attaquer par la diago gauche
+     */
+    public void leftAttackWhite()
+    {
+        //Déplacement latéral gauche
+        super.coordonnees.setX(super.coordonnees.getX() - 1);
+        super.coordonnees.setY(super.coordonnees.getY() + 1);
+    }
+
+    /**
+     * Méthode qui permet au pion blanc d'attaquer par la diago droite
+     */
+    public void rightAttackWhite()
+    {
+        //Déplacement latéral gauche
+        super.coordonnees.setX(super.coordonnees.getX() + 1);
+        super.coordonnees.setY(super.coordonnees.getY() + 1);
+    }
+
+
+    /**
+     * Méthode qui permet de se déplacer de deux cases uniquement au premier déplacment pour le pion noir
+     */
+    public void firstMooveBlack()
+    {
+        // Si le pion est sur la deuxième ligne du plateau
+        if (super.coordonnees.getY() == 7)
+        {
+            //Déplacement de une case
+            super.coordonnees.setY(super.coordonnees.getY() - 1);
+        }
+        else if (super.coordonnees.getY() == 7)
+        {
+            super.coordonnees.setY(super.coordonnees.getY() - 2);
         }
     }
 
     /**
-     * Retourne la couleur de la pièce
-     * @return
+     * Méthode qui permet au pion noir de se déplacer vers l'avant
      */
-    public boolean isNoir() {
-        return noir;
-    } // todo inutile cf plus haut
+    public void mooveBlack()
+    {
+        //Déplacement de une case
+        super.coordonnees.setY(super.coordonnees.getY() - 1);
+    }
 
     /**
-     * Retourne la valeur de la pièce
-     * @return
+     * Méthode qui permet au pion black d'attaquer par la diago gauche
      */
-    public int getValeur() {
-        return valeur;
-    } // todo inutile cf plus haut
-
-    /* IMPORTANT
-        Pour détruire un pion (si il upgrade) j'ai pensée qu'il fallait mettre toutes les caractéristiques à zero puis créer un autre pion
-        Mais comme le ramasse-miette intervient, j'ai essayer de faire une méthode qui change les cara du pion.
-       IMPORTANT */
-    // todo je vais reflechir à ca je suis pas sur que ca soit gérer là. L'idée est là sinon.
-    public Pion(Piece p)
+    public void leftAttackBlack()
     {
-        //si la piece courant n'est pas un pion
-        if (!(p instanceof Pion))
-        {
-            // Construire un objet du type de la pièce courant (dame, tour, fou ou cavalier)
-            super();// todo j'ai passé ton idee de monter Point dans Piece du coup, le constructeur doit être avec des coordonnees
-        }
-        else {
-            System.out.println("Le pion ne peut pas se transformer en pion !");
-        }
+        //Déplacement latéral gauche
+        super.coordonnees.setX(super.coordonnees.getX() - 1);
+        super.coordonnees.setY(super.coordonnees.getY() - 1);
+    }
+
+    /**
+     * Méthode qui permet au pion blanc d'attaquer par la diago droite
+     */
+    public void rightAttackBlack()
+    {
+        //Déplacement latéral gauche
+        super.coordonnees.setX(super.coordonnees.getX() + 1);
+        super.coordonnees.setY(super.coordonnees.getY() - 1);
     }
 }
