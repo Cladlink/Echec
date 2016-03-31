@@ -39,28 +39,16 @@ public class Pion extends Piece
 
     /**
      * Méthode qui permet de se déplacer de deux cases uniquement au premier déplacment pour le pion blanc
+     * et de deux sinon
      */
-    public void firstMooveWhite(int nbCase)
+    public void moveWhite(int nbCase)
     {
         // Si le pion est sur la deuxième ligne du plateau
         if ( nbCase == 2 && super.coordonnees.getX() == 1)
-        {
             //Déplacement de une case
             super.coordonnees.setY(super.coordonnees.getY() + 2);
-        }
         else
-        {
-            mooveWhite();
-        }
-    }
-
-    /**
-     * Méthode qui permet au pion blanc de se déplacer vers l'avant
-     */
-    public void mooveWhite()
-    {
-        //Déplacement de une case
-        super.coordonnees.setY(super.coordonnees.getY() + 1);
+            super.coordonnees.setY(super.coordonnees.getY() + 1);
     }
 
     /**
@@ -87,29 +75,16 @@ public class Pion extends Piece
     /**
      * Méthode qui permet de se déplacer de deux cases uniquement au premier déplacment pour le pion noir
      */
-    public void firstMooveBlack(int nbCase)
+    public void moveBlack(int nbCase)
     {
         // Si le pion est sur la deuxième ligne du plateau
         if (nbCase == 2 && super.coordonnees.getX() == 6)
-        {
             //Déplacement de une case
             super.coordonnees.setY(super.coordonnees.getY() - 2);
-        }
+
         else
-        {
-            mooveBlack();
-        }
+            super.coordonnees.setY(super.coordonnees.getY() - 1);
     }
-
-    /**
-     * Méthode qui permet au pion noir de se déplacer vers l'avant
-     */
-    public void mooveBlack()
-    {
-        //Déplacement de une case
-        super.coordonnees.setY(super.coordonnees.getY() - 1);
-    }
-
     /**
      * Méthode qui permet au pion black d'attaquer par la diago gauche
      */
