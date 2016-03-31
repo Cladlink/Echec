@@ -5,16 +5,17 @@ import javax.swing.*;
  */
 public class Tour extends Piece
 {
-    private boolean noir; // todo a supprimer
-    private int valeur; // todo a supprimer
-    private ImageIcon figurineNoir;
-    private ImageIcon figurineBlanche;
-    private Point point; // todo a supprimer
+    private final String adressePieceNoire = "adresseNoire";
+    private final String adressePieceBlanche = "adresseBlanche";
 
-    public Tour()
+    public Tour(int x, int y)
     {
-        this.vivant = true;
-    } // todo le point est passé au niveau de Piece tu dois rajouter des param du coup
+        super(x,y);
+        if (isBlanc)
+            super.skin = new ImageIcon(this.adressePieceBlanche);
+        else
+            super.skin = new ImageIcon(this.adressePieceNoire);
+    }
 
 
 
@@ -27,12 +28,15 @@ public class Tour extends Piece
      */
     public boolean peutDeplacer(Point pointDeplace)
     {
-        if (this.point.getX() == pointDeplace.getX()
-                || this.point.getY() == pointDeplace.getY())
+        if (this.coordonnees.getX() == pointDeplace.getX()
+                || this.coordonnees.getY() == pointDeplace.getY())
         {
             return true;
         }
-        // todo ajouter un return false ? (je pense que la methode sera à travailler)
+        else
+        {
+            return false;
+        }
     }
 
     /**
@@ -42,15 +46,15 @@ public class Tour extends Piece
      *                                             // todo au bon endroit).
      */
     public void deplacementN(int nbCase){
-        point.setY(point.getY()+nbCase);
+        coordonnees.setY(coordonnees.getY()+nbCase);
     }
     public void deplacementE(int nbCase){
-        point.setX(point.getX()+nbCase);
+        coordonnees.setX(coordonnees.getX()+nbCase);
     }
     public void deplacementS(int nbCase){
-        point.setY(point.getY()-nbCase);
+        coordonnees.setY(coordonnees.getY()-nbCase);
     }
     public void deplacementO(int nbCase){
-        point.setX(point.getX()-nbCase);
+        coordonnees.setX(coordonnees.getX()-nbCase);
     }
 }
