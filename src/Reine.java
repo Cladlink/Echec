@@ -5,44 +5,48 @@ import javax.swing.*;
  */
 public class Reine extends Piece
 {
-    private ImageIcon noire;
-    private ImageIcon blanche;
-    private Point coordonnees;
+    private final String adressePieceNoire = "adresseNoire";
+    private final String adressePieceBlanche = "adresseBlanche";
 
-    public Reine(){
-        super();
-
+    public Reine(int x, int y, boolean isBlanc){
+        super(x,y);
+        if (isBlanc){
+            super.figure = new ImageIcon(this.adressePieceBlanche);
+        }
+        else {
+            super.figure = new ImageIcon(this.adressePieceNoire);
+        }
     }
 
     public void verticalN(int nbCases){
-        this.coordonnees.setY(coordonnees.getY()+nbCases);
+        super.coordonnees.setY(coordonnees.getY()+nbCases);
     }
 
     public void verticalS(int nbCases){
-        this.coordonnees.setY(coordonnees.getY()-nbCases);
+        super.coordonnees.setY(coordonnees.getY()-nbCases);
     }
 
     public void horizontalE(int nbCases){
-        this.coordonnees.setX(coordonnees.getX()+nbCases);
+        super.coordonnees.setX(coordonnees.getX()+nbCases);
     }
 
     public void horizontalO(int nbCases){
-        this.coordonnees.setX(coordonnees.getX()-nbCases);
+        super.coordonnees.setX(coordonnees.getX()-nbCases);
     }
 
     public void diagoNE(int nbCases){
-        this.coordonnees.setY(coordonnees.getY()+nbCases);
-        this.coordonnees.setX(coordonnees.getX()+nbCases);
+        super.coordonnees.setY(coordonnees.getY()+nbCases);
+        super.coordonnees.setX(coordonnees.getX()+nbCases);
     }
 
     public void diagoNO(int nbCases){
-        this.coordonnees.setY(coordonnees.getY()+nbCases);
-        this.coordonnees.setX(coordonnees.getX()-nbCases);
+        super.coordonnees.setY(coordonnees.getY()+nbCases);
+        super.coordonnees.setX(coordonnees.getX()-nbCases);
     }
 
     public void diagoSE(int nbCases){
-        this.coordonnees.setY(coordonnees.getY()-nbCases);
-        this.coordonnees.setX(coordonnees.getX()+nbCases);
+        super.coordonnees.setY(coordonnees.getY()-nbCases);
+        super.coordonnees.setX(coordonnees.getX()+nbCases);
     }
 
     public void diagoSO(int nbCases){
