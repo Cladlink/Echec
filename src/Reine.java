@@ -1,7 +1,7 @@
 import javax.swing.*;
 
 /**
- * Created by cladlink on 30/03/16.
+ * Created by Gabi on 30/03/16.
  */
 public class Reine extends Piece
 {
