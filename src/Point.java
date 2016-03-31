@@ -1,8 +1,9 @@
-/**
+/*
  * Created by Adonis Ndolo on 30/03/16.
  */
 public class Point
 {
+
     /**
      * Variables d'instances
      */
@@ -11,12 +12,13 @@ public class Point
 
     /**
      * Constructeur par defaut et personnalisé
-     * @param y
-     * @param x
+     * @param y (axe ordonnee)
+     * @param x (axe abscisses)
      */
-    public Point(int y, int x) {
-        this.y = y;
+    public Point(int x, int y)
+    {
         this.x = x;
+        this.y = y;
     }
 
     /**
@@ -26,15 +28,12 @@ public class Point
     public int getX() {
         return x;
     }
-
     public void setX(int x) {
         this.x = x;
     }
-
     public int getY() {
         return y;
     }
-
     public void setY(int y) {
         this.y = y;
     }
