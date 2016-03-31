@@ -6,6 +6,9 @@ import javax.swing.*;
 
 public class Fou extends Piece
 {
+    /**
+     * Attributs de Fou
+     */
     private final String adressePieceNoire = "adresseNoire";
     private final String adressePieceBlanche = "adresseBlanche";
 
@@ -22,8 +25,8 @@ public class Fou extends Piece
     }
 
     /**
-     * Chaque methode gère un déplacement possible
-     * @param nbCase // todo mettre un commentaire à chaque fois qu'il y a un param (pour décrire le parametre)
+     * Déplacement de nbCase cases sur la diagonale Nord-Est
+     * @param nbCase
      */
     public void diagoNE(int nbCase)
     {
@@ -31,18 +34,30 @@ public class Fou extends Piece
         super.coordonnees.setY(super.coordonnees.getY()+nbCase);
     }
 
+    /**
+     * Déplacement de nbCase cases sur la diagonale Nord-Ouest
+     * @param nbCase
+     */
     public void diagoNO(int nbCase)
     {
         super.coordonnees.setX(super.coordonnees.getX()-nbCase);
         super.coordonnees.setY(super.coordonnees.getY()+nbCase);
     }
 
+    /**
+     * Déplacement de nbCase cases sur la diagonale Sud-Est
+     * @param nbCase
+     */
     public void diagoSE(int nbCase)
     {
         super.coordonnees.setX(super.coordonnees.getX()+nbCase);
         super.coordonnees.setY(super.coordonnees.getY()-nbCase);
     }
 
+    /**
+     * Déplacement de nbCase cases sur la diagonale Sud-Ouest
+     * @param nbCase
+     */
     public void diagoSO(int nbCase)
     {
         super.coordonnees.setX(super.coordonnees.getX()-nbCase);
