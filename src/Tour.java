@@ -33,16 +33,16 @@ public class Tour extends Piece
      * @param i: nombre de case a se déplacer
      * @return boolean -> true si peut se déplacer
      */
-    public void deplacementN(int i){
-        point.setY(point.getY()+i);
+    public void deplacementN(int nbCase){
+        point.setY(point.getY()+nbCase);
     }
-    public void deplacementE(int i){
-        point.setX(point.getX()+i);
+    public void deplacementE(int nbCase){
+        point.setX(point.getX()+nbCase);
     }
-    public void deplacementS(int i){
-        point.setY(point.getY()-i);
+    public void deplacementS(int nbCase){
+        point.setY(point.getY()-nbCase);
     }
-    public void deplacementO(int i){
-        point.setX(point.getX()-i);
+    public void deplacementO(int nbCase){
+        point.setX(point.getX()-nbCase);
     }
 }
