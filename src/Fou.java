@@ -6,16 +6,19 @@ import javax.swing.*;
 
 public class Fou extends Piece
 {
-    private ImageIcon blanche;
-    private ImageIcon noire;
-    private Point coordonnees; // todo a supprimer (passé dans Piece)
+    private final String adressePieceNoire = "adresseNoire";
+    private final String adressePieceBlanche = "adresseBlanche";
 
     /**
      * Constructeur d'une pièce "fou"
      */
-    public Fou() // todo vu que le constructeur à changer il faut l'adapter (+ penser à utiliser le constructeur de Piece)
+    public Fou(int x, int y, boolean isBlanc)
     {
-
+        super(x, y);
+        if (isBlanc)
+            super.skin = new ImageIcon(this.adressePieceBlanche);
+        else
+            super.skin = new ImageIcon(this.adressePieceNoire);
     }
 
     /**
@@ -24,35 +27,25 @@ public class Fou extends Piece
      */
     public void diagoNE(int nbCase)
     {
-        this.coordonnees.setX(this.coordonnees.getX() + nbCase);
-        this.coordonnees.setY(this.coordonnees.getY() + nbCase);
+        super.coordonnees.setX(super.coordonnees.getX()+nbCase);
+        super.coordonnees.setY(super.coordonnees.getY()+nbCase);
     }
 
     public void diagoNO(int nbCase)
     {
-        this.coordonnees.setX(this.coordonnees.getX() - nbCase);
-        this.coordonnees.setY(this.coordonnees.getY() + nbCase);
+        super.coordonnees.setX(super.coordonnees.getX()-nbCase);
+        super.coordonnees.setY(super.coordonnees.getY()+nbCase);
     }
 
     public void diagoSE(int nbCase)
     {
-        this.coordonnees.setX(this.coordonnees.getX() + nbCase);
-        this.coordonnees.setY(this.coordonnees.getY() - nbCase);
+        super.coordonnees.setX(super.coordonnees.getX()+nbCase);
+        super.coordonnees.setY(super.coordonnees.getY()-nbCase);
     }
 
     public void diagoSO(int nbCase)
     {
-        this.coordonnees.setX(this.coordonnees.getX() - nbCase);
-        this.coordonnees.setY(this.coordonnees.getY() - nbCase);
-    }
-
-    // todo t'en occupe pas pour l'instant
-    public void peutDeplacer(Point destination)
-    {
-        if()
-        if(destination.getX() > this.coordonnees.getX() && destination.getY() > this.coordonnees.getY())
-        {
-
-        }
+        super.coordonnees.setX(super.coordonnees.getX()-nbCase);
+        super.coordonnees.setY(super.coordonnees.getY()-nbCase);
     }
 }
