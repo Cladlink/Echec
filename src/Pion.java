@@ -40,18 +40,17 @@ public class Pion extends Piece
     /**
      * Méthode qui permet de se déplacer de deux cases uniquement au premier déplacment pour le pion blanc
      */
-    public void firstMooveWhite()
+    public void firstMooveWhite(int nbCase)
     {
-
         // Si le pion est sur la deuxième ligne du plateau
-        if (super.coordonnees.getY() == 2)
+        if ( nbCase == 2 && super.coordonnees.getX() == 1)
         {
             //Déplacement de une case
-            super.coordonnees.setY(super.coordonnees.getY() + 1);
+            super.coordonnees.setY(super.coordonnees.getY() + 2);
         }
-        else if (super.coordonnees.getY() == 2)
+        else
         {
-            super.coordonnees.setY(super.coordonnees.getY()+2);
+            mooveWhite();
         }
     }
 
@@ -88,17 +87,17 @@ public class Pion extends Piece
     /**
      * Méthode qui permet de se déplacer de deux cases uniquement au premier déplacment pour le pion noir
      */
-    public void firstMooveBlack()
+    public void firstMooveBlack(int nbCase)
     {
         // Si le pion est sur la deuxième ligne du plateau
-        if (super.coordonnees.getY() == 7)
+        if (nbCase == 2 && super.coordonnees.getX() == 6)
         {
             //Déplacement de une case
-            super.coordonnees.setY(super.coordonnees.getY() - 1);
-        }
-        else if (super.coordonnees.getY() == 7)
-        {
             super.coordonnees.setY(super.coordonnees.getY() - 2);
+        }
+        else
+        {
+            mooveBlack();
         }
     }
 
