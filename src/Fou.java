@@ -5,16 +5,15 @@ import javax.swing.*;
  */
 public class Fou extends Piece
 {
-    private boolean noir;
-    private boolean vivant;
-    private int valeur;
     private ImageIcon image;
-    private Coordonnees coordonnees;
+    private Point coordonnees;
 
     public Fou()
     {
-        this.noir = true;
-        this.vivant = true;
-        this.valeur = 3; // J'ai trouvé ca sur Wikipédia
+    }
+
+    public void diagoNE(int nbCase)
+    {
+
     }
 }
