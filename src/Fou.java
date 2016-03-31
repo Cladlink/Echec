@@ -1,7 +1,7 @@
 import javax.swing.*;
 
 /**
- * Created by mlucile on 30/03/16.
+ *Created by mlucile on 30/03/16.
  */
 
 public class Fou extends Piece
@@ -26,7 +26,7 @@ public class Fou extends Piece
 
     /**
      * Déplacement de nbCase cases sur la diagonale Nord-Est
-     * @param nbCase
+     * @param nbCase : nombre de case dont il faut se déplacer
      */
     public void diagoNE(int nbCase)
     {
@@ -36,7 +36,7 @@ public class Fou extends Piece
 
     /**
      * Déplacement de nbCase cases sur la diagonale Nord-Ouest
-     * @param nbCase
+     * @param nbCase : nombre de case dont il faut se déplacer
      */
     public void diagoNO(int nbCase)
     {
@@ -46,7 +46,7 @@ public class Fou extends Piece
 
     /**
      * Déplacement de nbCase cases sur la diagonale Sud-Est
-     * @param nbCase
+     * @param nbCase : nombre de case dont il faut se déplacer
      */
     public void diagoSE(int nbCase)
     {
@@ -56,7 +56,7 @@ public class Fou extends Piece
 
     /**
      * Déplacement de nbCase cases sur la diagonale Sud-Ouest
-     * @param nbCase
+     * @param nbCase : nombre de case dont il faut se déplacer
      */
     public void diagoSO(int nbCase)
     {
