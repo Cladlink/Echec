@@ -7,7 +7,7 @@ public class Roi extends Piece
 {
     private final String adressePieceNoire = "adresseNoire";
     private final String adressePieceBlanche = "adresseBlanche";
-
+    //lol
 
     public Roi(int x, int y, boolean isBlanc){
         super(x,y);
