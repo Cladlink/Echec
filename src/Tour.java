@@ -42,8 +42,6 @@ public class Tour extends Piece
     /**
      * Change les coordonnées de la pièce en fonction de la méthode appelé et d'une nombre de case "i" donné
      * @param nbCase: nombre de case a se déplacer
-     * @return boolean -> true si peut se déplacer // todo pas bon faut le virer t'as pas de return ici (faut mettre
-     *                                             // todo au bon endroit).
      */
     public void deplacementN(int nbCase){
         coordonnees.setY(coordonnees.getY()+nbCase);
