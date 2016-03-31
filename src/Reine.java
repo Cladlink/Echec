@@ -11,10 +11,10 @@ public class Reine extends Piece
     public Reine(int x, int y, boolean isBlanc){
         super(x,y);
         if (isBlanc){
-            super.figure = new ImageIcon(this.adressePieceBlanche);
+            super.skin = new ImageIcon(this.adressePieceBlanche);
         }
         else {
-            super.figure = new ImageIcon(this.adressePieceNoire);
+            super.skin = new ImageIcon(this.adressePieceNoire);
         }
     }
 
