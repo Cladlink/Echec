@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /*
- * Created by Cladlink on 30/03/16.
+ * Created by cladlink on 30/03/16.
  */
 public class Piece
 {
