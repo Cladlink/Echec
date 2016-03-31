@@ -27,7 +27,8 @@ public class Pion extends Piece
     /*****************
      * Constructeurs *
      ****************/
-    public Pion(){
+    public Pion()
+    {
         this.noir = true; // todo meme commentaire qu'au dessus
         this.valeur = 1; // todo meme commentaire qu'au dessus
         super.Point(){} //todo ceci n'existe pas à écrire comme il faut

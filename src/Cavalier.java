@@ -1,56 +1,69 @@
 import javax.swing.*;
 
-/**
+/*
  * Created by baptiste on 31/03/16.
  */
-public class Cavalier extends Piece {
+    // todo * n'envoie pas de code s'il y a du rouge !
+    // todo *
+public class Cavalier extends Piece
+{
     //Attributs
     private ImageIcon figurineNoire;
     private ImageIcon figurineBlanche;
-    private Point coordonnees;
+    private Point coordonnees; // todo a supprimer (ca fait partie de Piece maintenant)
 
     //Constructeur
-    public Cavalier() {
+    public Cavalier() // todo rajoute un super et écrit le correctement ;)
+    {
 
     }
 
     //Méthodes de déplacement
-    public void NNE() {
+    // todo rajoute des super.coordonnees pour la lisibilité
+    public void NNE()
+    {
         coordonnees.setX(coordonnees.getX()+1);
         coordonnees.setY(coordonnees.getY()+2);
     }
 
-    public void NEE() {
+    public void NEE()
+    {
         coordonnees.setX(coordonnees.getX()+2);
         coordonnees.setY(coordonnees.getY()+1);
     }
 
-    public void SEE() {
+    public void SEE()
+    {
         coordonnees.setX(coordonnees.getX()+2);
         coordonnees.setY(coordonnees.getY()-1);
     }
 
-    public void SSE() {
+    public void SSE()
+    {
         coordonnees.setX(coordonnees.getX()+1);
         coordonnees.setY(coordonnees.getY()-2);
     }
 
-    public void SSO() {
+    public void SSO()
+    {
         coordonnees.setX(coordonnees.getX()-1);
         coordonnees.setY(coordonnees.getY()-2);
     }
 
-    public void SOO() {
+    public void SOO()
+    {
         coordonnees.setX(coordonnees.getX()-2);
         coordonnees.setY(coordonnees.getY()-1);
     }
 
-    public void NOO() {
+    public void NOO()
+    {
         coordonnees.setX(coordonnees.getX()-2);
         coordonnees.setY(coordonnees.getY()+1);
     }
 
-    public void NNO() {
+    public void NNO()
+    {
         coordonnees.setX(coordonnees.getX()-1);
         coordonnees.setY(coordonnees.getY()+2);
     }
