@@ -1,5 +1,5 @@
 /**
- * Created by Adonis on 30/03/16.
+ * Created by Adonis Ndolo on 30/03/16.
  */
 public class Point
 {
