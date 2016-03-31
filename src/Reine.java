@@ -18,38 +18,38 @@ public class Reine extends Piece
         }
     }
 
-    public void verticalN(int nbCases){
+    public void verticalN(int nbCases){ //Déplacement vers le haut
         super.coordonnees.setY(coordonnees.getY()+nbCases);
     }
 
-    public void verticalS(int nbCases){
+    public void verticalS(int nbCases){ //Déplacement vers le bas
         super.coordonnees.setY(coordonnees.getY()-nbCases);
     }
 
-    public void horizontalE(int nbCases){
+    public void horizontalE(int nbCases){ //Déplacement vers la droite
         super.coordonnees.setX(coordonnees.getX()+nbCases);
     }
 
-    public void horizontalO(int nbCases){
+    public void horizontalO(int nbCases){ //Déplacement vers la gauche
         super.coordonnees.setX(coordonnees.getX()-nbCases);
     }
 
-    public void diagoNE(int nbCases){
+    public void diagoNE(int nbCases){ //Déplacement en diagonale haut-droite
         super.coordonnees.setY(coordonnees.getY()+nbCases);
         super.coordonnees.setX(coordonnees.getX()+nbCases);
     }
 
-    public void diagoNO(int nbCases){
+    public void diagoNO(int nbCases){ //Déplacement en diagonale haut-gauche
         super.coordonnees.setY(coordonnees.getY()+nbCases);
         super.coordonnees.setX(coordonnees.getX()-nbCases);
     }
 
-    public void diagoSE(int nbCases){
+    public void diagoSE(int nbCases){ //Déplacement en diagonale bas-droite
         super.coordonnees.setY(coordonnees.getY()-nbCases);
         super.coordonnees.setX(coordonnees.getX()+nbCases);
     }
 
-    public void diagoSO(int nbCases){
+    public void diagoSO(int nbCases){ //Déplacement en diagonale bas-gauche
         this.coordonnees.setY(coordonnees.getY()-nbCases);
         this.coordonnees.setX(coordonnees.getX()-nbCases);
     }
