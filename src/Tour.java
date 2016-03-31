@@ -30,7 +30,7 @@ public class Tour extends Piece
 
     /**
      * Change les coordonnées de la pièce en fonction de la méthode appelé et d'une nombre de case "i" donné
-     * @param i: nombre de case a se déplacer
+     * @param nbCase: nombre de case a se déplacer
      * @return boolean -> true si peut se déplacer
      */
     public void deplacementN(int nbCase){
