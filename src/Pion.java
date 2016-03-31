@@ -3,10 +3,6 @@ import javax.swing.*;
 /*
  * Created by Adonis on 30/03/16.
  */
-/* IMPORTANT *
-    Vu que l'on ne peut pas avoir un Pion étendu de plusieurs classe, et qu'on utilise la classe Pièce pour le définir en partie
-    et la classe point pour connaitre son emplacement, ne devons-nous pas ajouter la classe Point entant que caractèristique de la classe pièce ?
- * IMPORTANT */
 public class Pion extends Piece
 {
     /*************************
