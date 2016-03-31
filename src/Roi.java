@@ -7,7 +7,6 @@ public class Roi extends Piece
 {
     private final String adressePieceNoire = "adresseNoire";
     private final String adressePieceBlanche = "adresseBlanche";
-    //lol je suis con je push pas pppp
 
     public Roi(int x, int y, boolean isBlanc){
         super(x,y);
@@ -23,5 +22,15 @@ public class Roi extends Piece
     public void horizontalO() { super.coordonnees.setX(coordonnees.getX()-1); }
     public void horizontalE() { super.coordonnees.setX(coordonnees.getX()+1); }
 
+    public void diagonaleNE() { super.coordonnees.setX(coordonnees.getX()+1);
+                                super.coordonnees.setY(coordonnees.getY()+1);}
 
+    public void diagonaleNO() { super.coordonnees.setX(coordonnees.getX()-1);
+                                super.coordonnees.setY(coordonnees.getY()+1);}
+
+    public void diagonaleSE() { super.coordonnees.setX(coordonnees.getX()+1);
+                                super.coordonnees.setY(coordonnees.getY()-1);}
+
+    public void diagonaleSO() { super.coordonnees.setX(coordonnees.getX()-1);
+                                super.coordonnees.setY(coordonnees.getY()-1);}
 }
