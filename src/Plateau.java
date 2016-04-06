@@ -21,6 +21,10 @@ public class Plateau
 
     }
 
+    public Plateau(Case[][] partieExistante)
+    {
+
+    }
     /**
      * plateauDeBae
      * "soulage" le constructeur sur le placement des pièces au début d'une partie
@@ -53,14 +57,5 @@ public class Plateau
     {
 
     }
-
-    /**
-     * save
-     * envoie l'insert en base de donnée afin de sauvegarder l'état du plateau
-     * utiliser la class BDDManager
-     */
-    public void save()
-    {
-
-    }
 }
+

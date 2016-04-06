@@ -15,11 +15,10 @@ public class Pion extends Piece
      * deplacer
      *
      * déplace la pièce d'un point A à un point B
-     * @param origine (case où la pièce selectionnée est placée)
      * @param destination (case où la pièce selectionnée doit se rendre)
      */
     @Override
-    public void deplacer(Case origine, Case destination)
+    public void deplacer( Case destination)
     {
 
     }
@@ -28,12 +27,11 @@ public class Pion extends Piece
      * jeuDeCase
      * Liste les cases où la pièce peut se déplacer
      *
-     * @param Origine (case où la pièce selectionnée est placée)
      * @param pieceABouger (case où la pièce selectionnée doit se rendre)
      * @return jeu de case représentant la liste des mouvements possible
      */
     @Override
-    public ArrayList<Case> jeuDeCase(Case Origine, Piece pieceABouger)
+    public ArrayList<Case> jeuDeCase( Piece pieceABouger)
     {
         return null;
     }

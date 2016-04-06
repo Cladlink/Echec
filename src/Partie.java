@@ -10,11 +10,12 @@ public class Partie
     private Joueur joueurNoir = null;
     private Plateau plateau = null;
     private ArrayList<String> listeCoups = null;
+    private boolean tourBlanc = true;
 
     /**
-     *
      * Partie Constructeur
      * les joueurs sont passé en paramêtres
+     *
      * @param joueurBlanc j1
      * @param joueurNoir j2
      */
@@ -41,6 +42,28 @@ public class Partie
 
     }
 
+    /**
+     * save
+     * envoie l'insert en base de donnée afin de sauvegarder l'état du plateau
+     *
+     * utiliser la class BDDManager
+     */
+    public void save()
+    {
+
+    }
+
+    /**
+     * load
+     * recoit un etat du plateau et redémarre la partie
+     *
+     * @param plateau (l'état du plateau)
+     * @param tourBlanc (a qui le tour ?)
+     */
+    public void load(Case[][] plateau, boolean tourBlanc)
+    {
+
+    }
 
 
 }
