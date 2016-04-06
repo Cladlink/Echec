@@ -10,8 +10,15 @@ public class ControlMenu extends Control implements ActionListener
     public ControlMenu(Model model, Vue vue)
     {
         super(model, vue);
-        // ajouter un appel à la méthode setControlMenu
+        vue.setControlMenu(this);
     }
+
+    /**
+     * actionPerformed
+     * définir les actions de chaque élément du menu
+     *
+     * @param e (contient un evenement)
+     */
     @Override
     public void actionPerformed(ActionEvent e)
     {
