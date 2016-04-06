@@ -1,71 +1,40 @@
-import javax.swing.*;
+import java.util.ArrayList;
 
 /*
  * Created by baptiste on 31/03/16.
  */
 public class Cavalier extends Piece
 {
-    private final String adressePieceNoire = "adresseNoire";
-    private final String adressePieceBlanche = "adresseBlanche";
 
-    //Constructeur
-    public Cavalier(int x, int y, boolean isBlanc)
+    public Cavalier(Case caseInitiale, boolean isBlanc)
     {
-        super(x, y);
-        if (isBlanc)
-            super.skin = new ImageIcon(this.adressePieceBlanche);
-        else
-            super.skin = new ImageIcon(this.adressePieceNoire);
-
-
-
-    }
-    //Méthodes de déplacement
-    public void NNE()
-    {
-        super.coordonnees.setX(super.coordonnees.getX()+1);
-        super.coordonnees.setY(super.coordonnees.getY()+2);
+        super(caseInitiale, isBlanc);
     }
 
-    public void NEE()
+    /**
+     * deplacer
+     *
+     * déplace la pièce d'un point A à un point B
+     * @param origine (case où la pièce selectionnée est placée)
+     * @param destination (case où la pièce selectionnée doit se rendre)
+     */
+    @Override
+    public void deplacer(Case origine, Case destination)
     {
-        super.coordonnees.setX(super.coordonnees.getX()+2);
-        super.coordonnees.setY(super.coordonnees.getY()+1);
+
     }
 
-    public void SEE()
+    /**
+     * jeuDeCase
+     * Liste les cases où la pièce peut se déplacer
+     *
+     * @param Origine (case où la pièce selectionnée est placée)
+     * @param pieceABouger (case où la pièce selectionnée doit se rendre)
+     * @return jeu de case représentant la liste des mouvements possible
+     */
+    @Override
+    public ArrayList<Case> jeuDeCase(Case Origine, Piece pieceABouger)
     {
-        super.coordonnees.setX(super.coordonnees.getX()+2);
-        super.coordonnees.setY(super.coordonnees.getY()-1);
-    }
-
-    public void SSE()
-    {
-        super.coordonnees.setX(super.coordonnees.getX()+1);
-        super.coordonnees.setY(super.coordonnees.getY()-2);
-    }
-
-    public void SSO()
-    {
-        super.coordonnees.setX(super.coordonnees.getX()-1);
-        super.coordonnees.setY(super.coordonnees.getY()-2);
-    }
-
-    public void SOO()
-    {
-        super.coordonnees.setX(super.coordonnees.getX()-2);
-        super.coordonnees.setY(super.coordonnees.getY()-1);
-    }
-
-    public void NOO()
-    {
-        super.coordonnees.setX(super.coordonnees.getX()-2);
-        super.coordonnees.setY(super.coordonnees.getY()+1);
-    }
-
-    public void NNO()
-    {
-        super.coordonnees.setX(super.coordonnees.getX()-1);
-        super.coordonnees.setY(super.coordonnees.getY()+2);
+        return null;
     }
 }

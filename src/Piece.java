@@ -1,19 +1,33 @@
 import javax.swing.*;
-import java.awt.*;
+import java.util.ArrayList;
 
 /*
  * Created by cladlink on 30/03/16.
  */
-public class Piece
+public abstract class Piece
 {
-    protected boolean vivant;
-    protected Point coordonnees;
-    protected ImageIcon skin;
-    protected boolean isBlanc;
+    protected Case emplacementPiece;
+    protected ImageIcon skin = null;
+    protected boolean isBlanc = false;
+    protected String adresseImageNoire = null; // mettre les images ici quand on les auas
+    protected String adresseImageBlanche = null;
 
-    public Piece(int x, int y)
+    /**
+     * Pièce (constructeur)
+     *
+     *
+     * @param caseInitiale (place la pièce à la première case qu'elle occupera en début de partie)
+     * @param isBlanc (définit si la pièce sera blanche ou noire)
+     */
+    public Piece(Case caseInitiale, boolean isBlanc)
     {
-        this.vivant = true;
-        this.coordonnees = new Point(x, y);
+        this.isBlanc = isBlanc;
+        if (isBlanc)
+            skin = new ImageIcon(adresseImageBlanche);
+        else
+            skin = new ImageIcon(adresseImageNoire);
+        this.emplacementPiece = caseInitiale;
     }
+    public abstract void deplacer(Case origine, Case destination);
+    public abstract ArrayList<Case> jeuDeCase(Case Origine, Piece pieceABouger);
 }

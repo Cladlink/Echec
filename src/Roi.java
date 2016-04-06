@@ -1,36 +1,40 @@
-import javax.swing.*;
+import java.util.ArrayList;
 
 /*
- * Created by cladlink on 30/03/16.
+ * Created by baptiste on 31/03/16.
  */
 public class Roi extends Piece
 {
-    private final String adressePieceNoire = "adresseNoire";
-    private final String adressePieceBlanche = "adresseBlanche";
 
-    public Roi(int x, int y, boolean isBlanc){
-        super(x,y);
-        if (isBlanc)
-            super.skin = new ImageIcon(this.adressePieceBlanche);
-        else
-            super.skin = new ImageIcon(this.adressePieceNoire);
+    public Roi(Case caseInitiale, boolean isBlanc)
+    {
+        super(caseInitiale, isBlanc);
+    }
+
+    /**
+     * deplacer
+     *
+     * déplace la pièce d'un point A à un point B
+     * @param origine (case où la pièce selectionnée est placée)
+     * @param destination (case où la pièce selectionnée doit se rendre)
+     */
+    @Override
+    public void deplacer(Case origine, Case destination)
+    {
 
     }
 
-    public void verticalN(){ super.coordonnees.setY(coordonnees.getY()+1); }
-    public void verticalS(){ super.coordonnees.setY(coordonnees.getY()-1); }
-    public void horizontalO() { super.coordonnees.setX(coordonnees.getX()-1); }
-    public void horizontalE() { super.coordonnees.setX(coordonnees.getX()+1); }
-
-    public void diagonaleNE() { super.coordonnees.setX(coordonnees.getX()+1);
-                                super.coordonnees.setY(coordonnees.getY()+1);}
-
-    public void diagonaleNO() { super.coordonnees.setX(coordonnees.getX()-1);
-                                super.coordonnees.setY(coordonnees.getY()+1);}
-
-    public void diagonaleSE() { super.coordonnees.setX(coordonnees.getX()+1);
-                                super.coordonnees.setY(coordonnees.getY()-1);}
-
-    public void diagonaleSO() { super.coordonnees.setX(coordonnees.getX()-1);
-                                super.coordonnees.setY(coordonnees.getY()-1);}
+    /**
+     * jeuDeCase
+     * Liste les cases où la pièce peut se déplacer
+     *
+     * @param Origine (case où la pièce selectionnée est placée)
+     * @param pieceABouger (case où la pièce selectionnée doit se rendre)
+     * @return jeu de case représentant la liste des mouvements possible
+     */
+    @Override
+    public ArrayList<Case> jeuDeCase(Case Origine, Piece pieceABouger)
+    {
+        return null;
+    }
 }

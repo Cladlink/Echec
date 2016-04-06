@@ -1,103 +1,40 @@
-import javax.swing.*;
+import java.util.ArrayList;
 
 /*
- * Created by Adonis on 30/03/16.
+ * Created by baptiste on 31/03/16.
  */
 public class Pion extends Piece
 {
-    /*************************
-     * Variables d'instances *
-     ************************/
-    private final String adresseNoir = "";
-    private final String adresseBlanc = "";
 
-    /*****************
-     * Constructeurs *
-     ****************/
-    public Pion(int x, int y, boolean isBlanc)
+    public Pion(Case caseInitiale, boolean isBlanc)
     {
-        super(x, y);
-        super.isBlanc = isBlanc;
-        if (isBlanc)
-            super.skin = new ImageIcon(this.adresseBlanc);
-        else
-            super.skin = new ImageIcon(this.adresseNoir);
-
-    }
-
-    /************
-     * Méthodes *
-     ***********/
-
-    /**
-     * Methode pour le déplacement
-     */
-
-    /**
-     * Méthode qui permet de se déplacer de deux cases uniquement au premier déplacment pour le pion blanc
-     * et de deux sinon
-     */
-    public void moveWhite(int nbCase)
-    {
-        // Si le pion est sur la deuxième ligne du plateau
-        if ( nbCase == 2 && super.coordonnees.getX() == 1)
-            //Déplacement de une case
-            super.coordonnees.setY(super.coordonnees.getY() + 2);
-        else
-            super.coordonnees.setY(super.coordonnees.getY() + 1);
+        super(caseInitiale, isBlanc);
     }
 
     /**
-     * Méthode qui permet au pion blanc d'attaquer par la diago gauche
+     * deplacer
+     *
+     * déplace la pièce d'un point A à un point B
+     * @param origine (case où la pièce selectionnée est placée)
+     * @param destination (case où la pièce selectionnée doit se rendre)
      */
-    public void leftAttackWhite()
+    @Override
+    public void deplacer(Case origine, Case destination)
     {
-        //Déplacement latéral gauche
-        super.coordonnees.setX(super.coordonnees.getX() - 1);
-        super.coordonnees.setY(super.coordonnees.getY() + 1);
+
     }
 
     /**
-     * Méthode qui permet au pion blanc d'attaquer par la diago droite
+     * jeuDeCase
+     * Liste les cases où la pièce peut se déplacer
+     *
+     * @param Origine (case où la pièce selectionnée est placée)
+     * @param pieceABouger (case où la pièce selectionnée doit se rendre)
+     * @return jeu de case représentant la liste des mouvements possible
      */
-    public void rightAttackWhite()
+    @Override
+    public ArrayList<Case> jeuDeCase(Case Origine, Piece pieceABouger)
     {
-        //Déplacement latéral gauche
-        super.coordonnees.setX(super.coordonnees.getX() + 1);
-        super.coordonnees.setY(super.coordonnees.getY() + 1);
-    }
-
-
-    /**
-     * Méthode qui permet de se déplacer de deux cases uniquement au premier déplacment pour le pion noir
-     */
-    public void moveBlack(int nbCase)
-    {
-        // Si le pion est sur la deuxième ligne du plateau
-        if (nbCase == 2 && super.coordonnees.getX() == 6)
-            //Déplacement de une case
-            super.coordonnees.setY(super.coordonnees.getY() - 2);
-
-        else
-            super.coordonnees.setY(super.coordonnees.getY() - 1);
-    }
-    /**
-     * Méthode qui permet au pion black d'attaquer par la diago gauche
-     */
-    public void leftAttackBlack()
-    {
-        //Déplacement latéral gauche
-        super.coordonnees.setX(super.coordonnees.getX() - 1);
-        super.coordonnees.setY(super.coordonnees.getY() - 1);
-    }
-
-    /**
-     * Méthode qui permet au pion blanc d'attaquer par la diago droite
-     */
-    public void rightAttackBlack()
-    {
-        //Déplacement latéral gauche
-        super.coordonnees.setX(super.coordonnees.getX() + 1);
-        super.coordonnees.setY(super.coordonnees.getY() - 1);
+        return null;
     }
 }

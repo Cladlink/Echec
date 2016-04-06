@@ -1,56 +1,40 @@
-import javax.swing.*;
+import java.util.ArrayList;
 
-/**
- * Created by Gabi on 30/03/16.
+/*
+ * Created by baptiste on 31/03/16.
  */
 public class Reine extends Piece
 {
-    private final String adressePieceNoire = "adresseNoire";
-    private final String adressePieceBlanche = "adresseBlanche";
 
-    public Reine(int x, int y, boolean isBlanc){
-        super(x,y);
-        if (isBlanc){
-            super.skin = new ImageIcon(this.adressePieceBlanche);
-        }
-        else {
-            super.skin = new ImageIcon(this.adressePieceNoire);
-        }
+    public Reine(Case caseInitiale, boolean isBlanc)
+    {
+        super(caseInitiale, isBlanc);
     }
 
-    public void verticalN(int nbCases){ //Déplacement vers le haut
-        super.coordonnees.setY(coordonnees.getY()+nbCases);
+    /**
+     * deplacer
+     *
+     * déplace la pièce d'un point A à un point B
+     * @param origine (case où la pièce selectionnée est placée)
+     * @param destination (case où la pièce selectionnée doit se rendre)
+     */
+    @Override
+    public void deplacer(Case origine, Case destination)
+    {
+
     }
 
-    public void verticalS(int nbCases){ //Déplacement vers le bas
-        super.coordonnees.setY(coordonnees.getY()-nbCases);
-    }
-
-    public void horizontalE(int nbCases){ //Déplacement vers la droite
-        super.coordonnees.setX(coordonnees.getX()+nbCases);
-    }
-
-    public void horizontalO(int nbCases){ //Déplacement vers la gauche
-        super.coordonnees.setX(coordonnees.getX()-nbCases);
-    }
-
-    public void diagoNE(int nbCases){ //Déplacement en diagonale haut-droite
-        super.coordonnees.setY(coordonnees.getY()+nbCases);
-        super.coordonnees.setX(coordonnees.getX()+nbCases);
-    }
-
-    public void diagoNO(int nbCases){ //Déplacement en diagonale haut-gauche
-        super.coordonnees.setY(coordonnees.getY()+nbCases);
-        super.coordonnees.setX(coordonnees.getX()-nbCases);
-    }
-
-    public void diagoSE(int nbCases){ //Déplacement en diagonale bas-droite
-        super.coordonnees.setY(coordonnees.getY()-nbCases);
-        super.coordonnees.setX(coordonnees.getX()+nbCases);
-    }
-
-    public void diagoSO(int nbCases){ //Déplacement en diagonale bas-gauche
-        this.coordonnees.setY(coordonnees.getY()-nbCases);
-        this.coordonnees.setX(coordonnees.getX()-nbCases);
+    /**
+     * jeuDeCase
+     * Liste les cases où la pièce peut se déplacer
+     *
+     * @param Origine (case où la pièce selectionnée est placée)
+     * @param pieceABouger (case où la pièce selectionnée doit se rendre)
+     * @return jeu de case représentant la liste des mouvements possible
+     */
+    @Override
+    public ArrayList<Case> jeuDeCase(Case Origine, Piece pieceABouger)
+    {
+        return null;
     }
 }

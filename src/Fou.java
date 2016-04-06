@@ -1,66 +1,40 @@
-import javax.swing.*;
+import java.util.ArrayList;
 
-/**
- *Created by mlucile on 30/03/16.
+/*
+ * Created by baptiste on 31/03/16.
  */
-
 public class Fou extends Piece
 {
-    /**
-     * Attributs de Fou
-     */
-    private final String adressePieceNoire = "adresseNoire";
-    private final String adressePieceBlanche = "adresseBlanche";
 
-    /**
-     * Constructeur d'une pièce "fou"
-     */
-    public Fou(int x, int y, boolean isBlanc)
+    public Fou(Case caseInitiale, boolean isBlanc)
     {
-        super(x, y);
-        if (isBlanc)
-            super.skin = new ImageIcon(this.adressePieceBlanche);
-        else
-            super.skin = new ImageIcon(this.adressePieceNoire);
+        super(caseInitiale, isBlanc);
     }
 
     /**
-     * Déplacement de nbCase cases sur la diagonale Nord-Est
-     * @param nbCase : nombre de case dont il faut se déplacer
+     * deplacer
+     *
+     * déplace la pièce d'un point A à un point B
+     * @param origine (case où la pièce selectionnée est placée)
+     * @param destination (case où la pièce selectionnée doit se rendre)
      */
-    public void diagoNE(int nbCase)
+    @Override
+    public void deplacer(Case origine, Case destination)
     {
-        super.coordonnees.setX(super.coordonnees.getX()+nbCase);
-        super.coordonnees.setY(super.coordonnees.getY()+nbCase);
+
     }
 
     /**
-     * Déplacement de nbCase cases sur la diagonale Nord-Ouest
-     * @param nbCase : nombre de case dont il faut se déplacer
+     * jeuDeCase
+     * Liste les cases où la pièce peut se déplacer
+     *
+     * @param Origine (case où la pièce selectionnée est placée)
+     * @param pieceABouger (case où la pièce selectionnée doit se rendre)
+     * @return jeu de case représentant la liste des mouvements possible
      */
-    public void diagoNO(int nbCase)
+    @Override
+    public ArrayList<Case> jeuDeCase(Case Origine, Piece pieceABouger)
     {
-        super.coordonnees.setX(super.coordonnees.getX()-nbCase);
-        super.coordonnees.setY(super.coordonnees.getY()+nbCase);
-    }
-
-    /**
-     * Déplacement de nbCase cases sur la diagonale Sud-Est
-     * @param nbCase : nombre de case dont il faut se déplacer
-     */
-    public void diagoSE(int nbCase)
-    {
-        super.coordonnees.setX(super.coordonnees.getX()+nbCase);
-        super.coordonnees.setY(super.coordonnees.getY()-nbCase);
-    }
-
-    /**
-     * Déplacement de nbCase cases sur la diagonale Sud-Ouest
-     * @param nbCase : nombre de case dont il faut se déplacer
-     */
-    public void diagoSO(int nbCase)
-    {
-        super.coordonnees.setX(super.coordonnees.getX()-nbCase);
-        super.coordonnees.setY(super.coordonnees.getY()-nbCase);
+        return null;
     }
 }
