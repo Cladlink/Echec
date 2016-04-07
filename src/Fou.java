@@ -27,11 +27,10 @@ public class Fou extends Piece
      * jeuDeCase
      * Liste les cases où la pièce peut se déplacer
      *
-     * @param pieceABouger (case où la pièce selectionnée doit se rendre)
      * @return jeu de case représentant la liste des mouvements possible
      */
     @Override
-    public ArrayList<Case> jeuDeCase(Piece pieceABouger)
+    public ArrayList<Case> jeuDeCase()
     {
         return null;
     }

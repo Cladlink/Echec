@@ -31,7 +31,7 @@ public class Tour extends Piece
      * @return jeu de case représentant la liste des mouvements possible
      */
     @Override
-    public ArrayList<Case> jeuDeCase(Piece pieceABouger)
+    public ArrayList<Case> jeuDeCase()
     {
         return null;
     }

@@ -27,6 +27,7 @@ public abstract class Piece
             skin = new ImageIcon(adresseImageNoire);
         this.emplacementPiece = caseInitiale;
     }
+
     public abstract void deplacer( Case destination);
-    public abstract ArrayList<Case> jeuDeCase( Piece pieceABouger);
+    public abstract ArrayList<Case> jeuDeCase();
 }
