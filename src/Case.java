@@ -24,4 +24,44 @@ public class Case
     {
 
     }
+
+    public int getRow() {
+        return row;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public int getColumn() {
+        return column;
+    }
+
+    public void setColumn(int column) {
+        this.column = column;
+    }
+
+    public Piece getPiece() {
+        return piece;
+    }
+
+    public void setPiece(Piece piece) {
+        this.piece = piece;
+    }
+
+    public Plateau getPlateau() {
+        return plateau;
+    }
+
+    public void setPlateau(Plateau plateau) {
+        this.plateau = plateau;
+    }
+
+    public boolean isFree() {
+        return isFree;
+    }
+
+    public void setFree(boolean free) {
+        isFree = free;
+    }
 }

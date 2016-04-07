@@ -30,4 +30,44 @@ public abstract class Piece
 
     public abstract void deplacer( Case destination);
     public abstract ArrayList<Case> jeuDeCase();
+
+    public Case getEmplacementPiece() {
+        return emplacementPiece;
+    }
+
+    public void setEmplacementPiece(Case emplacementPiece) {
+        this.emplacementPiece = emplacementPiece;
+    }
+
+    public ImageIcon getSkin() {
+        return skin;
+    }
+
+    public void setSkin(ImageIcon skin) {
+        this.skin = skin;
+    }
+
+    public boolean isBlanc() {
+        return isBlanc;
+    }
+
+    public void setBlanc(boolean blanc) {
+        isBlanc = blanc;
+    }
+
+    public String getAdresseImageNoire() {
+        return adresseImageNoire;
+    }
+
+    public void setAdresseImageNoire(String adresseImageNoire) {
+        this.adresseImageNoire = adresseImageNoire;
+    }
+
+    public String getAdresseImageBlanche() {
+        return adresseImageBlanche;
+    }
+
+    public void setAdresseImageBlanche(String adresseImageBlanche) {
+        this.adresseImageBlanche = adresseImageBlanche;
+    }
 }

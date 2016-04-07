@@ -65,5 +65,43 @@ public class Partie
 
     }
 
+    public Joueur getJoueurBlanc() {
+        return joueurBlanc;
+    }
 
+    public void setJoueurBlanc(Joueur joueurBlanc) {
+        this.joueurBlanc = joueurBlanc;
+    }
+
+    public Joueur getJoueurNoir() {
+        return joueurNoir;
+    }
+
+    public void setJoueurNoir(Joueur joueurNoir) {
+        this.joueurNoir = joueurNoir;
+    }
+
+    public Plateau getPlateau() {
+        return plateau;
+    }
+
+    public void setPlateau(Plateau plateau) {
+        this.plateau = plateau;
+    }
+
+    public ArrayList<String> getListeCoups() {
+        return listeCoups;
+    }
+
+    public void setListeCoups(ArrayList<String> listeCoups) {
+        this.listeCoups = listeCoups;
+    }
+
+    public boolean isTourBlanc() {
+        return tourBlanc;
+    }
+
+    public void setTourBlanc(boolean tourBlanc) {
+        this.tourBlanc = tourBlanc;
+    }
 }
