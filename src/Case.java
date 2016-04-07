@@ -19,7 +19,7 @@ public class Case
      * @param piece (représente la pièce)
      * @param plateau (représente le plateau)
      */
-    public Case(int row, int column, Case piece, Plateau plateau)
+    public Case(int row, int column, Piece piece, Plateau plateau)
     {
 
     }
