@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
   Created by cladlink on 06/04/16.
  */
@@ -7,6 +9,7 @@ public class Plateau
     private final int column = 8;
     private Case[][] plateau = null;
     private Case caseMemoire = null; //enregistre la case qui a été cliquée
+    private Partie partie = null;
 
 
     /**
@@ -16,8 +19,9 @@ public class Plateau
      * la case mémoire à un emplacement vide
      *
      */
-    public Plateau()
+    public Plateau(Partie partie)
     {
+        this.partie = partie;
         plateau = new Case[raw][column];
         plateauDeBase();
     }
@@ -62,7 +66,31 @@ public class Plateau
      */
     public void deplacer(Case caseCliquee)
     {
-        if(caseCliquee.getPiece() != null) caseCliquee.getPiece().deplacer();
+        ArrayList<Case> casesPossibles;
+        if(partie.isTourBlanc()) {
+            if (caseCliquee.getPiece() != null)
+            {
+                if(caseCliquee.getPiece().isBlanc())
+                {
+                    if(caseMemoire == null)
+                    {
+                        casesPossibles = caseCliquee.getPiece().jeuDeCase();
+                        caseMemoire = caseCliquee;
+                    }
+                }
+                else
+                {
+                    if(caseMemoire != null)
+                    {
+
+                    }
+                }
+            }
+            else if (caseCliquee.getPiece() == null)
+            {
+
+            }
+        }
     }
 
     /**
