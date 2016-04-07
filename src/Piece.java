@@ -29,7 +29,7 @@ public abstract class Piece
     }
 
     public abstract void deplacer( Case destination);
-    public abstract ArrayList<Case> jeuDeCase();
+    public abstract ArrayList<Case> casesAtteignables();
 
     public Case getEmplacementPiece() {
         return emplacementPiece;

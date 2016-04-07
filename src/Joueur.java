@@ -16,7 +16,7 @@ public class Joueur
      * @param isBlanc couleur du joueur
      * @param pseudo pseudo du joueur
      */
-    public Joueur(boolean isBlanc, boolean pseudo)
+    public Joueur(boolean isBlanc, String pseudo)
     {
 
     }

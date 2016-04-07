@@ -66,32 +66,10 @@ public class Plateau
      */
     public void deplacer(Case caseCliquee)
     {
-        ArrayList<Case> casesPossibles;
-        if(partie.isTourBlanc()) {
-            if (caseCliquee.getPiece() != null)
-            {
-                if(caseCliquee.getPiece().isBlanc())
-                {
-                    if(caseMemoire == null)
-                    {
-                        casesPossibles = caseCliquee.getPiece().jeuDeCase();
-                        caseMemoire = caseCliquee;
-                    }
-                }
-                else
-                {
-                    if(caseMemoire != null)
-                    {
 
-                    }
-                }
-            }
-            else if (caseCliquee.getPiece() == null)
-            {
-
-            }
-        }
     }
+
+    public void
 
     /**
      * etat

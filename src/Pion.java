@@ -24,13 +24,13 @@ public class Pion extends Piece
     }
 
     /**
-     * jeuDeCase
+     * casesAtteignables
      * Liste les cases où la pièce peut se déplacer
      *
      * @return jeu de case représentant la liste des mouvements possible
      */
     @Override
-    public ArrayList<Case> jeuDeCase()
+    public ArrayList<Case> casesAtteignables()
     {
         return null;
     }

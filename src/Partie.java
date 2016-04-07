@@ -11,6 +11,13 @@ public class Partie
     private Plateau plateau = null;
     private ArrayList<String> listeCoups = null;
     private boolean tourBlanc = true;
+    private ArrayList<Piece> cimetiereBlanc = null;
+    private ArrayList<Piece> cimetiereNoir = null;
+    private ArrayList<Piece> piecesBlanchesPlateau = null;
+    private ArrayList<Piece> piecesNoiresPlateau = null;
+    private int modePartie; // 0 = partie normale ; 1 = temps partie limitée; 3 = temps tour limités
+    private boolean netPartie;
+
 
     /**
      * Partie Constructeur
@@ -57,10 +64,8 @@ public class Partie
      * load
      * recoit un etat du plateau et redémarre la partie
      *
-     * @param plateau (l'état du plateau)
-     * @param tourBlanc (a qui le tour ?)
      */
-    public void load(Case[][] plateau, boolean tourBlanc)
+    public void load()
     {
 
     }
@@ -72,36 +77,29 @@ public class Partie
     public void setJoueurBlanc(Joueur joueurBlanc) {
         this.joueurBlanc = joueurBlanc;
     }
-
     public Joueur getJoueurNoir() {
         return joueurNoir;
     }
-
     public void setJoueurNoir(Joueur joueurNoir) {
         this.joueurNoir = joueurNoir;
     }
-
     public Plateau getPlateau() {
         return plateau;
     }
-
     public void setPlateau(Plateau plateau) {
         this.plateau = plateau;
     }
-
     public ArrayList<String> getListeCoups() {
         return listeCoups;
     }
-
     public void setListeCoups(ArrayList<String> listeCoups) {
         this.listeCoups = listeCoups;
     }
-
     public boolean isTourBlanc() {
         return tourBlanc;
     }
-
     public void setTourBlanc(boolean tourBlanc) {
         this.tourBlanc = tourBlanc;
     }
+
 }
