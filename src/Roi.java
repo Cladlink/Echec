@@ -20,7 +20,7 @@ public class Roi extends Piece
     @Override
     public void deplacer(Case destination)
     {
-
+        emplacementPiece = destination;
     }
 
     /**
@@ -32,6 +32,57 @@ public class Roi extends Piece
     @Override
     public ArrayList<Case> casesAtteignables()
     {
-        return null;
+        ArrayList<Case> resCasesAtteignables;
+        resCasesAtteignables = new ArrayList<>();
+
+        // Case en bas à gauche
+        if( (emplacementPiece.getRow()-1>=0 || emplacementPiece.getRow()-1 <8) && (emplacementPiece.getColumn()-1>=0 || emplacementPiece.getColumn()-1 <8) )
+        {
+                resCasesAtteignables.add(emplacementPiece);
+        }
+
+        // Case à gauche
+        if (emplacementPiece.getRow()- 1 >= 0 || emplacementPiece.getRow()- 1 < 8)
+        {
+            resCasesAtteignables.add(emplacementPiece);
+        }
+
+        // Case en haut à gauche
+        if ((emplacementPiece.getRow()-1>=0 || emplacementPiece.getRow()-1 <8) && (emplacementPiece.getColumn()+1>=0 || emplacementPiece.getColumn()+1 <8))
+        {
+            resCasesAtteignables.add(emplacementPiece);
+        }
+
+        // Case en haut
+        if (emplacementPiece.getRow() + 1 >= 0 || emplacementPiece.getRow() + 1 < 8)
+        {
+            resCasesAtteignables.add(emplacementPiece);
+        }
+
+        // Case en haut à droite
+        if ((emplacementPiece.getRow()+1>=0 || emplacementPiece.getRow()+1 <8) && (emplacementPiece.getColumn()+1>=0 || emplacementPiece.getColumn()+1 <8))
+        {
+            resCasesAtteignables.add(emplacementPiece);
+        }
+
+        // Case à droite
+        if (emplacementPiece.getColumn() + 1 >= 0 || emplacementPiece.getColumn() + 1 < 8)
+        {
+            resCasesAtteignables.add(emplacementPiece);
+        }
+
+        // Case en bas à droite
+        if ((emplacementPiece.getRow()+1>=0 || emplacementPiece.getRow()+1 <8) && (emplacementPiece.getColumn()-1>=0 || emplacementPiece.getColumn()-1 <8))
+        {
+            resCasesAtteignables.add(emplacementPiece);
+        }
+
+        // Case en bas
+        if (emplacementPiece.getColumn() - 1 >= 0 || emplacementPiece.getColumn() - 1 < 8)
+        {
+            resCasesAtteignables.add(emplacementPiece);
+        }
+
+        return resCasesAtteignables;
     }
 }
