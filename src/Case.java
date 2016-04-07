@@ -6,8 +6,9 @@ public class Case
 
     private int row;
     private int column;
-    private Case piece;
-    private Plateau plateau;
+    private Piece piece = null;
+    private Plateau plateau = null;
+    private boolean isFree;
 
     /**
      * Case (constructeur

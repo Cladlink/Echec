@@ -15,7 +15,6 @@ public abstract class Piece
     /**
      * Pièce (constructeur)
      *
-     *
      * @param caseInitiale (place la pièce à la première case qu'elle occupera en début de partie)
      * @param isBlanc (définit si la pièce sera blanche ou noire)
      */
@@ -28,6 +27,6 @@ public abstract class Piece
             skin = new ImageIcon(adresseImageNoire);
         this.emplacementPiece = caseInitiale;
     }
-    public abstract void deplacer(Case origine, Case destination);
-    public abstract ArrayList<Case> jeuDeCase(Case Origine, Piece pieceABouger);
+    public abstract void deplacer( Case destination);
+    public abstract ArrayList<Case> jeuDeCase( Piece pieceABouger);
 }
