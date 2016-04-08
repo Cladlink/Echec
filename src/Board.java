@@ -30,8 +30,11 @@ public class Board
      */
     public void plateauDeBase()
     {
-
+        // todo remplir de cases vides au départ (null)
+        // todo initialiser les pièces à part
         // todo rajouter les pièces dans l'arraylist de partie
+
+
         //Coté des pièces noires, en haut du plateau
         plateau[7][0] = new Case(7,0, new Tour(plateau[7][0], false), this);
         plateau[7][1] = new Case(7,1, new Cavalier(plateau[7][1], false), this);
