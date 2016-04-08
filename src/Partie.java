@@ -5,10 +5,9 @@ import java.util.ArrayList;
  */
 public class Partie
 {
-
     private Joueur joueurBlanc = null;
     private Joueur joueurNoir = null;
-    private Plateau plateau = null;
+    private Board board = null;
     private ArrayList<String> listeCoups = null;
     private boolean tourBlanc = true;
     private ArrayList<Piece> cimetiereBlanc = null;
@@ -17,6 +16,8 @@ public class Partie
     private ArrayList<Piece> piecesNoiresPlateau = null;
     private int modePartie; // 0 = partie normale ; 1 = temps partie limitée; 3 = temps tour limités
     private boolean netPartie;
+    private boolean isEchecBlanc;
+    private boolean isEchecNoir;
 
 
     /**
@@ -26,23 +27,29 @@ public class Partie
      * @param joueurBlanc j1
      * @param joueurNoir j2
      */
-    public Partie(Joueur joueurBlanc, Joueur joueurNoir)
+    public Partie(Joueur joueurBlanc, Joueur joueurNoir, int modePartie, boolean netPartie)
     {
-
+        this.joueurBlanc = joueurBlanc;
+        this.joueurNoir = joueurNoir;
+        board = new Board(this);
+        this.modePartie = modePartie;
+        this.netPartie = netPartie;
+        isEchecBlanc = false;
+        isEchecNoir = false;
     }
 
     /**
-     * endGame
-     * met fin à la partie
+     * pause
+     * met en pause
      */
-    public void start()
+    public void pause()
     {
-
+        // a faire en fonction de l'état des timers quand il y en aura
     }
 
     /**
-     * stopGame
-     * arrète la partie
+     * stop
+     * arrète la partie todo prendre en compte abandon, pat, mat
      */
     public void stop()
     {
@@ -51,7 +58,7 @@ public class Partie
 
     /**
      * save
-     * envoie l'insert en base de donnée afin de sauvegarder l'état du plateau
+     * envoie l'insert en base de donnée afin de sauvegarder l'état du board
      *
      * utiliser la class BDDManager
      */
@@ -62,7 +69,7 @@ public class Partie
 
     /**
      * load
-     * recoit un etat du plateau et redémarre la partie
+     * recoit un etat du board et redémarre la partie
      *
      */
     public void load()
@@ -73,7 +80,6 @@ public class Partie
     public Joueur getJoueurBlanc() {
         return joueurBlanc;
     }
-
     public void setJoueurBlanc(Joueur joueurBlanc) {
         this.joueurBlanc = joueurBlanc;
     }
@@ -83,11 +89,11 @@ public class Partie
     public void setJoueurNoir(Joueur joueurNoir) {
         this.joueurNoir = joueurNoir;
     }
-    public Plateau getPlateau() {
-        return plateau;
+    public Board getBoard() {
+        return board;
     }
-    public void setPlateau(Plateau plateau) {
-        this.plateau = plateau;
+    public void setBoard(Board board) {
+        this.board = board;
     }
     public ArrayList<String> getListeCoups() {
         return listeCoups;

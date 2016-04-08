@@ -1,9 +1,7 @@
-import java.util.ArrayList;
-
 /**
   Created by cladlink on 06/04/16.
  */
-public class Plateau
+public class Board
 {
     private final int raw = 8;
     private final int column = 8;
@@ -13,13 +11,13 @@ public class Plateau
 
 
     /**
-     * Plateau (constructeur)
+     * Board (constructeur)
      *
      * initie le plateau
      * la case mémoire à un emplacement vide
      *
      */
-    public Plateau(Partie partie)
+    public Board(Partie partie)
     {
         this.partie = partie;
         plateau = new Case[raw][column];
@@ -32,6 +30,8 @@ public class Plateau
      */
     public void plateauDeBase()
     {
+
+        // todo rajouter les pièces dans l'arraylist de partie
         //Coté des pièces noires, en haut du plateau
         plateau[7][0] = new Case(7,0, new Tour(plateau[7][0], false), this);
         plateau[7][1] = new Case(7,1, new Cavalier(plateau[7][1], false), this);
@@ -64,31 +64,35 @@ public class Plateau
      *
      * @param caseCliquee (case qui a ... été cliquée)
      */
-    public void deplacer(Case caseCliquee)
+    public void deplacer(Case caseCliquee, Case destination)
     {
-
+        caseCliquee.getPiece().deplacer(destination);
     }
 
-    public void
 
-    /**
-     * etat
-     * Enregistre l'état du plateau à un instant T (pour la sauvegarde)
-     *
-     */
-    public void etat()
-    {
-        Plateau saveAt = new Plateau();
-        saveAt.plateau = this.plateau;
+    //getters / setters
+    public int getRaw() {
+        return raw;
     }
-
-    /**
-     * save
-     * envoie l'insert en base de donnée afin de sauvegarder l'état du plateau
-     * utiliser la class BDDManager
-     */
-    public void save()
-    {
-        //A faire quand la BDD sera faite
+    public int getColumn() {
+        return column;
+    }
+    public Case[][] getPlateau() {
+        return plateau;
+    }
+    public void setPlateau(Case[][] plateau) {
+        this.plateau = plateau;
+    }
+    public Case getCaseMemoire() {
+        return caseMemoire;
+    }
+    public void setCaseMemoire(Case caseMemoire) {
+        this.caseMemoire = caseMemoire;
+    }
+    public Partie getPartie() {
+        return partie;
+    }
+    public void setPartie(Partie partie) {
+        this.partie = partie;
     }
 }

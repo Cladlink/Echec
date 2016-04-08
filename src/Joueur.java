@@ -18,7 +18,34 @@ public class Joueur
      */
     public Joueur(boolean isBlanc, String pseudo)
     {
-
+        this.isBlanc = isBlanc;
+        this.pseudo = pseudo;
+        victoire = false;
     }
 
+    // getters and setters
+    public boolean isBlanc() {
+        return isBlanc;
+    }
+    public void setBlanc(boolean blanc) {
+        isBlanc = blanc;
+    }
+    public String getPseudo() {
+        return pseudo;
+    }
+    public void setPseudo(String pseudo) {
+        this.pseudo = pseudo;
+    }
+    public boolean isEgalite() {
+        return egalite;
+    }
+    public void setEgalite(boolean egalite) {
+        this.egalite = egalite;
+    }
+    public boolean isVictoire() {
+        return victoire;
+    }
+    public void setVictoire(boolean victoire) {
+        this.victoire = victoire;
+    }
 }
