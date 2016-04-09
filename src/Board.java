@@ -6,7 +6,7 @@ public class Board
     private final int raw = 8;
     private final int column = 8;
     private Case[][] plateau = null;
-    private Case caseMemoire = null; //enregistre la case qui a été cliquée
+    private Case caseMemoire = null; //enregistre la case qui a été cliquée remettre à null après un coup joué !
     private Partie partie = null;
 
 
@@ -21,40 +21,63 @@ public class Board
     {
         this.partie = partie;
         plateau = new Case[raw][column];
+
         plateauDeBase();
     }
 
     /**
-     * plateauDeBae
+     * plateauDeBase
      * "soulage" le constructeur sur le placement des pièces au début d'une partie
      */
     public void plateauDeBase()
     {
-        // todo remplir de cases vides au départ (null)
-        // todo initialiser les pièces à part
-        // todo rajouter les pièces dans l'arraylist de partie
 
+        // todo doit on initialiser toutes les pièces à part ? Pas très content de cette méthode...
+        //initie les cases vides
+        for (int i = 2; i < plateau.length-2; i++)
+            for (int j = 0; j < plateau[i].length; j++)
+                plateau[i][j] = new Case(i, j, null, this);
 
+        Piece tourBlanche1 = new Tour(plateau[7][0], true);
+        Piece tourBlanche2 = new Tour(plateau[7][7], true);
+        Piece tourNoire1 = new Tour(plateau[0][0], false);
+        Piece tourNoire2 = new Tour(plateau[0][7], false);
+
+        Piece cavalierBlanc1 = new Cavalier(plateau[7][1], true);
+        Piece cavalierBlanc2 = new Cavalier(plateau[7][6], true);
+        Piece cavalierNoir1 = new Cavalier(plateau[0][1], false);
+        Piece cavalierNoir2 = new Cavalier(plateau[0][6], false);
+
+        Piece fouBlanc1 = new Fou(plateau[7][2], true);
+        Piece fouBlanc2 = new Fou(plateau[7][5], true);
+        Piece fouNoir1 = new Fou(plateau[0][2], false);
+        Piece fouNoir2 = new Fou(plateau[0][5], false);
+
+        Piece roiBlanc = new Roi(plateau[7][3], true);
+        Piece reineBlanche = new Reine(plateau[7][4], true);
+        Piece roiNoir = new Roi(plateau[0][3], false);
+        Piece reineNoire = new Reine(plateau[0][4], false);
+        
         //Coté des pièces noires, en haut du plateau
-        plateau[7][0] = new Case(7,0, new Tour(plateau[7][0], false), this);
-        plateau[7][1] = new Case(7,1, new Cavalier(plateau[7][1], false), this);
-        plateau[7][2] = new Case(7,2, new Fou(plateau[7][2], false), this);
-        plateau[7][3] = new Case(7,3, new Roi(plateau[7][3], false), this);
-        plateau[7][4] = new Case(7,4, new Reine(plateau[7][4], false), this);
-        plateau[7][5] = new Case(7,5, new Fou(plateau[7][5], false), this);
-        plateau[7][6] = new Case(7,6, new Cavalier(plateau[7][6], false), this);
-        plateau[7][7] = new Case(7,7, new Tour(plateau[7][7], false), this);
+        plateau[7][0] = new Case(7,0, tourBlanche1, this);
+        plateau[7][1] = new Case(7,1, cavalierBlanc1, this);
+        plateau[7][2] = new Case(7,2, fouBlanc1, this);
+        plateau[7][3] = new Case(7,3, roiBlanc, this);
+        plateau[7][4] = new Case(7,4, reineBlanche, this);
+        plateau[7][5] = new Case(7,5, fouBlanc2, this);
+        plateau[7][6] = new Case(7,6, cavalierBlanc2, this);
+        plateau[7][7] = new Case(7,7, tourBlanche2, this);
         for(int i=0; i<column; i++) plateau[7][i] = new Case(6,i, new Pion(plateau[6][i], false), this);
 
         //Coté des pièces blanches, en bas du plateau
-        plateau[0][0] = new Case(0,0, new Tour(plateau[0][0], true), this);
-        plateau[0][1] = new Case(0,1, new Cavalier(plateau[0][1], true), this);
-        plateau[0][2] = new Case(0,2, new Fou(plateau[0][2], true), this);
-        plateau[0][3] = new Case(0,3, new Roi(plateau[0][3], true), this);
-        plateau[0][4] = new Case(0,4, new Reine(plateau[0][4], true), this);
-        plateau[0][5] = new Case(0,5, new Fou(plateau[0][5], true), this);
-        plateau[0][6] = new Case(0,6, new Cavalier(plateau[0][6], true), this);
-        plateau[0][7] = new Case(0,7, new Tour(plateau[0][7], true), this);
+        plateau[0][0] = new Case(0,0, tourNoire1, this);
+        plateau[0][1] = new Case(0,1, cavalierNoir1, this);
+        plateau[0][2] = new Case(0,2, fouNoir1, this);
+        plateau[0][3] = new Case(0,3, roiNoir, this);
+        plateau[0][4] = new Case(0,4, reineNoire, this);
+        plateau[0][5] = new Case(0,5, fouNoir2, this);
+        plateau[0][6] = new Case(0,6, cavalierNoir2, this);
+        plateau[0][7] = new Case(0,7, tourNoire2, this);
         for(int i=0; i<column; i++) plateau[1][i] = new Case(1,i, new Pion(plateau[1][i], true), this);
     }
 
@@ -98,4 +121,6 @@ public class Board
     public void setPartie(Partie partie) {
         this.partie = partie;
     }
+
+
 }

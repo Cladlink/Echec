@@ -29,13 +29,40 @@ public class Partie
      */
     public Partie(Joueur joueurBlanc, Joueur joueurNoir, int modePartie, boolean netPartie)
     {
+
+        //On ajoute les deux joueurs à la partie
         this.joueurBlanc = joueurBlanc;
         this.joueurNoir = joueurNoir;
+
+        // On créé le plateau
         board = new Board(this);
+
+        // choix du mode de la partie
         this.modePartie = modePartie;
+
+        // pour la partie en réseau
         this.netPartie = netPartie;
+
+        // Le roi est protégé en début de partie, il n'y a donc pas d'échec
         isEchecBlanc = false;
         isEchecNoir = false;
+
+        // on initie le cimetière à 0 (car en début de partie il n'y a pas de pièce dans le cimetierre !)
+        cimetiereBlanc = new ArrayList<>();
+        cimetiereNoir = new ArrayList<>();
+
+        // on met à jour la liste des pièces blanches et noires en jeu
+        for (int i = 0; i < board.getPlateau().length; i++)
+        {
+            for (int j = 0; j < board.getPlateau()[i].length; j++)
+            {
+                if(board.getPlateau()[i][j].getPiece().isBlanc())
+                    piecesBlanchesPlateau.add(board.getPlateau()[i][j].getPiece());
+                else if(! board.getPlateau()[i][j].getPiece().isBlanc())
+                    piecesNoiresPlateau.add(board.getPlateau()[i][j].getPiece());
+            }
+
+        }
     }
 
     /**
@@ -49,7 +76,7 @@ public class Partie
 
     /**
      * stop
-     * arrète la partie todo prendre en compte abandon, pat, mat
+     * arrète la partie todo prendre en compte abandon, mat
      */
     public void stop()
     {
@@ -77,6 +104,8 @@ public class Partie
 
     }
 
+
+    // getters / setters
     public Joueur getJoueurBlanc() {
         return joueurBlanc;
     }
@@ -107,5 +136,52 @@ public class Partie
     public void setTourBlanc(boolean tourBlanc) {
         this.tourBlanc = tourBlanc;
     }
-
+    public ArrayList<Piece> getCimetiereBlanc() {
+        return cimetiereBlanc;
+    }
+    public void setCimetiereBlanc(ArrayList<Piece> cimetiereBlanc) {
+        this.cimetiereBlanc = cimetiereBlanc;
+    }
+    public ArrayList<Piece> getCimetiereNoir() {
+        return cimetiereNoir;
+    }
+    public void setCimetiereNoir(ArrayList<Piece> cimetiereNoir) {
+        this.cimetiereNoir = cimetiereNoir;
+    }
+    public ArrayList<Piece> getPiecesBlanchesPlateau() {
+        return piecesBlanchesPlateau;
+    }
+    public void setPiecesBlanchesPlateau(ArrayList<Piece> piecesBlanchesPlateau) {
+        this.piecesBlanchesPlateau = piecesBlanchesPlateau;
+    }
+    public ArrayList<Piece> getPiecesNoiresPlateau() {
+        return piecesNoiresPlateau;
+    }
+    public void setPiecesNoiresPlateau(ArrayList<Piece> piecesNoiresPlateau) {
+        this.piecesNoiresPlateau = piecesNoiresPlateau;
+    }
+    public int getModePartie() {
+        return modePartie;
+    }
+    public void setModePartie(int modePartie) {
+        this.modePartie = modePartie;
+    }
+    public boolean isNetPartie() {
+        return netPartie;
+    }
+    public void setNetPartie(boolean netPartie) {
+        this.netPartie = netPartie;
+    }
+    public boolean isEchecBlanc() {
+        return isEchecBlanc;
+    }
+    public void setEchecBlanc(boolean echecBlanc) {
+        isEchecBlanc = echecBlanc;
+    }
+    public boolean isEchecNoir() {
+        return isEchecNoir;
+    }
+    public void setEchecNoir(boolean echecNoir) {
+        isEchecNoir = echecNoir;
+    }
 }

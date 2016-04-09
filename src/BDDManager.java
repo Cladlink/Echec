@@ -3,9 +3,12 @@ import java.util.ArrayList;
 import java.io.*;
 /**
  * Created by cladlink on 12/03/16.
- * Tentative de création d'une classe de gestion de base de donnée (PAIX à MON AME !)
  */
 
+/*
+ todo * cette classe a été écrite pour lire un fichier .sql (soit on garde ca, soit il faut envoyer
+ todo * requete par requete ce qui n'est pas un soucis en soit mais il faut choisir !
+ */
 public class BDDManager
 {
     private String url;
@@ -167,53 +170,5 @@ public class BDDManager
         {
             System.err.println(e);
         }
-
     }
-
-    // main de test
-    public static void main(String[] args)
-    {
-        String url = "jdbc:mysql://193.253.204.231:12269?useSSL=false";
-        String login = "cladlink";
-        String passwd = "Tr1f0rc31987..";
-
-        BDDManager test2 = new BDDManager(url, login, passwd);
-        test2.start();
-
-        String requete;
-        /*requete = "DROP DATABASE IF EXISTS partiel";
-        test2.edit(requete);
-        requete = "CREATE DATABASE partiel";
-        test2.edit(requete);
-        requete = "use partiel;";
-        test2.edit(requete);
-        requete = "CREATE TABLE SPECIALITE" +
-                "(" +
-                    "idSpecialite int AUTO_INCREMENT NOT NULL," +
-                    "libelleSpecialite VARCHAR(100)," +
-                    "PRIMARY KEY (idSpecialite)" +
-                ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-        test2.edit(requete);
-        requete = "INSERT INTO SPECIALITE VALUES " +
-                "(1,'saut'),(2,'fond'),(3,'slalom')," +
-                "(4,'descente'),(5,'free style');";
-        test2.edit(requete);
-        requete = "SELECT * FROM SPECIALITE";
-
-        ArrayList<ArrayList<String>> test;
-        test = test2.ask(requete);
-        System.out.println(test.size());
-        for (int i = 0; i<test.size();i++)
-        {
-            System.out.print("| ");
-            for (int j = 0; j<test.get(i).size(); j++)
-            {
-                System.out.print(test.get(i).get(j) + " | ");
-            }
-            System.out.println();
-        }*/
-        test2.lire("src/requete.sql");
-        test2.stop();
-    }
-
 }
