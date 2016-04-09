@@ -22,7 +22,6 @@ public class Partie
 
     /**
      * Partie Constructeur
-     * les joueurs sont passé en paramêtres
      *
      * @param joueurBlanc j1
      * @param joueurNoir j2

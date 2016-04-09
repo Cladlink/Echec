@@ -67,7 +67,7 @@ public class Board
         plateau[7][5] = new Case(7,5, fouBlanc2, this);
         plateau[7][6] = new Case(7,6, cavalierBlanc2, this);
         plateau[7][7] = new Case(7,7, tourBlanche2, this);
-        for(int i=0; i<column; i++) plateau[7][i] = new Case(6,i, new Pion(plateau[6][i], false), this);
+        for(int i=0; i<column; i++) plateau[7][i] = new Case(6,i, new Pion(plateau[6][i], true), this);
 
         //Coté des pièces blanches, en bas du plateau
         plateau[0][0] = new Case(0,0, tourNoire1, this);
@@ -78,15 +78,12 @@ public class Board
         plateau[0][5] = new Case(0,5, fouNoir2, this);
         plateau[0][6] = new Case(0,6, cavalierNoir2, this);
         plateau[0][7] = new Case(0,7, tourNoire2, this);
-        for(int i=0; i<column; i++) plateau[1][i] = new Case(1,i, new Pion(plateau[1][i], true), this);
+        for(int i=0; i<column; i++) plateau[1][i] = new Case(1,i, new Pion(plateau[1][i], false), this);
     }
 
     /**
      * deplacer
-     *  test si la case cliquée est pleine ou non en prenant en compte la case mémoire qui
-     *  stocke une case qui peut être déplacé au choix du joueur.
-     *  Cette méthode doit prendre en compte le déplacement OU le fait d'afficher les deplacements possible
-     *  d'une piece (ou rien du tout)
+     * deplace la pièce après toutes vérifications
      *
      * @param caseCliquee (case qui a ... été cliquée)
      */
