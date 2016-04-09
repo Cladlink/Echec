@@ -11,7 +11,7 @@ public class Joueur
 
     /**
      * Joueur (Constructeur)
-     * définit la coueur du joueur et le pseudo (si pas de pseudo mettre le pseudo anonyme qui sera réservé)
+     * définit la couleur du joueur et le pseudo (si pas de pseudo mettre le pseudo anonyme qui sera réservé)
      *
      * @param isBlanc couleur du joueur
      * @param pseudo pseudo du joueur
@@ -19,7 +19,10 @@ public class Joueur
     public Joueur(boolean isBlanc, String pseudo)
     {
         this.isBlanc = isBlanc;
-        this.pseudo = pseudo;
+        if (pseudo.length() == 0)
+            this.pseudo = "Anonyme";
+        else
+            this.pseudo = pseudo;
         victoire = false;
     }
 
