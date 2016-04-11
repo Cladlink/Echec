@@ -31,12 +31,19 @@ public class Board
      */
     public void plateauDeBase()
     {
+        boolean isWhite = true;
 
         // todo doit on initialiser toutes les pièces à part ? Pas très content de cette méthode...
         //initie les cases vides
         for (int i = 2; i < plateau.length-2; i++)
+        {
             for (int j = 0; j < plateau[i].length; j++)
-                plateau[i][j] = new Case(i, j, null, this);
+            {
+                plateau[i][j] = new Case(i, j, null, this, isWhite);
+                isWhite = !isWhite; // todo initialistion de la couleur de la case
+            }
+            isWhite =!isWhite;
+        }
 
         Piece tourBlanche1 = new Tour(plateau[7][0], true);
         Piece tourBlanche2 = new Tour(plateau[7][7], true);
@@ -59,26 +66,50 @@ public class Board
         Piece reineNoire = new Reine(plateau[0][4], false);
         
         //Coté des pièces noires, en haut du plateau
-        plateau[7][0] = new Case(7,0, tourBlanche1, this);
-        plateau[7][1] = new Case(7,1, cavalierBlanc1, this);
-        plateau[7][2] = new Case(7,2, fouBlanc1, this);
-        plateau[7][3] = new Case(7,3, roiBlanc, this);
-        plateau[7][4] = new Case(7,4, reineBlanche, this);
-        plateau[7][5] = new Case(7,5, fouBlanc2, this);
-        plateau[7][6] = new Case(7,6, cavalierBlanc2, this);
-        plateau[7][7] = new Case(7,7, tourBlanche2, this);
-        for(int i=0; i<column; i++) plateau[7][i] = new Case(6,i, new Pion(plateau[6][i], true), this);
+        isWhite = plateau[7][0].isWhite(); // todo récupération avec de faire un new (propre ?)
+        plateau[7][0] = new Case(7,0, tourBlanche1, this, isWhite);
+        isWhite = plateau[7][1].isWhite();
+        plateau[7][1] = new Case(7,1, cavalierBlanc1, this, isWhite);
+        isWhite = plateau[7][2].isWhite();
+        plateau[7][2] = new Case(7,2, fouBlanc1, this, isWhite);
+        isWhite = plateau[7][3].isWhite();
+        plateau[7][3] = new Case(7,3, roiBlanc, this, isWhite);
+        isWhite = plateau[7][4].isWhite();
+        plateau[7][4] = new Case(7,4, reineBlanche, this, isWhite);
+        isWhite = plateau[7][5].isWhite();
+        plateau[7][5] = new Case(7,5, fouBlanc2, this, isWhite);
+        isWhite = plateau[7][6].isWhite();
+        plateau[7][6] = new Case(7,6, cavalierBlanc2, this, isWhite);
+        isWhite = plateau[7][7].isWhite();
+        plateau[7][7] = new Case(7,7, tourBlanche2, this, isWhite);
+        for(int i=0; i<column; i++)
+        {
+            isWhite = plateau[6][i].isWhite();
+            plateau[6][i] = new Case(6,i, new Pion(plateau[6][i], true), this, isWhite);
+        }
 
         //Coté des pièces blanches, en bas du plateau
-        plateau[0][0] = new Case(0,0, tourNoire1, this);
-        plateau[0][1] = new Case(0,1, cavalierNoir1, this);
-        plateau[0][2] = new Case(0,2, fouNoir1, this);
-        plateau[0][3] = new Case(0,3, roiNoir, this);
-        plateau[0][4] = new Case(0,4, reineNoire, this);
-        plateau[0][5] = new Case(0,5, fouNoir2, this);
-        plateau[0][6] = new Case(0,6, cavalierNoir2, this);
-        plateau[0][7] = new Case(0,7, tourNoire2, this);
-        for(int i=0; i<column; i++) plateau[1][i] = new Case(1,i, new Pion(plateau[1][i], false), this);
+        isWhite = plateau[0][0].isWhite();
+        plateau[0][0] = new Case(0,0, tourNoire1, this, isWhite);
+        isWhite = plateau[0][1].isWhite();
+        plateau[0][1] = new Case(0,1, cavalierNoir1, this, isWhite);
+        isWhite = plateau[0][2].isWhite();
+        plateau[0][2] = new Case(0,2, fouNoir1, this, isWhite);
+        isWhite = plateau[0][3].isWhite();
+        plateau[0][3] = new Case(0,3, roiNoir, this, isWhite);
+        isWhite = plateau[0][4].isWhite();
+        plateau[0][4] = new Case(0,4, reineNoire, this, isWhite);
+        isWhite = plateau[0][5].isWhite();
+        plateau[0][5] = new Case(0,5, fouNoir2, this, isWhite);
+        isWhite = plateau[0][6].isWhite();
+        plateau[0][6] = new Case(0,6, cavalierNoir2, this, isWhite);
+        isWhite = plateau[0][7].isWhite();
+        plateau[0][7] = new Case(0,7, tourNoire2, this, isWhite);
+        for(int i=0; i<column; i++)
+        {
+            isWhite = plateau[1][i].isWhite();
+            plateau[1][i] = new Case(1,i, new Pion(plateau[1][i], false), this, isWhite);
+        }
     }
 
     /**
@@ -118,6 +149,4 @@ public class Board
     public void setPartie(Partie partie) {
         this.partie = partie;
     }
-
-
 }

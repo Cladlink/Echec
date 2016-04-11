@@ -9,6 +9,7 @@ public class Case
     private Piece piece = null;
     private Board board = null;
     private boolean isFree; // todo soit isFree soit on repasse à null ? je trouve cette variable useless...
+    private boolean isWhite;
 
     /**
      * Case (constructeur
@@ -20,12 +21,13 @@ public class Case
      * @param piece (représente la pièce)
      * @param board (représente le board)
      */
-    public Case(int row, int column, Piece piece, Board board)
+    public Case(int row, int column, Piece piece, Board board, boolean isWhite)
     {
         this.row = row;
         this.column = column;
         this.piece = piece;
         this.board = board;
+        this.isWhite = isWhite;
     }
 
 
@@ -59,5 +61,11 @@ public class Case
     }
     public void setFree(boolean free) {
         isFree = free;
+    }
+    public boolean isWhite() {
+        return isWhite;
+    }
+    public void setWhite(boolean white) {
+        isWhite = white;
     }
 }
