@@ -8,7 +8,7 @@ public class Case
     private int column;
     private Piece piece = null;
     private Board board = null;
-    private boolean isFree; // todo soit isFree soit on repasse à null ? je trouve cette variable useless...
+    private boolean isFree; // todo faire null si vide
     private boolean isWhite;
 
     /**

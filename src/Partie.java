@@ -18,6 +18,7 @@ public class Partie
     private boolean netPartie;
     private boolean isEchecBlanc;
     private boolean isEchecNoir;
+    private boolean finPartie;
 
 
     /**
@@ -28,7 +29,7 @@ public class Partie
      */
     public Partie(Joueur joueurBlanc, Joueur joueurNoir, int modePartie, boolean netPartie)
     {
-
+        finPartie = false;
         //On ajoute les deux joueurs à la partie
         this.joueurBlanc = joueurBlanc;
         this.joueurNoir = joueurNoir;
@@ -46,21 +47,26 @@ public class Partie
         isEchecBlanc = false;
         isEchecNoir = false;
 
+        piecesBlanchesPlateau = new ArrayList<>();
+        piecesNoiresPlateau = new ArrayList<>();
         // on initie le cimetière à 0 (car en début de partie il n'y a pas de pièce dans le cimetierre !)
         cimetiereBlanc = new ArrayList<>();
         cimetiereNoir = new ArrayList<>();
 
         // on met à jour la liste des pièces blanches et noires en jeu
+
         for (int i = 0; i < board.getPlateau().length; i++)
         {
             for (int j = 0; j < board.getPlateau()[i].length; j++)
             {
-                if(board.getPlateau()[i][j].getPiece().isBlanc())
-                    piecesBlanchesPlateau.add(board.getPlateau()[i][j].getPiece());
-                else if(! board.getPlateau()[i][j].getPiece().isBlanc())
-                    piecesNoiresPlateau.add(board.getPlateau()[i][j].getPiece());
-            }
+                    if(board.getPlateau()[i][j].getPiece() != null && board.getPlateau()[i][j].getPiece().isBlanc())
+                    {
+                        piecesBlanchesPlateau.add(board.getPlateau()[i][j].getPiece());
 
+                    }
+                    else if(board.getPlateau()[i][j].getPiece() != null && !board.getPlateau()[i][j].getPiece().isBlanc())
+                        piecesNoiresPlateau.add(board.getPlateau()[i][j].getPiece());
+            }
         }
     }
 
@@ -99,6 +105,26 @@ public class Partie
      *
      */
     public void load()
+    {
+
+    }
+
+    /**
+     * attenteAction
+     * comportent d'attente qu'une pièce soit jouer quelque soit le tour.
+     *
+     */
+    public void attenteAction()
+    {
+
+    }
+
+    /**
+     * attenteDebutPartie
+     * comportement d'attente du début de la partie
+     *
+     */
+    public void attenteDebutPartie()
     {
 
     }
@@ -182,5 +208,11 @@ public class Partie
     }
     public void setEchecNoir(boolean echecNoir) {
         isEchecNoir = echecNoir;
+    }
+    public boolean isFinPartie() {
+        return finPartie;
+    }
+    public void setFinPartie(boolean finPartie) {
+        this.finPartie = finPartie;
     }
 }

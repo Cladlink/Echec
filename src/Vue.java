@@ -1,10 +1,12 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 
 public class Vue extends JFrame
 {
-
+    Board board = null;
+    Echiquier echiquier = null;
     /**
      * Vue (Constructeur)
      * construit la vue d'échec.
@@ -13,7 +15,19 @@ public class Vue extends JFrame
      */
     public Vue(Model model)
     {
-
+        model.lancementPartie();
+        board = model.getPartie().getBoard();
+        creerWidget();
+        setUndecorated(true);
+        setAlwaysOnTop(true);
+        setResizable(false);
+        setName("Chess");
+        setVisible(true);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        Toolkit tk = Toolkit.getDefaultToolkit();
+                int xsize = (int)tk.getScreenSize().getWidth();
+                int ySize = (int)tk.getScreenSize().getHeight();
+        setSize(xsize, ySize);
     }
 
 
@@ -23,7 +37,6 @@ public class Vue extends JFrame
      */
     public void initAttribut()
     {
-
     }
 
     /**
@@ -32,6 +45,8 @@ public class Vue extends JFrame
      */
     public void creerWidget()
     {
+        echiquier = new Echiquier(board);
+        setContentPane(echiquier);
 
     }
 

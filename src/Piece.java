@@ -8,7 +8,7 @@ public abstract class Piece
 {
     protected Case emplacementPiece;
     protected ImageIcon skin = null;
-    protected boolean isBlanc = false; // todo pourquoi j'y accède depuis une classe non fille sans getter ?
+    private boolean isBlanc = false;
     protected String adresseImageNoire = null; // mettre les images ici quand on les auas
     protected String adresseImageBlanche = null;
 
