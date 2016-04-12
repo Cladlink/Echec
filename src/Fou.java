@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.ArrayList;
 
 /*
@@ -9,6 +10,13 @@ public class Fou extends Piece
     public Fou(Case caseInitiale, boolean isBlanc)
     {
         super(caseInitiale, isBlanc);
+        adresseImageBlanche = "img/FouBlanc.png";
+        adresseImageNoire = "img/FouNoir.png";
+        if(isBlanc)
+            skin = new ImageIcon(adresseImageBlanche);
+        else
+            skin = new ImageIcon(adresseImageNoire);
+
     }
 
     /**
@@ -20,7 +28,7 @@ public class Fou extends Piece
     @Override
     public void deplacer(Case destination)
     {
-
+        emplacementPiece = destination;
     }
 
     /**

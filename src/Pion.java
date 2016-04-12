@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.ArrayList;
 
 /*
@@ -9,6 +10,12 @@ public class Pion extends Piece
     public Pion(Case caseInitiale, boolean isBlanc)
     {
         super(caseInitiale, isBlanc);
+        adresseImageBlanche = "img/PionBlanc.png";
+        adresseImageNoire = "img/PionNoir.png";
+        if(isBlanc)
+            skin = new ImageIcon(adresseImageBlanche);
+        else
+            skin = new ImageIcon(adresseImageNoire);
     }
 
     /**

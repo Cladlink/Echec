@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.ArrayList;
 
 /*
@@ -9,6 +10,12 @@ public class Roi extends Piece
     public Roi(Case caseInitiale, boolean isBlanc)
     {
         super(caseInitiale, isBlanc);
+        adresseImageBlanche = "img/RoiBlanc.png";
+        adresseImageNoire = "img/RoiNoir.png";
+        if(isBlanc)
+            skin = new ImageIcon(adresseImageBlanche);
+        else
+            skin = new ImageIcon(adresseImageNoire);
     }
 
     /**

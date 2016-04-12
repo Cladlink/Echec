@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.ArrayList;
 
 /**
@@ -10,6 +11,12 @@ public class Tour extends Piece
     public Tour(Case caseInitiale, boolean isBlanc)
     {
         super(caseInitiale, isBlanc);
+        adresseImageBlanche = "img/TourBlanc.png";
+        adresseImageNoire = "img/TourNoir.png";
+        if(isBlanc)
+            skin = new ImageIcon(adresseImageBlanche);
+        else
+            skin = new ImageIcon(adresseImageNoire);
     }
 
     /**

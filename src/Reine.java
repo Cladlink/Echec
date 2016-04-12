@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.ArrayList;
 
 /*
@@ -9,6 +10,12 @@ public class Reine extends Piece
     public Reine(Case caseInitiale, boolean isBlanc)
     {
         super(caseInitiale, isBlanc);
+        adresseImageBlanche = "img/ReineBlanc.png";
+        adresseImageNoire = "img/ReineNoir.png";
+        if(isBlanc)
+            skin = new ImageIcon(adresseImageBlanche);
+        else
+            skin = new ImageIcon(adresseImageNoire);
     }
 
     /**

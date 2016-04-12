@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.ArrayList;
 
 /*
@@ -9,6 +10,12 @@ public class Cavalier extends Piece
     public Cavalier(Case caseInitiale, boolean isBlanc)
     {
         super(caseInitiale, isBlanc);
+        adresseImageBlanche = "img/CavalierBlanc.png";
+        adresseImageNoire = "img/CavalierNoir.png";
+        if(isBlanc)
+            skin = new ImageIcon(adresseImageBlanche);
+        else
+            skin = new ImageIcon(adresseImageNoire);
     }
 
     /**
