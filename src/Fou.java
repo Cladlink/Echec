@@ -12,23 +12,8 @@ public class Fou extends Piece
         super(caseInitiale, isBlanc);
         adresseImageBlanche = "img/FouBlanc.png";
         adresseImageNoire = "img/FouNoir.png";
-        if(isBlanc)
-            skin = new ImageIcon(adresseImageBlanche);
-        else
-            skin = new ImageIcon(adresseImageNoire);
+        skin = isBlanc?new ImageIcon(adresseImageBlanche):new ImageIcon(adresseImageNoire);
 
-    }
-
-    /**
-     * deplacer
-     *
-     * déplace la pièce d'un point A à un point B
-     * @param destination (case où la pièce selectionnée doit se rendre)
-     */
-    @Override
-    public void deplacer(Case destination)
-    {
-        emplacementPiece = destination;
     }
 
     /**

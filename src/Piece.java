@@ -21,14 +21,21 @@ public abstract class Piece
     public Piece(Case caseInitiale, boolean isBlanc)
     {
         this.isBlanc = isBlanc;
-        if (isBlanc)
-            skin = new ImageIcon(adresseImageBlanche);
-        else
-            skin = new ImageIcon(adresseImageNoire);
         this.emplacementPiece = caseInitiale;
     }
+    /**
+     * deplacer
+     *
+     * déplace la pièce d'un point A à un point B
+     * @param destination (case où la pièce selectionnée doit se rendre)
+     */
+    public void deplacer( Case destination)
+    {
+        emplacementPiece.setPiece(null);
+        emplacementPiece = destination;
+        emplacementPiece.setPiece(this);
+    }
 
-    public abstract void deplacer( Case destination);
     public abstract ArrayList<Case> casesAtteignables();
 
 
