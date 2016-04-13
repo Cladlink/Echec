@@ -16,9 +16,10 @@ public class Partie
     private ArrayList<Piece> piecesNoiresPlateau = null;
     private int modePartie; // 0 = partie normale ; 1 = temps partie limitée; 3 = temps tour limités
     private boolean netPartie;
-    private boolean isEchecBlanc;
-    private boolean isEchecNoir;
+    private boolean echecBlanc;
+    private boolean echecNoir;
     private boolean finPartie;
+    private boolean roqueFaisable;
 
 
     /**
@@ -44,8 +45,8 @@ public class Partie
         this.netPartie = netPartie;
 
         // Le roi est protégé en début de partie, il n'y a donc pas d'échec
-        isEchecBlanc = false;
-        isEchecNoir = false;
+        echecBlanc = false;
+        echecNoir = false;
 
         piecesBlanchesPlateau = new ArrayList<>();
         piecesNoiresPlateau = new ArrayList<>();
@@ -62,7 +63,6 @@ public class Partie
                     if(board.getPlateau()[i][j].getPiece() != null && board.getPlateau()[i][j].getPiece().isBlanc())
                     {
                         piecesBlanchesPlateau.add(board.getPlateau()[i][j].getPiece());
-
                     }
                     else if(board.getPlateau()[i][j].getPiece() != null && !board.getPlateau()[i][j].getPiece().isBlanc())
                         piecesNoiresPlateau.add(board.getPlateau()[i][j].getPiece());
@@ -198,16 +198,16 @@ public class Partie
         this.netPartie = netPartie;
     }
     public boolean isEchecBlanc() {
-        return isEchecBlanc;
+        return echecBlanc;
     }
     public void setEchecBlanc(boolean echecBlanc) {
-        isEchecBlanc = echecBlanc;
+        this.echecBlanc = echecBlanc;
     }
     public boolean isEchecNoir() {
-        return isEchecNoir;
+        return echecNoir;
     }
     public void setEchecNoir(boolean echecNoir) {
-        isEchecNoir = echecNoir;
+        this.echecNoir = echecNoir;
     }
     public boolean isFinPartie() {
         return finPartie;

@@ -44,11 +44,11 @@ public class Echiquier extends JPanel
                             j * board.getSizeCase() + 360,
                             i * board.getSizeCase() + 50,
                             null);
-                    System.out.println((i/board.getPlateau()[j].length + i%board.getPlateau()[j].length) + " " + board.getPlateau()[i][j] + ": " + (j * board.getSizeCase() + 360) + " " + (i * board.getSizeCase() + 50));
                 }
             }
         }
         //timer
+        g.setColor(Color.RED);
         g.drawRect(210, 60, 100, 50);
         g.drawRect(1060, 60, 100, 50);
 

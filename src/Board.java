@@ -32,17 +32,17 @@ public class Board
      */
     public void plateauDeBase()
     {
-        boolean isWhite = true;
+        boolean white = true;
         
         //initie les cases vides avec leurs couleurs
         for (int i = 0; i < plateau.length; i++)
         {
             for (int j = 0; j < plateau[i].length; j++)
             {
-                plateau[i][j] = new Case(i, j, null, this, isWhite);
-                isWhite = !isWhite;
+                plateau[i][j] = new Case(i, j, null, this, white);
+                white = !white;
             }
-            isWhite =!isWhite;
+            white =!white;
         }
 
         Piece tourBlanche1 = new Tour(plateau[7][0], true);

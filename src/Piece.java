@@ -8,7 +8,7 @@ public abstract class Piece
 {
     protected Case emplacementPiece;
     protected ImageIcon skin = null;
-    private boolean isBlanc = false;
+    private boolean blanc = false;
     protected String adresseImageNoire = null; // mettre les images ici quand on les auas
     protected String adresseImageBlanche = null;
 
@@ -16,11 +16,11 @@ public abstract class Piece
      * Pièce (constructeur)
      *
      * @param caseInitiale (place la pièce à la première case qu'elle occupera en début de partie)
-     * @param isBlanc (définit si la pièce sera blanche ou noire)
+     * @param blanc (définit si la pièce sera blanche ou noire)
      */
-    public Piece(Case caseInitiale, boolean isBlanc)
+    public Piece(Case caseInitiale, boolean blanc)
     {
-        this.isBlanc = isBlanc;
+        this.blanc = blanc;
         this.emplacementPiece = caseInitiale;
     }
     /**
@@ -53,10 +53,10 @@ public abstract class Piece
         this.skin = skin;
     }
     public boolean isBlanc() {
-        return isBlanc;
+        return blanc;
     }
     public void setBlanc(boolean blanc) {
-        isBlanc = blanc;
+        this.blanc = blanc;
     }
     public String getAdresseImageNoire() {
         return adresseImageNoire;
