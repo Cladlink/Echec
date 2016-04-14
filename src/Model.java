@@ -5,6 +5,7 @@ import java.util.ArrayList;
  */
 public class Model
 {
+    private ArrayList<Case> casesAtteignables = null;
     private Partie partie = null;
     private Joueur jBlanc = null;
     private Joueur jNoir = null;
@@ -24,6 +25,7 @@ public class Model
         ArrayList<Case> casesJouables = partie.getBoard().getPlateau()[row][column].getPiece().casesAtteignables();
     }
 
+    // getters & setters
     public Partie getPartie() {
         return partie;
     }
@@ -53,5 +55,11 @@ public class Model
     }
     public void setNetPartie(boolean netPartie) {
         this.netPartie = netPartie;
+    }
+    public ArrayList<Case> getCasesAtteignables() {
+        return casesAtteignables;
+    }
+    public void setCasesAtteignables(ArrayList<Case> casesAtteignables) {
+        this.casesAtteignables = casesAtteignables;
     }
 }

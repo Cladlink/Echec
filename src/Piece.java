@@ -8,8 +8,8 @@ public abstract class Piece
 {
     protected Case emplacementPiece;
     protected ImageIcon skin = null;
-    private boolean blanc = false;
-    protected String adresseImageNoire = null; // mettre les images ici quand on les auas
+    protected boolean blanc = false;
+    protected String adresseImageNoire = null;
     protected String adresseImageBlanche = null;
 
     /**

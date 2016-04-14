@@ -1,4 +1,5 @@
 import java.awt.event.*;
+import java.util.ArrayList;
 
 /**
   Created by cladlink on 06/04/16.
@@ -21,6 +22,30 @@ public class ControlButton extends Control implements MouseListener
     @Override
     public void mouseClicked(MouseEvent e)
     {
+
+        if (e.getSource() == vue.getEchiquier())
+        {
+            int row = (e.getY()-50)/80;
+            int column = (e.getX()-360)/80;
+
+            Case[][] plateau = model.getPartie().getBoard().getPlateau();
+
+            System.out.println(row + " " + column);
+
+            if(plateau[row][column].getPiece() !=null)
+            {
+
+                model.setCasesAtteignables(plateau[row][column].getPiece().casesAtteignables());
+                /*ArrayList<Case> casesAtteignables = model.getCasesAtteignables();
+                if (casesAtteignables.size()>0)
+                    for (int i = 0; i < casesAtteignables.size(); i++)
+                    {
+                        vue.getEchiquier().paintComponent(vue.getGraphics());
+                        System.out.println(casesAtteignables.get(i).getRow() + " " + casesAtteignables.get(i).getColumn());
+                    }*/
+                vue.repaint();
+            }
+        }
 
     }
 

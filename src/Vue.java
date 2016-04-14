@@ -5,8 +5,8 @@ import java.awt.event.MouseListener;
 
 public class Vue extends JFrame
 {
-    Board board = null;
-    Echiquier echiquier = null;
+    private Echiquier echiquier = null;
+    private Model model  = null;
     /**
      * Vue (Constructeur)
      * construit la vue d'échec.
@@ -15,11 +15,12 @@ public class Vue extends JFrame
      */
     public Vue(Model model)
     {
+        this.model = model;
         model.lancementPartie();
-        board = model.getPartie().getBoard();
+        initAttribut();
         creerWidget();
         setUndecorated(true);
-        setAlwaysOnTop(true);
+        //setAlwaysOnTop(true);
         setResizable(false);
         setName("Chess");
         setVisible(true);
@@ -37,6 +38,7 @@ public class Vue extends JFrame
      */
     public void initAttribut()
     {
+        echiquier = new Echiquier(model.getPartie().getBoard(), model);
     }
 
     /**
@@ -45,9 +47,7 @@ public class Vue extends JFrame
      */
     public void creerWidget()
     {
-        echiquier = new Echiquier(board);
         setContentPane(echiquier);
-
     }
 
     /**
@@ -58,7 +58,7 @@ public class Vue extends JFrame
      */
     public void setControlButton(MouseListener e)
     {
-
+        echiquier.addMouseListener(e);
     }
 
     /**
@@ -70,5 +70,20 @@ public class Vue extends JFrame
     public void setControlMenu(ActionListener e)
     {
 
+    }
+
+
+    // getters & setters
+    public Echiquier getEchiquier() {
+        return echiquier;
+    }
+    public void setEchiquier(Echiquier echiquier) {
+        this.echiquier = echiquier;
+    }
+    public Model getModel() {
+        return model;
+    }
+    public void setModel(Model model) {
+        this.model = model;
     }
 }

@@ -31,7 +31,7 @@ public class Case
     }
 
 
-    // getters / setters
+    // getters & setters
     public int getRow() {
         return row;
     }
