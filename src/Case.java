@@ -8,7 +8,6 @@ public class Case
     private int column;
     private Piece piece = null;
     private Board board = null;
-    private boolean isFree; // todo faire null si vide
     private boolean isWhite;
 
     /**
@@ -55,12 +54,6 @@ public class Case
     }
     public void setBoard(Board board) {
         this.board = board;
-    }
-    public boolean isFree() {
-        return isFree;
-    }
-    public void setFree(boolean free) {
-        isFree = free;
     }
     public boolean isWhite() {
         return isWhite;
