@@ -36,6 +36,7 @@ public abstract class Piece
         emplacementPiece.setPiece(this);
     }
 
+    public abstract boolean peutAtteindreRoi(Case caseRoi);
     public abstract ArrayList<Case> casesAtteignables();
 
 
