@@ -1,8 +1,8 @@
 import javax.swing.*;
 import java.util.ArrayList;
 
-/*
- * Created by cladlink on 30/03/16.
+/**
+  Created by cladlink on 30/03/16.
  */
 public abstract class Piece
 {
@@ -35,8 +35,16 @@ public abstract class Piece
         emplacementPiece = destination;
         emplacementPiece.setPiece(this);
     }
+    public boolean peutAtteindreRoi(Case caseRoi)
+    {
+        for (int i = 0; i < this.casesAtteignables().size(); i++)
+        {
+            if (this.casesAtteignables().contains(caseRoi))
+                return true;
+        }
+        return false;
+    }
 
-    public abstract boolean peutAtteindreRoi(Case caseRoi);
     public abstract ArrayList<Case> casesAtteignables();
 
 
