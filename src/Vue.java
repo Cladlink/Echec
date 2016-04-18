@@ -24,6 +24,7 @@ public class Vue extends JFrame
         setResizable(false);
         setName("Chess");
         setVisible(true);
+
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         Toolkit tk = Toolkit.getDefaultToolkit();
                 int xsize = (int)tk.getScreenSize().getWidth();

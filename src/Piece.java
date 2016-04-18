@@ -37,11 +37,10 @@ public abstract class Piece
     }
     public boolean peutAtteindreRoi(Case caseRoi)
     {
-        for (int i = 0; i < this.casesAtteignables().size(); i++)
-        {
-            if (this.casesAtteignables().contains(caseRoi))
-                return true;
-        }
+        if (casesAtteignables() != null)
+            for (int i = 0; i < this.casesAtteignables().size(); i++)
+                if (this.casesAtteignables().contains(caseRoi))
+                    return true;
         return false;
     }
 

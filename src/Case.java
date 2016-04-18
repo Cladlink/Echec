@@ -28,6 +28,14 @@ public class Case
         this.board = board;
         this.isWhite = isWhite;
     }
+    public Case(Case old)
+    {
+        this.row = old.row;
+        this.column = old.column;
+        this.piece = old.piece;
+        this.board = old.board;
+        this.isWhite = old.isWhite;
+    }
 
 
     // getters & setters

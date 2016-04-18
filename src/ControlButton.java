@@ -30,11 +30,15 @@ public class ControlButton extends Control implements MouseListener
 
             Case[][] plateau = model.getPartie().getBoard().getPlateau();
 
-            System.out.println(row + " " + column);
 
-            if(plateau[row][column].getPiece() !=null)
+            if( row >= 0
+                    && row <=7
+                    && column >=0
+                    && column <=7
+                    && plateau[row][column].getPiece() !=null)
             {
 
+                System.out.println(row + " " + column);
                 model.setCasesAtteignables(plateau[row][column].getPiece().casesAtteignables());
                 /*ArrayList<Case> casesAtteignables = model.getCasesAtteignables();
                 if (casesAtteignables.size()>0)

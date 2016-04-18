@@ -9,6 +9,7 @@ public class Echiquier extends JPanel
     private Model model = null;
     private Board board = null;
     private Graphics g = null;
+    private ImageIcon bg = new ImageIcon("img/echec.jpg");
 
     public Echiquier(Board board, Model model)
     {
@@ -26,6 +27,7 @@ public class Echiquier extends JPanel
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
+        g.drawImage(bg.getImage(), 0, 0, 1380, 768, null);
         this.g = g;
         for (int i = 0; i < 8; i++)
         {

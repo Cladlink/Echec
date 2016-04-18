@@ -3,7 +3,7 @@
  */
 public class Board
 {
-    private final int raw = 8;
+    private final int row = 8;
     private final int column = 8;
     private Case[][] plateau = null;
     private Case caseMemoire = null; //enregistre la case qui a été cliquée remettre à null après un coup joué !
@@ -21,7 +21,7 @@ public class Board
     public Board(Partie partie)
     {
         this.partie = partie;
-        plateau = new Case[raw][column];
+        plateau = new Case[row][column];
 
         plateauDeBase();
     }
@@ -120,6 +120,11 @@ public class Board
         plateau[1][5].setPiece(pionNoir6);
         plateau[1][6].setPiece(pionNoir7);
         plateau[1][7].setPiece(pionNoir8);
+
+        plateau[5][4].setPiece(new Tour(plateau[5][4], false));
+        plateau[3][7].setPiece(new Cavalier(plateau[3][7], false));
+        plateau[3][4].setPiece(new Roi(plateau[3][4], true));
+        plateau[5][2].setPiece(new Reine(plateau[5][2], false));
     }
 
     /**
@@ -135,8 +140,8 @@ public class Board
 
 
     //getters / setters
-    public int getRaw() {
-        return raw;
+    public int getRow() {
+        return row;
     }
     public int getColumn() {
         return column;
