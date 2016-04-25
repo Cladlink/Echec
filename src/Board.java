@@ -60,10 +60,10 @@ public class Board
         Piece fouNoir1 = new Fou(plateau[0][2], false);
         Piece fouNoir2 = new Fou(plateau[0][5], false);
 
-        Piece roiBlanc = new Roi(plateau[7][3], true);
-        Piece reineBlanche = new Reine(plateau[7][4], true);
-        Piece roiNoir = new Roi(plateau[0][3], false);
-        Piece reineNoire = new Reine(plateau[0][4], false);
+        Piece roiBlanc = new Roi(plateau[7][4], true);
+        Piece reineBlanche = new Reine(plateau[7][3], true);
+        Piece roiNoir = new Roi(plateau[0][4], false);
+        Piece reineNoire = new Reine(plateau[0][3], false);
 
         Piece pionBlanc1 = new Pion(plateau[6][0], true);
         Piece pionBlanc2 = new Pion(plateau[6][1], true);
@@ -87,8 +87,8 @@ public class Board
         plateau[7][0].setPiece(tourBlanche1);
         plateau[7][1].setPiece(cavalierBlanc1);
         plateau[7][2].setPiece(fouBlanc1);
-        plateau[7][3].setPiece(roiBlanc);
-        plateau[7][4].setPiece(reineBlanche);
+        plateau[7][4].setPiece(roiBlanc);
+        plateau[7][3].setPiece(reineBlanche);
         plateau[7][5].setPiece(fouBlanc2);
         plateau[7][6].setPiece(cavalierBlanc2);
         plateau[7][7].setPiece(tourBlanche2);
@@ -97,7 +97,7 @@ public class Board
         plateau[6][1].setPiece(pionBlanc2);
         plateau[6][2].setPiece(pionBlanc3);
         plateau[6][3].setPiece(pionBlanc4);
-        plateau[6][4].setPiece(pionBlanc5);
+                plateau[6][4].setPiece(pionBlanc5);
         plateau[6][5].setPiece(pionBlanc6);
         plateau[6][6].setPiece(pionBlanc7);
         plateau[6][7].setPiece(pionBlanc8);
@@ -106,8 +106,8 @@ public class Board
         plateau[0][0].setPiece(tourNoire1);
         plateau[0][1].setPiece(cavalierNoir1);
         plateau[0][2].setPiece(fouNoir1);
-        plateau[0][3].setPiece(roiNoir);
-        plateau[0][4].setPiece(reineNoire);
+        plateau[0][4].setPiece(roiNoir);
+        plateau[0][3].setPiece(reineNoire);
         plateau[0][5].setPiece(fouNoir2);
         plateau[0][6].setPiece(cavalierNoir2);
         plateau[0][7].setPiece(tourNoire2);
@@ -120,26 +120,37 @@ public class Board
         plateau[1][5].setPiece(pionNoir6);
         plateau[1][6].setPiece(pionNoir7);
         plateau[1][7].setPiece(pionNoir8);
-
-        plateau[5][4].setPiece(new Tour(plateau[5][4], false));
-        plateau[3][7].setPiece(new Cavalier(plateau[3][7], false));
-        plateau[3][4].setPiece(new Roi(plateau[3][4], true));
-        plateau[5][2].setPiece(new Reine(plateau[5][2], false));
     }
 
     /**
      * deplacer
-     * deplace la pièce après toutes vérifications
+     * deplace la pièce aprés avoir vérifier : si l'empalcement cible est vide ou non
+     * doit vérifier si une pièce est mangée, faire les actions en conséquence
      *
      * @param caseCliquee (case qui a ... été cliquée)
+     * @param destination (case ou la pièce doit se rendre)
      */
     public void deplacer(Case caseCliquee, Case destination)
     {
+        if (destination.getPiece() != null)
+        {
+            if (destination.getPiece().blanc)
+            {
+                partie.getPiecesBlanchesPlateau().remove(destination.getPiece());
+                partie.getCimetiereBlanc().add(destination.getPiece());
+                destination.setPiece(null);
+            }
+            else
+            {
+                partie.getPiecesNoiresPlateau().remove(destination.getPiece());
+                partie.getCimetiereNoir().add(destination.getPiece());
+                destination.setPiece(null);
+            }
+        }
         caseCliquee.getPiece().deplacer(destination);
     }
 
-
-    //getters / setters
+    //getters & setters
     public int getRow() {
         return row;
     }

@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 /**
- *Created by mlucile on 30/03/16.
+  Created by Michael on 30/03/16.
  */
 
 public class Tour extends Piece
@@ -25,6 +25,83 @@ public class Tour extends Piece
     @Override
     public ArrayList<Case> casesAtteignables()
     {
-        return null;
+        ArrayList<Case> casesAtteignables = new ArrayList<>();
+
+        Case[][] plateau = emplacementPiece.getBoard().getPlateau();
+        int row = emplacementPiece.getRow();
+        int column = emplacementPiece.getColumn();
+
+        int decal = 1;
+        boolean deplacableN = true, deplacableS = true, deplacableO = true, deplacableE = true;
+        while (deplacableE || deplacableO || deplacableS || deplacableN)
+        {
+            //test S
+            if ((deplacableS
+                    && column + decal <=7)
+                    && ( plateau[row][column + decal].getPiece() == null
+                    || plateau[row][column + decal].getPiece().blanc != blanc ))
+            {
+                casesAtteignables.add(plateau[row ][column + decal]);
+                if (plateau[row][column + decal].getPiece() != null)
+                    deplacableS = false;
+            }
+            else
+                deplacableS = false;
+
+            //test N
+            if ((deplacableN
+                    && column - decal >= 0)
+                    && ( plateau[row][column - decal].getPiece() == null
+                    || plateau[row][column - decal].getPiece().blanc != blanc ))
+            {
+                casesAtteignables.add(plateau[row ][column - decal]);
+
+                if (plateau[row][column - decal].getPiece() != null)
+                    deplacableN = false;
+            }
+            else
+                deplacableN = false;
+
+
+
+            //test E
+            if ((deplacableE
+                    && row - decal >= 0)
+                    && ( plateau[row - decal][column].getPiece() == null
+                    || plateau[row - decal][column].getPiece().blanc != blanc ))
+            {
+                casesAtteignables.add(plateau[row  - decal][column]);
+                if (plateau[row - decal][column].getPiece() != null)
+                    deplacableE = false;
+            }
+            else
+                deplacableE = false;
+
+            // testO
+            if ((deplacableO
+                    && row + decal <= 7)
+                    && ( plateau[row + decal][column].getPiece() == null
+                    || plateau[row + decal][column].getPiece().blanc != blanc ))
+            {
+                casesAtteignables.add(plateau[row + decal][column]);
+                if (plateau[row + decal][column].getPiece() != null)
+                    deplacableO = false;
+            }
+            else
+                deplacableO = false;
+
+            decal++;
+        }
+
+        return casesAtteignables;
+    }
+
+    @Override
+    public boolean peutAtteindreRoi(Case caseRoi)
+    {
+        if (emplacementPiece.getColumn() == caseRoi.getColumn()
+                || emplacementPiece.getRow() == caseRoi.getRow())
+            return super.peutAtteindreRoi(caseRoi);
+        return false;
     }
 }

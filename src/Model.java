@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
-/*
- * Created by cladlink on 25/03/16.
+/**
+  Created by Michael on 25/03/16.
  */
 public class Model
 {
@@ -11,6 +11,7 @@ public class Model
     private Joueur jNoir = null;
     private int modePartie = 1;
     private boolean netPartie = false;
+    private Case caseMemoire = null;
 
 
     public void lancementPartie()
@@ -22,7 +23,8 @@ public class Model
 
     public void casesJouables(int row, int column)
     {
-        ArrayList<Case> casesJouables = partie.getBoard().getPlateau()[row][column].getPiece().casesAtteignables();
+        casesAtteignables = partie.getBoard().getPlateau()[row][column].getPiece().casesAtteignables();
+        caseMemoire = partie.getBoard().getPlateau()[row][column];
     }
 
     // getters & setters
@@ -61,5 +63,11 @@ public class Model
     }
     public void setCasesAtteignables(ArrayList<Case> casesAtteignables) {
         this.casesAtteignables = casesAtteignables;
+    }
+    public Case getCaseMemoire() {
+        return caseMemoire;
+    }
+    public void setCaseMemoire(Case caseMemoire) {
+        this.caseMemoire = caseMemoire;
     }
 }

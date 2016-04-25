@@ -15,11 +15,12 @@ public class Partie
     private ArrayList<Piece> piecesBlanchesPlateau = null;
     private ArrayList<Piece> piecesNoiresPlateau = null;
     private int modePartie; // 0 = partie normale ; 1 = temps partie limitée; 3 = temps tour limités
+    private String histoCoups = "";
     private boolean netPartie;
     private boolean echecBlanc;
     private boolean echecNoir;
     private boolean finPartie;
-    private boolean roqueFaisable;
+    private boolean roqueFaisable = true;
 
 
     /**
@@ -34,7 +35,6 @@ public class Partie
         //On ajoute les deux joueurs à la partie
         this.joueurBlanc = joueurBlanc;
         this.joueurNoir = joueurNoir;
-
         // On créé le plateau
         board = new Board(this);
 
@@ -60,11 +60,11 @@ public class Partie
         {
             for (int j = 0; j < board.getPlateau()[i].length; j++)
             {
-                    if(board.getPlateau()[i][j].getPiece() != null && board.getPlateau()[i][j].getPiece().isBlanc())
-                    {
+                    if(board.getPlateau()[i][j].getPiece() != null
+                            && board.getPlateau()[i][j].getPiece().isBlanc())
                         piecesBlanchesPlateau.add(board.getPlateau()[i][j].getPiece());
-                    }
-                    else if(board.getPlateau()[i][j].getPiece() != null && !board.getPlateau()[i][j].getPiece().isBlanc())
+                    else if(board.getPlateau()[i][j].getPiece() != null
+                            && !board.getPlateau()[i][j].getPiece().isBlanc())
                         piecesNoiresPlateau.add(board.getPlateau()[i][j].getPiece());
             }
         }
@@ -84,6 +84,15 @@ public class Partie
      * arrète la partie todo prendre en compte abandon, mat
      */
     public void stop()
+    {
+
+    }
+
+    /**
+     * historiqueCoups
+     *
+     */
+    public void historiqueCoups()
     {
 
     }
@@ -127,6 +136,39 @@ public class Partie
     public void attenteDebutPartie()
     {
 
+    }
+
+    /**
+     * isEchec
+     * Verifie si après un coup joué le roi adverse est en echec.
+     *
+     * @return true si echec
+     */
+    boolean isEchec(Case caseRoi)
+    {
+        int i;
+        if (tourBlanc)
+            for (i = 0; i < piecesBlanchesPlateau.size(); i++)
+                if (piecesBlanchesPlateau.get(i).peutAtteindreRoi(caseRoi))
+                    return true;
+        else
+            for (i = 0; i < piecesNoiresPlateau.size(); i++)
+                if (piecesNoiresPlateau.get(i).peutAtteindreRoi(caseRoi))
+                    return true;
+        return false;
+    }
+
+    /**
+     * isEchecEtMat
+     * Teste si le roi est en echec et si un déplacement est possible
+     * (sera controler au préalable isEchec(Case caseRoi) dans le model
+     *
+     * @return true si echec et mat
+     */
+    boolean isEchecEtMat(Case caseRoi)
+    {
+
+        return false;
     }
 
 

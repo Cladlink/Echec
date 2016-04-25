@@ -1,6 +1,6 @@
-/*
- * Created by cladlink on 30/03/16.
-    */
+/**
+  Created by Michael on 30/03/16.
+ */
 public class Joueur
 {
 

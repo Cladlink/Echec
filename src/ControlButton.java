@@ -2,7 +2,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 /**
-  Created by cladlink on 06/04/16.
+  Created by Michael on 06/04/16.
  */
 public class ControlButton extends Control implements MouseListener
 {
@@ -22,37 +22,43 @@ public class ControlButton extends Control implements MouseListener
     @Override
     public void mouseClicked(MouseEvent e)
     {
-
+        int row = (e.getY()-50)/80;
+        int column = (e.getX()-360)/80;
+        Case[][] plateau = model.getPartie().getBoard().getPlateau();
         if (e.getSource() == vue.getEchiquier())
         {
-            int row = (e.getY()-50)/80;
-            int column = (e.getX()-360)/80;
-
-            Case[][] plateau = model.getPartie().getBoard().getPlateau();
-
-
             if( row >= 0
                     && row <=7
                     && column >=0
-                    && column <=7
-                    && plateau[row][column].getPiece() !=null)
+                    && column <=7)
             {
 
-                System.out.println(row + " " + column);
-                model.setCasesAtteignables(plateau[row][column].getPiece().casesAtteignables());
-                /*ArrayList<Case> casesAtteignables = model.getCasesAtteignables();
-                if (casesAtteignables.size()>0)
-                    for (int i = 0; i < casesAtteignables.size(); i++)
-                    {
-                        vue.getEchiquier().paintComponent(vue.getGraphics());
-                        System.out.println(casesAtteignables.get(i).getRow() + " " + casesAtteignables.get(i).getColumn());
-                    }*/
-                vue.repaint();
+                if ( plateau[row][column].getPiece() != null
+                        && model.getPartie().isTourBlanc() == plateau[row][column].getPiece().isBlanc() )
+                {
+                    model.casesJouables(row, column);
+                    ArrayList<Case> casesAtteignables = model.getCasesAtteignables();
+                    if (casesAtteignables.size()>0)
+                        for (int i = 0; i < casesAtteignables.size(); i++)
+                        {
+                            vue.getEchiquier().paintComponent(vue.getGraphics());
+                        }
+                    vue.repaint();
+                }
+                else if(model.getCasesAtteignables() != null
+                        && model.getCasesAtteignables().contains(plateau[row][column])
+
+                        && model.getPartie().isTourBlanc() == model.getCaseMemoire().getPiece().isBlanc() )
+                {
+                    System.out.println(row + " " + column);
+                    model.getPartie().getBoard().deplacer(model.getCaseMemoire(), plateau[row][column]);
+                    model.setCasesAtteignables(null);
+                    model.getPartie().setTourBlanc(!model.getPartie().isTourBlanc());
+                    vue.repaint();
+                }
             }
         }
-
     }
-
 
     @Override
     public void mousePressed(MouseEvent e)

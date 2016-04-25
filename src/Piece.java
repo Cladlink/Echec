@@ -29,12 +29,20 @@ public abstract class Piece
      * déplace la pièce d'un point A à un point B
      * @param destination (case où la pièce selectionnée doit se rendre)
      */
-    public void deplacer( Case destination)
+    public void deplacer(Case destination)
     {
         emplacementPiece.setPiece(null);
         emplacementPiece = destination;
         emplacementPiece.setPiece(this);
     }
+
+    /**
+     * peutAtteindreRoi
+     * Test si une pièce peut atteindre le roi
+     *
+     * @param caseRoi case qui contient le roi
+     * @return (return true si caseRoi peut être atteint)
+     */
     public boolean peutAtteindreRoi(Case caseRoi)
     {
         if (casesAtteignables() != null)
