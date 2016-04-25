@@ -79,6 +79,22 @@ public class Pion extends Piece
      */
     void promotion(int choix)
     {
+        this.emplacementPiece.setPiece(null); // est ce vraiment utile ?
+        switch (choix)
+        {
+            case 1 :
+                emplacementPiece.setPiece(new Cavalier(this.emplacementPiece, this.blanc));
+                break;
+            case 2 :
+                emplacementPiece.setPiece(new Tour(this.emplacementPiece, this.blanc));
+                break;
+            case 3 :
+                emplacementPiece.setPiece(new Fou(this.emplacementPiece, this.blanc));
+                break;
+            case 4 :
+                emplacementPiece.setPiece(new Reine(this.emplacementPiece, this.blanc));
+                break;
+        }
 
     }
 }
