@@ -97,7 +97,7 @@ public class Board
         plateau[6][1].setPiece(pionBlanc2);
         plateau[6][2].setPiece(pionBlanc3);
         plateau[6][3].setPiece(pionBlanc4);
-                plateau[6][4].setPiece(pionBlanc5);
+        plateau[6][4].setPiece(pionBlanc5);
         plateau[6][5].setPiece(pionBlanc6);
         plateau[6][6].setPiece(pionBlanc7);
         plateau[6][7].setPiece(pionBlanc8);
@@ -132,22 +132,7 @@ public class Board
      */
     public void deplacer(Case caseCliquee, Case destination)
     {
-        if (destination.getPiece() != null)
-        {
-            if (destination.getPiece().blanc)
-            {
-                partie.getPiecesBlanchesPlateau().remove(destination.getPiece());
-                partie.getCimetiereBlanc().add(destination.getPiece());
-                destination.setPiece(null);
-            }
-            else
-            {
-                partie.getPiecesNoiresPlateau().remove(destination.getPiece());
-                partie.getCimetiereNoir().add(destination.getPiece());
-                destination.setPiece(null);
-            }
-        }
-        caseCliquee.getPiece().deplacer(destination);
+
     }
 
     //getters & setters
