@@ -22,9 +22,10 @@ public class Pion extends Piece
      * @return jeu de case représentant la liste des mouvements possible
      */
     @Override
-    public ArrayList<Case> casesAtteignables()
+    public void casesAtteignables()
     {
-        ArrayList<Case> casesAtteignables = new ArrayList<>();
+
+        casesAtteignables.clear();
         int decal = blanc?-1:1;
 
         Case[][] plateau = emplacementPiece.getBoard().getPlateau();
@@ -52,8 +53,6 @@ public class Pion extends Piece
                 && plateau[row + decal][column + 1].getPiece() != null
                 && plateau[row + decal][column + 1].getPiece().blanc != blanc)
             casesAtteignables.add(plateau[row + decal][column + 1]);
-
-        return casesAtteignables;
     }
 
     @Override
@@ -79,6 +78,7 @@ public class Pion extends Piece
      */
     void promotion(int choix)
     {
+
 
     }
 }
