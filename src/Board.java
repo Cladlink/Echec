@@ -10,6 +10,8 @@ public class Board
     private Partie partie = null;
     private int sizeCase = 80;
 
+    private Piece roiNoir, roiBlanc;
+
 
     /**
      * Board (constructeur)
@@ -60,9 +62,9 @@ public class Board
         Piece fouNoir1 = new Fou(plateau[0][2], false);
         Piece fouNoir2 = new Fou(plateau[0][5], false);
 
-        Piece roiBlanc = new Roi(plateau[7][4], true);
+        roiBlanc = new Roi(plateau[7][4], true);
         Piece reineBlanche = new Reine(plateau[7][3], true);
-        Piece roiNoir = new Roi(plateau[0][4], false);
+        roiNoir = new Roi(plateau[0][4], false);
         Piece reineNoire = new Reine(plateau[0][3], false);
 
         Piece pionBlanc1 = new Pion(plateau[6][0], true);
@@ -165,5 +167,17 @@ public class Board
     }
     public void setSizeCase(int sizeCase) {
         this.sizeCase = sizeCase;
+    }
+    public Piece getRoiNoir() {
+        return roiNoir;
+    }
+    public void setRoiNoir(Piece roiNoir) {
+        this.roiNoir = roiNoir;
+    }
+    public Piece getRoiBlanc() {
+        return roiBlanc;
+    }
+    public void setRoiBlanc(Piece roiBlanc) {
+        this.roiBlanc = roiBlanc;
     }
 }
