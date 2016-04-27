@@ -134,7 +134,22 @@ public class Board
      */
     public void deplacer(Case caseCliquee, Case destination)
     {
-
+        if (destination.getPiece() != null)
+        {
+            if (destination.getPiece().blanc)
+            {
+                partie.getPiecesBlanchesPlateau().remove(destination.getPiece());
+                partie.getCimetiereBlanc().add(destination.getPiece());
+                destination.setPiece(null);
+            }
+            else
+            {
+                partie.getPiecesNoiresPlateau().remove(destination.getPiece());
+                partie.getCimetiereNoir().add(destination.getPiece());
+                destination.setPiece(null);
+            }
+        }
+        caseCliquee.getPiece().deplacer(destination);
     }
 
     //getters & setters

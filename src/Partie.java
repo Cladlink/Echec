@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+    import java.util.ArrayList;
 
 /**
   Created by cladlink on 06/04/16.
@@ -14,8 +14,8 @@ public class Partie
     private ArrayList<Piece> cimetiereNoir = null;
     private ArrayList<Piece> piecesBlanchesPlateau = null;
     private ArrayList<Piece> piecesNoiresPlateau = null;
-    private int modePartie; // 0 = partie normale ; 1 = temps partie limitée; 3 = temps tour limités
-    private String histoCoups = "";
+    private int modePartie; // 0 = partie normale ; 1 = temps partie limitée; 2 = temps tour limités
+    private ArrayList<String> historique = null;
     private boolean netPartie;
     private boolean echecBlanc;
     private boolean echecNoir;
@@ -146,7 +146,7 @@ public class Partie
      */
     boolean isEchec(Case caseRoi)
     {
-     return false;
+
     }
 
     /**
@@ -156,10 +156,25 @@ public class Partie
      *
      * @return true si echec et mat
      */
-    boolean isEchecEtMat(Case caseRoi)
+    boolean isEchecEtMat()
     {
-
-        return false;
+        if(tourBlanc)
+        {
+            for (int i = 0; i < piecesBlanchesPlateau.size(); i++)
+            {
+                if (piecesBlanchesPlateau.get(i).casesAtteignables != null)
+                    return false;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < piecesNoiresPlateau.size(); i++)
+            {
+                if (piecesNoiresPlateau.get(i).casesAtteignables != null)
+                    return false;
+            }
+        }
+        return true;
     }
 
 
