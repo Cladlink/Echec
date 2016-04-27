@@ -22,9 +22,9 @@ public class Cavalier extends Piece
      * @return jeu de case représentant la liste des mouvements possible
      */
     @Override
-    public ArrayList<Case> casesAtteignables()
+    public void casesAtteignables()
     {
-        ArrayList<Case> casesAtteignables = new ArrayList<>();
+        casesAtteignables.clear();
 
         Case[][] plateau = emplacementPiece.getBoard().getPlateau();
         int row = emplacementPiece.getRow();
@@ -85,8 +85,6 @@ public class Cavalier extends Piece
                 && (plateau[row + 2][column + 1].getPiece() == null
                 || plateau[row + 2][column + 1].getPiece().blanc != blanc))
             casesAtteignables.add(plateau[row + 2][column + 1]);
-
-        return casesAtteignables;
     }
 
     @Override

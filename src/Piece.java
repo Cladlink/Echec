@@ -11,6 +11,7 @@ public abstract class Piece
     protected boolean blanc = false;
     protected String adresseImageNoire = null;
     protected String adresseImageBlanche = null;
+    protected ArrayList<Case> casesAtteignables = null;
 
     /**
      * Pièce (constructeur)
@@ -22,6 +23,7 @@ public abstract class Piece
     {
         this.blanc = blanc;
         this.emplacementPiece = caseInitiale;
+        this.casesAtteignables = new ArrayList<>();
     }
     /**
      * deplacer
@@ -45,17 +47,59 @@ public abstract class Piece
      */
     public boolean peutAtteindreRoi(Case caseRoi)
     {
-        if (casesAtteignables() != null)
-            for (int i = 0; i < this.casesAtteignables().size(); i++)
-                if (this.casesAtteignables().contains(caseRoi))
+        casesAtteignables();
+        if (casesAtteignables != null)
+            for (int i = 0; i < this.casesAtteignables.size(); i++)
+                if (this.casesAtteignables.contains(caseRoi))
                     return true;
         return false;
     }
 
-    public abstract ArrayList<Case> casesAtteignables();
+    public void deplacementPossible()
+    {
+        Case emplacementPieceDeBase;
+        Piece tempPiece;
+        ArrayList<Piece> piecesEnJeu;
+        Case monRoi;
+        int i;
+        if (blanc)
+            piecesEnJeu = emplacementPiece.getBoard().getPartie().getPiecesNoiresPlateau();
+        else
+            piecesEnJeu = emplacementPiece.getBoard().getPartie().getPiecesBlanchesPlateau();
 
+        for (i = 0; i < casesAtteignables.size(); i++)
+        {
+            emplacementPieceDeBase = emplacementPiece; // pour ramener le roi à sa place
+            tempPiece = casesAtteignables.get(i).getPiece();
+            deplacer(casesAtteignables.get(i)); // on déplace la pièce pour faire le test correctement
+            if (tempPiece != null)
+                piecesEnJeu.remove(tempPiece);
 
-    //getters / setters
+            monRoi = blanc?
+                    emplacementPiece.getBoard().getRoiBlanc().emplacementPiece
+                    :emplacementPiece.getBoard().getRoiNoir().emplacementPiece;
+            // on teste si les pièces adverses peuvent prenre le roi en simulant le déplacement
+            if ( emplacementPiece.getBoard().getPartie().isEchec(monRoi) )
+            {
+                casesAtteignables.remove(i);
+                i--;
+            }
+            // on remet la pièce en place
+            if (tempPiece == null)
+                emplacementPiece.setPiece(null);
+            else
+            {
+                emplacementPiece.setPiece(tempPiece);
+                piecesEnJeu.add(tempPiece);
+            }
+            emplacementPiece = emplacementPieceDeBase;
+            emplacementPiece.setPiece(this);
+        }
+    }
+
+    public abstract void casesAtteignables();
+
+    //getters & setters
     public Case getEmplacementPiece() {
         return emplacementPiece;
     }

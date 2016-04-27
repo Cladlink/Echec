@@ -9,9 +9,10 @@ public class Model
     private Partie partie = null;
     private Joueur jBlanc = null;
     private Joueur jNoir = null;
-    private int modePartie = 1;
+    private int modePartie = 0;
     private boolean netPartie = false;
     private Case caseMemoire = null;
+
 
 
     public void lancementPartie()
@@ -21,13 +22,27 @@ public class Model
         this.partie = new Partie(jBlanc, jNoir, modePartie, netPartie);
     }
 
-    public void casesJouables(int row, int column)
+    /**
+     * majCasesAtteignable
+     *
+     */
+    public void majCasesAtteignable()
     {
-        casesAtteignables = partie.getBoard().getPlateau()[row][column].getPiece().casesAtteignables();
-        caseMemoire = partie.getBoard().getPlateau()[row][column];
-    }
+        ArrayList<Piece> pieceEnJeu;
+        if (partie.isTourBlanc())
+            pieceEnJeu = partie.getPiecesBlanchesPlateau();
+        else
+            pieceEnJeu = partie.getPiecesNoiresPlateau();
 
+        for (int i = 0; i < pieceEnJeu.size(); i++)
+        {
+            pieceEnJeu.get(i).casesAtteignables();
+            pieceEnJeu.get(i).deplacementPossible();
+
+        }
+    }
     // getters & setters
+
     public Partie getPartie() {
         return partie;
     }

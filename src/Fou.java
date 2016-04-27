@@ -1,8 +1,8 @@
 import javax.swing.*;
 import java.util.ArrayList;
 
-/*
- * Created by baptiste on 31/03/16.
+/**
+ Created by baptiste on 31/03/16.
  */
 public class Fou extends Piece
 {
@@ -23,10 +23,9 @@ public class Fou extends Piece
      * @return jeu de case représentant la liste des mouvements possible
      */
     @Override
-    public ArrayList<Case> casesAtteignables()
+    public void casesAtteignables()
     {
-        ArrayList<Case> casesAtteignables = new ArrayList<>();
-
+        casesAtteignables.clear();
         Case[][] plateau = emplacementPiece.getBoard().getPlateau();
         int row = emplacementPiece.getRow();
         int column = emplacementPiece.getColumn();
@@ -129,7 +128,6 @@ public class Fou extends Piece
 
             decal++;
         }
-        return casesAtteignables;
     }
 
     @Override

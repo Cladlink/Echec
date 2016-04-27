@@ -17,6 +17,7 @@ public class Vue extends JFrame
     {
         this.model = model;
         model.lancementPartie();
+        model.majCasesAtteignable();
         initAttribut();
         creerWidget();
         setUndecorated(true);

@@ -32,13 +32,19 @@ public class ControlButton extends Control implements MouseListener
                     && column >=0
                     && column <=7)
             {
-
+                if (model.getPartie().getBoard().getPlateau()[row][column].getPiece() != null)
+                System.out.println(model.getPartie().getBoard().getPlateau()[row][column].getPiece());
+                // si je clique sur une pièce  qui est au joueur dont c'est le tour
                 if ( plateau[row][column].getPiece() != null
                         && model.getPartie().isTourBlanc() == plateau[row][column].getPiece().isBlanc() )
                 {
-                    model.casesJouables(row, column);
-                    ArrayList<Case> casesAtteignables = model.getCasesAtteignables();
-                    if (casesAtteignables.size()>0)
+                    ArrayList<Case> casesAtteignables =
+                            model.getPartie().getBoard().getPlateau()[row][column].getPiece().casesAtteignables;
+                    model.setCasesAtteignables(casesAtteignables);
+                    model.setCaseMemoire(model.getPartie().getBoard().getPlateau()[row][column]);
+
+
+                    if (casesAtteignables.size() > 0)
                         for (int i = 0; i < casesAtteignables.size(); i++)
                         {
                             vue.getEchiquier().paintComponent(vue.getGraphics());
@@ -47,13 +53,12 @@ public class ControlButton extends Control implements MouseListener
                 }
                 else if(model.getCasesAtteignables() != null
                         && model.getCasesAtteignables().contains(plateau[row][column])
-
                         && model.getPartie().isTourBlanc() == model.getCaseMemoire().getPiece().isBlanc() )
                 {
-                    System.out.println(row + " " + column);
                     model.getPartie().getBoard().deplacer(model.getCaseMemoire(), plateau[row][column]);
                     model.setCasesAtteignables(null);
                     model.getPartie().setTourBlanc(!model.getPartie().isTourBlanc());
+                    model.majCasesAtteignable();
                     vue.repaint();
                 }
             }
