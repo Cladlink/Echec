@@ -64,7 +64,6 @@ public class Reine extends Piece
             else
                 deplacableN = false;
 
-
             //test E
             if ((deplacableE
                     && row - decal >= 0)
