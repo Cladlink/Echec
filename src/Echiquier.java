@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
-  Created by cladlink on 06/04/16.
+ Created by cladlink on 06/04/16.
  */
 public class Echiquier extends JPanel
 {
@@ -10,6 +10,7 @@ public class Echiquier extends JPanel
     private Board board = null;
     private Graphics g = null;
     private ImageIcon bg = new ImageIcon("img/echec.jpg");
+    private ImageIcon bgCimetiere = new ImageIcon("img/cimetiere.png");
 
     public Echiquier(Board board, Model model)
     {
@@ -73,7 +74,40 @@ public class Echiquier extends JPanel
         g.drawRect(1060, 60, 100, 50);
 
         //cimetiere
-        g.drawRect(210, 150, 100, 500);
-        g.drawRect(1060, 150, 100, 500);
+
+        //on met le fond d'ecran du cimetiere
+
+
+
+        Partie partie = model.getPartie();
+        int i, pionBlanc=0, pasPionBlanc=0, pionNoir=0, pasPionNoir=0;
+
+        //cimetiere pute blanc
+        g.drawImage(bgCimetiere.getImage(),110, 150, 200, 500, null);
+        for(i = 0; i<partie.getCimetiereBlanc().size(); i++){
+            if (partie.getCimetiereBlanc().get(i) instanceof Pion) {
+                g.drawImage(partie.getCimetiereBlanc().get(i).skin.getImage(), 120, 200 + 50 * pionBlanc, 100, 100, null);
+                pionBlanc++;
+            } else {
+                g.drawImage(partie.getCimetiereBlanc().get(i).skin.getImage(), 210, 200 + 50 * pasPionBlanc, 100, 100, null);
+                pasPionBlanc++;
+            }
+        }
+
+        //cimetiere pute noir
+        g.drawImage(bgCimetiere.getImage(),1060, 150, 200, 500,null);
+        for(i = 0; i<partie.getCimetiereNoir().size(); i++)
+        {
+            if (partie.getCimetiereNoir().get(i) instanceof Pion)
+            {
+                g.drawImage(partie.getCimetiereNoir().get(i).skin.getImage(), 1070, 200 + 50 * pionNoir, 100, 100, null);
+                pionNoir++;
+            }
+            else
+            {
+                g.drawImage(partie.getCimetiereNoir().get(i).skin.getImage(), 1160, 200 + 50 * pasPionNoir, 100, 100, null);
+                pasPionNoir++;
+            }
+        }
     }
 }

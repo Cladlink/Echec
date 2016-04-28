@@ -2,27 +2,17 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.io.*;
 /**
- * Created by cladlink on 12/03/16.
+  Created by cladlink on 12/03/16.
  */
 
-/*
- todo * cette classe a été écrite pour lire un fichier .sql (soit on garde ca, soit il faut envoyer
- todo * requete par requete ce qui n'est pas un soucis en soit mais il faut choisir !
- */
-public class BDDManager
+class BDDManager
 {
-    private String url;
-    private String login;
-    private String passwd;
+    private final String BDD_URL = "jdbc:mysql://bdd.midway.ovh/KfK3f9Z7rd4v467z?useSSL=false";
+    private final String BDD_USER = "KfK3f9Z7rd4v467z";
+    private final String BDD_PASSWORD =  "Cbup4w7aJ9hGSsJz";
     private Connection cn = null;
     private Statement  st = null;
 
-    public BDDManager(String url, String login, String passwd)
-    {
-        this.url = url;
-        this.login = login;
-        this.passwd = passwd;
-    }
 
     /**
      * start()
@@ -32,14 +22,10 @@ public class BDDManager
     {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            cn = DriverManager.getConnection(url, login, passwd);
+            cn = DriverManager.getConnection(BDD_URL, BDD_USER, BDD_PASSWORD);
             st = cn.createStatement();
         }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        catch (ClassNotFoundException e)
+        catch (SQLException | ClassNotFoundException e)
         {
             e.printStackTrace();
         }
@@ -154,7 +140,7 @@ public class BDDManager
             }
             catch (EOFException e)
             {
-                System.out.println(e);
+                e.printStackTrace();
             }
             finally
             {
@@ -168,7 +154,19 @@ public class BDDManager
         }
         catch (IOException e)
         {
-            System.err.println(e);
+            e.printStackTrace();
         }
+    }
+
+    /**
+     * main
+     * ce main n'est utiliser que pour créer les tables.
+     */
+    public static void main(String[] args)
+    {
+        BDDManager bdd = new BDDManager();
+        bdd.start();
+        bdd.lire("src/BDDechec.sql");
+        bdd.stop();
     }
 }
