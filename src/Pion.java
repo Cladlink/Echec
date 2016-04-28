@@ -78,22 +78,39 @@ public class Pion extends Piece
      */
     void promotion(int choix)
     {
-        this.emplacementPiece.setPiece(null); // est ce vraiment utile ?
+        ArrayList<Piece> piecesCimetiere;
+        ArrayList<Piece> piecesEnJeu;
+        if(blanc)
+        {
+            piecesEnJeu = emplacementPiece.getBoard().getPartie().getPiecesBlanchesPlateau();
+            piecesCimetiere = emplacementPiece.getBoard().getPartie().getCimetiereBlanc();
+        }
+        else
+        {
+            piecesEnJeu =  emplacementPiece.getBoard().getPartie().getPiecesNoiresPlateau();
+            piecesCimetiere = emplacementPiece.getBoard().getPartie().getCimetiereNoir();
+        }
+
+        piecesEnJeu.remove(this);
+        piecesCimetiere.add(this);
+
         switch (choix)
         {
             case 1 :
+                emplacementPiece.setPiece(null);
                 emplacementPiece.setPiece(new Cavalier(this.emplacementPiece, this.blanc));
                 break;
             case 2 :
+                emplacementPiece.setPiece(null);
                 emplacementPiece.setPiece(new Tour(this.emplacementPiece, this.blanc));
                 break;
             case 3 :
+                emplacementPiece.setPiece(null);
                 emplacementPiece.setPiece(new Fou(this.emplacementPiece, this.blanc));
                 break;
             case 4 :
+                emplacementPiece.setPiece(null);
                 emplacementPiece.setPiece(new Reine(this.emplacementPiece, this.blanc));
-                break;
         }
-
     }
 }

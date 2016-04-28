@@ -132,7 +132,7 @@ public class Board
      * @param caseCliquee (case qui a ... été cliquée)
      * @param destination (case ou la pièce doit se rendre)
      */
-    public void deplacer(Case caseCliquee, Case destination)
+    public void deplacer(Case caseCliquee, Case destination, Vue vue)
     {
         if (destination.getPiece() != null)
         {
@@ -150,6 +150,11 @@ public class Board
             }
         }
         caseCliquee.getPiece().deplacer(destination);
+
+        if( ( ( destination.getRow() == 0 && destination.getPiece().blanc )
+                || ( destination.getRow() == 7) && !destination.getPiece().blanc )
+                && destination.getPiece() instanceof Pion )
+            vue.choixPiece( (Pion)destination.getPiece() );
     }
 
     //getters & setters

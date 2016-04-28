@@ -74,6 +74,39 @@ public class Vue extends JFrame
 
     }
 
+    public void choixPiece(Pion pion)
+    {
+        ImageIcon[] piecesPossibles = new ImageIcon[4];
+        if(pion.blanc)
+        {
+            piecesPossibles[0] = new ImageIcon("img/CavalierBlanc.png");
+            piecesPossibles[1] = new ImageIcon("img/TourBlanc.png");
+            piecesPossibles[2] = new ImageIcon("img/FouBlanc.png");
+            piecesPossibles[3] = new ImageIcon("img/ReineBlanc.png");
+        }
+        else
+        {
+            piecesPossibles[0] = new ImageIcon("img/CavalierNoir.png");
+            piecesPossibles[1] = new ImageIcon("img/TourNoir.png");
+            piecesPossibles[2] = new ImageIcon("img/FouNoir.png");
+            piecesPossibles[3] = new ImageIcon("img/ReineNoir.png");
+        }
+
+
+        int pieceSelected = JOptionPane.showOptionDialog(this, "Choisissez une pièce pour remplacer votre pion :",
+                "Promotion d'un pion", JOptionPane.INFORMATION_MESSAGE, 2, null, piecesPossibles, null);
+
+        System.out.println(pieceSelected);
+        if(pieceSelected == 0)
+            pion.promotion(1);
+        else if(pieceSelected == 1)
+            pion.promotion(2);
+        else if(pieceSelected == 2)
+            pion.promotion(3);
+        else if(pieceSelected == 3)
+            pion.promotion(4);
+    }
+
 
     // getters & setters
     public Echiquier getEchiquier() {

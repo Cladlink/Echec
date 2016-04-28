@@ -55,7 +55,7 @@ public class ControlButton extends Control implements MouseListener
                         && model.getCasesAtteignables().contains(plateau[row][column])
                         && model.getPartie().isTourBlanc() == model.getCaseMemoire().getPiece().isBlanc() )
                 {
-                    model.getPartie().getBoard().deplacer(model.getCaseMemoire(), plateau[row][column]);
+                    model.getPartie().getBoard().deplacer(model.getCaseMemoire(), plateau[row][column], this.vue);
                     model.setCasesAtteignables(null);
                     model.getPartie().setTourBlanc(!model.getPartie().isTourBlanc());
                     model.majCasesAtteignable();
