@@ -146,7 +146,20 @@ public class Partie
      */
     boolean isEchec(Case caseRoi)
     {
-
+        int i;
+        if (!caseRoi.getPiece().blanc)
+        {
+            for (i = 0; i < piecesBlanchesPlateau.size(); i++)
+                if (piecesBlanchesPlateau.get(i).peutAtteindreRoi(caseRoi))
+                    return true;
+        }
+        else
+        {
+            for (i = 0; i < piecesNoiresPlateau.size(); i++)
+                if (piecesNoiresPlateau.get(i).peutAtteindreRoi(caseRoi))
+                    return true;
+        }
+        return false;
     }
 
     /**
