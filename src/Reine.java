@@ -22,7 +22,8 @@ public class Reine extends Piece
      * @return jeu de case représentant la liste des mouvements possible
      */
     @Override
-    public void casesAtteignables() {
+    public void casesAtteignables()
+    {
 
         casesAtteignables.clear();
 
