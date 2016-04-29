@@ -11,6 +11,7 @@ public class Echiquier extends JPanel
     private Graphics g = null;
     private ImageIcon bg = new ImageIcon("img/echec.jpg");
     private ImageIcon bgCimetiere = new ImageIcon("img/cimetiere.png");
+    private int minute, seconde;
 
     public Echiquier(Board board, Model model)
     {
@@ -69,9 +70,13 @@ public class Echiquier extends JPanel
             }
         }
         //timer
-        g.setColor(Color.RED);
-        g.drawRect(210, 60, 100, 50);
-        g.drawRect(1060, 60, 100, 50);
+        g.setColor(Color.BLUE);
+        g.fillRect(160, 80, 100, 50);
+        g.fillRect(1110, 80, 100, 50);
+
+        g.setColor(Color.BLACK);
+        g.drawString(minute + " : " + seconde, 190, 110);
+        g.drawString(minute + " : " + seconde, 1150, 110);
 
         //cimetiere
 
@@ -94,7 +99,7 @@ public class Echiquier extends JPanel
             }
         }
 
-        //cimetiere pute noir
+        //cimetiere noir
         g.drawImage(bgCimetiere.getImage(),1060, 150, 200, 500,null);
         for(i = 0; i<partie.getCimetiereNoir().size(); i++)
         {
@@ -110,4 +115,5 @@ public class Echiquier extends JPanel
             }
         }
     }
+    
 }
