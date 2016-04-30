@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.TimerTask;
 
 /**
  Created by cladlink on 06/04/16.
@@ -11,13 +12,14 @@ public class Echiquier extends JPanel
     private Graphics g = null;
     private ImageIcon bg = new ImageIcon("img/echec.jpg");
     private ImageIcon bgCimetiere = new ImageIcon("img/cimetiere.png");
-    private int minute, seconde;
+    private int minuteBlanc, secondeBlanc, minuteNoir, secondeNoir;
 
     public Echiquier(Board board, Model model)
     {
         this.model = model;
         this.board = board;
         setBorder(BorderFactory.createLineBorder(Color.black));
+
     }
 
     public Dimension getPreferredSize()
@@ -75,8 +77,8 @@ public class Echiquier extends JPanel
         g.fillRect(1110, 80, 100, 50);
 
         g.setColor(Color.BLACK);
-        g.drawString(minute + " : " + seconde, 190, 110);
-        g.drawString(minute + " : " + seconde, 1150, 110);
+        g.drawString(minuteBlanc + " : " + secondeBlanc, 190, 110);
+        g.drawString(minuteNoir + " : " + secondeNoir, 1150, 110);
 
         //cimetiere
 
@@ -115,5 +117,4 @@ public class Echiquier extends JPanel
             }
         }
     }
-    
 }

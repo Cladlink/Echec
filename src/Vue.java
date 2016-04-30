@@ -7,6 +7,21 @@ public class Vue extends JFrame
 {
     private Echiquier echiquier = null;
     private Model model  = null;
+
+    private JMenuBar barMenu ;
+    private JMenu optionPartie ;
+    private JMenu parametres ;
+    private JMenu autres ;
+
+    private JMenuItem nvlPart ;
+    private JMenuItem rejPart ;
+    private JMenuItem ldPart ;
+    private JMenuItem svPart ;
+    private JMenuItem quitter ;
+    private JMenuItem precedent ;
+    private JMenuItem historique ;
+    private JMenuItem aide ;
+    private JMenuItem aPropos ;
     /**
      * Vue (Constructeur)
      * construit la vue d'échec.
@@ -41,6 +56,42 @@ public class Vue extends JFrame
     public void initAttribut()
     {
         echiquier = new Echiquier(model.getPartie().getBoard(), model);
+        barMenu = new JMenuBar();
+        optionPartie = new JMenu("Fichier");
+        parametres = new JMenu("Options");
+        autres = new JMenu("?");
+
+        nvlPart = new JMenuItem("Nouvelle Partie");
+        rejPart = new JMenuItem("Rejoindre Partie");
+        ldPart = new JMenuItem("Charger Partie");
+        svPart = new JMenuItem("Sauver Partie");
+        quitter = new JMenuItem("Quitter");
+
+        precedent = new JMenuItem("Undo");
+        historique = new JMenuItem("Historique");
+
+        aide = new JMenuItem("Aide");
+        aPropos = new JMenuItem("A propos");
+
+        optionPartie.add(nvlPart);
+        optionPartie.add(rejPart);
+        optionPartie.addSeparator();
+        optionPartie.add(ldPart);
+        optionPartie.add(svPart);
+        optionPartie.addSeparator();
+        optionPartie.add(quitter);
+
+        parametres.add(precedent);
+        parametres.add(historique);
+
+        autres.add(aide);
+        autres.add(aPropos);
+
+        barMenu.add(optionPartie);
+        barMenu.add(parametres);
+        barMenu.add(autres);
+
+        setJMenuBar(barMenu);
     }
 
     /**

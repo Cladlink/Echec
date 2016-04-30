@@ -14,7 +14,7 @@ public class ControlButton extends Control implements MouseListener
     }
 
     /**
-     * mouseClicked
+     * mouseClicked todo
      * définir évenement lorsque cliqué
      *
      * @param e (contient l'évènement)

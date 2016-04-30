@@ -6,6 +6,8 @@ import java.util.ArrayList;
  */
 public class Roi extends Piece
 {
+    private boolean roqueFaisable = true;
+
     public Roi(Case caseInitiale, boolean isBlanc)
     {
         super(caseInitiale, isBlanc);
@@ -40,6 +42,15 @@ public class Roi extends Piece
                         || plateau[row + i][column + j].getPiece().blanc != blanc) )
                     casesAtteignables.add(plateau[row + i][column + j]);
             }
+        }
+
+        // roque
+        if (roqueFaisable)
+        {
+            // roque gauche
+
+            // roque droit
+
         }
         deplacementPossible();
     }

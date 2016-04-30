@@ -4,6 +4,7 @@
 public class Joueur
 {
 
+    private int id;
     private boolean isBlanc;
     private String pseudo = null;
     private boolean egalite = false;
@@ -50,5 +51,11 @@ public class Joueur
     }
     public void setVictoire(boolean victoire) {
         this.victoire = victoire;
+    }
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
     }
 }

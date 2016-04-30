@@ -1,10 +1,16 @@
+    import java.text.SimpleDateFormat;
     import java.util.ArrayList;
-
-/**
+    import java.util.Date;
+    import java.util.Locale;
+    import java.util.TimerTask;
+    import java.util.Timer;
+    /**
   Created by cladlink on 06/04/16.
  */
 public class Partie
 {
+    private Timer tm = null;
+    private TimerTask tt = null;
     private Joueur joueurBlanc = null;
     private Joueur joueurNoir = null;
     private Board board = null;
@@ -14,14 +20,12 @@ public class Partie
     private ArrayList<Piece> cimetiereNoir = null;
     private ArrayList<Piece> piecesBlanchesPlateau = null;
     private ArrayList<Piece> piecesNoiresPlateau = null;
-    private int modePartie; // 0 = partie normale ; 1 = temps partie limitée; 2 = temps tour limités
+    private int modePartie; // 0 = partie sans temps ; 1 = temps partie limitée; 2 = temps tour limités
     private ArrayList<String> historique = null;
     private boolean netPartie;
     private boolean echecBlanc;
     private boolean echecNoir;
     private boolean finPartie;
-
-    private boolean roqueFaisable = true;
 
 
     /**
@@ -56,35 +60,63 @@ public class Partie
         cimetiereNoir = new ArrayList<>();
 
         // on met à jour la liste des pièces blanches et noires en jeu
-
         for (int i = 0; i < board.getPlateau().length; i++)
-        {
             for (int j = 0; j < board.getPlateau()[i].length; j++)
-            {
                     if(board.getPlateau()[i][j].getPiece() != null
                             && board.getPlateau()[i][j].getPiece().isBlanc())
                         piecesBlanchesPlateau.add(board.getPlateau()[i][j].getPiece());
                     else if(board.getPlateau()[i][j].getPiece() != null
                             && !board.getPlateau()[i][j].getPiece().isBlanc())
                         piecesNoiresPlateau.add(board.getPlateau()[i][j].getPiece());
+
+    }
+    // todo
+    public synchronized void tourLimite()
+    {
+       /* tm = new Timer();
+
+        tm.schedule(tt, 30000);
+        tt = new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                    finDeJeuTemps();
             }
+        };
+*/
+    }
+    // todo
+    public synchronized  void tempsLimite()
+    {
+
+    }
+    // todo
+    public synchronized void finDeJeuTemps()
+    {
+        if (tourBlanc)
+        {
+           // finir la partie en défaveur des blancs
+        }
+        else
+        {
+            // finir la partie en défaveut des noirs
         }
     }
-
     /**
-     * pause
+     * pause todo
      * met en pause
      */
-    public void pause()
+    public synchronized void pause()
     {
         // a faire en fonction de l'état des timers quand il y en aura
     }
 
     /**
-     * stop
+     * stop todo
      * arrète la partie todo prendre en compte abandon, mat
      */
-    public void stop()
+    public synchronized void stop()
     {
 
     }
@@ -93,7 +125,7 @@ public class Partie
      * historiqueCoups
      * met a jours l'arrayList de coups jouées a chaque deplacement
      */
-    public void historiqueCoups(Case caseCliquee, Case destination, boolean mangeUnePiece)
+    public synchronized void historiqueCoups(Case caseCliquee, Case destination, boolean mangeUnePiece)
     {
         String coup = "";
 
@@ -145,12 +177,12 @@ public class Partie
     }
 
     /**
-     * inscription Joueur
+     * inscription Joueur todo
      * Inscrit un nouveau joueur dans la BDD
      *
      * @param pseudo (seul élément necessaire à la création d'un joueur)
      */
-    public void inscriptionJoueur(String pseudo)
+    public synchronized void inscriptionJoueur(String pseudo)
     {
         BDDManager bdd = new BDDManager();
         bdd.start();
@@ -162,42 +194,63 @@ public class Partie
     }
 
     /**
-     * save
+     * save todo
      * envoie l'insert en base de donnée afin de sauvegarder l'état du board
      *
      * utiliser la class BDDManager
      */
-    public void save()
+    public synchronized void save()
     {
+        String dateActuelle = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).format(new Date());
+        String coupsJoues = "";
+        int i;
+        for(i=0; i<this.historique.size(); i++)
+        {
+            coupsJoues += this.historique.get(i);
+        }
 
+        String requete = "INSERT INTO HISTORIQUE VALUES (null, \""
+                + joueurBlanc.getId()
+                + "\", \""
+                + joueurNoir.getId()
+                + "\", \""
+                + dateActuelle
+                + "\", \""
+                + coupsJoues
+                + "\";";
+
+        BDDManager bdd = new BDDManager();
+        bdd.start();
+        bdd.edit(requete);
+        bdd.stop();
     }
 
     /**
-     * load
+     * load todo
      * recoit un etat du board et redémarre la partie
      *
      */
-    public void load()
+    public synchronized void load()
     {
 
     }
 
     /**
-     * attenteAction
+     * attenteAction todo
      * comportent d'attente qu'une pièce soit jouer quelque soit le tour.
      *
      */
-    public void attenteAction()
+    public synchronized void attenteAction()
     {
 
     }
 
     /**
-     * attenteDebutPartie
+     * attenteDebutPartie todo
      * comportement d'attente du début de la partie
      *
      */
-    public void attenteDebutPartie()
+    public synchronized void attenteDebutPartie()
     {
 
     }
@@ -208,7 +261,7 @@ public class Partie
      *
      * @return true si echec
      */
-    boolean isEchec(Case caseRoi)
+    synchronized boolean isEchec(Case caseRoi)
     {
         int i;
         if (!caseRoi.getPiece().blanc)
@@ -233,7 +286,7 @@ public class Partie
      *
      * @return true si echec et mat
      */
-    boolean isEchecEtMat()
+    synchronized boolean isEchecEtMat()
     {
         if(tourBlanc)
         {
@@ -262,7 +315,7 @@ public class Partie
      *
      * @return (true if is pat)
      */
-    boolean isPat()
+    synchronized boolean isPat()
     {
         int i, j;
 
@@ -305,88 +358,88 @@ public class Partie
 
 
     // getters / setters
-    public Joueur getJoueurBlanc() {
+    public synchronized Joueur getJoueurBlanc() {
         return joueurBlanc;
     }
-    public void setJoueurBlanc(Joueur joueurBlanc) {
+    public synchronized void setJoueurBlanc(Joueur joueurBlanc) {
         this.joueurBlanc = joueurBlanc;
     }
-    public Joueur getJoueurNoir() {
+    public synchronized Joueur getJoueurNoir() {
         return joueurNoir;
     }
-    public void setJoueurNoir(Joueur joueurNoir) {
+    public synchronized void setJoueurNoir(Joueur joueurNoir) {
         this.joueurNoir = joueurNoir;
     }
-    public Board getBoard() {
+    public synchronized Board getBoard() {
         return board;
     }
-    public void setBoard(Board board) {
+    public synchronized void setBoard(Board board) {
         this.board = board;
     }
-    public ArrayList<String> getListeCoups() {
+    public synchronized ArrayList<String> getListeCoups() {
         return listeCoups;
     }
-    public void setListeCoups(ArrayList<String> listeCoups) {
+    public synchronized void setListeCoups(ArrayList<String> listeCoups) {
         this.listeCoups = listeCoups;
     }
-    public boolean isTourBlanc() {
+    public synchronized boolean isTourBlanc() {
         return tourBlanc;
     }
-    public void setTourBlanc(boolean tourBlanc) {
+    public synchronized void setTourBlanc(boolean tourBlanc) {
         this.tourBlanc = tourBlanc;
     }
-    public ArrayList<Piece> getCimetiereBlanc() {
+    public synchronized ArrayList<Piece> getCimetiereBlanc() {
         return cimetiereBlanc;
     }
-    public void setCimetiereBlanc(ArrayList<Piece> cimetiereBlanc) {
+    public synchronized void setCimetiereBlanc(ArrayList<Piece> cimetiereBlanc) {
         this.cimetiereBlanc = cimetiereBlanc;
     }
-    public ArrayList<Piece> getCimetiereNoir() {
+    public synchronized ArrayList<Piece> getCimetiereNoir() {
         return cimetiereNoir;
     }
-    public void setCimetiereNoir(ArrayList<Piece> cimetiereNoir) {
+    public synchronized void setCimetiereNoir(ArrayList<Piece> cimetiereNoir) {
         this.cimetiereNoir = cimetiereNoir;
     }
-    public ArrayList<Piece> getPiecesBlanchesPlateau() {
+    public synchronized ArrayList<Piece> getPiecesBlanchesPlateau() {
         return piecesBlanchesPlateau;
     }
-    public void setPiecesBlanchesPlateau(ArrayList<Piece> piecesBlanchesPlateau) {
+    public synchronized void setPiecesBlanchesPlateau(ArrayList<Piece> piecesBlanchesPlateau) {
         this.piecesBlanchesPlateau = piecesBlanchesPlateau;
     }
-    public ArrayList<Piece> getPiecesNoiresPlateau() {
+    public synchronized ArrayList<Piece> getPiecesNoiresPlateau() {
         return piecesNoiresPlateau;
     }
-    public void setPiecesNoiresPlateau(ArrayList<Piece> piecesNoiresPlateau) {
+    public synchronized void setPiecesNoiresPlateau(ArrayList<Piece> piecesNoiresPlateau) {
         this.piecesNoiresPlateau = piecesNoiresPlateau;
     }
-    public int getModePartie() {
+    public synchronized int getModePartie() {
         return modePartie;
     }
-    public void setModePartie(int modePartie) {
+    public synchronized void setModePartie(int modePartie) {
         this.modePartie = modePartie;
     }
-    public boolean isNetPartie() {
+    public synchronized boolean isNetPartie() {
         return netPartie;
     }
-    public void setNetPartie(boolean netPartie) {
+    public synchronized void setNetPartie(boolean netPartie) {
         this.netPartie = netPartie;
     }
-    public boolean isEchecBlanc() {
+    public synchronized boolean isEchecBlanc() {
         return echecBlanc;
     }
-    public void setEchecBlanc(boolean echecBlanc) {
+    public synchronized void setEchecBlanc(boolean echecBlanc) {
         this.echecBlanc = echecBlanc;
     }
-    public boolean isEchecNoir() {
+    public synchronized boolean isEchecNoir() {
         return echecNoir;
     }
-    public void setEchecNoir(boolean echecNoir) {
+    public synchronized void setEchecNoir(boolean echecNoir) {
         this.echecNoir = echecNoir;
     }
-    public boolean isFinPartie() {
+    public synchronized boolean isFinPartie() {
         return finPartie;
     }
-    public void setFinPartie(boolean finPartie) {
+    public synchronized void setFinPartie(boolean finPartie) {
         this.finPartie = finPartie;
     }
 }
