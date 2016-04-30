@@ -10,8 +10,8 @@ public class Reine extends Piece
     public Reine(Case caseInitiale, boolean isBlanc)
     {
         super(caseInitiale, isBlanc);
-        adresseImageBlanche = "img/ReineBlanc.png";
-        adresseImageNoire = "img/ReineNoir.png";
+        adresseImageBlanche = "img/BlancEleve/ReineBlanc.png";
+        adresseImageNoire = "img/NoirEleve/ReineNoir.png";
         skin = isBlanc?new ImageIcon(adresseImageBlanche):new ImageIcon(adresseImageNoire);
     }
 

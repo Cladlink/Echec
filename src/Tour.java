@@ -11,8 +11,8 @@ public class Tour extends Piece
     public Tour(Case caseInitiale, boolean isBlanc)
     {
         super(caseInitiale, isBlanc);
-        adresseImageBlanche = "img/TourBlanc.png";
-        adresseImageNoire = "img/TourNoir.png";
+        adresseImageBlanche = "img/BlancEleve/TourBlanc.png";
+        adresseImageNoire = "img/NoirEleve/TourNoir.png";
         skin = isBlanc?new ImageIcon(adresseImageBlanche):new ImageIcon(adresseImageNoire);
     }
 

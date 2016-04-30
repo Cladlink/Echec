@@ -43,12 +43,6 @@ public class ControlButton extends Control implements MouseListener
                     model.setCasesAtteignables(casesAtteignables);
                     model.setCaseMemoire(model.getPartie().getBoard().getPlateau()[row][column]);
 
-
-                    if (casesAtteignables.size() > 0)
-                        for (int i = 0; i < casesAtteignables.size(); i++)
-                        {
-                            vue.getEchiquier().paintComponent(vue.getGraphics());
-                        }
                     vue.repaint();
                 }
                 else if(model.getCasesAtteignables() != null
@@ -59,6 +53,7 @@ public class ControlButton extends Control implements MouseListener
                     model.setCasesAtteignables(null);
                     model.getPartie().setTourBlanc(!model.getPartie().isTourBlanc());
                     model.majCasesAtteignable();
+
                     vue.repaint();
                 }
             }

@@ -90,8 +90,8 @@ public class Vue extends JFrame
         barMenu.add(optionPartie);
         barMenu.add(parametres);
         barMenu.add(autres);
-
         setJMenuBar(barMenu);
+
     }
 
     /**
@@ -130,17 +130,17 @@ public class Vue extends JFrame
         ImageIcon[] piecesPossibles = new ImageIcon[4];
         if(pion.blanc)
         {
-            piecesPossibles[0] = new ImageIcon("img/CavalierBlanc.png");
-            piecesPossibles[1] = new ImageIcon("img/TourBlanc.png");
-            piecesPossibles[2] = new ImageIcon("img/FouBlanc.png");
-            piecesPossibles[3] = new ImageIcon("img/ReineBlanc.png");
+            piecesPossibles[0] = new ImageIcon("img/BlancEleve/CavalierBlanc.png");
+            piecesPossibles[1] = new ImageIcon("img/BlancEleve/TourBlanc.png");
+            piecesPossibles[2] = new ImageIcon("img/BlancEleve/FouBlanc.png");
+            piecesPossibles[3] = new ImageIcon("img/BlancEleve/ReineBlanc.png");
         }
         else
         {
-            piecesPossibles[0] = new ImageIcon("img/CavalierNoir.png");
-            piecesPossibles[1] = new ImageIcon("img/TourNoir.png");
-            piecesPossibles[2] = new ImageIcon("img/FouNoir.png");
-            piecesPossibles[3] = new ImageIcon("img/ReineNoir.png");
+            piecesPossibles[0] = new ImageIcon("img/NoirEleve/CavalierNoir.png");
+            piecesPossibles[1] = new ImageIcon("img/NoirEleve/TourNoir.png");
+            piecesPossibles[2] = new ImageIcon("img/NoirEleve/FouNoir.png");
+            piecesPossibles[3] = new ImageIcon("img/NoirEleve/ReineNoir.png");
         }
 
 
