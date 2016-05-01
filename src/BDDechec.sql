@@ -13,19 +13,6 @@ CREATE TABLE JOUEUR
 	trophee3 boolean
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE SAUVEGARDE
-(
-	idSauvegarde INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	joueurBlancSave INT(100),
-	joueurNoirSave INT(100),
-	dateSave DATE,
-	tourSave boolean,
-	etatPlateauSave TEXT,
-	idHistorique INT(100),
-	CONSTRAINT fk_sauvegarde_joueurBlanc FOREIGN KEY (joueurBlancSave) REFERENCES JOUEUR(idJoueur),
-	CONSTRAINT fk_sauvegarde_joueurNoir FOREIGN KEY (joueurNoirSave) REFERENCES JOUEUR(idJoueur)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 CREATE TABLE HISTORIQUE
 (
 	idHistorique INT(100) NOT NULL AUTO_INCREMENT,
@@ -37,3 +24,18 @@ CREATE TABLE HISTORIQUE
 	CONSTRAINT fk_historique_joueurNoir FOREIGN KEY (joueurNoirPartie) REFERENCES JOUEUR(idJoueur),
 	PRIMARY KEY(idHistorique)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE SAUVEGARDE
+(
+	idSauvegarde INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	joueurBlancSave INT(100),
+	joueurNoirSave INT(100),
+	dateSave DATE,
+	tourSave boolean,
+	etatPlateauSave TEXT,
+	idHistorique INT(100),
+	CONSTRAINT fk_sauvegarde_joueurBlanc FOREIGN KEY (joueurBlancSave) REFERENCES JOUEUR(idJoueur),
+	CONSTRAINT fk_sauvegarde_joueurNoir FOREIGN KEY (joueurNoirSave) REFERENCES JOUEUR(idJoueur),
+	CONSTRAINT fk_sauvegarde_historique FOREIGN KEY (idHistorique) REFERENCES HISTORIQUE(idHistorique)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8

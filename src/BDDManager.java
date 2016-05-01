@@ -166,7 +166,18 @@ class BDDManager
     {
         BDDManager bdd = new BDDManager();
         bdd.start();
-        bdd.lire("src/BDDechec.sql");
+        //bdd.lire("src/BDDechec.sql");
+
+        /*bdd.edit("INSERT INTO JOUEUR (pseudoJoueur, nbPartiesJoueur, nbPartiesGagneesJoueur," +
+                " nbPartiesPerduesJoueur, nbPartiesAbandonneeJoueur, partieEnCoursJoueur, trophee1, trophee2, trophee3)" +
+                " VALUES (\"toto\", 0, 0, 0, 0, 0, false, false, false);");
+        bdd.edit("INSERT INTO JOUEUR (pseudoJoueur, nbPartiesJoueur, nbPartiesGagneesJoueur, " +
+                "nbPartiesPerduesJoueur, nbPartiesAbandonneeJoueur, partieEnCoursJoueur, trophee1, trophee2, trophee3)" +
+                " VALUES (\"titi\", 0, 0, 0, 0, 0, false, false, false);");
+        bdd.edit("INSERT INTO HISTORIQUE VALUES (null, 1, 2, \"2015-12-12\", \"PB1213-PB1213-PB1213-PB1213-PB1213-PB1213-PB1213\");");*/
+        bdd.edit("INSERT INTO SAUVEGARDE VALUES (null, 1, 2, null, true, \"PB12-PN13-RN65\", 6);");
+        ArrayList<ArrayList<String>> test = bdd.ask("SELECT * FROM SAUVEGARDE;");
+        System.out.println(test);
         bdd.stop();
     }
 }
