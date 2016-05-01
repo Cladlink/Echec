@@ -72,27 +72,26 @@ public class Echiquier extends JPanel
             }
         }
         //timer
-        g.setColor(Color.BLUE);
-        g.fillRect(160, 80, 100, 50);
-        g.fillRect(1110, 80, 100, 50);
-
-        g.setColor(Color.BLACK);
-        g.drawString(minuteBlanc + " : " + secondeBlanc, 190, 110);
-        g.drawString(minuteNoir + " : " + secondeNoir, 1150, 110);
-
+        if ( model.getModePartie() == 1 || model.getModePartie() == 2 )
+        {
+            g.setColor(Color.BLUE);
+            g.fillRect(160, 80, 100, 50);
+            g.fillRect(1110, 80, 100, 50);
+            g.setColor(Color.BLACK);
+            g.drawString(minuteBlanc + " : " + secondeBlanc, 190, 110);
+            g.drawString(minuteNoir + " : " + secondeNoir, 1150, 110);
+        }
         //cimetiere
-
-        //on met le fond d'ecran du cimetiere
-
-
-
         Partie partie = model.getPartie();
+
         int i, pionBlanc=0, pasPionBlanc=0, pionNoir=0, pasPionNoir=0;
 
-        //cimetiere pute blanc
-        g.drawImage(bgCimetiere.getImage(),110, 150, 200, 500, null);
-        for(i = 0; i<partie.getCimetiereBlanc().size(); i++){
-            if (partie.getCimetiereBlanc().get(i) instanceof Pion) {
+        //cimetiere blanc
+        g.drawImage(bgCimetiere.getImage(), 110, 150, 200, 500, null);
+        for(i = 0; i<partie.getCimetiereBlanc().size(); i++)
+        {
+            if (partie.getCimetiereBlanc().get(i) instanceof Pion)
+            {
                 g.drawImage(partie.getCimetiereBlanc().get(i).skin.getImage(), 120, 200 + 50 * pionBlanc, 100, 100, null);
                 pionBlanc++;
             } else {

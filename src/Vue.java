@@ -2,16 +2,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
+import java.util.Objects;
 
 class Vue extends JFrame
 {
     private Echiquier echiquier = null;
     private Model model  = null;
-
-    private JMenuBar barMenu ;
-    private JMenu optionPartie ;
-    private JMenu parametres ;
-    private JMenu autres ;
 
     private JMenuItem nvlPart ;
     private JMenuItem rejPart ;
@@ -31,20 +27,17 @@ class Vue extends JFrame
     Vue(Model model)
     {
         this.model = model;
-        model.lancementPartie();
-        model.majCasesAtteignable();
         initAttribut();
-        //creerWidget();
         setUndecorated(true);
         //setAlwaysOnTop(true);
         setResizable(false);
         setName("Chess");
         setVisible(true);
-
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
         Toolkit tk = Toolkit.getDefaultToolkit();
-                int xsize = (int)tk.getScreenSize().getWidth();
-                int ySize = (int)tk.getScreenSize().getHeight();
+        int xsize = (int)tk.getScreenSize().getWidth();
+        int ySize = (int)tk.getScreenSize().getHeight();
         setSize(xsize, ySize);
     }
 
@@ -55,11 +48,10 @@ class Vue extends JFrame
      */
     private void initAttribut()
     {
-        echiquier = new Echiquier(model.getPartie().getBoard(), model);
-        barMenu = new JMenuBar();
-        optionPartie = new JMenu("Fichier");
-        parametres = new JMenu("Options");
-        autres = new JMenu("?");
+        JMenuBar barMenu = new JMenuBar();
+        JMenu optionPartie = new JMenu("Fichier");
+        JMenu parametres = new JMenu("Options");
+        JMenu autres = new JMenu("?");
 
         nvlPart = new JMenuItem("Nouvelle Partie");
         rejPart = new JMenuItem("Rejoindre Partie");
@@ -111,7 +103,8 @@ class Vue extends JFrame
      */
     void setControlButton(MouseListener e)
     {
-        echiquier.addMouseListener(e);
+        if (echiquier != null)
+            echiquier.addMouseListener(e);
     }
 
     /**
@@ -167,16 +160,27 @@ class Vue extends JFrame
             pion.promotion(4);
     }
 
-    String nouvellePartie()
+    String askJOption(String message)
     {
-        return JOptionPane.showInputDialog(null, "Pseuso :");
+        String pseudo = JOptionPane.showInputDialog(null, "Pseuso " + message + ":");
+        if (Objects.equals(pseudo, ""))
+            return "anonymous";
+        return pseudo;
     }
 
     int choixMode()
     {
         Object[] options = {1, 2 ,3 };
-        return JOptionPane.showOptionDialog(this, "Choisissez le mode de votre partie :",
+        return JOptionPane.showOptionDialog(this, "Choisissez le mode de votre partie :\n" +
+                "1) partie normale\n" +
+                "2) coups chronométrée\n" +
+                "3) partie chronométrée\n",
                 "Mode Partie", JOptionPane.INFORMATION_MESSAGE, 2, null, options, null);
+    }
+    boolean boolJOptionPane(String message)
+    {
+        int answer = JOptionPane.showConfirmDialog(null, message, null, JOptionPane.YES_NO_OPTION);
+        return (answer == JOptionPane.YES_OPTION);
     }
 
     // getters & setters
@@ -234,19 +238,15 @@ class Vue extends JFrame
     public void setLdPart(JMenuItem ldPart) {
         this.ldPart = ldPart;
     }
-
     public JMenuItem getRejPart() {
         return rejPart;
     }
-
     public void setRejPart(JMenuItem rejPart) {
         this.rejPart = rejPart;
     }
-
     public JMenuItem getNvlPart() {
         return nvlPart;
     }
-
     public void setNvlPart(JMenuItem nvlPart) {
         this.nvlPart = nvlPart;
     }
