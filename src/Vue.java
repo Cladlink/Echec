@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 
-public class Vue extends JFrame
+class Vue extends JFrame
 {
     private Echiquier echiquier = null;
     private Model model  = null;
@@ -18,7 +18,7 @@ public class Vue extends JFrame
     private JMenuItem ldPart ;
     private JMenuItem svPart ;
     private JMenuItem quitter ;
-    private JMenuItem precedent ;
+    private JMenuItem undo;
     private JMenuItem historique ;
     private JMenuItem aide ;
     private JMenuItem aPropos ;
@@ -28,13 +28,13 @@ public class Vue extends JFrame
      *
      * @param model (...model...)
      */
-    public Vue(Model model)
+    Vue(Model model)
     {
         this.model = model;
         model.lancementPartie();
         model.majCasesAtteignable();
         initAttribut();
-        creerWidget();
+        //creerWidget();
         setUndecorated(true);
         //setAlwaysOnTop(true);
         setResizable(false);
@@ -53,7 +53,7 @@ public class Vue extends JFrame
      * initAttribut
      * Instancie les attributs
      */
-    public void initAttribut()
+    private void initAttribut()
     {
         echiquier = new Echiquier(model.getPartie().getBoard(), model);
         barMenu = new JMenuBar();
@@ -67,7 +67,7 @@ public class Vue extends JFrame
         svPart = new JMenuItem("Sauver Partie");
         quitter = new JMenuItem("Quitter");
 
-        precedent = new JMenuItem("Undo");
+        undo = new JMenuItem("Undo");
         historique = new JMenuItem("Historique");
 
         aide = new JMenuItem("Aide");
@@ -81,7 +81,7 @@ public class Vue extends JFrame
         optionPartie.addSeparator();
         optionPartie.add(quitter);
 
-        parametres.add(precedent);
+        parametres.add(undo);
         parametres.add(historique);
 
         autres.add(aide);
@@ -109,7 +109,7 @@ public class Vue extends JFrame
      *
      * @param e (ecouteur de type MouseListener)
      */
-    public void setControlButton(MouseListener e)
+    void setControlButton(MouseListener e)
     {
         echiquier.addMouseListener(e);
     }
@@ -120,12 +120,21 @@ public class Vue extends JFrame
      *
      * @param e (ecouteur de type ActionListener)
      */
-    public void setControlMenu(ActionListener e)
+    void setControlMenu(ActionListener e)
     {
+        nvlPart.addActionListener(e);
+        rejPart.addActionListener(e);
+        svPart.addActionListener(e);
+        ldPart.addActionListener(e);
+        quitter.addActionListener(e);
+        undo.addActionListener(e);
+        historique.addActionListener(e);
+        aPropos.addActionListener(e);
+        aide.addActionListener(e);
 
     }
 
-    public void choixPiece(Pion pion)
+    void choixPiece(Pion pion)
     {
         ImageIcon[] piecesPossibles = new ImageIcon[4];
         if(pion.blanc)
@@ -158,6 +167,17 @@ public class Vue extends JFrame
             pion.promotion(4);
     }
 
+    String nouvellePartie()
+    {
+        return JOptionPane.showInputDialog(null, "Pseuso :");
+    }
+
+    int choixMode()
+    {
+        Object[] options = {1, 2 ,3 };
+        return JOptionPane.showOptionDialog(this, "Choisissez le mode de votre partie :",
+                "Mode Partie", JOptionPane.INFORMATION_MESSAGE, 2, null, options, null);
+    }
 
     // getters & setters
     public Echiquier getEchiquier() {
@@ -171,5 +191,63 @@ public class Vue extends JFrame
     }
     public void setModel(Model model) {
         this.model = model;
+    }
+    public JMenuItem getaPropos() {
+        return aPropos;
+    }
+    public void setaPropos(JMenuItem aPropos) {
+        this.aPropos = aPropos;
+    }
+    public JMenuItem getHistorique() {
+        return historique;
+    }
+    public void setHistorique(JMenuItem historique) {
+        this.historique = historique;
+    }
+    public JMenuItem getAide() {
+        return aide;
+    }
+    public void setAide(JMenuItem aide) {
+        this.aide = aide;
+    }
+    public JMenuItem getUndo() {
+        return undo;
+    }
+    public void setUndo(JMenuItem undo) {
+        this.undo = undo;
+    }
+    public JMenuItem getQuitter() {
+        return quitter;
+    }
+    public void setQuitter(JMenuItem quitter) {
+        this.quitter = quitter;
+    }
+    public JMenuItem getSvPart() {
+        return svPart;
+    }
+    public void setSvPart(JMenuItem svPart) {
+        this.svPart = svPart;
+    }
+    public JMenuItem getLdPart() {
+        return ldPart;
+    }
+    public void setLdPart(JMenuItem ldPart) {
+        this.ldPart = ldPart;
+    }
+
+    public JMenuItem getRejPart() {
+        return rejPart;
+    }
+
+    public void setRejPart(JMenuItem rejPart) {
+        this.rejPart = rejPart;
+    }
+
+    public JMenuItem getNvlPart() {
+        return nvlPart;
+    }
+
+    public void setNvlPart(JMenuItem nvlPart) {
+        this.nvlPart = nvlPart;
     }
 }

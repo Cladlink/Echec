@@ -4,9 +4,10 @@
     import java.util.Locale;
     import java.util.TimerTask;
     import java.util.Timer;
+
     /**
-  Created by cladlink on 06/04/16.
- */
+        Created by cladlink on 06/04/16.
+    */
 public class Partie
 {
     private Timer tm = null;
@@ -84,7 +85,7 @@ public class Partie
                     finDeJeuTemps();
             }
         };
-*/
+        */
     }
     // todo
     public synchronized  void tempsLimite()

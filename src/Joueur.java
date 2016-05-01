@@ -9,6 +9,14 @@ public class Joueur
     private String pseudo = null;
     private boolean egalite = false;
     private boolean victoire;
+    private int nbPartiesJoueur;
+    private int nbPartiesEnCours;
+    private int nbVictoire;
+    private int nbDefaite;
+    private int nbEgalite;
+    private boolean partieSauvegardee;
+
+
 
     /**
      * Joueur (Constructeur)
@@ -25,6 +33,8 @@ public class Joueur
         else
             this.pseudo = pseudo;
         victoire = false;
+
+        partieSauvegardee = false;
     }
 
     // getters and setters
@@ -57,5 +67,41 @@ public class Joueur
     }
     public void setId(int id) {
         this.id = id;
+    }
+    public int getNbPartiesJoueur() {
+        return nbPartiesJoueur;
+    }
+    public void setNbPartiesJoueur(int nbPartiesJoueur) {
+        this.nbPartiesJoueur = nbPartiesJoueur;
+    }
+    public int getNbPartiesEnCours() {
+        return nbPartiesEnCours;
+    }
+    public void setNbPartiesEnCours(int nbPartiesEnCours) {
+        this.nbPartiesEnCours = nbPartiesEnCours;
+    }
+    public int getNbVictoire() {
+        return nbVictoire;
+    }
+    public void setNbVictoire(int nbVictoire) {
+        this.nbVictoire = nbVictoire;
+    }
+    public int getNbDefaite() {
+        return nbDefaite;
+    }
+    public void setNbDefaite(int nbDefaite) {
+        this.nbDefaite = nbDefaite;
+    }
+    public int getNbEgalite() {
+        return nbEgalite;
+    }
+    public void setNbEgalite(int nbEgalite) {
+        this.nbEgalite = nbEgalite;
+    }
+    public boolean isPartieSauvegardee() {
+        return partieSauvegardee;
+    }
+    public void setPartieSauvegardee(boolean partieSauvegardee) {
+        this.partieSauvegardee = partieSauvegardee;
     }
 }
