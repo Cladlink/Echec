@@ -164,6 +164,7 @@ class BDDManager
      */
     public static void main(String[] args)
     {
+
         BDDManager bdd = new BDDManager();
         bdd.start();
         //bdd.lire("src/BDDechec.sql");
