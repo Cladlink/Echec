@@ -32,6 +32,10 @@ class Vue extends JFrame
         //setAlwaysOnTop(true);
         setResizable(false);
         setName("Chess");
+        model.lancementPartie();
+        model.majCasesAtteignable();
+        echiquier = new Echiquier(model.getPartie().getBoard(), model);
+        creerWidget();
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
