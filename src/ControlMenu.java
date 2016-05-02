@@ -47,12 +47,12 @@ public class ControlMenu extends Control implements ActionListener
             // gérer le cas ou la partie est normal (pas d'affichage des chronos
             // gérer le cas ou les coups sont en temps limités (chrono de 30sec par tour (ou laisser choix au joueur)
             // gérér le cas où la partie est en temps limités (chrono de 15 min de jeu par joueur)
-            model.lancementPartie();
+            /*model.lancementPartie();
             model.majCasesAtteignable();
             vue.setEchiquier(new Echiquier(model.getPartie().getBoard(), model));
             vue.creerWidget();
             vue.setControlButton(new ControlButton(model, vue));
-            vue.setVisible(true);
+            vue.setVisible(true);*/
         }
         else if (e.getSource() == vue.getRejPart())
         {
