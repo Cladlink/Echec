@@ -99,6 +99,7 @@ public class Pion extends Piece
             case 1 :
                 emplacementPiece.setPiece(null);
                 emplacementPiece.setPiece(new Cavalier(this.emplacementPiece, this.blanc));
+
                 break;
             case 2 :
                 emplacementPiece.setPiece(null);
@@ -112,5 +113,9 @@ public class Pion extends Piece
                 emplacementPiece.setPiece(null);
                 emplacementPiece.setPiece(new Reine(this.emplacementPiece, this.blanc));
         }
+        if (blanc)
+            emplacementPiece.getBoard().getPartie().getPiecesBlanchesPlateau().add(emplacementPiece.getPiece());
+        else
+            emplacementPiece.getBoard().getPartie().getPiecesNoiresPlateau().add(emplacementPiece.getPiece());
     }
 }

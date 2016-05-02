@@ -3,7 +3,6 @@
  */
 public class Case
 {
-
     private int row;
     private int column;
     private Piece piece = null;
@@ -11,8 +10,7 @@ public class Case
     private boolean isWhite;
 
     /**
-     * Case (constructeur
-     *
+     * Case (constructeur)
      * Initie la case à un emplacement précis
      *
      * @param row (représente la ligne)
@@ -28,6 +26,7 @@ public class Case
         this.board = board;
         this.isWhite = isWhite;
     }
+
     public Case(Case old)
     {
         this.row = old.row;

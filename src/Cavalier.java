@@ -1,8 +1,8 @@
 import javax.swing.*;
 import java.util.ArrayList;
 
-/*
- * Created by baptiste on 31/03/16.
+/**
+  Created by baptiste on 31/03/16.
  */
 public class Cavalier extends Piece
 {

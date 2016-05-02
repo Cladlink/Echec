@@ -125,6 +125,7 @@ public class Board
     }
 
     /**
+     * todo virer la vue
      * deplacer
      * deplace la pièce aprés avoir vérifier : si l'empalcement cible est vide ou non
      * doit vérifier si une pièce est mangée, faire les actions en conséquence
@@ -134,6 +135,7 @@ public class Board
      */
     public void deplacer(Case caseCliquee, Case destination, Vue vue)
     {
+        partie.historiqueCoups(caseCliquee, destination);
         if (destination.getPiece() != null)
         {
             if (destination.getPiece().blanc)
@@ -151,6 +153,7 @@ public class Board
         }
         caseCliquee.getPiece().deplacer(destination);
 
+        // test de la promotion
         if( ( ( destination.getRow() == 0 && destination.getPiece().blanc )
                 || ( destination.getRow() == 7) && !destination.getPiece().blanc )
                 && destination.getPiece() instanceof Pion )

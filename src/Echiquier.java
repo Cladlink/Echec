@@ -115,5 +115,10 @@ public class Echiquier extends JPanel
                 pasPionNoir++;
             }
         }
+        g.setColor(Color.black);
+        g.fillRect(0,getHeight()-50,getWidth(),40);
+        g.setColor(Color.white);
+        g.drawString("La barre de statut", 15, getHeight()-20);
     }
+
 }

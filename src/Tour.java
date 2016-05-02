@@ -91,7 +91,6 @@ public class Tour extends Piece
 
             decal++;
         }
-        deplacementPossible();
     }
 
     @Override

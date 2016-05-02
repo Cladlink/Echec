@@ -87,7 +87,7 @@ public class ControlMenu extends Control implements ActionListener
             boolean undo = vue.boolJOptionPane("voulez-vous annuler le dernier coup ?");
             if (undo)
             {
-                // todo code undo de Sylvain + baptiste
+                // todo code undo de Sylvain + ML
                 // tu dois récupérer le dernier coup dans l'historique
                 // faire le chemin arrière ce qui implique de sortir éventuellement une pièce du cimetiere
                 // la remettre en jeu
@@ -107,7 +107,7 @@ public class ControlMenu extends Control implements ActionListener
         }
         else if (e.getSource() == vue.getAide())
         {
-            // todo MarieLucile + Adonis
+            // todo Baptiste + Adonis
             // proposition d'un genre de petit tuto ? (à la toute fin)
         }
     }

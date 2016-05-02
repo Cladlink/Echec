@@ -69,23 +69,23 @@ public class Partie
                     else if(board.getPlateau()[i][j].getPiece() != null
                             && !board.getPlateau()[i][j].getPiece().isBlanc())
                         piecesNoiresPlateau.add(board.getPlateau()[i][j].getPiece());
-
+        historique = new ArrayList<>();
     }
     // todo
     public synchronized void tourLimite()
     {
-       /* tm = new Timer();
-
-        tm.schedule(tt, 30000);
+        tm = new Timer();
         tt = new TimerTask()
         {
             @Override
             public void run()
             {
-                    finDeJeuTemps();
+                finDeJeuTemps();
             }
         };
-        */
+        tm.schedule(tt, 30000);
+
+
     }
     // todo
     public synchronized  void tempsLimite()
@@ -126,13 +126,13 @@ public class Partie
      * historiqueCoups
      * met a jours l'arrayList de coups jouées a chaque deplacement
      */
-    public synchronized void historiqueCoups(Case caseCliquee, Case destination, boolean mangeUnePiece)
+    public synchronized void historiqueCoups(Case caseCliquee, Case destination)
     {
         String coup = "";
 
         //recupere le type de piece
-        Piece piece = destination.getPiece();
-        //verifie que piece n'est pas null #sécu
+        Piece piece = caseCliquee.getPiece();
+        //verifie que la piece n'est pas null
         if (piece != null)
             if (piece instanceof Pion)
                 coup += 'p';
@@ -162,19 +162,36 @@ public class Partie
         coup += String.valueOf(destination.getRow());
 
         //recupere si le deplacement a mangé une piece
-        if (mangeUnePiece){
+
+        Piece pieceDestination = destination.getPiece();
+        if (pieceDestination != null)
+        {
+            coup+='!';
             //si c'est une piece blanche on va chercher le dernier ajouté du cimetiere noir
-            if (piece.isBlanc()) {
-                coup += "!"+cimetiereNoir.get(cimetiereNoir.size()-1);
-            }
-            else {
-                coup += "!"+cimetiereBlanc.get(cimetiereBlanc.size()-1);
-            }
+            if (pieceDestination != null)
+                if (pieceDestination instanceof Pion)
+                    coup += 'p';
+                else if (pieceDestination instanceof Tour)
+                    coup += 't';
+                else if (pieceDestination instanceof Cavalier)
+                    coup += 'c';
+                else if (pieceDestination instanceof Fou)
+                    coup += 'f';
+                else if (pieceDestination instanceof Reine)
+                    coup += 'q';
+                else if (pieceDestination instanceof Roi)
+                    coup += 'r';
+
+            //recupere la couleur de la pieceDestination
+            if (pieceDestination.isBlanc())
+                coup +='b';
+            else
+                coup+='n';
         }
 
         //ajoute le coups joué dans l'historique
         historique.add(coup);
-        System.out.println(coup);
+        System.out.println(historique);
     }
 
     /**
