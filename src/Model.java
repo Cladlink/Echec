@@ -9,7 +9,7 @@ public class Model
     private Partie partie = null;
     private Joueur jBlanc = null;
     private Joueur jNoir = null;
-    private int modePartie = 0;
+    private int modePartie = 1;
     private boolean netPartie = false;
     private Case caseMemoire = null;
 
@@ -18,29 +18,12 @@ public class Model
     public void lancementPartie()
     {
         this.jBlanc = new Joueur(true, "toto");
-        this.jNoir = new Joueur(!jBlanc.isBlanc(), "tata");
+        this.jNoir = new Joueur(false, "tata");
         this.partie = new Partie(jBlanc, jNoir, modePartie, netPartie);
     }
 
-    /**
-     * majCasesAtteignable
-     *
-     */
-    public void majCasesAtteignable()
-    {
-        ArrayList<Piece> pieceEnJeu;
-        if (partie.isTourBlanc())
-            pieceEnJeu = partie.getPiecesBlanchesPlateau();
-        else
-            pieceEnJeu = partie.getPiecesNoiresPlateau();
 
-        for (int i = 0; i < pieceEnJeu.size(); i++)
-        {
-            pieceEnJeu.get(i).casesAtteignables();
-            pieceEnJeu.get(i).deplacementPossible();
 
-        }
-    }
     // getters & setters
 
     public Partie getPartie() {
@@ -49,29 +32,8 @@ public class Model
     public void setPartie(Partie partie) {
         this.partie = partie;
     }
-    public Joueur getjBlanc() {
-        return jBlanc;
-    }
-    public void setjBlanc(Joueur jBlanc) {
-        this.jBlanc = jBlanc;
-    }
-    public Joueur getjNoir() {
-        return jNoir;
-    }
-    public void setjNoir(Joueur jNoir) {
-        this.jNoir = jNoir;
-    }
-    public int getModePartie() {
-        return modePartie;
-    }
     public void setModePartie(int modePartie) {
         this.modePartie = modePartie;
-    }
-    public boolean isNetPartie() {
-        return netPartie;
-    }
-    public void setNetPartie(boolean netPartie) {
-        this.netPartie = netPartie;
     }
     public ArrayList<Case> getCasesAtteignables() {
         return casesAtteignables;

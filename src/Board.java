@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
   Created by cladlink on 06/04/16.
  */
@@ -158,6 +160,25 @@ public class Board
                 || ( destination.getRow() == 7) && !destination.getPiece().blanc )
                 && destination.getPiece() instanceof Pion )
             vue.choixPiece( (Pion)destination.getPiece() );
+
+    }
+    /**
+     * majCasesAtteignable
+     *
+     */
+    public void majCasesAtteignable()
+    {
+        ArrayList<Piece> pieceEnJeu;
+        if (partie.isTourBlanc())
+            pieceEnJeu = partie.getPiecesBlanchesPlateau();
+        else
+            pieceEnJeu = partie.getPiecesNoiresPlateau();
+
+        for (int i = 0; i < pieceEnJeu.size(); i++)
+        {
+            pieceEnJeu.get(i).casesAtteignables();
+            pieceEnJeu.get(i).deplacementPossible();
+        }
     }
 
     //getters & setters

@@ -4,12 +4,16 @@ import java.util.ArrayList;
 /**
   Created by Michael on 06/04/16.
  */
-public class ControlButton extends Control implements MouseListener
+public class ControlButton extends MouseAdapter
 {
+
+    private Model model;
+    private Vue vue;
 
     public ControlButton(Model model, Vue vue)
     {
-        super(model, vue);
+        this.model = model;
+        this.vue = vue;
         vue.setControlButton(this);
     }
 
@@ -25,7 +29,7 @@ public class ControlButton extends Control implements MouseListener
         int row = (e.getY()-50)/80;
         int column = (e.getX()-360)/80;
         Case[][] plateau = model.getPartie().getBoard().getPlateau();
-        if (e.getSource() == vue.getEchiquier())
+        if (e.getSource() == vue.getVueEchiquier())
         {
             if( row >= 0
                     && row <=7
@@ -52,24 +56,12 @@ public class ControlButton extends Control implements MouseListener
                     model.getPartie().getBoard().deplacer(model.getCaseMemoire(), plateau[row][column], this.vue);
                     model.setCasesAtteignables(null);
                     model.getPartie().setTourBlanc(!model.getPartie().isTourBlanc());
-                    model.majCasesAtteignable();
+                    model.getPartie().getBoard().majCasesAtteignable();
 
                     vue.repaint();
                 }
             }
         }
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e)
-    {
-    // ne pas utiliser
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e)
-    {
-        // ne pas utiliser
     }
 
     /**

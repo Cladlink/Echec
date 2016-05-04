@@ -39,17 +39,18 @@ public class Pion extends Piece
                 casesAtteignables.add(plateau[row + decal*2][column]);
 
         // mouvement d'une case
-        if (plateau[row + decal][column].getPiece() == null )
+        if ( row + decal <= 7 && row + decal >=0
+               && plateau[row + decal][column].getPiece() == null )
             casesAtteignables.add(plateau[row + decal][column]);
 
         // la pièce peut elle manger à  gauche ?
-        if (column -1 >= 0
+        if (column -1 >= 0 && row + decal <= 7 && row + decal >=0
                 && plateau[row + decal][column-1].getPiece() != null
                 && plateau[row + decal][column-1].getPiece().blanc != blanc)
             casesAtteignables.add(plateau[row + decal][column - 1]);
 
         // la pièce peut elle manger à  droite ?
-        if (column + 1 <= 7
+        if (column + 1 <= 7 && row + decal <= 7 && row + decal >=0
                 && plateau[row + decal][column + 1].getPiece() != null
                 && plateau[row + decal][column + 1].getPiece().blanc != blanc)
             casesAtteignables.add(plateau[row + decal][column + 1]);

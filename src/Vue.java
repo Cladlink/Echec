@@ -6,7 +6,7 @@ import java.util.Objects;
 
 class Vue extends JFrame
 {
-    private Echiquier echiquier = null;
+    private VueEchiquier vueEchiquier = null;
     private Model model  = null;
 
     private JMenuItem nvlPart ;
@@ -33,8 +33,8 @@ class Vue extends JFrame
         setResizable(false);
         setName("Chess");
         model.lancementPartie();
-        model.majCasesAtteignable();
-        echiquier = new Echiquier(model.getPartie().getBoard(), model);
+        model.getPartie().getBoard().majCasesAtteignable();
+        vueEchiquier = new VueEchiquier(model.getPartie().getBoard(), model);
         creerWidget();
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -96,7 +96,7 @@ class Vue extends JFrame
      */
     public void creerWidget()
     {
-        setContentPane(echiquier);
+        setContentPane(vueEchiquier);
     }
 
     /**
@@ -107,8 +107,8 @@ class Vue extends JFrame
      */
     void setControlButton(MouseListener e)
     {
-        if (echiquier != null)
-            echiquier.addMouseListener(e);
+        if (vueEchiquier != null)
+            vueEchiquier.addMouseListener(e);
     }
 
     /**
@@ -188,11 +188,11 @@ class Vue extends JFrame
     }
 
     // getters & setters
-    public Echiquier getEchiquier() {
-        return echiquier;
+    public VueEchiquier getVueEchiquier() {
+        return vueEchiquier;
     }
-    public void setEchiquier(Echiquier echiquier) {
-        this.echiquier = echiquier;
+    public void setVueEchiquier(VueEchiquier vueEchiquier) {
+        this.vueEchiquier = vueEchiquier;
     }
     public Model getModel() {
         return model;

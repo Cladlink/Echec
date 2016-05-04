@@ -29,14 +29,17 @@ public class Partie
     private boolean finPartie;
 
 
+
     /**
      * Partie Constructeur
      *
      * @param joueurBlanc j1
      * @param joueurNoir j2
      */
+
     public Partie(Joueur joueurBlanc, Joueur joueurNoir, int modePartie, boolean netPartie)
     {
+
         finPartie = false;
         //On ajoute les deux joueurs à la partie
         this.joueurBlanc = joueurBlanc;
@@ -166,9 +169,8 @@ public class Partie
         Piece pieceDestination = destination.getPiece();
         if (pieceDestination != null)
         {
-            coup+='!';
+            coup += '!';
             //si c'est une piece blanche on va chercher le dernier ajouté du cimetiere noir
-            if (pieceDestination != null)
                 if (pieceDestination instanceof Pion)
                     coup += 'p';
                 else if (pieceDestination instanceof Tour)
@@ -187,8 +189,17 @@ public class Partie
                 coup +='b';
             else
                 coup+='n';
-        }
 
+        }
+        if ( piece instanceof Pion
+                && (
+                destination.getRow() == 0
+                        || destination.getRow() == 7 )
+                )
+        {
+            coup+='?';
+
+        }
         //ajoute le coups joué dans l'historique
         historique.add(coup);
         System.out.println(historique);
@@ -212,6 +223,35 @@ public class Partie
     }
 
     /**
+     * loadJoueur
+     * charge les données d'un joueur depuis la bdd
+     *
+     * @param pseudo (nécessaire pour identifier le joueur dans la bdd)
+     */
+    public synchronized void loadJoueur(String pseudo)
+    {
+        String requete = "SELECT *" + " FROM JOUEUR " + "WHERE pseudoJoueur = " + pseudo + ";";
+        BDDManager bdd = new BDDManager();
+        bdd.start();
+        ArrayList<ArrayList<String>> joueurRecup = bdd.ask(requete);
+        bdd.stop();
+
+        //si pas de joueur avec ce pseudo
+        if (joueurRecup.size()==0)
+            inscriptionJoueur(pseudo);
+
+        joueurBlanc.setId(Integer.valueOf(joueurRecup.get(0).get(0)));
+        joueurBlanc.setBlanc(Boolean.getBoolean(joueurRecup.get(2).get(0)));
+        joueurBlanc.setEgalite(Boolean.getBoolean(joueurRecup.get(3).get(0)));
+        joueurBlanc.setVictoire(Boolean.getBoolean(joueurRecup.get(4).get(0)));
+        joueurBlanc.setNbPartiesJoueur(Integer.valueOf(joueurRecup.get(5).get(0)));
+        joueurBlanc.setNbPartiesEnCours(Integer.valueOf(joueurRecup.get(6).get(0)));
+        joueurBlanc.setNbVictoire(Integer.valueOf(joueurRecup.get(7).get(0)));
+        joueurBlanc.setNbEgalite(Integer.valueOf(joueurRecup.get(8).get(0)));
+        joueurBlanc.setPartieSauvegardee(Boolean.getBoolean(joueurRecup.get(9).get(0)));
+    }
+
+    /**
      * save todo
      * envoie l'insert en base de donnée afin de sauvegarder l'état du board
      *
@@ -221,7 +261,7 @@ public class Partie
     {
         BDDManager bdd = new BDDManager();
         bdd.start();
-        String dateActuelle = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).format(new Date());
+        String dateActuelle = new SimpleDateFormat("dd/mm/yyyy", Locale.FRANCE).format(new Date());
         String coupsJoues = "";
         int i, j;
         // sauvegarde de l'historique des coups joués dans la base de donnée
@@ -406,7 +446,7 @@ public class Partie
                 for (j = 0; j < piecesBlanchesPlateau.get(i).casesAtteignables.size(); j++)
                     if (piecesBlanchesPlateau.get(i).casesAtteignables.get(i) != null)
                         return false;
-            return true;
+                return true;
         }
         else
         {
@@ -416,6 +456,67 @@ public class Partie
                         return false;
             return true;
         }
+    }
+    public synchronized void undo()
+    {
+        String dernierCoup = historique.get(historique.size()-1);
+        String[] tabCoupDecoupe = dernierCoup.split("");
+        boolean isBlanc = tabCoupDecoupe[1].equals("b");
+
+
+        int columnDepart = Integer.parseInt(tabCoupDecoupe[2]);
+        int rowDepart = Integer.parseInt(tabCoupDecoupe[3]);
+        int columnArrivee = Integer.parseInt(tabCoupDecoupe[4]);
+        int rowArrivee = Integer.parseInt(tabCoupDecoupe[5]);
+
+        // Recupération de la pièce qui a été bougée au dernière tour
+        Piece pieceBougee = board.getPlateau()[rowArrivee][columnArrivee].getPiece();
+        board.getPlateau()[rowArrivee][columnArrivee].setPiece(null);
+        board.getPlateau()[rowDepart][columnDepart].setPiece(pieceBougee);
+        pieceBougee.setEmplacementPiece(board.getPlateau()[rowDepart][columnDepart]);
+
+        // veut dire qu'une piece est mangée
+        if(tabCoupDecoupe.length > 7)
+        {
+            Piece pieceMangee;
+            if(isBlanc)
+            {
+                pieceMangee = cimetiereNoir.get(cimetiereNoir.size()-1);
+                cimetiereNoir.remove(cimetiereNoir.size()-1);
+                piecesNoiresPlateau.add(pieceMangee);
+            }
+            else
+            {
+                pieceMangee = cimetiereBlanc.get(cimetiereBlanc.size()-1);
+                cimetiereBlanc.remove(getCimetiereBlanc().size()-1);
+                piecesBlanchesPlateau.add(pieceMangee);
+            }
+            board.getPlateau()[rowArrivee][columnArrivee].setPiece(pieceMangee);
+            pieceMangee.setEmplacementPiece(board.getPlateau()[rowArrivee][columnArrivee]);
+        }
+        if(tabCoupDecoupe.length  == 7 || tabCoupDecoupe.length == 10)
+        {
+            pieceBougee.emplacementPiece.setPiece(null);
+            pieceBougee.emplacementPiece.setPiece(
+                    new Pion(pieceBougee.emplacementPiece, pieceBougee.blanc));
+            if (pieceBougee.blanc)
+            {
+                piecesBlanchesPlateau.remove(piecesBlanchesPlateau.size()-1);
+                piecesBlanchesPlateau.add(pieceBougee.emplacementPiece.getPiece());
+                cimetiereBlanc.remove(cimetiereBlanc.size()-1);
+            }
+            else
+            {
+                piecesNoiresPlateau.remove(piecesNoiresPlateau.size()-1);
+                piecesNoiresPlateau.add(pieceBougee.emplacementPiece.getPiece());
+                cimetiereNoir.remove(cimetiereNoir.size()-1);
+            }
+
+        }
+        tourBlanc = !tourBlanc;
+        historique.remove(historique.size()-1);
+        board.majCasesAtteignable();
+
     }
 
 

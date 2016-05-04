@@ -5,12 +5,15 @@ import java.util.Objects;
 /**
   Created by cladlink on 06/04/16.
  */
-public class ControlMenu extends Control implements ActionListener
+public class ControlMenu implements ActionListener
 {
+    private Model model;
+    private Vue vue;
 
     public ControlMenu(Model model, Vue vue)
     {
-        super(model, vue);
+        this.model = model;
+        this.vue = vue;
         vue.setControlMenu(this);
     }
 
@@ -49,7 +52,7 @@ public class ControlMenu extends Control implements ActionListener
             // gérér le cas où la partie est en temps limités (chrono de 15 min de jeu par joueur)
             /*model.lancementPartie();
             model.majCasesAtteignable();
-            vue.setEchiquier(new Echiquier(model.getPartie().getBoard(), model));
+            vue.setVueEchiquier(new VueEchiquier(model.getPartie().getBoard(), model));
             vue.creerWidget();
             vue.setControlButton(new ControlButton(model, vue));
             vue.setVisible(true);*/
@@ -87,12 +90,9 @@ public class ControlMenu extends Control implements ActionListener
             boolean undo = vue.boolJOptionPane("voulez-vous annuler le dernier coup ?");
             if (undo)
             {
-                // todo code undo de Sylvain + ML
-                // tu dois récupérer le dernier coup dans l'historique
-                // faire le chemin arrière ce qui implique de sortir éventuellement une pièce du cimetiere
-                // la remettre en jeu
-                // et annuler un déplacement
-                // le coup annulé doit bien sûr être enlevé de l'historique
+                System.out.println("coucou");
+                model.getPartie().undo();
+                vue.repaint();
             }
         }
         else if (e.getSource() == vue.getHistorique())

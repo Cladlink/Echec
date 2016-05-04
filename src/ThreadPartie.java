@@ -12,7 +12,7 @@ public class ThreadPartie extends Thread
     private Boolean isServer;
     private ServerSocket conn = null;
     private Socket comm = null;
-    private Control controller = null;
+    private ControlButton controller = null;
     private int port;
 
     public ThreadPartie(Partie partie, Boolean isServer, ControlButton controller, int port)
