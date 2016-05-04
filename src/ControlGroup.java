@@ -3,9 +3,9 @@
  */
 public class ControlGroup
 {
-
     private Model model;
     private Vue vue;
+
     private ControlMenu controlMenu;
     private ControlButton controlButton;
 

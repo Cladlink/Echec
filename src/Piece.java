@@ -42,7 +42,7 @@ public abstract class Piece
 
     /**
      * peutAtteindreRoi
-     * Test si une pièce peut atteindre le roi
+     * Teste si une pièce peut atteindre le roi
      *
      * @param caseRoi case qui contient le roi
      * @return (return true si caseRoi peut être atteint)
@@ -50,38 +50,39 @@ public abstract class Piece
     public boolean peutAtteindreRoi(Case caseRoi)
     {
         casesAtteignables();
-        if (casesAtteignables != null)
-            for (int i = 0; i < this.casesAtteignables.size(); i++)
-                if (this.casesAtteignables.contains(caseRoi))
-                    return true;
-        return false;
+        return casesAtteignables != null && this.casesAtteignables.contains(caseRoi);
     }
 
+    /**
+     * deplacementPossible
+     * Récupère les casesAtteignables
+     * et on teste avec un déplacement fictif si le roi est mis en danger.
+     *
+     */
     public void deplacementPossible()
     {
         Case emplacementPieceDeBase;
         Piece tempPiece;
+
         ArrayList<Piece> piecesEnJeu;
-        Case monRoi;
-        int i;
         if (blanc)
             piecesEnJeu = emplacementPiece.getBoard().getPartie().getPiecesNoiresPlateau();
         else
             piecesEnJeu = emplacementPiece.getBoard().getPartie().getPiecesBlanchesPlateau();
 
-        for (i = 0; i < casesAtteignables.size(); i++)
+
+        for (int i = 0; i < casesAtteignables.size(); i++)
         {
-            emplacementPieceDeBase = emplacementPiece; // pour ramener le roi à sa place
+            emplacementPieceDeBase = emplacementPiece; // pour ramener le roi à sa place après déplacement fictif
+            // on stock la pièce de la case destination sera null si la case ne contient pas de pièce
             tempPiece = casesAtteignables.get(i).getPiece();
-            deplacer(casesAtteignables.get(i)); // on déplace la pièce pour faire le test correctement
+            // on déplace la pièce pour tester si le roi adverse est mis en danger
+            deplacer(casesAtteignables.get(i));
             if (tempPiece != null)
                 piecesEnJeu.remove(tempPiece);
 
-            monRoi = blanc?
-                    emplacementPiece.getBoard().getRoiBlanc().emplacementPiece
-                    :emplacementPiece.getBoard().getRoiNoir().emplacementPiece;
             // on teste si les pièces adverses peuvent prenre le roi en simulant le déplacement
-            if ( emplacementPiece.getBoard().getPartie().isEchec(monRoi) )
+            if ( emplacementPiece.getBoard().getPartie().isEchec() )
             {
                 casesAtteignables.remove(i);
                 i--;
@@ -99,6 +100,11 @@ public abstract class Piece
         }
     }
 
+    /**
+     * CasesAtteignables
+     * Doit être définie pour chaque pièces en fonction de sa façon de se déplacer
+     *
+     */
     public abstract void casesAtteignables();
 
     //getters & setters

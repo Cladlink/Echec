@@ -5,7 +5,7 @@ import javax.swing.*;
  */
 public class ConnexionPane extends JOptionPane
 {
-    private Partie partie = null;
+    private Partie partie;
 
     public ConnexionPane(Partie partie)
     {

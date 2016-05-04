@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.util.ArrayList;
 
 /**
  Created by Michael on 31/03/16.
@@ -25,15 +24,14 @@ public class Roi extends Piece
     public void casesAtteignables()
     {
         casesAtteignables.clear();
-        int i, j;
 
         Case[][] plateau = emplacementPiece.getBoard().getPlateau();
         int row = emplacementPiece.getRow();
         int column = emplacementPiece.getColumn();
 
-        for (i = -1; i<=1; i++)
+        for (int i = -1; i<=1; i++)
         {
-            for( j = -1; j<=1; j++)
+            for(int j = -1; j<=1; j++)
             {
                 if (row + i >= 0 && row + i <= 7
                         && column + j >= 0 && column + j <= 7
@@ -56,8 +54,7 @@ public class Roi extends Piece
     {
         int gapRow = Math.abs( emplacementPiece.getRow() - caseRoi.getRow() );
         int gapCol = Math.abs( emplacementPiece.getColumn() - caseRoi.getColumn() );
-        if ( gapRow<=1 && gapCol<=1 )
-            return true;
-        return false;
+
+        return gapRow <= 1 && gapCol <= 1;
     }
 }

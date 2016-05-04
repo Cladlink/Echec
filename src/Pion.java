@@ -60,15 +60,14 @@ public class Pion extends Piece
     public boolean peutAtteindreRoi(Case caseRoi)
     {
         int decal = blanc?-1:1;
+
         int row = emplacementPiece.getRow();
         int col = emplacementPiece.getColumn();
         int rowRoi = caseRoi.getRow();
         int colRoi = caseRoi.getColumn();
 
-        if ( ( row + decal == rowRoi && col + 1 == colRoi )
-                || (row + decal == rowRoi && col - 1 == colRoi) )
-            return true;
-        return false;
+        return (row + decal == rowRoi && col + 1 == colRoi)
+                || (row + decal == rowRoi && col - 1 == colRoi);
     }
 
     /**
@@ -81,6 +80,7 @@ public class Pion extends Piece
     {
         ArrayList<Piece> piecesCimetiere;
         ArrayList<Piece> piecesEnJeu;
+
         if(blanc)
         {
             piecesEnJeu = emplacementPiece.getBoard().getPartie().getPiecesBlanchesPlateau();
@@ -95,28 +95,22 @@ public class Pion extends Piece
         piecesEnJeu.remove(this);
         piecesCimetiere.add(this);
 
+        emplacementPiece.setPiece(null);
         switch (choix)
         {
             case 1 :
-                emplacementPiece.setPiece(null);
                 emplacementPiece.setPiece(new Cavalier(this.emplacementPiece, this.blanc));
-
                 break;
             case 2 :
-                emplacementPiece.setPiece(null);
                 emplacementPiece.setPiece(new Tour(this.emplacementPiece, this.blanc));
                 break;
             case 3 :
-                emplacementPiece.setPiece(null);
                 emplacementPiece.setPiece(new Fou(this.emplacementPiece, this.blanc));
                 break;
             case 4 :
-                emplacementPiece.setPiece(null);
                 emplacementPiece.setPiece(new Reine(this.emplacementPiece, this.blanc));
+                break;
         }
-        if (blanc)
-            emplacementPiece.getBoard().getPartie().getPiecesBlanchesPlateau().add(emplacementPiece.getPiece());
-        else
-            emplacementPiece.getBoard().getPartie().getPiecesNoiresPlateau().add(emplacementPiece.getPiece());
+        piecesEnJeu.add(emplacementPiece.getPiece());
     }
 }

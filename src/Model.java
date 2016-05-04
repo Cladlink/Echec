@@ -5,13 +5,13 @@ import java.util.ArrayList;
  */
 public class Model
 {
-    private ArrayList<Case> casesAtteignables = null;
-    private Partie partie = null;
-    private Joueur jBlanc = null;
-    private Joueur jNoir = null;
+    private ArrayList<Case> casesAtteignables;
+    private Partie partie;
+    private Joueur jBlanc;
+    private Joueur jNoir;
     private int modePartie = 1;
-    private boolean netPartie = false;
-    private Case caseMemoire = null;
+    private boolean netPartie; // à la fin
+    private Case caseMemoire;
 
 
 

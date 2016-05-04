@@ -7,10 +7,9 @@ public class Board
 {
     private final int row = 8;
     private final int column = 8;
-    private Case[][] plateau = null;
-    private Case caseMemoire = null; //enregistre la case qui a été cliquée remettre à null après un coup joué !
-    private Partie partie = null;
-    private int sizeCase = 80;
+    private final int sizeCase = 80;
+    private Case[][] plateau;
+    private Partie partie;
 
     private Piece roiNoir, roiBlanc;
 
@@ -24,8 +23,8 @@ public class Board
      */
     public Board(Partie partie)
     {
-        this.partie = partie;
         plateau = new Case[row][column];
+        this.partie = partie;
 
         plateauDeBase();
     }
@@ -137,15 +136,20 @@ public class Board
      */
     public void deplacer(Case caseCliquee, Case destination, Vue vue)
     {
+        // ajoute le coup dans l'historique
         partie.historiqueCoups(caseCliquee, destination);
+
+        // si la case destination contient une pièce
         if (destination.getPiece() != null)
         {
+            //si la pièce est blanche
             if (destination.getPiece().blanc)
             {
                 partie.getPiecesBlanchesPlateau().remove(destination.getPiece());
                 partie.getCimetiereBlanc().add(destination.getPiece());
                 destination.setPiece(null);
             }
+            // si la pièce est noire
             else
             {
                 partie.getPiecesNoiresPlateau().remove(destination.getPiece());
@@ -153,6 +157,7 @@ public class Board
                 destination.setPiece(null);
             }
         }
+        // deplace
         caseCliquee.getPiece().deplacer(destination);
 
         // test de la promotion
@@ -160,10 +165,11 @@ public class Board
                 || ( destination.getRow() == 7) && !destination.getPiece().blanc )
                 && destination.getPiece() instanceof Pion )
             vue.choixPiece( (Pion)destination.getPiece() );
-
+        // todo fait appel à la vue. Est ce acceptable vu qu'on est dans le model?
     }
     /**
      * majCasesAtteignable
+     * Mets à jour la variable représentant toutes les cases atteignables des pièces de l'adversaire
      *
      */
     public void majCasesAtteignable()
@@ -194,12 +200,6 @@ public class Board
     public void setPlateau(Case[][] plateau) {
         this.plateau = plateau;
     }
-    public Case getCaseMemoire() {
-        return caseMemoire;
-    }
-    public void setCaseMemoire(Case caseMemoire) {
-        this.caseMemoire = caseMemoire;
-    }
     public Partie getPartie() {
         return partie;
     }
@@ -208,9 +208,6 @@ public class Board
     }
     public int getSizeCase() {
         return sizeCase;
-    }
-    public void setSizeCase(int sizeCase) {
-        this.sizeCase = sizeCase;
     }
     public Piece getRoiNoir() {
         return roiNoir;

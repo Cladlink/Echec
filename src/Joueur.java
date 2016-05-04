@@ -3,11 +3,11 @@
  */
 public class Joueur
 {
-
+    //todo faire deux constructeurs : 1 pour anonymous, 1 par pseudo cf bdd
     private int id;
     private boolean isBlanc;
-    private String pseudo = null;
-    private boolean egalite = false;
+    private String pseudo;
+    private boolean egalite;
     private boolean victoire;
     private int nbPartiesJoueur;
     private int nbPartiesEnCours;
@@ -27,6 +27,7 @@ public class Joueur
      */
     public Joueur(boolean isBlanc, String pseudo)
     {
+
         this.isBlanc = isBlanc;
         if (pseudo.length() == 0)
             this.pseudo = "Anonyme";

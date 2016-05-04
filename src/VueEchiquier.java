@@ -34,7 +34,12 @@ public class VueEchiquier extends JPanel
     {
         return new Dimension(8*board.getSizeCase(),8*board.getSizeCase());
     }
-
+    /**
+     * PaintComponent
+     * Paint l'objet graphique. Regroupe tous les objets graphiques
+     *
+     * @param g (boite à outil servant à peindre des éléments)
+     */
     @Override
     public void paintComponent(Graphics g)
     {
@@ -50,6 +55,7 @@ public class VueEchiquier extends JPanel
                     g.setColor(Color.WHITE);
                 else
                     g.setColor(Color.BLUE);
+
                 if (model.getCasesAtteignables() != null)
                 {
                     for (int k = 0; k < model.getCasesAtteignables().size(); k++)
@@ -62,11 +68,12 @@ public class VueEchiquier extends JPanel
                             isDepPossiblePiece = true;
                     }
                 }
-
+                // on peint la case, puis, on dessine l'image, noire si la case est vide, rouge si elle est pleine.
                 g.fillRect(j * board.getSizeCase() + 360,
                     i * board.getSizeCase() + 50,
                     board.getSizeCase(),
                     board.getSizeCase());
+
                 if (isDepPossible)
                     g.drawImage(deplacement.getImage(),
                             j * board.getSizeCase() + 360,
@@ -82,11 +89,12 @@ public class VueEchiquier extends JPanel
                 isDepPossiblePiece = false;
             }
         }
+
+        // on dessine toutes les pièces
         for (int i = 0; i < board.getPlateau().length; i++)
         {
             for (int j = 0; j < board.getPlateau().length; j++)
             {
-
                 if (board.getPlateau()[i][j].getPiece() != null)
                 {
                     g.drawImage(board.getPlateau()[i][j].getPiece().skin.getImage(),

@@ -92,8 +92,7 @@ public class Cavalier extends Piece
     {
         int gapRow = Math.abs( emplacementPiece.getRow() - caseRoi.getRow() );
         int gapCol = Math.abs( emplacementPiece.getColumn() - caseRoi.getColumn() );
-        if ( (gapRow == 2 && gapCol == 1) || (gapRow == 1 && gapCol == 2) )
-            return true;
-        return false;
+
+        return (gapRow == 2 && gapCol == 1) || (gapRow == 1 && gapCol == 2);
     }
 }

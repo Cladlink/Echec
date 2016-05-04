@@ -8,27 +8,31 @@
     /**
         Created by cladlink on 06/04/16.
     */
-public class Partie
+class Partie
 {
-    private Timer tm = null;
-    private TimerTask tt = null;
-    private Joueur joueurBlanc = null;
-    private Joueur joueurNoir = null;
-    private Board board = null;
-    private ArrayList<String> listeCoups = null;
-    private boolean tourBlanc = true;
-    private ArrayList<Piece> cimetiereBlanc = null;
-    private ArrayList<Piece> cimetiereNoir = null;
-    private ArrayList<Piece> piecesBlanchesPlateau = null;
-    private ArrayList<Piece> piecesNoiresPlateau = null;
+
+    private Timer tm;
+    private TimerTask tt;
+
+    private Joueur joueurBlanc;
+    private Joueur joueurNoir;
+
+    private Board board;
+
+    private boolean tourBlanc;
+
+    private ArrayList<Piece> cimetiereBlanc;
+    private ArrayList<Piece> cimetiereNoir;
+    private ArrayList<Piece> piecesBlanchesPlateau;
+    private ArrayList<Piece> piecesNoiresPlateau;
+
     private int modePartie; // 0 = partie sans temps ; 1 = temps partie limitée; 2 = temps tour limités
-    private ArrayList<String> historique = null;
     private boolean netPartie;
+
     private boolean echecBlanc;
     private boolean echecNoir;
-    private boolean finPartie;
 
-
+    private ArrayList<String> historique;
 
     /**
      * Partie Constructeur
@@ -37,15 +41,22 @@ public class Partie
      * @param joueurNoir j2
      */
 
-    public Partie(Joueur joueurBlanc, Joueur joueurNoir, int modePartie, boolean netPartie)
+    Partie(Joueur joueurBlanc, Joueur joueurNoir, int modePartie, boolean netPartie)
     {
 
-        finPartie = false;
         //On ajoute les deux joueurs à la partie
         this.joueurBlanc = joueurBlanc;
         this.joueurNoir = joueurNoir;
+
         // On créé le plateau
         board = new Board(this);
+
+        tourBlanc = true;
+
+        piecesBlanchesPlateau = new ArrayList<>();
+        piecesNoiresPlateau = new ArrayList<>();
+        cimetiereBlanc = new ArrayList<>();
+        cimetiereNoir = new ArrayList<>();
 
         // choix du mode de la partie
         this.modePartie = modePartie;
@@ -53,15 +64,6 @@ public class Partie
         // pour la partie en réseau
         this.netPartie = netPartie;
 
-        // Le roi est protégé en début de partie, il n'y a donc pas d'échec
-        echecBlanc = false;
-        echecNoir = false;
-
-        piecesBlanchesPlateau = new ArrayList<>();
-        piecesNoiresPlateau = new ArrayList<>();
-        // on initie le cimetière à 0 (car en début de partie il n'y a pas de pièce dans le cimetierre !)
-        cimetiereBlanc = new ArrayList<>();
-        cimetiereNoir = new ArrayList<>();
 
         // on met à jour la liste des pièces blanches et noires en jeu
         for (int i = 0; i < board.getPlateau().length; i++)
@@ -72,10 +74,15 @@ public class Partie
                     else if(board.getPlateau()[i][j].getPiece() != null
                             && !board.getPlateau()[i][j].getPiece().isBlanc())
                         piecesNoiresPlateau.add(board.getPlateau()[i][j].getPiece());
+
         historique = new ArrayList<>();
+
+        // Le roi est protégé en début de partie, il n'y a donc pas d'échec
+        echecBlanc = false;
+        echecNoir = false;
     }
     // todo
-    public synchronized void tourLimite()
+    synchronized void tourLimite()
     {
         tm = new Timer();
         tt = new TimerTask()
@@ -91,12 +98,12 @@ public class Partie
 
     }
     // todo
-    public synchronized  void tempsLimite()
+    synchronized  void tempsLimite()
     {
 
     }
     // todo
-    public synchronized void finDeJeuTemps()
+    synchronized void finDeJeuTemps()
     {
         if (tourBlanc)
         {
@@ -107,54 +114,36 @@ public class Partie
             // finir la partie en défaveut des noirs
         }
     }
-    /**
-     * pause todo
-     * met en pause
-     */
-    public synchronized void pause()
-    {
-        // a faire en fonction de l'état des timers quand il y en aura
-    }
-
-    /**
-     * stop todo
-     * arrète la partie todo prendre en compte abandon, mat
-     */
-    public synchronized void stop()
-    {
-
-    }
 
     /**
      * historiqueCoups
      * met a jours l'arrayList de coups jouées a chaque deplacement
      */
-    public synchronized void historiqueCoups(Case caseCliquee, Case destination)
+    synchronized void historiqueCoups(Case caseCliquee, Case destination)
     {
         String coup = "";
 
         //recupere le type de piece
         Piece piece = caseCliquee.getPiece();
-        //verifie que la piece n'est pas null
-        if (piece != null)
-            if (piece instanceof Pion)
-                coup += 'p';
-            else if (piece instanceof Tour)
-                coup += 't';
-            else if (piece instanceof Cavalier)
-                coup += 'c';
-            else if (piece instanceof Fou)
-                coup += 'f';
-            else if (piece instanceof Reine)
-                coup += 'q';
-            else if (piece instanceof Roi)
-                coup += 'r';
+
+        if (piece instanceof Pion)
+            coup += 'p';
+        else if (piece instanceof Tour)
+            coup += 't';
+        else if (piece instanceof Cavalier)
+            coup += 'c';
+        else if (piece instanceof Fou)
+            coup += 'f';
+        else if (piece instanceof Reine)
+            coup += 'q';
+        else if (piece instanceof Roi)
+            coup += 'r';
 
         //recupere la couleur de la piece
-        if (piece.isBlanc())
-            coup +='b';
+        if ( piece.isBlanc() )
+            coup += 'b';
         else
-            coup+='n';
+            coup += 'n';
 
         //recupere la case départ
         coup += String.valueOf(caseCliquee.getColumn());
@@ -170,37 +159,30 @@ public class Partie
         if (pieceDestination != null)
         {
             coup += '!';
-            //si c'est une piece blanche on va chercher le dernier ajouté du cimetiere noir
-                if (pieceDestination instanceof Pion)
-                    coup += 'p';
-                else if (pieceDestination instanceof Tour)
-                    coup += 't';
-                else if (pieceDestination instanceof Cavalier)
-                    coup += 'c';
-                else if (pieceDestination instanceof Fou)
-                    coup += 'f';
-                else if (pieceDestination instanceof Reine)
-                    coup += 'q';
-                else if (pieceDestination instanceof Roi)
-                    coup += 'r';
 
-            //recupere la couleur de la pieceDestination
+            if (pieceDestination instanceof Pion)
+                coup += 'p';
+            else if (pieceDestination instanceof Tour)
+                coup += 't';
+            else if (pieceDestination instanceof Cavalier)
+                coup += 'c';
+            else if (pieceDestination instanceof Fou)
+                coup += 'f';
+            else if (pieceDestination instanceof Reine)
+                coup += 'q';
+            else if (pieceDestination instanceof Roi)
+                coup += 'r';
+
+            //recupère la couleur de la pieceDestination
             if (pieceDestination.isBlanc())
-                coup +='b';
+                coup += 'b';
             else
-                coup+='n';
-
+                coup += 'n';
         }
-        if ( piece instanceof Pion
-                && (
-                destination.getRow() == 0
-                        || destination.getRow() == 7 )
-                )
-        {
+        // test pour la promotion
+        if ( piece instanceof Pion && ( destination.getRow() == 0  || destination.getRow() == 7 ) )
             coup+='?';
 
-        }
-        //ajoute le coups joué dans l'historique
         historique.add(coup);
         System.out.println(historique);
     }
@@ -211,7 +193,7 @@ public class Partie
      *
      * @param pseudo (seul élément necessaire à la création d'un joueur)
      */
-    public synchronized void inscriptionJoueur(String pseudo)
+    synchronized void inscriptionJoueur(String pseudo)
     {
         BDDManager bdd = new BDDManager();
         bdd.start();
@@ -228,7 +210,7 @@ public class Partie
      *
      * @param pseudo (nécessaire pour identifier le joueur dans la bdd)
      */
-    public synchronized void loadJoueur(String pseudo)
+    synchronized void loadJoueur(String pseudo)
     {
         String requete = "SELECT *" + " FROM JOUEUR " + "WHERE pseudoJoueur = " + pseudo + ";";
         BDDManager bdd = new BDDManager();
@@ -257,7 +239,7 @@ public class Partie
      *
      * utiliser la class BDDManager
      */
-    public synchronized void save()
+    synchronized void save()
     {
         BDDManager bdd = new BDDManager();
         bdd.start();
@@ -332,7 +314,7 @@ public class Partie
      * recoit un etat du board et redémarre la partie
      *
      */
-    public synchronized void load()
+    synchronized void load()
     {
         //on recupere l'historique de la partie
        String requete = "SELECT HISTORIQUE.joueurNoirPartie, HISTORIQUE.datePartie," +
@@ -425,7 +407,7 @@ public class Partie
      * comportent d'attente qu'une pièce soit jouer quelque soit le tour.
      *
      */
-    public synchronized void attenteAction()
+    synchronized void attenteAction()
     {
 
     }
@@ -435,7 +417,7 @@ public class Partie
      * comportement d'attente du début de la partie
      *
      */
-    public synchronized void attenteDebutPartie()
+    synchronized void attenteDebutPartie()
     {
 
     }
@@ -446,21 +428,21 @@ public class Partie
      *
      * @return true si echec
      */
-    synchronized boolean isEchec(Case caseRoi)
+    synchronized boolean isEchec()
     {
+        Case caseRoi = tourBlanc?
+                board.getRoiBlanc().emplacementPiece
+                :board.getRoiNoir().emplacementPiece;
+        ArrayList<Piece> pieceEnJeu;
         int i;
-        if (!caseRoi.getPiece().blanc)
-        {
-            for (i = 0; i < piecesBlanchesPlateau.size(); i++)
-                if (piecesBlanchesPlateau.get(i).peutAtteindreRoi(caseRoi))
-                    return true;
-        }
+        if ( !caseRoi.getPiece().blanc )
+            pieceEnJeu = piecesBlanchesPlateau;
         else
-        {
-            for (i = 0; i < piecesNoiresPlateau.size(); i++)
-                if (piecesNoiresPlateau.get(i).peutAtteindreRoi(caseRoi))
-                    return true;
-        }
+            pieceEnJeu = piecesNoiresPlateau;
+
+        for (i = 0; i < pieceEnJeu.size(); i++)
+            if (pieceEnJeu.get(i).peutAtteindreRoi(caseRoi))
+                return true;
         return false;
     }
 
@@ -473,23 +455,18 @@ public class Partie
      */
     synchronized boolean isEchecEtMat()
     {
+        isEchec();
+        ArrayList<Piece> pieceEnJeu;
         if(tourBlanc)
-        {
-            for (int i = 0; i < piecesBlanchesPlateau.size(); i++)
-                if (piecesBlanchesPlateau.get(i).casesAtteignables != null)
-                    return false;
-
-        }
+            pieceEnJeu = piecesBlanchesPlateau;
         else
-        {
-            for (int i = 0; i < piecesNoiresPlateau.size(); i++)
-                if (piecesNoiresPlateau.get(i).casesAtteignables != null)
-                    return false;
+            pieceEnJeu = piecesNoiresPlateau;
 
-        }
+        for (int i = 0; i < pieceEnJeu.size(); i++)
+            if (!pieceEnJeu.get(i).casesAtteignables.isEmpty())
+                return false;
         return true;
     }
-
 
     /**
      * isPat
@@ -540,13 +517,18 @@ public class Partie
             return true;
         }
     }
-    public synchronized void undo()
+
+    /**
+     * undo
+     * Annule le dernier coup joué. Ne fonctionne que si au tour de l'adversaire de jouer.
+     *
+     */
+    synchronized void undo()
     {
         String dernierCoup = historique.get(historique.size()-1);
         String[] tabCoupDecoupe = dernierCoup.split("");
         boolean isBlanc = tabCoupDecoupe[1].equals("b");
-
-
+        
         int columnDepart = Integer.parseInt(tabCoupDecoupe[2]);
         int rowDepart = Integer.parseInt(tabCoupDecoupe[3]);
         int columnArrivee = Integer.parseInt(tabCoupDecoupe[4]);
@@ -594,7 +576,6 @@ public class Partie
                 piecesNoiresPlateau.add(pieceBougee.emplacementPiece.getPiece());
                 cimetiereNoir.remove(cimetiereNoir.size()-1);
             }
-
         }
         tourBlanc = !tourBlanc;
         historique.remove(historique.size()-1);
@@ -602,90 +583,131 @@ public class Partie
 
     }
 
+    /**
+     * requeteHistorique
+     *
+     * @return
+     */
+    synchronized ArrayList<ArrayList<ArrayList<String>>> requeteHistorique()
+    {
+        String requete = "SELECT JOUEUR.pseudoJoueur," +
+                "HISTORIQUE.datePartie" +
+                " FROM HISTORIQUE" +
+                " JOIN JOUEUR" +
+                " ON HISTORIQUE.joueurBlancPartie = JOUEUR.idJoueur"+
+                " WHERE JOUEUR.idJoueur = HISTORIQUE.joueurBlancPartie;";
+
+        BDDManager bdd = new BDDManager();
+        bdd.start();
+        ArrayList<ArrayList<String>> nomJoueurBlancEtDate = bdd.ask(requete);
+
+        requete = "SELECT JOUEUR.pseudoJoueur," +
+                "HISTORIQUE.datePartie" +
+                " FROM HISTORIQUE" +
+                " JOIN JOUEUR" +
+                " ON HISTORIQUE.joueurNoirPartie = JOUEUR.idJoueur"+
+                " WHERE JOUEUR.idJoueur = HISTORIQUE.joueurNoirPartie;";
+        ArrayList<ArrayList<String>> nomJoueurNoir = bdd.ask(requete);
+        bdd.stop();
+
+        ArrayList<ArrayList<ArrayList<String>>> historiqueRecup = new ArrayList<>();
+        historiqueRecup.add(nomJoueurBlancEtDate);
+        historiqueRecup.add(nomJoueurNoir);
+
+        return historiqueRecup;
+    }
+
+    /**
+     * requeteCoupsHistorique
+     *
+     * @param id
+     * @return
+     */
+    ArrayList<ArrayList<String>> requeteCoupsHistorique(int id)
+    {
+        //on recupere l'historique de la partie
+        String requete = "SELECT HISTORIQUE.coupsJouee, HISTORIQUE.idHistorique"+
+                " FROM HISTORIQUE" +
+                " WHERE idHistorique = "+id+";";
+        BDDManager bdd = new BDDManager();
+        bdd.start();
+        ArrayList<ArrayList<String>> historiqueCoupRecup = bdd.ask(requete);
+        bdd.stop();
+
+        return historiqueCoupRecup;
+    }
 
     // getters / setters
-    public synchronized Joueur getJoueurBlanc() {
+    synchronized Joueur getJoueurBlanc() {
         return joueurBlanc;
     }
-    public synchronized void setJoueurBlanc(Joueur joueurBlanc) {
+    synchronized void setJoueurBlanc(Joueur joueurBlanc) {
         this.joueurBlanc = joueurBlanc;
     }
-    public synchronized Joueur getJoueurNoir() {
+    synchronized Joueur getJoueurNoir() {
         return joueurNoir;
     }
-    public synchronized void setJoueurNoir(Joueur joueurNoir) {
+    synchronized void setJoueurNoir(Joueur joueurNoir) {
         this.joueurNoir = joueurNoir;
     }
-    public synchronized Board getBoard() {
+    synchronized Board getBoard() {
         return board;
     }
-    public synchronized void setBoard(Board board) {
+    synchronized void setBoard(Board board) {
         this.board = board;
     }
-    public synchronized ArrayList<String> getListeCoups() {
-        return listeCoups;
-    }
-    public synchronized void setListeCoups(ArrayList<String> listeCoups) {
-        this.listeCoups = listeCoups;
-    }
-    public synchronized boolean isTourBlanc() {
+    synchronized boolean isTourBlanc() {
         return tourBlanc;
     }
-    public synchronized void setTourBlanc(boolean tourBlanc) {
+    synchronized void setTourBlanc(boolean tourBlanc) {
         this.tourBlanc = tourBlanc;
     }
-    public synchronized ArrayList<Piece> getCimetiereBlanc() {
+    synchronized ArrayList<Piece> getCimetiereBlanc() {
         return cimetiereBlanc;
     }
-    public synchronized void setCimetiereBlanc(ArrayList<Piece> cimetiereBlanc) {
+    synchronized void setCimetiereBlanc(ArrayList<Piece> cimetiereBlanc) {
         this.cimetiereBlanc = cimetiereBlanc;
     }
-    public synchronized ArrayList<Piece> getCimetiereNoir() {
+    synchronized ArrayList<Piece> getCimetiereNoir() {
         return cimetiereNoir;
     }
-    public synchronized void setCimetiereNoir(ArrayList<Piece> cimetiereNoir) {
+    synchronized void setCimetiereNoir(ArrayList<Piece> cimetiereNoir) {
         this.cimetiereNoir = cimetiereNoir;
     }
-    public synchronized ArrayList<Piece> getPiecesBlanchesPlateau() {
+    synchronized ArrayList<Piece> getPiecesBlanchesPlateau() {
         return piecesBlanchesPlateau;
     }
-    public synchronized void setPiecesBlanchesPlateau(ArrayList<Piece> piecesBlanchesPlateau) {
+    synchronized void setPiecesBlanchesPlateau(ArrayList<Piece> piecesBlanchesPlateau) {
         this.piecesBlanchesPlateau = piecesBlanchesPlateau;
     }
-    public synchronized ArrayList<Piece> getPiecesNoiresPlateau() {
+    synchronized ArrayList<Piece> getPiecesNoiresPlateau() {
         return piecesNoiresPlateau;
     }
-    public synchronized void setPiecesNoiresPlateau(ArrayList<Piece> piecesNoiresPlateau) {
+    synchronized void setPiecesNoiresPlateau(ArrayList<Piece> piecesNoiresPlateau) {
         this.piecesNoiresPlateau = piecesNoiresPlateau;
     }
-    public synchronized int getModePartie() {
+    synchronized int getModePartie() {
         return modePartie;
     }
-    public synchronized void setModePartie(int modePartie) {
+    synchronized void setModePartie(int modePartie) {
         this.modePartie = modePartie;
     }
-    public synchronized boolean isNetPartie() {
+    synchronized boolean isNetPartie() {
         return netPartie;
     }
-    public synchronized void setNetPartie(boolean netPartie) {
+    synchronized void setNetPartie(boolean netPartie) {
         this.netPartie = netPartie;
     }
-    public synchronized boolean isEchecBlanc() {
+    synchronized boolean isEchecBlanc() {
         return echecBlanc;
     }
-    public synchronized void setEchecBlanc(boolean echecBlanc) {
+    synchronized void setEchecBlanc(boolean echecBlanc) {
         this.echecBlanc = echecBlanc;
     }
-    public synchronized boolean isEchecNoir() {
+    synchronized boolean isEchecNoir() {
         return echecNoir;
     }
-    public synchronized void setEchecNoir(boolean echecNoir) {
+    synchronized void setEchecNoir(boolean echecNoir) {
         this.echecNoir = echecNoir;
-    }
-    public synchronized boolean isFinPartie() {
-        return finPartie;
-    }
-    public synchronized void setFinPartie(boolean finPartie) {
-        this.finPartie = finPartie;
     }
 }
