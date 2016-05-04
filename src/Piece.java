@@ -6,12 +6,13 @@ import java.util.ArrayList;
  */
 public abstract class Piece
 {
+    protected boolean blanc;
     protected Case emplacementPiece;
-    protected ImageIcon skin = null;
-    protected boolean blanc = false;
-    protected String adresseImageNoire = null;
-    protected String adresseImageBlanche = null;
-    protected ArrayList<Case> casesAtteignables = null;
+    protected ArrayList<Case> casesAtteignables;
+
+    protected ImageIcon skin;
+    protected String adresseImageNoire;
+    protected String adresseImageBlanche;
 
     /**
      * Pièce (constructeur)
@@ -24,6 +25,7 @@ public abstract class Piece
         this.blanc = blanc;
         this.emplacementPiece = caseInitiale;
         this.casesAtteignables = new ArrayList<>();
+        // les trois autres attributs sont initialisés dans le constructeur de chaque pièces
     }
     /**
      * deplacer
@@ -33,9 +35,9 @@ public abstract class Piece
      */
     public void deplacer(Case destination)
     {
-        emplacementPiece.setPiece(null);
-        emplacementPiece = destination;
-        emplacementPiece.setPiece(this);
+        emplacementPiece.setPiece(null); // on vide la case actuelle
+        emplacementPiece = destination; // on définit l'emplacement de la pièce avec la destination
+        emplacementPiece.setPiece(this); // on place sur le nouvelle emplacement la pièce courante
     }
 
     /**
