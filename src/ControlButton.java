@@ -61,10 +61,10 @@ public class ControlButton extends MouseAdapter
                     {
                         vue.jOptionMessage("ECHEC ET MAT !");
                     }
-                    else if (model.getPartie().isPat())
+                    /*else if (model.getPartie().isPat())
                     {
                         vue.jOptionMessage("Pat");
-                    }
+                    }*/
                     else if (model.getPartie().isEchec())
                     {
                         vue.jOptionMessage("ECHEC !");

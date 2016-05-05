@@ -11,9 +11,6 @@
 class Partie
 {
 
-    private Timer tm;
-    private TimerTask tt;
-
     private Joueur joueurBlanc;
     private Joueur joueurNoir;
 
@@ -31,6 +28,8 @@ class Partie
 
     private boolean echecBlanc;
     private boolean echecNoir;
+
+    private boolean partieFinie;
 
     private ArrayList<String> historique;
 
@@ -75,21 +74,22 @@ class Partie
                             && !board.getPlateau()[i][j].getPiece().isBlanc())
                         piecesNoiresPlateau.add(board.getPlateau()[i][j].getPiece());
 
-        historique = new ArrayList<>();
 
         // Le roi est protégé en début de partie, il n'y a donc pas d'échec
         echecBlanc = false;
         echecNoir = false;
+
+        partieFinie = false;
+
+        historique = new ArrayList<>();
     }
     // todo
     synchronized void tourLimite()
     {
-        tm = new Timer();
-        tt = new TimerTask()
-        {
+        Timer tm = new Timer();
+        TimerTask tt = new TimerTask() {
             @Override
-            public void run()
-            {
+            public void run() {
                 finDeJeuTemps();
             }
         };
@@ -98,7 +98,7 @@ class Partie
 
     }
     // todo
-    synchronized  void tempsLimite()
+    synchronized void tempsLimite()
     {
 
     }
@@ -357,17 +357,12 @@ class Partie
 
         for (i=0; i<etatPlateauTab.length;i++) {
             //blanc ?
-            boolean estBlanc = true;
-            if (etatPlateau.charAt(1)=='b') {
-                estBlanc=true;
-            }
-            else {
-                estBlanc=false;
-            }
+            boolean estBlanc;
+            estBlanc = etatPlateau.charAt(1) == 'b';
 
             //coordonne
-            int abscise = Integer.valueOf(etatPlateau.charAt(2));
-            int ordonnee = Integer.valueOf(etatPlateau.charAt(3));
+            int abscise = (int) etatPlateau.charAt(2);
+            int ordonnee = (int) etatPlateau.charAt(3);
 
             Case casePiece = board.getPlateau()[abscise][ordonnee];
 
@@ -403,7 +398,7 @@ class Partie
     }
 
     /**
-     * attenteAction todo
+     * attenteAction
      * comportent d'attente qu'une pièce soit jouer quelque soit le tour.
      *
      */
@@ -413,7 +408,7 @@ class Partie
     }
 
     /**
-     * attenteDebutPartie todo
+     * attenteDebutPartie
      * comportement d'attente du début de la partie
      *
      */

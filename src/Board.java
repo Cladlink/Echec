@@ -157,15 +157,45 @@ public class Board
                 destination.setPiece(null);
             }
         }
+        // si on roque
+        if (caseCliquee.getPiece() instanceof Roi)
+        {
+            Case[][] plateau = caseCliquee.getBoard().getPlateau();
+            int row = caseCliquee.getRow();
+            int column = caseCliquee.getColumn();
+            Piece tourRoque;
+
+            // petit roque
+            if (Math.abs( column - destination.getColumn() ) == 2)
+            {
+                tourRoque = plateau[row][column + 3].getPiece();
+
+                plateau[row][column + 3].setPiece(null);
+                tourRoque.emplacementPiece = plateau[row][column + 1];
+                plateau[row][column + 1].setPiece(tourRoque);
+            }
+            // grand roque
+            else if (Math.abs( column - destination.getColumn() ) == 3)
+            {
+                tourRoque = plateau[row][column + 3].getPiece();
+
+                plateau[row][column - 4].setPiece(null);
+                tourRoque.emplacementPiece = plateau[row][column - 2];
+                plateau[row][column - 2].setPiece(tourRoque);
+            }
+        }
+
         // deplace
         caseCliquee.getPiece().deplacer(destination);
-
         // test de la promotion
-        if( ( ( destination.getRow() == 0 && destination.getPiece().blanc )
-                || ( destination.getRow() == 7) && !destination.getPiece().blanc )
+        if( ( ( destination.getRow() == 0
+                && destination.getPiece().blanc )
+                || ( destination.getRow() == 7)
+                && !destination.getPiece().blanc )
                 && destination.getPiece() instanceof Pion )
             vue.choixPiece( (Pion)destination.getPiece() );
         // todo fait appel à la vue. Est ce acceptable vu qu'on est dans le model?
+
     }
     /**
      * majCasesAtteignable
