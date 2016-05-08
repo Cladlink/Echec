@@ -13,16 +13,12 @@ public class Model
     private boolean netPartie; // à la fin
     private Case caseMemoire;
 
-
-
     public void lancementPartie()
     {
-        this.jBlanc = new Joueur(true, "toto");
-        this.jNoir = new Joueur(false, "tata");
+        this.jBlanc = new Joueur(true);
+        this.jNoir = new Joueur(false);
         this.partie = new Partie(jBlanc, jNoir, modePartie, netPartie);
     }
-
-
 
     // getters & setters
 

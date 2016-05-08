@@ -1,9 +1,12 @@
+import java.util.ArrayList;
+
 /**
   Created by Michael on 30/03/16.
  */
-public class Joueur
+class Joueur
 {
-    //todo faire deux constructeurs : 1 pour anonymous, 1 par pseudo cf bdd
+
+    private final BDDManager bdd = new BDDManager();
     private int id;
     private boolean isBlanc;
     private String pseudo;
@@ -20,25 +23,83 @@ public class Joueur
 
     /**
      * Joueur (Constructeur)
-     * définit la couleur du joueur et le pseudo (si pas de pseudo mettre le pseudo anonyme qui sera réservé)
+     * définit le cas d'un joueur Anonyme (pas d'appel à la bdd possible)
      *
      * @param isBlanc couleur du joueur
-     * @param pseudo pseudo du joueur
      */
-    public Joueur(boolean isBlanc, String pseudo)
+    Joueur(boolean isBlanc)
     {
-
+        this.id = 0;
         this.isBlanc = isBlanc;
-        if (pseudo.length() == 0)
-            this.pseudo = "Anonyme";
-        else
-            this.pseudo = pseudo;
-        victoire = false;
-
-        partieSauvegardee = false;
+        this.pseudo = "Anonyme";
+        this.egalite = false;
+        this.victoire = false;
+        this.nbPartiesJoueur = 0;
+        this.nbPartiesEnCours = 0;
+        this.nbVictoire = 0;
+        this.nbDefaite = 0;
+        this.nbEgalite = 0;
+        this.partieSauvegardee = false;
     }
 
-    // getters and setters
+    Joueur(boolean isBlanc, String pseudo)
+    {
+        this.isBlanc = isBlanc;
+        this.pseudo = pseudo;
+        loadJoueur(pseudo);
+    }
+
+
+    /**
+     * loadJoueur
+     * charge les données d'un joueur depuis la bdd s'il existe, sinon, le créé
+     *
+     * @param pseudo (nécessaire pour identifier le joueur dans la bdd)
+     */
+    private void loadJoueur(String pseudo)
+    {
+        String requete = "SELECT *" + " FROM JOUEUR " + "WHERE pseudoJoueur = " + pseudo + ";";
+        bdd.start();
+        ArrayList<ArrayList<String>> joueurRecup = bdd.ask(requete);
+        bdd.stop();
+
+        //si pas de joueur avec ce pseudo
+        if (joueurRecup.size()==0)
+        {
+            inscriptionJoueur(pseudo);
+            bdd.start();
+            joueurRecup = bdd.ask(requete);
+            bdd.stop();
+        }
+
+        this.setId(Integer.valueOf(joueurRecup.get(0).get(0)));
+        this.setBlanc(Boolean.getBoolean(joueurRecup.get(2).get(0)));
+        this.setEgalite(Boolean.getBoolean(joueurRecup.get(3).get(0)));
+        this.setVictoire(Boolean.getBoolean(joueurRecup.get(4).get(0)));
+        this.setNbPartiesJoueur(Integer.valueOf(joueurRecup.get(5).get(0)));
+        this.setNbPartiesEnCours(Integer.valueOf(joueurRecup.get(6).get(0)));
+        this.setNbVictoire(Integer.valueOf(joueurRecup.get(7).get(0)));
+        this.setNbEgalite(Integer.valueOf(joueurRecup.get(8).get(0)));
+        this.setPartieSauvegardee(Boolean.getBoolean(joueurRecup.get(9).get(0)));
+    }
+
+    /**
+     * inscription Joueur
+     * Inscrit un nouveau joueur dans la BDD
+     *
+     * @param pseudo (seul élément necessaire à la création d'un joueur)
+     */
+    private void inscriptionJoueur(String pseudo)
+    {
+        bdd.start();
+        bdd.edit("INSERT INTO JOUEUR (pseudoJoueur, nbPartiesJoueur, nbPartiesGagneesJoueur," +
+                "nbPartiesPerduesJoueur, nbPartiesAbandonneeJoueur, partieEnCoursJoueur, " +
+                "trophee1, trophee2, trophee3) VALUES ("+ pseudo + ", 0, 0, 0, 0, 0, false, false, false);");;
+
+        bdd.stop();
+    }
+
+    // getters & setters
     public boolean isBlanc() {
         return isBlanc;
     }

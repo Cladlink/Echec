@@ -45,16 +45,16 @@ public class Roi extends Piece
         }
         if ( !emplacementPiece.getBoard().getPartie().isEchec() && ( petitRoque || grandRoque ) ) // ne sert qu'à éviter les tests inutiles si le roque n'est pas possible
         {
-            isRoquePossible();
+            roque();
         }
     }
 
     /**
-     * isRoquePossible
+     * roque
      * Ajoute aux casesAtteignables les déplacements du petit Roque et du grand Roque si les conditions sont réunies
      *
      */
-    private void isRoquePossible()
+    private void roque()
     {
 
         Case[][] plateau = emplacementPiece.getBoard().getPlateau();

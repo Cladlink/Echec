@@ -46,7 +46,6 @@ class Vue extends JFrame
         setSize(xsize, ySize);
     }
 
-
     /**
      * initAttribut
      * Instancie les attributs
@@ -154,7 +153,7 @@ class Vue extends JFrame
             pieceSelected = JOptionPane.showOptionDialog(this, "Choisissez une pièce pour remplacer votre pion :",
                     "Promotion d'un pion", JOptionPane.INFORMATION_MESSAGE, 2, null, piecesPossibles, null);
         }
-        while (pieceSelected >3 || pieceSelected <= 0);
+        while (pieceSelected >3 || pieceSelected < 0);
 
         if(pieceSelected == 0)
             pion.promotion(1);
@@ -176,12 +175,13 @@ class Vue extends JFrame
 
     int choixMode()
     {
-        Object[] options = {1, 2 ,3 };
-        return JOptionPane.showOptionDialog(this, "Choisissez le mode de votre partie :\n" +
+        Object[] options = {1,2 ,3 };
+        return JOptionPane.showOptionDialog(this,
+                "Choisissez le mode de votre partie :\n" +
                 "1) partie normale\n" +
                 "2) coups chronométrée\n" +
                 "3) partie chronométrée\n",
-                "Mode Partie", JOptionPane.INFORMATION_MESSAGE, 2, null, options, null);
+                "Mode Partie", JOptionPane.INFORMATION_MESSAGE, 12, null, options, null);
     }
     boolean boolJOptionPane(String message)
     {
@@ -190,11 +190,10 @@ class Vue extends JFrame
     }
     void jOptionMessage (String message)
     {
-        JOptionPane aPropos = new JOptionPane();
-        aPropos.showMessageDialog(this, message, "A propos", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, message, "A propos", JOptionPane.INFORMATION_MESSAGE);
     }
     /*
-   * nettoye la fenetre puis affiche l'historique
+        * nettoye la fenetre puis affiche l'historique
     */
     int choixHistorique(ArrayList<ArrayList<ArrayList<String>>> historiqueRecup)
     {
@@ -284,7 +283,6 @@ class Vue extends JFrame
 
         d.showMessageDialog( this, pGlobal, "Historique", JOptionPane.INFORMATION_MESSAGE );
     }
-
 
     // getters & setters
     public VueEchiquier getVueEchiquier() {
