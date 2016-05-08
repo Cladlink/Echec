@@ -37,7 +37,7 @@ public class ControlButton extends MouseAdapter
                     && column <=7)
             {
                 if (model.getPartie().getBoard().getPlateau()[row][column].getPiece() != null)
-                System.out.println(model.getPartie().getBoard().getPlateau()[row][column].getPiece());
+                    System.out.println(model.getPartie().getBoard().getPlateau()[row][column].getPiece());
                 // si je clique sur une pièce  qui est au joueur dont c'est le tour
                 if ( plateau[row][column].getPiece() != null
                         && model.getPartie().isTourBlanc() == plateau[row][column].getPiece().isBlanc() )
@@ -61,10 +61,10 @@ public class ControlButton extends MouseAdapter
                     {
                         vue.jOptionMessage("ECHEC ET MAT !");
                     }
-                    /*else if (model.getPartie().isPat())
+                    else if (model.getPartie().isPat())
                     {
-                        vue.jOptionMessage("Pat");
-                    }*/
+                        vue.jOptionMessage("PAT");
+                    }
                     else if (model.getPartie().isEchec())
                     {
                         vue.jOptionMessage("ECHEC !");

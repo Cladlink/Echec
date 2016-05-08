@@ -47,44 +47,76 @@ public class Board
             }
             white =!white;
         }
+        roiBlanc = new Roi(plateau[7][4], true);
+        partie.getPiecesBlanchesPlateau().add(roiBlanc);
+        Piece reineBlanche = new Reine(plateau[7][3], true);
+        partie.getPiecesBlanchesPlateau().add(reineBlanche);
+        roiNoir = new Roi(plateau[0][4], false);
+        partie.getPiecesNoiresPlateau().add(roiNoir);
+        Piece reineNoire = new Reine(plateau[0][3], false);
+        partie.getPiecesNoiresPlateau().add(reineNoire);
+
 
         Piece tourBlanche1 = new Tour(plateau[7][0], true);
+        partie.getPiecesBlanchesPlateau().add(tourBlanche1);
         Piece tourBlanche2 = new Tour(plateau[7][7], true);
+        partie.getPiecesBlanchesPlateau().add(tourBlanche2);
         Piece tourNoire1 = new Tour(plateau[0][0], false);
+        partie.getPiecesNoiresPlateau().add(tourNoire1);
         Piece tourNoire2 = new Tour(plateau[0][7], false);
+        partie.getPiecesNoiresPlateau().add(tourNoire2);
 
         Piece cavalierBlanc1 = new Cavalier(plateau[7][1], true);
+        partie.getPiecesBlanchesPlateau().add(cavalierBlanc1);
         Piece cavalierBlanc2 = new Cavalier(plateau[7][6], true);
+        partie.getPiecesBlanchesPlateau().add(cavalierBlanc2);
         Piece cavalierNoir1 = new Cavalier(plateau[0][1], false);
+        partie.getPiecesNoiresPlateau().add(cavalierNoir1);
         Piece cavalierNoir2 = new Cavalier(plateau[0][6], false);
+        partie.getPiecesNoiresPlateau().add(cavalierNoir2);
 
         Piece fouBlanc1 = new Fou(plateau[7][2], true);
+        partie.getPiecesBlanchesPlateau().add(fouBlanc1);
         Piece fouBlanc2 = new Fou(plateau[7][5], true);
+        partie.getPiecesBlanchesPlateau().add(fouBlanc2);
         Piece fouNoir1 = new Fou(plateau[0][2], false);
+        partie.getPiecesNoiresPlateau().add(fouNoir1);
         Piece fouNoir2 = new Fou(plateau[0][5], false);
-
-        roiBlanc = new Roi(plateau[7][4], true);
-        Piece reineBlanche = new Reine(plateau[7][3], true);
-        roiNoir = new Roi(plateau[0][4], false);
-        Piece reineNoire = new Reine(plateau[0][3], false);
+        partie.getPiecesNoiresPlateau().add(fouNoir2);
 
         Piece pionBlanc1 = new Pion(plateau[6][0], true);
+        partie.getPiecesBlanchesPlateau().add(pionBlanc1);
         Piece pionBlanc2 = new Pion(plateau[6][1], true);
+        partie.getPiecesBlanchesPlateau().add(pionBlanc2);
         Piece pionBlanc3 = new Pion(plateau[6][2], true);
+        partie.getPiecesBlanchesPlateau().add(pionBlanc3);
         Piece pionBlanc4 = new Pion(plateau[6][3], true);
+        partie.getPiecesBlanchesPlateau().add(pionBlanc4);
         Piece pionBlanc5 = new Pion(plateau[6][4], true);
+        partie.getPiecesBlanchesPlateau().add(pionBlanc5);
         Piece pionBlanc6 = new Pion(plateau[6][5], true);
+        partie.getPiecesBlanchesPlateau().add(pionBlanc6);
         Piece pionBlanc7 = new Pion(plateau[6][6], true);
+        partie.getPiecesBlanchesPlateau().add(pionBlanc7);
         Piece pionBlanc8 = new Pion(plateau[6][7], true);
+        partie.getPiecesBlanchesPlateau().add(pionBlanc8);
 
         Piece pionNoir1 = new Pion(plateau[1][0], false);
+        partie.getPiecesNoiresPlateau().add(pionNoir1);
         Piece pionNoir2 = new Pion(plateau[1][1], false);
+        partie.getPiecesNoiresPlateau().add(pionNoir2);
         Piece pionNoir3 = new Pion(plateau[1][2], false);
+        partie.getPiecesNoiresPlateau().add(pionNoir3);
         Piece pionNoir4 = new Pion(plateau[1][3], false);
+        partie.getPiecesNoiresPlateau().add(pionNoir4);
         Piece pionNoir5 = new Pion(plateau[1][4], false);
+        partie.getPiecesNoiresPlateau().add(pionNoir5);
         Piece pionNoir6 = new Pion(plateau[1][5], false);
+        partie.getPiecesNoiresPlateau().add(pionNoir6);
         Piece pionNoir7 = new Pion(plateau[1][6], false);
+        partie.getPiecesNoiresPlateau().add(pionNoir7);
         Piece pionNoir8 = new Pion(plateau[1][7], false);
+        partie.getPiecesNoiresPlateau().add(pionNoir8);
 
         //Coté des pièces blanches, en bas du plateau
         plateau[7][0].setPiece(tourBlanche1);

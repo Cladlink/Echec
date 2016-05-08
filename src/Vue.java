@@ -33,9 +33,9 @@ class Vue extends JFrame
         //setAlwaysOnTop(true);
         setResizable(false);
         setName("Chess");
-        model.lancementPartie();
+        model.lancementPartie("anonymous", "anonymous");
         model.getPartie().getBoard().majCasesAtteignable();
-        vueEchiquier = new VueEchiquier(model.getPartie().getBoard(), model);
+        vueEchiquier = new VueEchiquier(model.getPartie().getBoard(), model, this);
         creerWidget();
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -181,7 +181,7 @@ class Vue extends JFrame
                 "1) partie normale\n" +
                 "2) coups chronométrée\n" +
                 "3) partie chronométrée\n",
-                "Mode Partie", JOptionPane.INFORMATION_MESSAGE, 12, null, options, null);
+                "Mode Partie", JOptionPane.INFORMATION_MESSAGE, 2, null, options, null);
     }
     boolean boolJOptionPane(String message)
     {

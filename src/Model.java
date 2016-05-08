@@ -13,10 +13,18 @@ public class Model
     private boolean netPartie; // à la fin
     private Case caseMemoire;
 
-    public void lancementPartie()
+    public void lancementPartie(String pseudo, String pseudoAdversaire)
     {
-        this.jBlanc = new Joueur(true);
-        this.jNoir = new Joueur(false);
+        if (pseudo.equals("anonymous"))
+            this.jBlanc = new Joueur(true);
+        else
+            this.jBlanc = new Joueur(true, pseudo);
+
+        if (pseudoAdversaire.equals("anonymous"))
+            this.jNoir = new Joueur(false);
+        else
+            this.jNoir = new Joueur(false, pseudoAdversaire);
+
         this.partie = new Partie(jBlanc, jNoir, modePartie, netPartie);
     }
 

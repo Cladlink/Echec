@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -31,21 +30,25 @@ public class ControlMenu implements ActionListener
         if (e.getSource() == vue.getNvlPart())
         {
             int modePartie = vue.choixMode();
-            System.out.println(modePartie);
             model.setModePartie(modePartie);
 
             String pseudoAdv;
-            String pseudo = vue.askJOption("Joueur 1");
+            String pseudo;
 
+            do
+            {
+                pseudo = vue.askJOption("Joueur 1");
+            }
+            while (pseudo.length()==0 || pseudo.equals("anonymous"));
             do
             {
                 pseudoAdv = vue.askJOption("Joueur 2");
             }
-            while (Objects.equals(pseudo, pseudoAdv));
+            while (Objects.equals(pseudo, pseudoAdv) || pseudoAdv.length()==0 || pseudoAdv.equals("anonymous"));
             //todo voir avec Domas pour fermer le Model
-            model.lancementPartie();
+            model.lancementPartie(pseudo, pseudoAdv);
             model.getPartie().getBoard().majCasesAtteignable();
-            vue.setVueEchiquier(new VueEchiquier(model.getPartie().getBoard(), model));
+            vue.setVueEchiquier(new VueEchiquier(model.getPartie().getBoard(), model, vue));
             vue.creerWidget();
             vue.setControlButton(new ControlButton(model, vue));
             vue.setVisible(true);
@@ -78,7 +81,6 @@ public class ControlMenu implements ActionListener
             boolean undo = vue.boolJOptionPane("voulez-vous annuler le dernier coup ?");
             if (undo)
             {
-                System.out.println("coucou");
                 model.getPartie().undo();
                 vue.repaint();
             }

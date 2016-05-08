@@ -6,20 +6,30 @@ import java.awt.*;
  */
 public class VueEchiquier extends JPanel
 {
-    private Model model = null;
-    private Board board = null;
-    private Graphics g = null;
-    private ImageIcon bg = new ImageIcon("img/echec.jpg");
-    private ImageIcon deplacement = new ImageIcon("img/deplacement.png");
-    private ImageIcon deplacementAttaque = new ImageIcon("img/deplacementAttaque.png");
+    private Vue vue;
+    private Model model;
+    private Board board;
+
+    private ImageIcon bg;
+    private ImageIcon deplacement;
+    private ImageIcon deplacementAttaque;
+
     private VueGraveyard gyBlanc, gyNoir;
     private VueBarreStatut bs;
     private VueTimer chronoBlanc, chronoNoir;
 
-    public VueEchiquier(Board board, Model model)
+    private Graphics g;
+
+    public VueEchiquier(Board board, Model model, Vue vue)
     {
+        this.vue = vue;
         this.model = model;
         this.board = board;
+
+        bg = new ImageIcon("img/echec.jpg");
+        deplacement = new ImageIcon("img/deplacement.png");
+        deplacementAttaque = new ImageIcon("img/deplacementAttaque.png");
+
         setBorder(BorderFactory.createLineBorder(Color.black));
         gyBlanc = new VueGraveyard(model.getPartie(), true);
         gyNoir = new VueGraveyard(model.getPartie(), false);
@@ -70,24 +80,25 @@ public class VueEchiquier extends JPanel
                 }
                 // on peint la case, puis, on dessine l'image, noire si la case est vide, rouge si elle est pleine.
                 g.fillRect(j * board.getSizeCase() + 360,
-                    i * board.getSizeCase() + 50,
+                    i * board.getSizeCase() + 20,
                     board.getSizeCase(),
                     board.getSizeCase());
 
                 if (isDepPossible)
                     g.drawImage(deplacement.getImage(),
                             j * board.getSizeCase() + 360,
-                            i * board.getSizeCase() + 50,
+                            i * board.getSizeCase() + 20,
                             null);
                 else if (isDepPossiblePiece)
                     g.drawImage(deplacementAttaque.getImage(),
                             j * board.getSizeCase() + 360,
-                            i * board.getSizeCase() + 50,
+                            i * board.getSizeCase() + 20,
                             null);
 
                 isDepPossible = false;
                 isDepPossiblePiece = false;
             }
+
         }
 
         // on dessine toutes les pièces
@@ -99,7 +110,7 @@ public class VueEchiquier extends JPanel
                 {
                     g.drawImage(board.getPlateau()[i][j].getPiece().skin.getImage(),
                             j * board.getSizeCase() + 360,
-                            i * board.getSizeCase() + 50,
+                            i * board.getSizeCase() + 20,
                             null);
                 }
             }
@@ -108,7 +119,7 @@ public class VueEchiquier extends JPanel
         gyBlanc.paintMe(g, 110, 150);
         gyNoir.paintMe(g, 1060, 150);
         bs.paintMe(g, 0, getHeight());
-        chronoBlanc.paintMe(g, 160, 80);
-        chronoNoir.paintMe(g, 1110, 80);
+        chronoBlanc.paintMe(g, 160, 80, vue);
+        chronoNoir.paintMe(g, 1110, 80, vue);
     }
 }

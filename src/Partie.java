@@ -10,20 +10,19 @@
     */
 class Partie
 {
-
     private final BDDManager bdd = new BDDManager();
 
     private Joueur joueurBlanc;
     private Joueur joueurNoir;
 
-    private Board board;
-
-    private boolean tourBlanc;
-
     private ArrayList<Piece> cimetiereBlanc;
     private ArrayList<Piece> cimetiereNoir;
     private ArrayList<Piece> piecesBlanchesPlateau;
     private ArrayList<Piece> piecesNoiresPlateau;
+
+    private Board board;
+
+    private boolean tourBlanc;
 
     private int modePartie; // 0 = partie sans temps ; 1 = temps partie limitée; 2 = temps tour limités
     private boolean netPartie;
@@ -44,37 +43,26 @@ class Partie
 
     Partie(Joueur joueurBlanc, Joueur joueurNoir, int modePartie, boolean netPartie)
     {
-
         //On ajoute les deux joueurs à la partie
         this.joueurBlanc = joueurBlanc;
         this.joueurNoir = joueurNoir;
 
-        // On créé le plateau
-        board = new Board(this);
-
-        tourBlanc = true;
 
         piecesBlanchesPlateau = new ArrayList<>();
         piecesNoiresPlateau = new ArrayList<>();
         cimetiereBlanc = new ArrayList<>();
         cimetiereNoir = new ArrayList<>();
 
+        // On créé le plateau
+        board = new Board(this);
+
+        tourBlanc = true;
+
         // choix du mode de la partie
         this.modePartie = modePartie;
 
         // pour la partie en réseau
         this.netPartie = netPartie;
-
-        // on met à jour la liste des pièces blanches et noires en jeu
-        for (int i = 0; i < board.getPlateau().length; i++)
-            for (int j = 0; j < board.getPlateau()[i].length; j++)
-                    if(board.getPlateau()[i][j].getPiece() != null
-                            && board.getPlateau()[i][j].getPiece().isBlanc())
-                        piecesBlanchesPlateau.add(board.getPlateau()[i][j].getPiece());
-                    else if(board.getPlateau()[i][j].getPiece() != null
-                            && !board.getPlateau()[i][j].getPiece().isBlanc())
-                        piecesNoiresPlateau.add(board.getPlateau()[i][j].getPiece());
-
 
         // Le roi est protégé en début de partie, il n'y a donc pas d'échec
         echecBlanc = false;
@@ -449,17 +437,15 @@ class Partie
         }
 
         // S'il reste les deux roi plus un cavalier pour la pièce en cours...
-        if(piecesJoueurEnCours.size()== 2)
-            if( (piecesJoueurEnCours.get(0) instanceof Cavalier)
-                    || (piecesJoueurEnCours.get(1) instanceof Cavalier)
-                    && piecesAutreJoueur.size() == 1)
+        if(piecesJoueurEnCours.size()== 2
+                && piecesJoueurEnCours.get(1) instanceof Cavalier
+                && piecesAutreJoueur.size() == 1)
                 return true;
 
         // ... ou pour le joueur adverse (faisable en un seul test mais plus lisible comme ça)
-        if(piecesAutreJoueur.size()== 2)
-            if( (piecesAutreJoueur.get(0) instanceof Cavalier)
-                    || (piecesAutreJoueur.get(1) instanceof Cavalier)
-                    && piecesJoueurEnCours.size() == 1)
+        else if(piecesAutreJoueur.size()== 2
+                && piecesAutreJoueur.get(1) instanceof Cavalier
+                && piecesJoueurEnCours.size() == 1)
                 return true;
 
         // si aucun déplacement n'est possible et que le roi n'est pas en échec
