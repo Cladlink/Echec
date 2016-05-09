@@ -8,11 +8,11 @@ import java.net.Socket;
 public class ThreadPartie extends Thread
 {
     private Joueur moi;
-    private Partie partie = null;
+    private Partie partie;
     private Boolean isServer;
-    private ServerSocket conn = null;
-    private Socket comm = null;
-    private ControlButton controller = null;
+    private ServerSocket conn;
+    private Socket comm;
+    private ControlButton controller;
     private int port;
 
     public ThreadPartie(Partie partie, Boolean isServer, ControlButton controller, int port)
@@ -63,7 +63,7 @@ public class ThreadPartie extends Thread
             {
                 partie.attenteAction();// j'attends que le joueur ai joué;
                 // envoyer à l'autre le coup joué
-                if (partie.isFinPartie())
+                if (partie.isEchecEtMat() || partie.isPat())
                     stop = true;
                 else
                     myTurn = false;
@@ -73,7 +73,7 @@ public class ThreadPartie extends Thread
                 // attendre coup joué (sur la socket)
                 // appel d'une méthode du controller qui met à jour la partie avec le coup joué
                 partie.attenteAction();
-                if (partie.isFinPartie())
+                if (partie.isEchecEtMat() || partie.isPat())
                     stop = true;
                 else
                     myTurn = false;

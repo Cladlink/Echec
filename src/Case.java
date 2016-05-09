@@ -5,8 +5,8 @@ public class Case
 {
     private int row;
     private int column;
-    private Piece piece = null;
-    private Board board = null;
+    private Piece piece;
+    private Board board;
     private boolean isWhite;
 
     /**

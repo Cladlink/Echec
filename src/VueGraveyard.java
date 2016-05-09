@@ -17,8 +17,15 @@ public class VueGraveyard
         this.bgCimetiere = new ImageIcon("img/cimetiere.png");
         this.isBlanc = isBlanc;
     }
-    //cimetiere
 
+    /**
+     * PaintMe
+     * Paint l'objet graphique
+     *
+     * @param g (boite à outil servant à peindre des éléments)
+     * @param xBase (axe x de l'objet)
+     * @param yBase (axe y de l'objet)
+     */
     void paintMe(Graphics g, int xBase, int yBase)
     {
         int i, pion=0, pasPion=0;
@@ -26,7 +33,7 @@ public class VueGraveyard
         //cimetiere blanc
         g.drawImage(bgCimetiere.getImage(), xBase, yBase, 200, 500, null);//110 150
         ArrayList<Piece> cimetiere;
-        
+
         if (isBlanc)
             cimetiere = partie.getCimetiereBlanc();
         else
@@ -46,5 +53,4 @@ public class VueGraveyard
             }
         }
     }
-
 }

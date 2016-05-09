@@ -30,7 +30,9 @@ public class Reine extends Piece
         Case[][] plateau = emplacementPiece.getBoard().getPlateau();
         int row = emplacementPiece.getRow();
         int column = emplacementPiece.getColumn();
+
         int decal = 1;
+
         boolean deplacableN = true, deplacableS = true, deplacableO = true, deplacableE = true;
         boolean deplacableNO = true, deplacableSO = true, deplacableSE = true, deplacableNE = true;
 
@@ -152,11 +154,11 @@ public class Reine extends Piece
     {
         int gapRow = Math.abs(emplacementPiece.getRow() - caseRoi.getRow());
         int gapCol = Math.abs(emplacementPiece.getColumn() - caseRoi.getColumn());
+
         if( gapCol == gapRow
                 || emplacementPiece.getColumn() == caseRoi.getColumn()
                 || emplacementPiece.getRow() == caseRoi.getRow() )
             return super.peutAtteindreRoi(caseRoi);
-
         return false;
     }
 }

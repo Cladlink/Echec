@@ -1,43 +1,101 @@
+import java.util.ArrayList;
+
 /**
   Created by Michael on 30/03/16.
  */
-public class Joueur
+class Joueur
 {
-
+    private final BDDManager bdd = new BDDManager();
     private int id;
     private boolean isBlanc;
-    private String pseudo = null;
-    private boolean egalite = false;
+    private String pseudo;
+    private boolean egalite;
     private boolean victoire;
     private int nbPartiesJoueur;
     private int nbPartiesEnCours;
     private int nbVictoire;
     private int nbDefaite;
     private int nbEgalite;
+    private boolean partieEnCours;
     private boolean partieSauvegardee;
-
-
 
     /**
      * Joueur (Constructeur)
-     * définit la couleur du joueur et le pseudo (si pas de pseudo mettre le pseudo anonyme qui sera réservé)
+     * définit le cas d'un joueur Anonyme (pas d'appel à la bdd possible)
      *
      * @param isBlanc couleur du joueur
-     * @param pseudo pseudo du joueur
      */
-    public Joueur(boolean isBlanc, String pseudo)
+    Joueur(boolean isBlanc)
     {
+        this.id = 0;
         this.isBlanc = isBlanc;
-        if (pseudo.length() == 0)
-            this.pseudo = "Anonyme";
-        else
-            this.pseudo = pseudo;
-        victoire = false;
-
-        partieSauvegardee = false;
+        this.pseudo = "Anonyme";
+        this.egalite = false;
+        this.victoire = false;
+        this.nbPartiesJoueur = 0;
+        this.nbPartiesEnCours = 0;
+        this.nbVictoire = 0;
+        this.nbDefaite = 0;
+        this.nbEgalite = 0;
+        this.partieSauvegardee = false;
+        this.partieEnCours = false;
     }
 
-    // getters and setters
+    Joueur(boolean isBlanc, String pseudo)
+    {
+        this.isBlanc = isBlanc;
+        this.pseudo = pseudo;
+        loadJoueur(pseudo);
+    }
+
+    /**
+     * loadJoueur
+     * charge les données d'un joueur depuis la bdd s'il existe, sinon, le créé
+     *
+     * @param pseudo (nécessaire pour identifier le joueur dans la bdd)
+     */
+    private void loadJoueur(String pseudo)
+    {
+        String requete = "SELECT *" + " FROM JOUEUR " + "WHERE pseudoJoueur = \"" + pseudo + "\";";
+        bdd.start();
+        ArrayList<ArrayList<String>> joueurRecup = bdd.ask(requete);
+        bdd.stop();
+
+        //si pas de joueur avec ce pseudo
+        if (joueurRecup.size()==0)
+        {
+            inscriptionJoueur(pseudo);
+            bdd.start();
+            joueurRecup = bdd.ask(requete);
+            bdd.stop();
+        }
+
+        this.id = Integer.valueOf(joueurRecup.get(0).get(0));
+        this.isBlanc = Boolean.getBoolean(joueurRecup.get(0).get(2));
+        this.egalite = Boolean.getBoolean(joueurRecup.get(0).get(3));
+        this.victoire = Boolean.getBoolean(joueurRecup.get(0).get(4));
+        this.nbPartiesJoueur = Integer.valueOf(joueurRecup.get(0).get(5));
+        this.nbPartiesEnCours = Integer.valueOf(joueurRecup.get(0).get(6));
+        this.partieEnCours = Boolean.getBoolean(joueurRecup.get(0).get(7));
+        this.nbVictoire = Integer.valueOf(joueurRecup.get(0).get(8));
+        this.nbEgalite = Integer.valueOf(joueurRecup.get(0).get(9));
+        this.partieSauvegardee = Boolean.getBoolean(joueurRecup.get(0).get(10));
+    }
+
+    /**
+     * inscription Joueur
+     * Inscrit un nouveau joueur dans la BDD
+     *
+     * @param pseudo (seul élément necessaire à la création d'un joueur)
+     */
+    private void inscriptionJoueur(String pseudo)
+    {
+        bdd.start();
+        bdd.edit("INSERT INTO JOUEUR VALUES (null, \""+ pseudo + "\", 0, 0, 0, 0, false, 0, false, false, false);");
+        bdd.stop();
+    }
+
+    // getters & setters
     public boolean isBlanc() {
         return isBlanc;
     }
@@ -103,5 +161,14 @@ public class Joueur
     }
     public void setPartieSauvegardee(boolean partieSauvegardee) {
         this.partieSauvegardee = partieSauvegardee;
+    }
+    public BDDManager getBdd() {
+        return bdd;
+    }
+    public boolean isPartieEnCours() {
+        return partieEnCours;
+    }
+    public void setPartieEnCours(boolean partieEnCours) {
+        this.partieEnCours = partieEnCours;
     }
 }

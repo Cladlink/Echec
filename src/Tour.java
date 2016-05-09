@@ -26,6 +26,7 @@ public class Tour extends Piece
     public void casesAtteignables()
     {
         casesAtteignables.clear();
+
         Case[][] plateau = emplacementPiece.getBoard().getPlateau();
         int row = emplacementPiece.getRow();
         int column = emplacementPiece.getColumn();
@@ -35,10 +36,12 @@ public class Tour extends Piece
         while (deplacableE || deplacableO || deplacableS || deplacableN)
         {
             //test S
-            if ((deplacableS
-                    && column + decal <=7)
-                    && ( plateau[row][column + decal].getPiece() == null
-                    || plateau[row][column + decal].getPiece().blanc != blanc ))
+            if (deplacableS
+                    && column + decal <=7
+                    && (
+                        plateau[row][column + decal].getPiece() == null
+                    || plateau[row][column + decal].getPiece().blanc != blanc
+                    ))
             {
                 casesAtteignables.add(plateau[row ][column + decal]);
                 if (plateau[row][column + decal].getPiece() != null)
@@ -48,10 +51,12 @@ public class Tour extends Piece
                 deplacableS = false;
 
             //test N
-            if ((deplacableN
-                    && column - decal >= 0)
-                    && ( plateau[row][column - decal].getPiece() == null
-                    || plateau[row][column - decal].getPiece().blanc != blanc ))
+            if (deplacableN
+                    && column - decal >= 0
+                    && (
+                        plateau[row][column - decal].getPiece() == null
+                    || plateau[row][column - decal].getPiece().blanc != blanc
+                    ))
             {
                 casesAtteignables.add(plateau[row ][column - decal]);
 
@@ -64,10 +69,12 @@ public class Tour extends Piece
 
 
             //test E
-            if ((deplacableE
-                    && row - decal >= 0)
-                    && ( plateau[row - decal][column].getPiece() == null
-                    || plateau[row - decal][column].getPiece().blanc != blanc ))
+            if (deplacableE
+                    && row - decal >= 0
+                    && (
+                        plateau[row - decal][column].getPiece() == null
+                    || plateau[row - decal][column].getPiece().blanc != blanc
+                    ))
             {
                 casesAtteignables.add(plateau[row  - decal][column]);
                 if (plateau[row - decal][column].getPiece() != null)
@@ -77,10 +84,12 @@ public class Tour extends Piece
                 deplacableE = false;
 
             // testO
-            if ((deplacableO
-                    && row + decal <= 7)
-                    && ( plateau[row + decal][column].getPiece() == null
-                    || plateau[row + decal][column].getPiece().blanc != blanc ))
+            if (deplacableO
+                    && row + decal <= 7
+                    && (
+                        plateau[row + decal][column].getPiece() == null
+                    || plateau[row + decal][column].getPiece().blanc != blanc )
+                    )
             {
                 casesAtteignables.add(plateau[row + decal][column]);
                 if (plateau[row + decal][column].getPiece() != null)

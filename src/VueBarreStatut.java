@@ -13,7 +13,14 @@ public class VueBarreStatut
         this.partie = partie;
         this.vueEchiquier = vueEchiquier;
     }
-
+    /**
+     * PaintMe
+     * Paint l'objet graphique
+     *
+     * @param g (boite à outil servant à peindre des éléments)
+     * @param xBase (axe x de l'objet)
+     * @param yBase (axe y de l'objet)
+     */
     void paintMe(Graphics g, int xBase, int yBase)
     {
         g.setColor(Color.black);

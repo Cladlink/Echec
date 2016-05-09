@@ -37,7 +37,7 @@ public class ControlButton extends MouseAdapter
                     && column <=7)
             {
                 if (model.getPartie().getBoard().getPlateau()[row][column].getPiece() != null)
-                System.out.println(model.getPartie().getBoard().getPlateau()[row][column].getPiece());
+                    System.out.println(model.getPartie().getBoard().getPlateau()[row][column].getPiece());
                 // si je clique sur une pièce  qui est au joueur dont c'est le tour
                 if ( plateau[row][column].getPiece() != null
                         && model.getPartie().isTourBlanc() == plateau[row][column].getPiece().isBlanc() )
@@ -46,7 +46,6 @@ public class ControlButton extends MouseAdapter
                             model.getPartie().getBoard().getPlateau()[row][column].getPiece().casesAtteignables;
                     model.setCasesAtteignables(casesAtteignables);
                     model.setCaseMemoire(model.getPartie().getBoard().getPlateau()[row][column]);
-
                     vue.repaint();
                 }
                 else if(model.getCasesAtteignables() != null
@@ -58,6 +57,18 @@ public class ControlButton extends MouseAdapter
                     model.getPartie().setTourBlanc(!model.getPartie().isTourBlanc());
                     model.getPartie().getBoard().majCasesAtteignable();
 
+                    if (model.getPartie().isEchecEtMat())
+                    {
+                        vue.jOptionMessage("ECHEC ET MAT !");
+                    }
+                    else if (model.getPartie().isPat())
+                    {
+                        vue.jOptionMessage("PAT");
+                    }
+                    else if (model.getPartie().isEchec())
+                    {
+                        vue.jOptionMessage("ECHEC !");
+                    }
                     vue.repaint();
                 }
             }

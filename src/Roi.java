@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.util.ArrayList;
 
 /**
  Created by Michael on 31/03/16.
@@ -7,12 +6,15 @@ import java.util.ArrayList;
 public class Roi extends Piece
 {
 
+    private boolean grandRoque;
+    private boolean petitRoque;
     public Roi(Case caseInitiale, boolean isBlanc)
     {
         super(caseInitiale, isBlanc);
         adresseImageBlanche = "img/BlancEleve/RoiBlanc.png";
         adresseImageNoire = "img/NoirEleve/RoiNoir.png";
         skin = isBlanc? new ImageIcon(adresseImageBlanche) :new ImageIcon(adresseImageNoire);
+        grandRoque = petitRoque = true;
     }
 
     /**
@@ -25,15 +27,14 @@ public class Roi extends Piece
     public void casesAtteignables()
     {
         casesAtteignables.clear();
-        int i, j;
 
         Case[][] plateau = emplacementPiece.getBoard().getPlateau();
         int row = emplacementPiece.getRow();
         int column = emplacementPiece.getColumn();
 
-        for (i = -1; i<=1; i++)
+        for (int i = -1; i<=1; i++)
         {
-            for( j = -1; j<=1; j++)
+            for(int j = -1; j<=1; j++)
             {
                 if (row + i >= 0 && row + i <= 7
                         && column + j >= 0 && column + j <= 7
@@ -42,6 +43,51 @@ public class Roi extends Piece
                     casesAtteignables.add(plateau[row + i][column + j]);
             }
         }
+        if ( !emplacementPiece.getBoard().getPartie().isEchec() && ( petitRoque || grandRoque ) ) // ne sert qu'à éviter les tests inutiles si le roque n'est pas possible
+        {
+            roque();
+        }
+    }
+
+    /**
+     * roque
+     * Ajoute aux casesAtteignables les déplacements du petit Roque et du grand Roque si les conditions sont réunies
+     *
+     */
+    private void roque()
+    {
+
+        Case[][] plateau = emplacementPiece.getBoard().getPlateau();
+
+        int row = blanc? 7 : 0;
+        int column = emplacementPiece.getColumn();
+
+
+        if (plateau[row][4].getPiece() == null)
+        {
+            petitRoque = false;
+            grandRoque = false;
+        }
+        else if(plateau[row][7].getPiece() == null)
+            petitRoque = false;
+        else if(plateau[row][0].getPiece() == null)
+            grandRoque = false;
+
+        row = emplacementPiece.getRow();
+
+        // petit roque
+        if ( petitRoque )
+            if ( plateau[row][column + 1].getPiece() == null
+                    && plateau[row][column + 2].getPiece() == null)
+                casesAtteignables.add(plateau[row][column+2]);
+
+        // grand roque
+        if ( grandRoque )
+            if ( plateau[row][column - 1].getPiece() == null
+                    && plateau[row][column - 2].getPiece() == null
+                    && plateau[row][column - 3].getPiece() == null)
+                casesAtteignables.add(plateau[row][column - 3]);
+
     }
 
     /**
@@ -56,8 +102,7 @@ public class Roi extends Piece
     {
         int gapRow = Math.abs( emplacementPiece.getRow() - caseRoi.getRow() );
         int gapCol = Math.abs( emplacementPiece.getColumn() - caseRoi.getColumn() );
-        if ( gapRow<=1 && gapCol<=1 )
-            return true;
-        return false;
+
+        return gapRow <= 1 && gapCol <= 1;
     }
 }

@@ -2,22 +2,23 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.Objects;
 
 class Vue extends JFrame
 {
-    private VueEchiquier vueEchiquier = null;
-    private Model model  = null;
+    private VueEchiquier vueEchiquier;
+    private Model model;
 
-    private JMenuItem nvlPart ;
-    private JMenuItem rejPart ;
-    private JMenuItem ldPart ;
-    private JMenuItem svPart ;
-    private JMenuItem quitter ;
+    private JMenuItem nvlPart;
+    private JMenuItem rejPart;
+    private JMenuItem ldPart;
+    private JMenuItem svPart;
+    private JMenuItem quitter;
     private JMenuItem undo;
-    private JMenuItem historique ;
-    private JMenuItem aide ;
-    private JMenuItem aPropos ;
+    private JMenuItem historique;
+    private JMenuItem aide;
+    private JMenuItem aPropos;
     /**
      * Vue (Constructeur)
      * construit la vue d'échec.
@@ -32,9 +33,9 @@ class Vue extends JFrame
         //setAlwaysOnTop(true);
         setResizable(false);
         setName("Chess");
-        model.lancementPartie();
+        model.lancementPartie("anonymous", "anonymous");
         model.getPartie().getBoard().majCasesAtteignable();
-        vueEchiquier = new VueEchiquier(model.getPartie().getBoard(), model);
+        vueEchiquier = new VueEchiquier(model.getPartie().getBoard(), model, this);
         creerWidget();
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -44,7 +45,6 @@ class Vue extends JFrame
         int ySize = (int)tk.getScreenSize().getHeight();
         setSize(xsize, ySize);
     }
-
 
     /**
      * initAttribut
@@ -87,7 +87,6 @@ class Vue extends JFrame
         barMenu.add(parametres);
         barMenu.add(autres);
         setJMenuBar(barMenu);
-
     }
 
     /**
@@ -148,12 +147,14 @@ class Vue extends JFrame
             piecesPossibles[2] = new ImageIcon("img/NoirEleve/FouNoir.png");
             piecesPossibles[3] = new ImageIcon("img/NoirEleve/ReineNoir.png");
         }
+        int pieceSelected;
+        do
+        {
+            pieceSelected = JOptionPane.showOptionDialog(this, "Choisissez une pièce pour remplacer votre pion :",
+                    "Promotion d'un pion", JOptionPane.INFORMATION_MESSAGE, 2, null, piecesPossibles, null);
+        }
+        while (pieceSelected >3 || pieceSelected < 0);
 
-
-        int pieceSelected = JOptionPane.showOptionDialog(this, "Choisissez une pièce pour remplacer votre pion :",
-                "Promotion d'un pion", JOptionPane.INFORMATION_MESSAGE, 2, null, piecesPossibles, null);
-
-        System.out.println(pieceSelected);
         if(pieceSelected == 0)
             pion.promotion(1);
         else if(pieceSelected == 1)
@@ -174,8 +175,9 @@ class Vue extends JFrame
 
     int choixMode()
     {
-        Object[] options = {1, 2 ,3 };
-        return JOptionPane.showOptionDialog(this, "Choisissez le mode de votre partie :\n" +
+        Object[] options = {1,2 ,3 };
+        return JOptionPane.showOptionDialog(this,
+                "Choisissez le mode de votre partie :\n" +
                 "1) partie normale\n" +
                 "2) coups chronométrée\n" +
                 "3) partie chronométrée\n",
@@ -185,6 +187,101 @@ class Vue extends JFrame
     {
         int answer = JOptionPane.showConfirmDialog(null, message, null, JOptionPane.YES_NO_OPTION);
         return (answer == JOptionPane.YES_OPTION);
+    }
+    void jOptionMessage (String message)
+    {
+        JOptionPane.showMessageDialog(this, message, "A propos", JOptionPane.INFORMATION_MESSAGE);
+    }
+    /*
+        * nettoye la fenetre puis affiche l'historique
+    */
+    int choixHistorique(ArrayList<ArrayList<ArrayList<String>>> historiqueRecup)
+    {
+        int nombreDePartie = historiqueRecup.get(0).size();
+        // 5 partie affiché en largeur : on regarde combien il faudra de ligne
+        int nombreLigne = nombreDePartie/5;
+
+        JPanel pHistorique = new JPanel();
+        pHistorique.setLayout(new BoxLayout(pHistorique, BoxLayout.Y_AXIS));
+
+        JScrollPane listHistoriquePane = new JScrollPane(pHistorique);
+
+        JPanel pGlobal = new JPanel();
+        pGlobal.setLayout(new BoxLayout(pGlobal, BoxLayout.Y_AXIS));
+
+        JPanel pTitreColonne = new JPanel(new GridLayout(0,4));
+        pTitreColonne.add(new JLabel("n°"));
+        pTitreColonne.add(new JLabel("Joueur blanc"));
+        pTitreColonne.add(new JLabel("Date"));
+        pTitreColonne.add(new JLabel("Joueur noir"));
+
+        for (int i = 0; i<nombreDePartie; i++) {
+            //joueurBlanc
+            JPanel joueurBlanc = new JPanel();
+            joueurBlanc.add(new Label(historiqueRecup.get(0).get(i).get(0)));
+            //joueurNoir
+            JPanel joueurNoir = new JPanel();
+            joueurNoir.add(new Label(historiqueRecup.get(1).get(i).get(0)));
+            //date
+            JPanel date = new JPanel();
+            date.add(new Label(historiqueRecup.get(0).get(i).get(1)));
+
+            //créer un jPanel puis l'ajoute dans pHistorique
+            JPanel pPartie = new JPanel(new GridLayout(0,4));
+            pPartie.add(new JLabel(String.valueOf(i)));
+            pPartie.add(joueurBlanc);
+            pPartie.add(date);
+            pPartie.add(joueurNoir);
+
+            pHistorique.add(pPartie);
+        }
+
+        pGlobal.add(pTitreColonne);
+        pGlobal.add(listHistoriquePane);
+
+        Object[] choixHisto = new Object[nombreDePartie];
+        for (int i = 0; i<nombreDePartie; i++){
+            choixHisto[i] = i;
+        }
+
+        return JOptionPane.showOptionDialog(this, pGlobal,
+                "Choix de l'historique", JOptionPane.INFORMATION_MESSAGE, 2, null, choixHisto, null);
+    }
+
+    void afficherHistorique(ArrayList<ArrayList<String>> histoCoups)
+    {
+        JOptionPane d = new JOptionPane();
+        JPanel titreColonne = new JPanel(new GridLayout(0,3));
+        titreColonne.add(new JLabel("n° coups"));
+        titreColonne.add(new JLabel("Joueur blanc"));
+        titreColonne.add(new JLabel("Joueur noir"));
+
+        JPanel tableauCoup = new JPanel(new GridLayout(0,3));
+        for (int i = 0;i<histoCoups.size();i++)
+        {
+            //ajoute le numéro
+            tableauCoup.add(new JLabel(String.valueOf(i)));
+            if (i%2 == 0)
+            {//si coups blanc
+                tableauCoup.add(new JLabel(histoCoups.get(0).get(i)));
+                tableauCoup.add(new JLabel());
+            }
+            else{//sinon coup noir
+                tableauCoup.add(new JLabel());
+                tableauCoup.add(new JLabel(histoCoups.get(0).get(i)));
+            }
+        }
+        JScrollPane pScroll = new JScrollPane();
+        pScroll.add(tableauCoup);
+
+        JPanel pGlobal = new JPanel();
+        pGlobal.setLayout(new BoxLayout(pGlobal, BoxLayout.Y_AXIS));
+
+        pGlobal.add(titreColonne);
+        pGlobal.add(pScroll);
+
+
+        d.showMessageDialog( this, pGlobal, "Historique", JOptionPane.INFORMATION_MESSAGE );
     }
 
     // getters & setters

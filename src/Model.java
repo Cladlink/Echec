@@ -5,24 +5,28 @@ import java.util.ArrayList;
  */
 public class Model
 {
-    private ArrayList<Case> casesAtteignables = null;
-    private Partie partie = null;
-    private Joueur jBlanc = null;
-    private Joueur jNoir = null;
+    private ArrayList<Case> casesAtteignables;
+    private Partie partie;
+    private Joueur jBlanc;
+    private Joueur jNoir;
     private int modePartie = 1;
-    private boolean netPartie = false;
-    private Case caseMemoire = null;
+    private boolean netPartie; // à la fin
+    private Case caseMemoire;
 
-
-
-    public void lancementPartie()
+    public void lancementPartie(String pseudo, String pseudoAdversaire)
     {
-        this.jBlanc = new Joueur(true, "toto");
-        this.jNoir = new Joueur(false, "tata");
+        if (pseudo.equals("anonymous"))
+            this.jBlanc = new Joueur(true);
+        else
+            this.jBlanc = new Joueur(true, pseudo);
+
+        if (pseudoAdversaire.equals("anonymous"))
+            this.jNoir = new Joueur(false);
+        else
+            this.jNoir = new Joueur(false, pseudoAdversaire);
+
         this.partie = new Partie(jBlanc, jNoir, modePartie, netPartie);
     }
-
-
 
     // getters & setters
 

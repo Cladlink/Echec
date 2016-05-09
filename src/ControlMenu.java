@@ -1,5 +1,6 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -29,33 +30,28 @@ public class ControlMenu implements ActionListener
         if (e.getSource() == vue.getNvlPart())
         {
             int modePartie = vue.choixMode();
-            System.out.println(modePartie);
             model.setModePartie(modePartie);
 
             String pseudoAdv;
-            String pseudo = vue.askJOption("Joueur 1");
+            String pseudo;
 
+            do
+            {
+                pseudo = vue.askJOption("Joueur 1");
+            }
+            while (pseudo.length()==0 || pseudo.equals("anonymous"));
             do
             {
                 pseudoAdv = vue.askJOption("Joueur 2");
             }
-            while (Objects.equals(pseudo, pseudoAdv));
-            // todo Michael
-            // le joueur 1 doit être différent du joueur 2 (logique)
-
-            // interrogation de la BDD pour savoir si les pseudos existe
-            // si oui on récupere les données pour les mettres à jour dans la classe joueur correspondante
-            // si non on créé une fiche dans la bdd et on initie le joueur par défaut
-
-            // gérer le cas ou la partie est normal (pas d'affichage des chronos
-            // gérer le cas ou les coups sont en temps limités (chrono de 30sec par tour (ou laisser choix au joueur)
-            // gérér le cas où la partie est en temps limités (chrono de 15 min de jeu par joueur)
-            /*model.lancementPartie();
-            model.majCasesAtteignable();
-            vue.setVueEchiquier(new VueEchiquier(model.getPartie().getBoard(), model));
+            while (Objects.equals(pseudo, pseudoAdv) || pseudoAdv.length()==0 || pseudoAdv.equals("anonymous"));
+            //todo voir avec Domas pour fermer le Model
+            model.lancementPartie(pseudo, pseudoAdv);
+            model.getPartie().getBoard().majCasesAtteignable();
+            vue.setVueEchiquier(new VueEchiquier(model.getPartie().getBoard(), model, vue));
             vue.creerWidget();
             vue.setControlButton(new ControlButton(model, vue));
-            vue.setVisible(true);*/
+            vue.setVisible(true);
         }
         else if (e.getSource() == vue.getRejPart())
         {
@@ -63,19 +59,14 @@ public class ControlMenu implements ActionListener
         }
         else if (e.getSource() == vue.getSvPart())
         {
-            // todo Marie-Lucile
-            // gérer avec la requete de sauvegarde de Marie Lucile
             model.getPartie().save();
         }
         else if (e.getSource() == vue.getLdPart())
         {
-            // todo Kevin
-            // gérer avec la requête de chargement de Kevin
             model.getPartie().load();
         }
         else if (e.getSource() == vue.getQuitter())
         {
-            // sauvegarde de MarieLucile
             boolean sauvegarde = vue.boolJOptionPane("Voulez-vous sauvegarder avant de quitter ?");
             if (sauvegarde)
             {
@@ -90,20 +81,22 @@ public class ControlMenu implements ActionListener
             boolean undo = vue.boolJOptionPane("voulez-vous annuler le dernier coup ?");
             if (undo)
             {
-                System.out.println("coucou");
                 model.getPartie().undo();
                 vue.repaint();
             }
         }
         else if (e.getSource() == vue.getHistorique())
         {
-            // todo Kevin
-            // afficher un select (assez proche du load)
+            ArrayList<ArrayList<ArrayList<String>>> histo = model.getPartie().requeteHistorique();
+            int choixFait = vue.choixHistorique(histo);
+            ArrayList<ArrayList<String>> histoDesCoups = model.getPartie().requeteCoupsHistorique(choixFait);
+            vue.afficherHistorique(histoDesCoups);
         }
         else if (e.getSource() == vue.getaPropos())
         {
-            // todo gabriel
-            // JOptionPane avec les personnes qui ont codé le jeu
+            // done Gabriel
+            vue.jOptionMessage("Jeu développé par : \n -Michael BOUTBOUL\n -Marie-Lucile CANIARD\n -Sylvain GUYOT" +
+                    "\n -Kevin LIMACHER\n -Gabriel MERCIER\n -Adonis N'DOLO.");
         }
         else if (e.getSource() == vue.getAide())
         {
