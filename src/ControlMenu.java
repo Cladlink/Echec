@@ -94,9 +94,8 @@ public class ControlMenu implements ActionListener
         }
         else if (e.getSource() == vue.getaPropos())
         {
-            // done Gabriel
-            vue.jOptionMessage("Jeu développé par : \n -Michael BOUTBOUL\n -Marie-Lucile CANIARD\n -Sylvain GUYOT" +
-                    "\n -Kevin LIMACHER\n -Gabriel MERCIER\n -Adonis N'DOLO.");
+            vue.jOptionMessage("Jeu développé par : \n Michael BOUTBOUL\n Marie-Lucile CANIARD\n Sylvain GUYOT" +
+                    "\n Kevin LIMACHER\n Gabriel MERCIER\n Adonis N'DOLO.");
         }
         else if (e.getSource() == vue.getAide())
         {

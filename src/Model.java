@@ -9,7 +9,7 @@ public class Model
     private Partie partie;
     private Joueur jBlanc;
     private Joueur jNoir;
-    private int modePartie = 1;
+    private int modePartie = 0;
     private boolean netPartie; // à la fin
     private Case caseMemoire;
 
@@ -29,7 +29,6 @@ public class Model
     }
 
     // getters & setters
-
     public Partie getPartie() {
         return partie;
     }

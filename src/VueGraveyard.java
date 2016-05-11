@@ -14,7 +14,7 @@ public class VueGraveyard
     VueGraveyard(Partie partie, boolean isBlanc)
     {
         this.partie = partie;
-        this.bgCimetiere = new ImageIcon("img/cimetiere.png");
+        this.bgCimetiere = new ImageIcon("img/cimetiere2.png");
         this.isBlanc = isBlanc;
     }
 
@@ -31,7 +31,7 @@ public class VueGraveyard
         int i, pion=0, pasPion=0;
 
         //cimetiere blanc
-        g.drawImage(bgCimetiere.getImage(), xBase, yBase, 200, 500, null);//110 150
+        g.drawImage(bgCimetiere.getImage(), xBase, yBase-50, 200, 650, null);//110 150
         ArrayList<Piece> cimetiere;
 
         if (isBlanc)
