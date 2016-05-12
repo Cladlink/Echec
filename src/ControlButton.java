@@ -26,7 +26,7 @@ public class ControlButton extends MouseAdapter
     @Override
     public void mouseClicked(MouseEvent e)
     {
-        int row = (e.getY()-50)/80;
+        int row = (e.getY()-20)/80;
         int column = (e.getX()-360)/80;
         Case[][] plateau = model.getPartie().getBoard().getPlateau();
         if (e.getSource() == vue.getVueEchiquier())

@@ -11,8 +11,8 @@ public class Roi extends Piece
     public Roi(Case caseInitiale, boolean isBlanc)
     {
         super(caseInitiale, isBlanc);
-        adresseImageBlanche = "img/BlancEleve/RoiBlanc.png";
-        adresseImageNoire = "img/NoirEleve/RoiNoir.png";
+        adresseImageBlanche = "img/BlancProf/RoiBlanc.png";
+        adresseImageNoire = "img/NoirProf/RoiNoir.png";
         skin = isBlanc? new ImageIcon(adresseImageBlanche) :new ImageIcon(adresseImageNoire);
         grandRoque = petitRoque = true;
     }

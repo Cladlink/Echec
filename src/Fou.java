@@ -10,8 +10,8 @@ public class Fou extends Piece
     public Fou(Case caseInitiale, boolean isBlanc)
     {
         super(caseInitiale, isBlanc);
-        adresseImageBlanche = "img/BlancEleve/FouBlanc.png";
-        adresseImageNoire = "img/NoirEleve/FouNoir.png";
+        adresseImageBlanche = "img/BlancProf/FouBlanc.png";
+        adresseImageNoire = "img/NoirProf/FouNoir.png";
         skin = isBlanc?new ImageIcon(adresseImageBlanche):new ImageIcon(adresseImageNoire);
 
     }

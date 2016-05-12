@@ -1,5 +1,13 @@
+/**
+  Created by cladlink on 25/03/16.
+ */
 /*
- * Created by cladlink on 25/03/16.
+todo Domas
+
+todo * voir pour virer le model (si on le vire)
+todo * voir si la méthode de JoptionPane est une bonne idée ou pas
+todo * voir pour le réseau pour jeudi prochain
+todo * voir pour le rafraichissement de la vue
  */
 public class Launcher
 {

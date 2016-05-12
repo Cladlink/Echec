@@ -11,8 +11,8 @@ public class Tour extends Piece
     public Tour(Case caseInitiale, boolean isBlanc)
     {
         super(caseInitiale, isBlanc);
-        adresseImageBlanche = "img/BlancEleve/TourBlanc.png";
-        adresseImageNoire = "img/NoirEleve/TourNoir.png";
+        adresseImageBlanche = "img/BlancProf/TourBlanc.png";
+        adresseImageNoire = "img/NoirProf/TourNoir.png";
         skin = isBlanc?new ImageIcon(adresseImageBlanche):new ImageIcon(adresseImageNoire);
     }
 
@@ -65,8 +65,6 @@ public class Tour extends Piece
             }
             else
                 deplacableN = false;
-
-
 
             //test E
             if (deplacableE
