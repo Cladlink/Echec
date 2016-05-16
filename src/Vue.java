@@ -140,9 +140,9 @@ public class Vue extends JFrame
         partieTempsCoupsLimites.setActionCommand("2");
         partieTempsLimite = new JRadioButton(model.getPartieTempsLimiteTitre());
         partieTempsLimite.setActionCommand("3");
-        reseauOui = new JRadioButton(model.getReseauOuiTitre(), true);
+        reseauOui = new JRadioButton(model.getReseauOuiTitre());
         reseauOui.setActionCommand("true");
-        reseauNon = new JRadioButton(model.getReseauNonTitre());
+        reseauNon = new JRadioButton(model.getReseauNonTitre(), true);
         reseauNon.setActionCommand("fasle");
         skinBlancNormal = new JRadioButton(model.getSkinBlancNormalTitre(), true);
         skinBlancNormal.setActionCommand("1");
@@ -299,9 +299,9 @@ public class Vue extends JFrame
         formulaire.add(typePartie);
         formulaire.add(reseau);
         formulaire.add(partieNormale);
-        formulaire.add(reseauOui);
-        formulaire.add(partieTempsCoupsLimites);
         formulaire.add(reseauNon);
+        formulaire.add(partieTempsCoupsLimites);
+        formulaire.add(reseauOui);
         formulaire.add(partieTempsLimite);
 
         JPanel nouveauJ = new JPanel(new GridLayout(6,1,0,10));
