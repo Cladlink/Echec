@@ -8,11 +8,11 @@ import java.util.Vector;
 public class ControlButtonMenu implements ActionListener
 {
     private Vue vue;
-    private Model model;
+    private Accueil accueil;
 
-    public ControlButtonMenu(Model model, Vue vue)
+    public ControlButtonMenu(Accueil accueil, Vue vue)
     {
-        this.model = model;
+        this.accueil = accueil;
         this.vue = vue;
         vue.setButtonControl(this);
     }
@@ -60,15 +60,15 @@ public class ControlButtonMenu implements ActionListener
                 return;
             }
 
-            model.lancementPartie(pseudoB, pseudoN,
+            accueil.lancementPartie(pseudoB, pseudoN,
                     choixJoueurB, choixJOueurN, modePartie, netPartie);
-            vue.setVueEchiquier(new VueEchiquier(model.getPartie().getBoard(), model, vue));
+            vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
             vue.creerWidgetPartie();
-            model.getPartie().getBoard().majCasesAtteignable();
-            vue.setControlButtonMenu(new ControlButton(model, vue));
+            accueil.getPartie().getBoard().majCasesAtteignable();
+            vue.setControlButtonMenu(new ControlButton(accueil, vue));
 
             vue.initAttributPartie();
-            vue.setControlMenu(new ControlMenu(model, vue));
+            vue.setControlMenu(new ControlMenu(accueil, vue));
             vue.setVisible(true);
         }
         else if(e.getSource().equals(vue.getCredit()))

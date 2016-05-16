@@ -7,12 +7,12 @@ import java.util.ArrayList;
 public class ControlButton extends MouseAdapter
 {
 
-    private Model model;
+    private Accueil accueil;
     private Vue vue;
 
-    public ControlButton(Model model, Vue vue)
+    public ControlButton(Accueil accueil, Vue vue)
     {
-        this.model = model;
+        this.accueil = accueil;
         this.vue = vue;
     }
 
@@ -27,7 +27,7 @@ public class ControlButton extends MouseAdapter
     {
         int row = (e.getY()-20)/80;
         int column = (e.getX()-360)/80;
-        Case[][] plateau = model.getPartie().getBoard().getPlateau();
+        Case[][] plateau = accueil.getPartie().getBoard().getPlateau();
         if (e.getSource() == vue.getVueEchiquier())
         {
             if( row >= 0
@@ -35,36 +35,36 @@ public class ControlButton extends MouseAdapter
                     && column >=0
                     && column <=7)
             {
-                if (model.getPartie().getBoard().getPlateau()[row][column].getPiece() != null)
-                    System.out.println(model.getPartie().getBoard().getPlateau()[row][column].getPiece());
+                if (accueil.getPartie().getBoard().getPlateau()[row][column].getPiece() != null)
+                    System.out.println(accueil.getPartie().getBoard().getPlateau()[row][column].getPiece());
                 // si je clique sur une pièce  qui est au joueur dont c'est le tour
                 if ( plateau[row][column].getPiece() != null
-                        && model.getPartie().isTourBlanc() == plateau[row][column].getPiece().isBlanc() )
+                        && accueil.getPartie().isTourBlanc() == plateau[row][column].getPiece().isBlanc() )
                 {
                     ArrayList<Case> casesAtteignables =
-                            model.getPartie().getBoard().getPlateau()[row][column].getPiece().casesAtteignables;
-                    model.setCasesAtteignables(casesAtteignables);
-                    model.setCaseMemoire(model.getPartie().getBoard().getPlateau()[row][column]);
+                            accueil.getPartie().getBoard().getPlateau()[row][column].getPiece().casesAtteignables;
+                    accueil.setCasesAtteignables(casesAtteignables);
+                    accueil.setCaseMemoire(accueil.getPartie().getBoard().getPlateau()[row][column]);
                     vue.repaint();
                 }
-                else if(model.getCasesAtteignables() != null
-                        && model.getCasesAtteignables().contains(plateau[row][column])
-                        && model.getPartie().isTourBlanc() == model.getCaseMemoire().getPiece().isBlanc() )
+                else if(accueil.getCasesAtteignables() != null
+                        && accueil.getCasesAtteignables().contains(plateau[row][column])
+                        && accueil.getPartie().isTourBlanc() == accueil.getCaseMemoire().getPiece().isBlanc() )
                 {
-                    model.getPartie().getBoard().deplacer(model.getCaseMemoire(), plateau[row][column], this.vue);
-                    model.setCasesAtteignables(null);
-                    model.getPartie().setTourBlanc(!model.getPartie().isTourBlanc());
-                    model.getPartie().getBoard().majCasesAtteignable();
+                    accueil.getPartie().getBoard().deplacer(accueil.getCaseMemoire(), plateau[row][column], this.vue);
+                    accueil.setCasesAtteignables(null);
+                    accueil.getPartie().setTourBlanc(!accueil.getPartie().isTourBlanc());
+                    accueil.getPartie().getBoard().majCasesAtteignable();
 
-                    if (model.getPartie().isEchecEtMat())
+                    if (accueil.getPartie().isEchecEtMat())
                     {
                         vue.jOptionMessage("ECHEC ET MAT !");
                     }
-                    else if (model.getPartie().isPat())
+                    else if (accueil.getPartie().isPat())
                     {
                         vue.jOptionMessage("PAT");
                     }
-                    else if (model.getPartie().isEchec())
+                    else if (accueil.getPartie().isEchec())
                     {
                         vue.jOptionMessage("ECHEC !");
                     }

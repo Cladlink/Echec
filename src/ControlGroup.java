@@ -3,20 +3,20 @@
  */
 public class ControlGroup
 {
-    private Model model;
+    private Accueil accueil;
     private Vue vue;
     public ControlButtonMenu controlButtonMenu;
 
     private ControlMenu controlMenu;
     private ControlButton controlButton;
 
-    public ControlGroup(Model model)
+    public ControlGroup(Accueil accueil)
     {
-        this.model = model;
-        vue = new Vue(model);
-        controlButtonMenu = new ControlButtonMenu(model, vue);
-        controlMenu = new ControlMenu(model, vue);
-        controlButton = new ControlButton(model, vue);
+        this.accueil = accueil;
+        vue = new Vue(accueil);
+        controlButtonMenu = new ControlButtonMenu(accueil, vue);
+        controlMenu = new ControlMenu(accueil, vue);
+        controlButton = new ControlButton(accueil, vue);
         vue.display();
     }
 

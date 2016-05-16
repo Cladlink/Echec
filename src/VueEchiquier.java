@@ -7,7 +7,7 @@ import java.awt.*;
 public class VueEchiquier extends JPanel
 {
     private Vue vue;
-    private Model model;
+    private Accueil accueil;
     private Board board;
 
     private ImageIcon bg;
@@ -20,10 +20,10 @@ public class VueEchiquier extends JPanel
 
     private Graphics g;
 
-    public VueEchiquier(Board board, Model model, Vue vue)
+    public VueEchiquier(Board board, Accueil accueil, Vue vue)
     {
         this.vue = vue;
-        this.model = model;
+        this.accueil = accueil;
         this.board = board;
 
         bg = new ImageIcon("img/echec.jpg");
@@ -31,11 +31,11 @@ public class VueEchiquier extends JPanel
         deplacementAttaque = new ImageIcon("img/deplacementAttaque.png");
 
         setBorder(BorderFactory.createLineBorder(Color.black));
-        gyBlanc = new VueGraveyard(model.getPartie(), true);
-        gyNoir = new VueGraveyard(model.getPartie(), false);
-        bs = new VueBarreStatut(model.getPartie(), this);
-        chronoBlanc = new VueTimer(model.getPartie(), true);
-        chronoNoir = new VueTimer(model.getPartie(), false);
+        gyBlanc = new VueGraveyard(accueil.getPartie(), true);
+        gyNoir = new VueGraveyard(accueil.getPartie(), false);
+        bs = new VueBarreStatut(accueil.getPartie(), this);
+        chronoBlanc = new VueTimer(accueil.getPartie(), true);
+        chronoNoir = new VueTimer(accueil.getPartie(), false);
 
     }
 
@@ -66,15 +66,15 @@ public class VueEchiquier extends JPanel
                 else
                     g.setColor(Color.BLUE);
 
-                if (model.getCasesAtteignables() != null)
+                if (accueil.getCasesAtteignables() != null)
                 {
-                    for (int k = 0; k < model.getCasesAtteignables().size(); k++)
+                    for (int k = 0; k < accueil.getCasesAtteignables().size(); k++)
                     {
-                        if ( model.getCasesAtteignables().get(k) == board.getPlateau()[i][j]
-                                && model.getCasesAtteignables().get(k).getPiece() == null)
+                        if ( accueil.getCasesAtteignables().get(k) == board.getPlateau()[i][j]
+                                && accueil.getCasesAtteignables().get(k).getPiece() == null)
                            isDepPossible = true;
-                        else if ( model.getCasesAtteignables().get(k) == board.getPlateau()[i][j]
-                                && model.getCasesAtteignables().get(k).getPiece() != null)
+                        else if ( accueil.getCasesAtteignables().get(k) == board.getPlateau()[i][j]
+                                && accueil.getCasesAtteignables().get(k).getPiece() != null)
                             isDepPossiblePiece = true;
                     }
                 }

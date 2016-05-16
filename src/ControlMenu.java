@@ -1,19 +1,18 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
   Created by cladlink on 06/04/16.
  */
 public class ControlMenu implements ActionListener
 {
-    private Model model;
+    private Accueil accueil;
     private Vue vue;
 
-    public ControlMenu(Model model, Vue vue)
+    public ControlMenu(Accueil accueil, Vue vue)
     {
-        this.model = model;
+        this.accueil = accueil;
         this.vue = vue;
         //vue.setControlMenu(this);
     }
@@ -27,10 +26,10 @@ public class ControlMenu implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        if (e.getSource() == vue.getNvlPart())
+        /*if (e.getSource() == vue.getNvlPart())
         {
-            /*int modePartie = vue.choixMode();
-            model.setModePartie(modePartie);
+            int modePartie = vue.choixMode();
+            accueil.setModePartie(modePartie);
 
             String pseudoAdv;
             String pseudo;
@@ -45,20 +44,20 @@ public class ControlMenu implements ActionListener
                 pseudoAdv = vue.askJOption("Joueur 2");
             }
             while (Objects.equals(pseudo, pseudoAdv) || pseudoAdv.length()==0 || pseudoAdv.equals("anonymous"));
-            //todo voir avec Domas pour fermer le Model
-            model.lancementPartie(pseudo, pseudoAdv);
-            model.getPartie().getBoard().majCasesAtteignable();
-            vue.setVueEchiquier(new VueEchiquier(model.getPartie().getBoard(), model, vue));
+            //todo voir avec Domas pour fermer le Accueil
+            accueil.lancementPartie(pseudo, pseudoAdv);
+            accueil.getPartie().getBoard().majCasesAtteignable();
+            vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
             vue.creerWidgetPartie();
-            vue.setControlButtonMenu(new ControlButton(model, vue));
-            vue.setVisible(true);*/
-        }
-        else if (e.getSource() == vue.getQuitter())
+            vue.setControlButtonMenu(new ControlButton(accueil, vue));
+            vue.setVisible(true);
+        }*/
+        if (e.getSource() == vue.getQuitter())
         {
             boolean sauvegarde = vue.boolJOptionPane("Voulez-vous sauvegarder avant de quitter ?");
             if (sauvegarde)
             {
-                model.getPartie().save();
+                accueil.getPartie().save();
                 System.exit(0);
             }
             else
@@ -69,21 +68,16 @@ public class ControlMenu implements ActionListener
             boolean undo = vue.boolJOptionPane("voulez-vous annuler le dernier coup ?");
             if (undo)
             {
-                model.getPartie().undo();
+                accueil.getPartie().undo();
                 vue.repaint();
             }
         }
         else if (e.getSource() == vue.getHistorique())
         {
-            ArrayList<ArrayList<ArrayList<String>>> histo = model.getPartie().requeteHistorique();
+            ArrayList<ArrayList<ArrayList<String>>> histo = accueil.getPartie().requeteHistorique();
             int choixFait = vue.choixHistorique(histo);
-            ArrayList<ArrayList<String>> histoDesCoups = model.getPartie().requeteCoupsHistorique(choixFait);
+            ArrayList<ArrayList<String>> histoDesCoups = accueil.getPartie().requeteCoupsHistorique(choixFait);
             vue.afficherHistorique(histoDesCoups);
-        }
-        else if (e.getSource() == vue.getAide())
-        {
-            // todo Baptiste + Adonis
-            // proposition d'un genre de petit tuto ? (à la toute fin)
         }
     }
 }
