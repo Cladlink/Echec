@@ -9,9 +9,9 @@ import java.util.Objects;
 public class ControlMenu implements ActionListener
 {
     private Model model;
-    private VueMainMenu vue;
+    private Vue vue;
 
-    public ControlMenu(Model model, VueMainMenu vue)
+    public ControlMenu(Model model, Vue vue)
     {
         this.model = model;
         this.vue = vue;
@@ -29,7 +29,7 @@ public class ControlMenu implements ActionListener
     {
         if (e.getSource() == vue.getNvlPart())
         {
-            int modePartie = vue.choixMode();
+            /*int modePartie = vue.choixMode();
             model.setModePartie(modePartie);
 
             String pseudoAdv;
@@ -51,7 +51,7 @@ public class ControlMenu implements ActionListener
             vue.setVueEchiquier(new VueEchiquier(model.getPartie().getBoard(), model, vue));
             vue.creerWidgetPartie();
             vue.setControlButtonMenu(new ControlButton(model, vue));
-            vue.setVisible(true);
+            vue.setVisible(true);*/
         }
         else if (e.getSource() == vue.getQuitter())
         {

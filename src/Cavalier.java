@@ -10,9 +10,14 @@ public class Cavalier extends Piece
     public Cavalier(Case caseInitiale, boolean isBlanc)
     {
         super(caseInitiale, isBlanc);
-        adresseImageBlanche = "img/BlancProf/CavalierBlanc.png";
-        adresseImageNoire = "img/NoirProf/CavalierNoir.png";
-        skin = isBlanc?new ImageIcon(adresseImageBlanche):new ImageIcon(adresseImageNoire);
+        adresseImageBlanche = "img/pions/CavalierBlanc.png";
+        adresseImageNoire = "img/pions/CavalierNoir.png";
+        adresseImageNoireProf = "img/NoirProf/CavalierNoir.png";
+        adresseImageBlancheProf = "img/BlancProf/CavalierBlanc.png";
+        adresseImageNoireEleve = "img/NoirEleve/CavalierNoir.png";
+        adresseImageBlancheEleve = "img/BlancEleve/CavalierBlanc.png";
+
+        initChoixSkinPiece();
     }
 
     /**

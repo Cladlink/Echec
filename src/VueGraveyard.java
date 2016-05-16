@@ -98,5 +98,7 @@ public class VueGraveyard
             g.drawString(String.valueOf(reine), xBase + 60, yBase +150 + ecartEntrePiece * 5);
             g.drawImage(imgReine, xBase + 80, yBase +100 + ecartEntrePiece * 5, taillePiece, taillePiece, null);
         }
+
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 12));
     }
 }

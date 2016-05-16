@@ -10,9 +10,16 @@ public class Pion extends Piece
     public Pion(Case caseInitiale, boolean blanc)
     {
         super(caseInitiale, blanc);
-        adresseImageBlanche = "img/BlancProf/PionBlanc.png";
-        adresseImageNoire = "img/NoirProf/PionNoir.png";
+        adresseImageBlanche = "img/pions/PionBlanc.png";
+        adresseImageNoire = "img/pions/PionNoir.png";
+        adresseImageNoireProf = "img/NoirProf/PionNoir.png";
+        adresseImageBlancheProf = "img/BlancProf/PionBlanc.png";
+        adresseImageNoireEleve = "img/NoirEleve/PionNoir.png";
+        adresseImageBlancheEleve = "img/BlancEleve/PionBlanc.png";
+
         skin = blanc? new ImageIcon(adresseImageBlanche) : new ImageIcon(adresseImageNoire);
+
+        initChoixSkinPiece();
     }
 
     /**

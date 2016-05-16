@@ -8,13 +8,12 @@ public class ControlButton extends MouseAdapter
 {
 
     private Model model;
-    private VueMainMenu vue;
+    private Vue vue;
 
-    public ControlButton(Model model, VueMainMenu vue)
+    public ControlButton(Model model, Vue vue)
     {
         this.model = model;
         this.vue = vue;
-        //vue.setControlButtonMenu(this);
     }
 
     /**

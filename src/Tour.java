@@ -11,9 +11,16 @@ public class Tour extends Piece
     public Tour(Case caseInitiale, boolean isBlanc)
     {
         super(caseInitiale, isBlanc);
-        adresseImageBlanche = "img/BlancProf/TourBlanc.png";
-        adresseImageNoire = "img/NoirProf/TourNoir.png";
+        adresseImageBlanche = "img/pions/TourBlanc.png";
+        adresseImageNoire = "img/pions/TourNoir.png";
+        adresseImageNoireProf = "img/NoirProf/TourNoir.png";
+        adresseImageBlancheProf = "img/BlancProf/TourBlanc.png";
+        adresseImageNoireEleve = "img/NoirEleve/TourNoir.png";
+        adresseImageBlancheEleve = "img/BlancEleve/TourBlanc.png";
+
         skin = isBlanc?new ImageIcon(adresseImageBlanche):new ImageIcon(adresseImageNoire);
+
+        initChoixSkinPiece();
     }
 
     /**

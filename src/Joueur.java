@@ -1,11 +1,12 @@
 import java.util.ArrayList;
+import java.util.Vector;
 
 /**
   Created by Michael on 30/03/16.
  */
 class Joueur
 {
-    private final BDDManager bdd = new BDDManager();
+    private final static BDDManager bdd = new BDDManager();
     private int id;
     private boolean isBlanc;
     private String pseudo;
@@ -88,11 +89,24 @@ class Joueur
      *
      * @param pseudo (seul élément necessaire à la création d'un joueur)
      */
-    private void inscriptionJoueur(String pseudo)
+    static void inscriptionJoueur(String pseudo)
     {
         bdd.start();
-        bdd.edit("INSERT INTO JOUEUR VALUES (null, \""+ pseudo + "\", 0, 0, 0, 0, false, 0, false, false, false);");
+        bdd.edit("INSERT INTO JOUEUR VALUES (null, \"" + pseudo + "\", 0, 0, 0, 0, false, 0, false, false, false);");
         bdd.stop();
+    }
+
+    public static Vector<String> listeJoueurs()
+    {
+        bdd.start();
+        ArrayList<ArrayList<String>> joueurs = bdd.ask("SELECT JOUEUR.pseudoJoueur FROM JOUEUR;");
+        Vector<String> listeJoueurs = new Vector<>();
+        for(int i=0; i<joueurs.size(); i++)
+            for (int j = 0; j < joueurs.get(i).size(); j++)
+                listeJoueurs.add(joueurs.get(i).get(j));
+        bdd.stop();
+
+        return listeJoueurs;
     }
 
     // getters & setters

@@ -166,7 +166,7 @@ public class Board
      * @param caseCliquee (case qui a ... été cliquée)
      * @param destination (case ou la pièce doit se rendre)
      */
-    public void deplacer(Case caseCliquee, Case destination, VueMainMenu vue)
+    public void deplacer(Case caseCliquee, Case destination, Vue vue)
     {
         // ajoute le coup dans l'historique
         partie.historiqueCoups(caseCliquee, destination);

@@ -173,11 +173,11 @@ class BDDManager
                 " VALUES (\"titi\", 0, 0, 0, 0, 0, false, false, false);");*/
        //bdd.edit("INSERT INTO HISTORIQUE VALUES (null, 26, 28, '2015-2-12', 'PB1213-PB1213-PB1213-PB1213-PB1213-PB1213-PB1213');");
         //bdd.edit("INSERT INTO SAUVEGARDE VALUES (null, 25, 26, null, true, 'PB12-PN13-RN65', 14);");
-        ArrayList<ArrayList<String>> test = bdd.ask("SELECT * FROM HISTORIQUE;");
+        /*ArrayList<ArrayList<String>> test = bdd.ask("SELECT pseudoJoueur FROM JOUEUR;");
         for (int i = 0; i < test.size(); i++)
         {
             System.out.println(test.get(i));
-        }
+        }*/
 
         bdd.stop();
     }

@@ -6,7 +6,7 @@ import java.awt.*;
  */
 public class VueEchiquier extends JPanel
 {
-    private VueMainMenu vue;
+    private Vue vue;
     private Model model;
     private Board board;
 
@@ -20,7 +20,7 @@ public class VueEchiquier extends JPanel
 
     private Graphics g;
 
-    public VueEchiquier(Board board, Model model, VueMainMenu vue)
+    public VueEchiquier(Board board, Model model, Vue vue)
     {
         this.vue = vue;
         this.model = model;

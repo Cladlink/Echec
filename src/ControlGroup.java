@@ -4,7 +4,7 @@
 public class ControlGroup
 {
     private Model model;
-    private VueMainMenu vueMainMenu;
+    private Vue vue;
     public ControlButtonMenu controlButtonMenu;
 
     private ControlMenu controlMenu;
@@ -13,11 +13,11 @@ public class ControlGroup
     public ControlGroup(Model model)
     {
         this.model = model;
-        vueMainMenu = new VueMainMenu(model);
-        controlButtonMenu = new ControlButtonMenu(model, vueMainMenu);
-        controlMenu = new ControlMenu(model, vueMainMenu);
-        controlButton = new ControlButton(model, vueMainMenu);
-        vueMainMenu.display();
+        vue = new Vue(model);
+        controlButtonMenu = new ControlButtonMenu(model, vue);
+        controlMenu = new ControlMenu(model, vue);
+        controlButton = new ControlButton(model, vue);
+        vue.display();
     }
 
 

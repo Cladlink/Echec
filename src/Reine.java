@@ -10,9 +10,16 @@ public class Reine extends Piece
     public Reine(Case caseInitiale, boolean isBlanc)
     {
         super(caseInitiale, isBlanc);
-        adresseImageBlanche = "img/BlancProf/ReineBlanc.png";
-        adresseImageNoire = "img/NoirProf/ReineNoir.png";
+        adresseImageBlanche = "img/pions/ReineBlanc.png";
+        adresseImageNoire = "img/pions/ReineNoir.png";
+        adresseImageNoireProf = "img/NoirProf/ReineNoir.png";
+        adresseImageBlancheProf = "img/BlancProf/ReineBlanc.png";
+        adresseImageNoireEleve = "img/NoirEleve/ReineNoir.png";
+        adresseImageBlancheEleve = "img/BlancEleve/ReineBlanc.png";
+
         skin = isBlanc?new ImageIcon(adresseImageBlanche):new ImageIcon(adresseImageNoire);
+
+        initChoixSkinPiece();
     }
 
     /**

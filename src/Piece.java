@@ -11,8 +11,12 @@ public abstract class Piece
     protected ArrayList<Case> casesAtteignables;
 
     protected ImageIcon skin;
-    protected String adresseImageNoire;
-    protected String adresseImageBlanche;
+    protected static String adresseImageNoire;
+    protected static String adresseImageBlanche;
+    protected static String adresseImageNoireProf;
+    protected static String adresseImageBlancheProf;
+    protected static String adresseImageNoireEleve;
+    protected static String adresseImageBlancheEleve;
 
     /**
      * Pièce (constructeur)
@@ -26,6 +30,28 @@ public abstract class Piece
         this.emplacementPiece = caseInitiale;
         this.casesAtteignables = new ArrayList<>();
         // les trois autres attributs sont initialisés dans le constructeur de chaque pièces
+    }
+
+    public void initChoixSkinPiece()
+    {
+        if (blanc)
+        {
+            if (emplacementPiece.getBoard().getPartie().getChoixJoueurBlanc() == 1)
+                skin = new ImageIcon(adresseImageBlanche);
+            else if (emplacementPiece.getBoard().getPartie().getChoixJoueurBlanc() == 2)
+                skin = new ImageIcon(adresseImageBlancheProf);
+            else if (emplacementPiece.getBoard().getPartie().getChoixJoueurBlanc() == 3)
+                skin = new ImageIcon(adresseImageBlancheEleve);
+        }
+        else
+        {
+            if (emplacementPiece.getBoard().getPartie().getChoixJoueurNoir() == 1)
+                skin = new ImageIcon(adresseImageNoire);
+            else if (emplacementPiece.getBoard().getPartie().getChoixJoueurNoir() == 2)
+                skin = new ImageIcon(adresseImageNoireProf);
+            else if (emplacementPiece.getBoard().getPartie().getChoixJoueurNoir() == 3)
+                skin = new ImageIcon(adresseImageNoireEleve);
+        }
     }
     /**
      * deplacer

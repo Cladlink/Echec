@@ -8,6 +8,9 @@ class Partie
 {
     private final BDDManager bdd = new BDDManager();
 
+    private int choixJoueurBlanc;
+    private int choixJoueurNoir;
+
     private Joueur joueurBlanc;
     private Joueur joueurNoir;
 
@@ -37,12 +40,14 @@ class Partie
      * @param joueurNoir j2
      */
 
-    Partie(Joueur joueurBlanc, Joueur joueurNoir, int modePartie, boolean netPartie)
+    Partie(Joueur joueurBlanc, Joueur joueurNoir, int modePartie, boolean netPartie, int choixJoueurB, int choixJoueurN)
     {
         //On ajoute les deux joueurs à la partie
         this.joueurBlanc = joueurBlanc;
         this.joueurNoir = joueurNoir;
 
+        this.choixJoueurBlanc = choixJoueurB;
+        this.choixJoueurNoir = choixJoueurN;
 
         piecesBlanchesPlateau = new ArrayList<>();
         piecesNoiresPlateau = new ArrayList<>();
@@ -67,6 +72,7 @@ class Partie
         partieFinie = false;
 
         historique = new ArrayList<>();
+        System.out.println(modePartie + " " + netPartie + " ");
     }
     // todo
     synchronized void tourLimite()
@@ -640,5 +646,41 @@ class Partie
     }
     synchronized void setEchecNoir(boolean echecNoir) {
         this.echecNoir = echecNoir;
+    }
+
+    public BDDManager getBdd() {
+        return bdd;
+    }
+
+    public int getChoixJoueurBlanc() {
+        return choixJoueurBlanc;
+    }
+
+    public void setChoixJoueurBlanc(int choixJoueurBlanc) {
+        this.choixJoueurBlanc = choixJoueurBlanc;
+    }
+
+    public int getChoixJoueurNoir() {
+        return choixJoueurNoir;
+    }
+
+    public void setChoixJoueurNoir(int choixJoueurNoir) {
+        this.choixJoueurNoir = choixJoueurNoir;
+    }
+
+    public boolean isPartieFinie() {
+        return partieFinie;
+    }
+
+    public void setPartieFinie(boolean partieFinie) {
+        this.partieFinie = partieFinie;
+    }
+
+    public ArrayList<String> getHistorique() {
+        return historique;
+    }
+
+    public void setHistorique(ArrayList<String> historique) {
+        this.historique = historique;
     }
 }
