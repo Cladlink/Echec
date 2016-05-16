@@ -1,19 +1,16 @@
-import javax.swing.*;
-import java.util.ArrayList;
-
 /**
   Created by baptiste on 31/03/16.
  */
-public class Cavalier extends Piece
+class Cavalier extends Piece
 {
 
-    public Cavalier(Case caseInitiale, boolean isBlanc)
+    Cavalier(Case caseInitiale, boolean isBlanc)
     {
         super(caseInitiale, isBlanc);
         adresseImageBlanche = "img/pions/CavalierBlanc.png";
         adresseImageNoire = "img/pions/CavalierNoir.png";
-        adresseImageNoireProf = "img/NoirProf/CavalierNoir.png";
         adresseImageBlancheProf = "img/BlancProf/CavalierBlanc.png";
+        adresseImageNoireProf = "img/NoirProf/CavalierNoir.png";
         adresseImageNoireEleve = "img/NoirEleve/CavalierNoir.png";
         adresseImageBlancheEleve = "img/BlancEleve/CavalierBlanc.png";
 
@@ -24,7 +21,6 @@ public class Cavalier extends Piece
      * casesAtteignables
      * Liste les cases où la pièce peut se déplacer
      *
-     * @return jeu de case représentant la liste des mouvements possible
      */
     @Override
     public void casesAtteignables()

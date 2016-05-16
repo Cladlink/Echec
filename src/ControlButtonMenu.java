@@ -67,7 +67,7 @@ public class ControlButtonMenu implements ActionListener
             accueil.getPartie().getBoard().majCasesAtteignable();
             vue.setControlButtonMenu(new ControlButton(accueil, vue));
 
-            vue.initAttributPartie();
+            vue.initMenuPartie();
             vue.setControlMenu(new ControlMenu(accueil, vue));
             vue.setVisible(true);
         }

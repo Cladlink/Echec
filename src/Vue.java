@@ -1,4 +1,3 @@
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -6,7 +5,6 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
 /**
  *Created by mlucile on 12/05/16.
  */
@@ -33,13 +31,13 @@ class Vue extends JFrame
     private JLabel reseau;
     private JLabel background;
 
-    private JButton nouvellePartie;
-    private JButton rejoindrePartie;
-    private JButton nouveauJoueur;
-    private JButton credit;
-    private JButton chargerPartie;
-    private JButton retourMenu;
-    private JButton lancerPartie;
+    private transButton nouvellePartie;
+    private transButton rejoindrePartie;
+    private transButton nouveauJoueur;
+    private transButton credit;
+    private transButton chargerPartie;
+    private transButton retourMenu;
+    private transButton lancerPartie;
 
     private JRadioButton partieNormale;
     private JRadioButton partieTempsCoupsLimites;
@@ -96,13 +94,13 @@ class Vue extends JFrame
         skinNoir = new JLabel(accueil.getSkinLabel());
         reseau = new JLabel(accueil.getReseauLabel());
 
-        nouvellePartie = new JButton(accueil.getNouvellePartieTitre());
-        rejoindrePartie = new JButton(accueil.getRejoindrePartieTitre());
-        nouveauJoueur = new JButton(accueil.getNouveauJoueurTitre());
-        credit = new JButton(accueil.getCreditTitre());
-        chargerPartie = new JButton(accueil.getChargerPartieTitre());
-        retourMenu = new JButton(accueil.getRetourMenuTitre());
-        lancerPartie = new JButton(accueil.getLancerPartieTitre());
+        nouvellePartie = new transButton(accueil.getNouvellePartieTitre());
+        rejoindrePartie = new transButton(accueil.getRejoindrePartieTitre());
+        nouveauJoueur = new transButton(accueil.getNouveauJoueurTitre());
+        credit = new transButton(accueil.getCreditTitre());
+        chargerPartie = new transButton(accueil.getChargerPartieTitre());
+        retourMenu = new transButton(accueil.getRetourMenuTitre());
+        lancerPartie = new transButton(accueil.getLancerPartieTitre());
 
         partieNormale = new JRadioButton(accueil.getPartieNormaleTitre(), true);
         partieNormale.setActionCommand("1");
@@ -110,16 +108,19 @@ class Vue extends JFrame
         partieTempsCoupsLimites.setActionCommand("2");
         partieTempsLimite = new JRadioButton(accueil.getPartieTempsLimiteTitre());
         partieTempsLimite.setActionCommand("3");
+
         reseauOui = new JRadioButton(accueil.getReseauOuiTitre(), true);
         reseauOui.setActionCommand("true");
         reseauNon = new JRadioButton(accueil.getReseauNonTitre());
         reseauNon.setActionCommand("fasle");
+
         skinBlancNormal = new JRadioButton(accueil.getSkinBlancNormalTitre(), true);
         skinBlancNormal.setActionCommand("1");
         skinBlancProfs = new JRadioButton(accueil.getSkinBlancProfsTitre());
         skinBlancProfs.setActionCommand("2");
         skinBlancEleves = new JRadioButton(accueil.getSkinBlancElevesTitre());
         skinBlancEleves.setActionCommand("3");
+
         skinNoirNormal = new JRadioButton(accueil.getSkinNoirNormalTitre(), true);
         skinNoirNormal.setActionCommand("1");
         skinNoirProfs = new JRadioButton(accueil.getSkinNoirProfsTitre());
@@ -238,12 +239,20 @@ class Vue extends JFrame
         skinNoirEleves.setOpaque(false);
     }
 
+    /**
+     * majListeJoueur
+     * met à jour la liste des joueurs pour le formulaire
+     *
+     */
     void majListeJoueur()
     {
         listeJoueursBlancs = new JComboBox<>(accueil.majListeJoueur());
         listeJoueursNoirs = new JComboBox<>(accueil.majListeJoueur());
     }
 
+    /**
+     *
+     */
     void creerWidgetFormulaire()
     {
         JPanel titreJeu = new JPanel();
@@ -272,11 +281,12 @@ class Vue extends JFrame
         formulaire.add(reseauNon);
         formulaire.add(partieTempsLimite);
 
-        JPanel nouveauJ = new JPanel(new GridLayout(6, 1, 0, 10));
+        JPanel nouveauJ = new JPanel(new GridLayout(6, 1, 0, 30));
         nouveauJ.setOpaque(false);
         nouveauJ.add(nouveauJoueur);
-        nouveauJ.add(Box.createVerticalGlue());
         nouveauJ.add(lancerPartie);
+        nouveauJ.add(Box.createVerticalGlue());
+        nouveauJ.add(Box.createVerticalGlue());
         nouveauJ.add(Box.createVerticalGlue());
         nouveauJ.add(retourMenu);
 
@@ -308,8 +318,13 @@ class Vue extends JFrame
      */
     void creerWidgetAccueil()
     {
-        JPanel centre = new JPanel(new GridLayout(8, 1, 0, 10));
+        JPanel centre = new JPanel(new GridLayout(10, 1, 0, 10));
         centre.setOpaque(false);
+        centre.add(Box.createVerticalGlue());
+        centre.add(Box.createVerticalGlue());
+        centre.add(Box.createVerticalGlue());
+        centre.add(Box.createVerticalGlue());
+        centre.add(Box.createVerticalGlue());
         centre.add(Box.createVerticalGlue());
         centre.add(nouvellePartie);
         centre.add(chargerPartie);
@@ -319,7 +334,8 @@ class Vue extends JFrame
         JPanel organisation = new JPanel(new BorderLayout());
         organisation.setOpaque(false);
         organisation.add(titre, BorderLayout.NORTH);
-        organisation.add(centre, BorderLayout.CENTER);
+
+        organisation.add(centre, BorderLayout.SOUTH);
 
         // Mise en place du fond d'écran
         setLayout(new BorderLayout());
@@ -386,7 +402,8 @@ class Vue extends JFrame
      * initAttribut
      * Instancie les attributs
      */
-    void initAttributPartie() {
+    void initMenuPartie()
+    {
         JMenuBar barMenu = new JMenuBar();
 
         JMenu optionPartie = new JMenu("Fichier");
@@ -404,10 +421,10 @@ class Vue extends JFrame
 
         parametres.add(undo);
         parametres.add(historique);
-        
+
         barMenu.add(optionPartie);
         barMenu.add(parametres);
-        
+
         setJMenuBar(barMenu);
     }
 
@@ -425,7 +442,8 @@ class Vue extends JFrame
      *
      * @param e (ecouteur de type MouseListener)
      */
-    void setControlButtonMenu(MouseListener e) {
+    void setControlButtonMenu(MouseListener e)
+    {
         if (vueEchiquier != null)
             vueEchiquier.addMouseListener(e);
     }
@@ -606,16 +624,16 @@ class Vue extends JFrame
     JMenuItem getHistorique() { return historique; }
     JMenuItem getUndo() { return undo; }
     JMenuItem getQuitter() { return quitter; }
-    JButton getLancerPartie() { return lancerPartie; }
-    JButton getCredit() { return credit; }
+    transButton getLancerPartie() { return lancerPartie; }
+    transButton getCredit() { return credit; }
     ButtonGroup getGrTypePartie() { return grTypePartie; }
     ButtonGroup getGrReseau() { return grReseau; }
     ButtonGroup getGrSkinBlanc() { return grSkinBlanc; }
     ButtonGroup getGrSkinNoir() { return grSkinNoir; }
     JComboBox<String> getListeJoueursBlancs() { return listeJoueursBlancs; }
     JComboBox<String> getListeJoueursNoirs() { return listeJoueursNoirs; }
-    JButton getNouveauJoueur() { return nouveauJoueur; }
-    JButton getRejoindrePartie() { return rejoindrePartie; }
-    JButton getNouvellePartie() {return nouvellePartie; }
-    JButton getRetourMenu() { return retourMenu; }
+    transButton getNouveauJoueur() { return nouveauJoueur; }
+    transButton getRejoindrePartie() { return rejoindrePartie; }
+    transButton getNouvellePartie() {return nouvellePartie; }
+    transButton getRetourMenu() { return retourMenu; }
 }

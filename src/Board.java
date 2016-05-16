@@ -1,18 +1,15 @@
 import java.util.ArrayList;
-
 /**
   Created by cladlink on 06/04/16.
  */
-public class Board
+class Board
 {
     private final int row = 8;
     private final int column = 8;
     private final int sizeCase = 80;
     private Case[][] plateau;
     private Partie partie;
-
     private Piece roiNoir, roiBlanc;
-
 
     /**
      * Board (constructeur)
@@ -21,7 +18,7 @@ public class Board
      * la case mémoire à un emplacement vide
      *
      */
-    public Board(Partie partie)
+    Board(Partie partie)
     {
         plateau = new Case[row][column];
         this.partie = partie;
@@ -33,7 +30,7 @@ public class Board
      * plateauDeBase
      * "soulage" le constructeur sur le placement des pièces au début d'une partie
      */
-    public void plateauDeBase()
+    private void plateauDeBase()
     {
         boolean white = true;
         
@@ -48,75 +45,77 @@ public class Board
             white =!white;
         }
         roiBlanc = new Roi(plateau[7][4], true);
-        partie.getPiecesBlanchesPlateau().add(roiBlanc);
+
+        ArrayList<Piece> piecesBlanchesPlateau = partie.getPiecesBlanchesPlateau();
+        ArrayList<Piece> piecesNoiresPlateau = partie.getPiecesNoiresPlateau();
+
+        piecesBlanchesPlateau.add(roiBlanc);
         Piece reineBlanche = new Reine(plateau[7][3], true);
-        partie.getPiecesBlanchesPlateau().add(reineBlanche);
+        piecesBlanchesPlateau.add(reineBlanche);
         roiNoir = new Roi(plateau[0][4], false);
-        partie.getPiecesNoiresPlateau().add(roiNoir);
+        piecesNoiresPlateau.add(roiNoir);
         Piece reineNoire = new Reine(plateau[0][3], false);
-        partie.getPiecesNoiresPlateau().add(reineNoire);
-
-
+        piecesNoiresPlateau.add(reineNoire);
         Piece tourBlanche1 = new Tour(plateau[7][0], true);
-        partie.getPiecesBlanchesPlateau().add(tourBlanche1);
+        piecesBlanchesPlateau.add(tourBlanche1);
         Piece tourBlanche2 = new Tour(plateau[7][7], true);
-        partie.getPiecesBlanchesPlateau().add(tourBlanche2);
+        piecesBlanchesPlateau.add(tourBlanche2);
         Piece tourNoire1 = new Tour(plateau[0][0], false);
-        partie.getPiecesNoiresPlateau().add(tourNoire1);
+        piecesNoiresPlateau.add(tourNoire1);
         Piece tourNoire2 = new Tour(plateau[0][7], false);
-        partie.getPiecesNoiresPlateau().add(tourNoire2);
+        piecesNoiresPlateau.add(tourNoire2);
 
         Piece cavalierBlanc1 = new Cavalier(plateau[7][1], true);
-        partie.getPiecesBlanchesPlateau().add(cavalierBlanc1);
+        piecesBlanchesPlateau.add(cavalierBlanc1);
         Piece cavalierBlanc2 = new Cavalier(plateau[7][6], true);
-        partie.getPiecesBlanchesPlateau().add(cavalierBlanc2);
+        piecesBlanchesPlateau.add(cavalierBlanc2);
         Piece cavalierNoir1 = new Cavalier(plateau[0][1], false);
-        partie.getPiecesNoiresPlateau().add(cavalierNoir1);
+        piecesNoiresPlateau.add(cavalierNoir1);
         Piece cavalierNoir2 = new Cavalier(plateau[0][6], false);
-        partie.getPiecesNoiresPlateau().add(cavalierNoir2);
+        piecesNoiresPlateau.add(cavalierNoir2);
 
         Piece fouBlanc1 = new Fou(plateau[7][2], true);
-        partie.getPiecesBlanchesPlateau().add(fouBlanc1);
+        piecesBlanchesPlateau.add(fouBlanc1);
         Piece fouBlanc2 = new Fou(plateau[7][5], true);
-        partie.getPiecesBlanchesPlateau().add(fouBlanc2);
+        piecesBlanchesPlateau.add(fouBlanc2);
         Piece fouNoir1 = new Fou(plateau[0][2], false);
-        partie.getPiecesNoiresPlateau().add(fouNoir1);
+        piecesNoiresPlateau.add(fouNoir1);
         Piece fouNoir2 = new Fou(plateau[0][5], false);
-        partie.getPiecesNoiresPlateau().add(fouNoir2);
+        piecesNoiresPlateau.add(fouNoir2);
 
         Piece pionBlanc1 = new Pion(plateau[6][0], true);
-        partie.getPiecesBlanchesPlateau().add(pionBlanc1);
+        piecesBlanchesPlateau.add(pionBlanc1);
         Piece pionBlanc2 = new Pion(plateau[6][1], true);
-        partie.getPiecesBlanchesPlateau().add(pionBlanc2);
+        piecesBlanchesPlateau.add(pionBlanc2);
         Piece pionBlanc3 = new Pion(plateau[6][2], true);
-        partie.getPiecesBlanchesPlateau().add(pionBlanc3);
+        piecesBlanchesPlateau.add(pionBlanc3);
         Piece pionBlanc4 = new Pion(plateau[6][3], true);
-        partie.getPiecesBlanchesPlateau().add(pionBlanc4);
+        piecesBlanchesPlateau.add(pionBlanc4);
         Piece pionBlanc5 = new Pion(plateau[6][4], true);
-        partie.getPiecesBlanchesPlateau().add(pionBlanc5);
+        piecesBlanchesPlateau.add(pionBlanc5);
         Piece pionBlanc6 = new Pion(plateau[6][5], true);
-        partie.getPiecesBlanchesPlateau().add(pionBlanc6);
+        piecesBlanchesPlateau.add(pionBlanc6);
         Piece pionBlanc7 = new Pion(plateau[6][6], true);
-        partie.getPiecesBlanchesPlateau().add(pionBlanc7);
+        piecesBlanchesPlateau.add(pionBlanc7);
         Piece pionBlanc8 = new Pion(plateau[6][7], true);
-        partie.getPiecesBlanchesPlateau().add(pionBlanc8);
+        piecesBlanchesPlateau.add(pionBlanc8);
 
         Piece pionNoir1 = new Pion(plateau[1][0], false);
-        partie.getPiecesNoiresPlateau().add(pionNoir1);
+        piecesNoiresPlateau.add(pionNoir1);
         Piece pionNoir2 = new Pion(plateau[1][1], false);
-        partie.getPiecesNoiresPlateau().add(pionNoir2);
+        piecesNoiresPlateau.add(pionNoir2);
         Piece pionNoir3 = new Pion(plateau[1][2], false);
-        partie.getPiecesNoiresPlateau().add(pionNoir3);
+        piecesNoiresPlateau.add(pionNoir3);
         Piece pionNoir4 = new Pion(plateau[1][3], false);
-        partie.getPiecesNoiresPlateau().add(pionNoir4);
+        piecesNoiresPlateau.add(pionNoir4);
         Piece pionNoir5 = new Pion(plateau[1][4], false);
-        partie.getPiecesNoiresPlateau().add(pionNoir5);
+        piecesNoiresPlateau.add(pionNoir5);
         Piece pionNoir6 = new Pion(plateau[1][5], false);
-        partie.getPiecesNoiresPlateau().add(pionNoir6);
+        piecesNoiresPlateau.add(pionNoir6);
         Piece pionNoir7 = new Pion(plateau[1][6], false);
-        partie.getPiecesNoiresPlateau().add(pionNoir7);
+        piecesNoiresPlateau.add(pionNoir7);
         Piece pionNoir8 = new Pion(plateau[1][7], false);
-        partie.getPiecesNoiresPlateau().add(pionNoir8);
+        piecesNoiresPlateau.add(pionNoir8);
 
         //Coté des pièces blanches, en bas du plateau
         plateau[7][0].setPiece(tourBlanche1);
@@ -158,7 +157,6 @@ public class Board
     }
 
     /**
-     * todo virer la vue
      * deplacer
      * deplace la pièce aprés avoir vérifier : si l'empalcement cible est vide ou non
      * doit vérifier si une pièce est mangée, faire les actions en conséquence
@@ -166,57 +164,25 @@ public class Board
      * @param caseCliquee (case qui a ... été cliquée)
      * @param destination (case ou la pièce doit se rendre)
      */
-    public void deplacer(Case caseCliquee, Case destination, Vue vue)
+    void deplacer(Case caseCliquee, Case destination, Vue vue)
     {
         // ajoute le coup dans l'historique
         partie.historiqueCoups(caseCliquee, destination);
-
         // si la case destination contient une pièce
         if (destination.getPiece() != null)
-        {
-            //si la pièce est blanche
             if (destination.getPiece().blanc)
             {
                 partie.getPiecesBlanchesPlateau().remove(destination.getPiece());
                 partie.getCimetiereBlanc().add(destination.getPiece());
                 destination.setPiece(null);
             }
-            // si la pièce est noire
             else
             {
                 partie.getPiecesNoiresPlateau().remove(destination.getPiece());
                 partie.getCimetiereNoir().add(destination.getPiece());
                 destination.setPiece(null);
             }
-        }
-        // si on roque
-        if (caseCliquee.getPiece() instanceof Roi)
-        {
-            Case[][] plateau = caseCliquee.getBoard().getPlateau();
-            int row = caseCliquee.getRow();
-            int column = caseCliquee.getColumn();
-            Piece tourRoque;
-
-            // petit roque
-            if (Math.abs( column - destination.getColumn() ) == 2)
-            {
-                tourRoque = plateau[row][column + 3].getPiece();
-
-                plateau[row][column + 3].setPiece(null);
-                tourRoque.emplacementPiece = plateau[row][column + 1];
-                plateau[row][column + 1].setPiece(tourRoque);
-            }
-            // grand roque
-            else if (Math.abs( column - destination.getColumn() ) == 3)
-            {
-                tourRoque = plateau[row][column + 3].getPiece();
-
-                plateau[row][column - 4].setPiece(null);
-                tourRoque.emplacementPiece = plateau[row][column - 2];
-                plateau[row][column - 2].setPiece(tourRoque);
-            }
-        }
-
+        roque(caseCliquee, destination);
         // deplace
         caseCliquee.getPiece().deplacer(destination);
         // test de la promotion
@@ -227,14 +193,75 @@ public class Board
                 && destination.getPiece() instanceof Pion )
             vue.choixPiece( (Pion)destination.getPiece() );
         // todo fait appel à la vue. Est ce acceptable vu qu'on est dans le model?
-
     }
+
+    /**
+     * roque
+     * le roque est il faisable ?
+     *
+     * @param caseCliquee (case d'origine)
+     * @param destination (case de destination)
+     */
+    private void roque(Case caseCliquee, Case destination)
+    {
+        if (caseCliquee.getPiece() instanceof Roi)
+        {
+            Case[][] plateau = caseCliquee.getBoard().getPlateau();
+            int row = caseCliquee.getRow();
+            int column = caseCliquee.getColumn();
+
+            if (Math.abs( column - destination.getColumn() ) == 2)
+            {
+                deplacerPetitRoque(plateau, row, column);
+            }
+            else if (Math.abs( column - destination.getColumn() ) == 3)
+            {
+                deplacerGrandRoque(plateau, row, column);
+            }
+        }
+    }
+
+    /**
+     * deplacerPetitRoque
+     * execute le petit roque
+     *
+     * @param plateau (etat du plateau)
+     * @param row (rang)
+     * @param column (column)
+     */
+    private void deplacerPetitRoque(Case[][] plateau, int row, int column)
+    {
+        Piece tourRoque;
+        tourRoque = plateau[row][column + 3].getPiece();
+
+        plateau[row][column + 3].setPiece(null);
+        tourRoque.emplacementPiece = plateau[row][column + 1];
+        plateau[row][column + 1].setPiece(tourRoque);
+    }
+
+    /**
+     * deplacerGrandRoque
+     * exécute le grand roque
+     *
+     * @param plateau (etat du plateau)
+     * @param row (rang)
+     * @param column (column)
+     */
+    private void deplacerGrandRoque(Case[][] plateau, int row, int column) {
+        Piece tourRoque;
+        tourRoque = plateau[row][column + 3].getPiece();
+
+        plateau[row][column - 4].setPiece(null);
+        tourRoque.emplacementPiece = plateau[row][column - 2];
+        plateau[row][column - 2].setPiece(tourRoque);
+    }
+
     /**
      * majCasesAtteignable
      * Mets à jour la variable représentant toutes les cases atteignables des pièces de l'adversaire
      *
      */
-    public void majCasesAtteignable()
+    void majCasesAtteignable()
     {
         ArrayList<Piece> pieceEnJeu;
         if (partie.isTourBlanc())
@@ -242,31 +269,19 @@ public class Board
         else
             pieceEnJeu = partie.getPiecesNoiresPlateau();
 
-        for (int i = 0; i < pieceEnJeu.size(); i++)
+        for (Piece pej : pieceEnJeu)
         {
-            pieceEnJeu.get(i).casesAtteignables();
-            pieceEnJeu.get(i).deplacementPossible();
+            pej.casesAtteignables();
+            pej.deplacementPossible();
         }
     }
 
     //getters & setters
-    public int getRow() {
-        return row;
-    }
-    public int getColumn() {
-        return column;
-    }
     public Case[][] getPlateau() {
         return plateau;
     }
-    public void setPlateau(Case[][] plateau) {
-        this.plateau = plateau;
-    }
     public Partie getPartie() {
         return partie;
-    }
-    public void setPartie(Partie partie) {
-        this.partie = partie;
     }
     public int getSizeCase() {
         return sizeCase;
@@ -274,13 +289,7 @@ public class Board
     public Piece getRoiNoir() {
         return roiNoir;
     }
-    public void setRoiNoir(Piece roiNoir) {
-        this.roiNoir = roiNoir;
-    }
     public Piece getRoiBlanc() {
         return roiBlanc;
-    }
-    public void setRoiBlanc(Piece roiBlanc) {
-        this.roiBlanc = roiBlanc;
     }
 }

@@ -1,24 +1,20 @@
-import javax.swing.*;
-
 /**
  Created by Michael on 31/03/16.
  */
-public class Roi extends Piece
+class Roi extends Piece
 {
 
     private boolean grandRoque;
     private boolean petitRoque;
-    public Roi(Case caseInitiale, boolean isBlanc)
+    Roi(Case caseInitiale, boolean isBlanc)
     {
         super(caseInitiale, isBlanc);
         adresseImageBlanche = "img/pions/RoiBlanc.png";
         adresseImageNoire = "img/pions/RoiNoir.png";
-        adresseImageNoireProf = "img/NoirProf/RoiNoir.png";
         adresseImageBlancheProf = "img/BlancProf/RoiBlanc.png";
+        adresseImageNoireProf = "img/NoirProf/RoiNoir.png";
         adresseImageNoireEleve = "img/NoirEleve/RoiNoir.png";
         adresseImageBlancheEleve = "img/BlancEleve/RoiBlanc.png";
-
-        skin = isBlanc? new ImageIcon(adresseImageBlanche) :new ImageIcon(adresseImageNoire);
 
         grandRoque = petitRoque = true;
 
@@ -29,7 +25,6 @@ public class Roi extends Piece
      * casesAtteignables
      * Liste les cases où la pièce peut se déplacer
      *
-     * @return jeu de case représentant la liste des mouvements possible
      */
     @Override
     public void casesAtteignables()

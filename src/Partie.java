@@ -647,39 +647,30 @@ class Partie
     synchronized void setEchecNoir(boolean echecNoir) {
         this.echecNoir = echecNoir;
     }
-
     public BDDManager getBdd() {
         return bdd;
     }
-
     public int getChoixJoueurBlanc() {
         return choixJoueurBlanc;
     }
-
     public void setChoixJoueurBlanc(int choixJoueurBlanc) {
         this.choixJoueurBlanc = choixJoueurBlanc;
     }
-
     public int getChoixJoueurNoir() {
         return choixJoueurNoir;
     }
-
     public void setChoixJoueurNoir(int choixJoueurNoir) {
         this.choixJoueurNoir = choixJoueurNoir;
     }
-
     public boolean isPartieFinie() {
         return partieFinie;
     }
-
     public void setPartieFinie(boolean partieFinie) {
         this.partieFinie = partieFinie;
     }
-
     public ArrayList<String> getHistorique() {
         return historique;
     }
-
     public void setHistorique(ArrayList<String> historique) {
         this.historique = historique;
     }

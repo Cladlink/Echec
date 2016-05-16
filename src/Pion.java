@@ -1,23 +1,20 @@
-import javax.swing.*;
 import java.util.ArrayList;
 
 /**
   Created by Michael on 31/03/16.
  */
-public class Pion extends Piece
+class Pion extends Piece
 {
 
-    public Pion(Case caseInitiale, boolean blanc)
+    Pion(Case caseInitiale, boolean blanc)
     {
         super(caseInitiale, blanc);
         adresseImageBlanche = "img/pions/PionBlanc.png";
         adresseImageNoire = "img/pions/PionNoir.png";
-        adresseImageNoireProf = "img/NoirProf/PionNoir.png";
         adresseImageBlancheProf = "img/BlancProf/PionBlanc.png";
+        adresseImageNoireProf = "img/NoirProf/PionNoir.png";
         adresseImageNoireEleve = "img/NoirEleve/PionNoir.png";
         adresseImageBlancheEleve = "img/BlancEleve/PionBlanc.png";
-
-        skin = blanc? new ImageIcon(adresseImageBlanche) : new ImageIcon(adresseImageNoire);
 
         initChoixSkinPiece();
     }
@@ -26,7 +23,6 @@ public class Pion extends Piece
      * casesAtteignables
      * Liste les cases où la pièce peut se déplacer
      *
-     * @return jeu de case représentant la liste des mouvements possible
      */
     @Override
     public void casesAtteignables()

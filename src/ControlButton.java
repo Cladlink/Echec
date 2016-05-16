@@ -4,20 +4,20 @@ import java.util.ArrayList;
 /**
   Created by Michael on 06/04/16.
  */
-public class ControlButton extends MouseAdapter
+class ControlButton extends MouseAdapter
 {
 
     private Accueil accueil;
     private Vue vue;
 
-    public ControlButton(Accueil accueil, Vue vue)
+    ControlButton(Accueil accueil, Vue vue)
     {
         this.accueil = accueil;
         this.vue = vue;
     }
 
     /**
-     * mouseClicked todo
+     * mouseClicked
      * définir évenement lorsque cliqué
      *
      * @param e (contient l'évènement)

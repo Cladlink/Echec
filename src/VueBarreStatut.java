@@ -3,7 +3,7 @@ import java.awt.*;
 /**
  Created by cladlink on 03/05/16.
  */
-public class VueBarreStatut
+class VueBarreStatut
 {
     private Partie partie;
     private VueEchiquier vueEchiquier;

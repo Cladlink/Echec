@@ -1,23 +1,18 @@
-import javax.swing.*;
-import java.util.ArrayList;
-
 /**
  Created by baptiste on 31/03/16.
  */
-public class Fou extends Piece
+class Fou extends Piece
 {
 
-    public Fou(Case caseInitiale, boolean isBlanc)
+    Fou(Case caseInitiale, boolean isBlanc)
     {
         super(caseInitiale, isBlanc);
         adresseImageBlanche = "img/pions/FouBlanc.png";
         adresseImageNoire = "img/pions/FouNoir.png";
-        adresseImageNoireProf = "img/NoirProf/FouNoir.png";
         adresseImageBlancheProf = "img/BlancProf/FouBlanc.png";
+        adresseImageNoireProf = "img/NoirProf/FouNoir.png";
         adresseImageNoireEleve = "img/NoirEleve/FouNoir.png";
         adresseImageBlancheEleve = "img/BlancEleve/FouBlanc.png";
-
-        skin = isBlanc?new ImageIcon(adresseImageBlanche):new ImageIcon(adresseImageNoire);
 
         initChoixSkinPiece();
     }
@@ -26,7 +21,6 @@ public class Fou extends Piece
      * casesAtteignables
      * Liste les cases où la pièce peut se déplacer
      *
-     * @return jeu de case représentant la liste des mouvements possible
      */
     @Override
     public void casesAtteignables()

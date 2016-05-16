@@ -1,24 +1,20 @@
-import javax.swing.*;
-import java.util.ArrayList;
-
 /**
   Created by Michael on 30/03/16.
  */
 
-public class Tour extends Piece
+class Tour extends Piece
 {
 
-    public Tour(Case caseInitiale, boolean isBlanc)
+    Tour(Case caseInitiale, boolean isBlanc)
     {
         super(caseInitiale, isBlanc);
+
         adresseImageBlanche = "img/pions/TourBlanc.png";
         adresseImageNoire = "img/pions/TourNoir.png";
-        adresseImageNoireProf = "img/NoirProf/TourNoir.png";
         adresseImageBlancheProf = "img/BlancProf/TourBlanc.png";
+        adresseImageNoireProf = "img/NoirProf/TourNoir.png";
         adresseImageNoireEleve = "img/NoirEleve/TourNoir.png";
         adresseImageBlancheEleve = "img/BlancEleve/TourBlanc.png";
-
-        skin = isBlanc?new ImageIcon(adresseImageBlanche):new ImageIcon(adresseImageNoire);
 
         initChoixSkinPiece();
     }
@@ -27,7 +23,6 @@ public class Tour extends Piece
      * casesAtteignables
      * Liste les cases où la pièce peut se déplacer rendre)
      *
-     * @return jeu de case représentant la liste des mouvements possible
      */
     @Override
     public void casesAtteignables()
@@ -42,7 +37,6 @@ public class Tour extends Piece
         boolean deplacableN = true, deplacableS = true, deplacableO = true, deplacableE = true;
         while (deplacableE || deplacableO || deplacableS || deplacableN)
         {
-            //test S
             if (deplacableS
                     && column + decal <=7
                     && (
@@ -57,7 +51,6 @@ public class Tour extends Piece
             else
                 deplacableS = false;
 
-            //test N
             if (deplacableN
                     && column - decal >= 0
                     && (
@@ -73,7 +66,6 @@ public class Tour extends Piece
             else
                 deplacableN = false;
 
-            //test E
             if (deplacableE
                     && row - decal >= 0
                     && (
@@ -88,7 +80,6 @@ public class Tour extends Piece
             else
                 deplacableE = false;
 
-            // testO
             if (deplacableO
                     && row + decal <= 7
                     && (

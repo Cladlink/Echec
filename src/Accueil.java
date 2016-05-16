@@ -4,13 +4,11 @@ import java.util.Vector;
 /**
  Created by mlucile on 12/05/16.
  */
-public class Accueil
+class Accueil
 {
-    private ArrayList<Case> casesAtteignables; // move
+    private ArrayList<Case> casesAtteignables; // move to partie
     private Partie partie;
-    private Joueur jBlanc;
-    private Joueur jNoir;
-    private Case caseMemoire; // move
+    private Case caseMemoire; // move to partie
 
     private String partieNormaleTitre;
     private String partieTempsCoupsLimitesTitre;
@@ -41,7 +39,8 @@ public class Accueil
 
 
     /**
-     *
+     *Accueil
+     * Model de "l'avant partie"
      */
     Accueil()
     {
@@ -75,126 +74,131 @@ public class Accueil
     }
 
     /**
-     *
-     * @return
+     * majListeJoueur
+     * met à jour la liste de joueur dans le formulaire de partie
+     * @return (liste des joueurs à jour)
      */
-    public Vector<String> majListeJoueur()
+    Vector<String> majListeJoueur()
     {
         return Joueur.listeJoueurs();
     }
 
     /**
-     *
-     * @param pseudo
-     * @param pseudoAdversaire
-     * @param choixJB
-     * @param choixJN
-     * @param modePartie
-     * @param netPartie
+     * lancementPartie
+     * Départ une partie selon les critères choisis dans le formulaire
+     * 
+     * @param pseudo (pseudo du joueur1)
+     * @param pseudoAdversaire (pseudo du joueur 2)
+     * @param choixJB (choix de l'aspect des pièces blanches)
+     * @param choixJN (choix de l'aspect des pièces noires)
+     * @param modePartie (1 = normal // 2 = coups limités // 3 = partie limitée)
+     * @param netPartie (la partie est elle en réseau ?)
      */
-    public void lancementPartie(String pseudo, String pseudoAdversaire,
+    void lancementPartie(String pseudo, String pseudoAdversaire,
                                 int choixJB, int choixJN, int modePartie, boolean netPartie)
     {
+        Joueur jBlanc;
         if (pseudo.equals("anonymous"))
-            this.jBlanc = new Joueur(true);
+            jBlanc = new Joueur(true);
         else
-            this.jBlanc = new Joueur(true, pseudo);
+            jBlanc = new Joueur(true, pseudo);
 
+        Joueur jNoir;
         if (pseudoAdversaire.equals("anonymous"))
-            this.jNoir = new Joueur(false);
+            jNoir = new Joueur(false);
         else
-            this.jNoir = new Joueur(false, pseudoAdversaire);
+            jNoir = new Joueur(false, pseudoAdversaire);
 
         this.partie = new Partie(jBlanc, jNoir, modePartie, netPartie, choixJB, choixJN);
     }
 
 
     // getters & setters
-    public Partie getPartie() {
+    Partie getPartie() {
         return partie;
     }
-    public ArrayList<Case> getCasesAtteignables() {
+    ArrayList<Case> getCasesAtteignables() {
         return casesAtteignables;
     }
-    public void setCasesAtteignables(ArrayList<Case> casesAtteignables) {
+    void setCasesAtteignables(ArrayList<Case> casesAtteignables) {
         this.casesAtteignables = casesAtteignables;
     }
-    public Case getCaseMemoire() {
+    Case getCaseMemoire() {
         return caseMemoire;
     }
-    public void setCaseMemoire(Case caseMemoire) {
+    void setCaseMemoire(Case caseMemoire) {
         this.caseMemoire = caseMemoire;
     }
-    public String getJoueurBlancLabel() {
+    String getJoueurBlancLabel() {
         return joueurBlancLabel;
     }
-    public String getJoueurNoirLabel() {
+    String getJoueurNoirLabel() {
         return joueurNoirLabel;
     }
-    public String getTypePartieLabel() {
+    String getTypePartieLabel() {
         return typePartieLabel;
     }
-    public String getSkinLabel() {
+    String getSkinLabel() {
         return skinLabel;
     }
-    public String getReseauLabel() {
+    String getReseauLabel() {
         return reseauLabel;
     }
-    public String getNouvellePartieTitre() {
+    String getNouvellePartieTitre() {
         return nouvellePartieTitre;
     }
-    public String getRejoindrePartieTitre() {
+    String getRejoindrePartieTitre() {
         return rejoindrePartieTitre;
     }
-    public String getNouveauJoueurTitre() {
+    String getNouveauJoueurTitre() {
         return nouveauJoueurTitre;
     }
-    public String getPartieNormaleTitre() {
+    String getPartieNormaleTitre() {
         return partieNormaleTitre;
     }
-    public String getPartieTempsCoupsLimitesTitre() {
+    String getPartieTempsCoupsLimitesTitre() {
         return partieTempsCoupsLimitesTitre;
     }
-    public String getPartieTempsLimiteTitre() {
+    String getPartieTempsLimiteTitre() {
         return partieTempsLimiteTitre;
     }
-    public String getReseauOuiTitre() {
+    String getReseauOuiTitre() {
         return reseauOuiTitre;
     }
-    public String getReseauNonTitre() {
+    String getReseauNonTitre() {
         return reseauNonTitre;
     }
-    public String getSkinBlancNormalTitre() {
+    String getSkinBlancNormalTitre() {
         return skinBlancNormalTitre;
     }
-    public String getSkinBlancProfsTitre() {
+    String getSkinBlancProfsTitre() {
         return skinBlancProfsTitre;
     }
-    public String getSkinBlancElevesTitre() {
+    String getSkinBlancElevesTitre() {
         return skinBlancElevesTitre;
     }
-    public String getSkinNoirNormalTitre() {
+    String getSkinNoirNormalTitre() {
         return skinNoirNormalTitre;
     }
-    public String getSkinNoirProfsTitre() {
+    String getSkinNoirProfsTitre() {
         return skinNoirProfsTitre;
     }
-    public String getSkinNoirElevesTitre() {
+    String getSkinNoirElevesTitre() {
         return skinNoirElevesTitre;
     }
-    public String getTitreLabel() {
+    String getTitreLabel() {
         return titreLabel;
     }
-    public String getCreditTitre() {
+    String getCreditTitre() {
         return creditTitre;
     }
-    public String getChargerPartieTitre() {
+    String getChargerPartieTitre() {
         return chargerPartieTitre;
     }
-    public String getRetourMenuTitre() {
+    String getRetourMenuTitre() {
         return retourMenuTitre;
     }
-    public String getLancerPartieTitre() {
+    String getLancerPartieTitre() {
         return lancerPartieTitre;
     }
 }

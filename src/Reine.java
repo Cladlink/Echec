@@ -1,23 +1,18 @@
-import javax.swing.*;
-import java.util.ArrayList;
-
 /**
   Created by baptiste on 31/03/16.
  */
-public class Reine extends Piece
+class Reine extends Piece
 {
 
-    public Reine(Case caseInitiale, boolean isBlanc)
+    Reine(Case caseInitiale, boolean isBlanc)
     {
         super(caseInitiale, isBlanc);
         adresseImageBlanche = "img/pions/ReineBlanc.png";
         adresseImageNoire = "img/pions/ReineNoir.png";
-        adresseImageNoireProf = "img/NoirProf/ReineNoir.png";
         adresseImageBlancheProf = "img/BlancProf/ReineBlanc.png";
+        adresseImageNoireProf = "img/NoirProf/ReineNoir.png";
         adresseImageNoireEleve = "img/NoirEleve/ReineNoir.png";
         adresseImageBlancheEleve = "img/BlancEleve/ReineBlanc.png";
-
-        skin = isBlanc?new ImageIcon(adresseImageBlanche):new ImageIcon(adresseImageNoire);
 
         initChoixSkinPiece();
     }
@@ -26,7 +21,6 @@ public class Reine extends Piece
      * casesAtteignables
      * Liste les cases où la pièce peut se déplacer
      *
-     * @return jeu de case représentant la liste des mouvements possible
      */
     @Override
     public void casesAtteignables()
@@ -45,9 +39,7 @@ public class Reine extends Piece
 
         while (deplacableE || deplacableO || deplacableS || deplacableN
                 || deplacableNO || deplacableNE || deplacableSE || deplacableSO)
-        // test NO
         {
-            //test S
             if ((deplacableS
                     && column + decal <= 7)
                     && (plateau[row][column + decal].getPiece() == null
@@ -73,7 +65,6 @@ public class Reine extends Piece
             else
                 deplacableN = false;
 
-            //test E
             if ((deplacableE
                     && row - decal >= 0)
                     && (plateau[row - decal][column].getPiece() == null
@@ -111,7 +102,6 @@ public class Reine extends Piece
             else
                 deplacableSO = false;
 
-            // test SE
             if ((deplacableSE
                     && column - decal >= 0
                     && row + decal <= 7)
@@ -125,7 +115,6 @@ public class Reine extends Piece
             else
                 deplacableSE = false;
 
-            //testNO
             if ((deplacableNO
                     && column - decal >= 0
                     && row - decal >= 0)
@@ -139,7 +128,6 @@ public class Reine extends Piece
             else
                 deplacableNO = false;
 
-            // test NE
             if ((deplacableNE
                     && column + decal <= 7
                     && row - decal >= 0)

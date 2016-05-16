@@ -27,6 +27,12 @@ public class Case
         this.isWhite = isWhite;
     }
 
+    /**
+     * Case
+     * Constructeur de copie
+     *
+     * @param old (case d'origine)
+     */
     public Case(Case old)
     {
         this.row = old.row;
