@@ -9,13 +9,13 @@ import java.util.Objects;
 public class ControlMenu implements ActionListener
 {
     private Model model;
-    private Vue vue;
+    private VueMainMenu vue;
 
-    public ControlMenu(Model model, Vue vue)
+    public ControlMenu(Model model, VueMainMenu vue)
     {
         this.model = model;
         this.vue = vue;
-        vue.setControlMenu(this);
+        //vue.setControlMenu(this);
     }
 
     /**
@@ -49,21 +49,9 @@ public class ControlMenu implements ActionListener
             model.lancementPartie(pseudo, pseudoAdv);
             model.getPartie().getBoard().majCasesAtteignable();
             vue.setVueEchiquier(new VueEchiquier(model.getPartie().getBoard(), model, vue));
-            vue.creerWidget();
-            vue.setControlButton(new ControlButton(model, vue));
+            vue.creerWidgetPartie();
+            vue.setControlButtonMenu(new ControlButton(model, vue));
             vue.setVisible(true);
-        }
-        else if (e.getSource() == vue.getRejPart())
-        {
-            // partie en réseau voir à la fin
-        }
-        else if (e.getSource() == vue.getSvPart())
-        {
-            model.getPartie().save();
-        }
-        else if (e.getSource() == vue.getLdPart())
-        {
-            model.getPartie().load();
         }
         else if (e.getSource() == vue.getQuitter())
         {
@@ -91,11 +79,6 @@ public class ControlMenu implements ActionListener
             int choixFait = vue.choixHistorique(histo);
             ArrayList<ArrayList<String>> histoDesCoups = model.getPartie().requeteCoupsHistorique(choixFait);
             vue.afficherHistorique(histoDesCoups);
-        }
-        else if (e.getSource() == vue.getaPropos())
-        {
-            vue.jOptionMessage("Jeu développé par : \n Michael BOUTBOUL\n Marie-Lucile CANIARD\n Sylvain GUYOT" +
-                    "\n Kevin LIMACHER\n Gabriel MERCIER\n Adonis N'DOLO.");
         }
         else if (e.getSource() == vue.getAide())
         {

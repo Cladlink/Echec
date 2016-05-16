@@ -84,9 +84,6 @@ class BDDManager
             ResultSetMetaData rsmd = rs.getMetaData();
             int nbcols = rsmd.getColumnCount();
 
-            System.out.println(rsmd.getColumnCount());
-            System.out.println(rsmd.getColumnLabel(1));
-            System.out.println(rsmd.getColumnLabel(2));
             int i=0;
             while(rs.next())
             {
@@ -167,17 +164,20 @@ class BDDManager
         BDDManager bdd = new BDDManager();
         bdd.start();
         //bdd.lire("src/BDDechec.sql");
-        bdd.edit("DELETE FROM JOUEUR");
+        //bdd.edit("DELETE FROM JOUEUR;");
         /*bdd.edit("INSERT INTO JOUEUR (pseudoJoueur, nbPartiesJoueur, nbPartiesGagneesJoueur," +
                 " nbPartiesPerduesJoueur, nbPartiesAbandonneeJoueur, partieEnCoursJoueur, trophee1, trophee2, trophee3)" +
                 " VALUES (\"toto\", 0, 0, 0, 0, 0, false, false, false);");
         bdd.edit("INSERT INTO JOUEUR (pseudoJoueur, nbPartiesJoueur, nbPartiesGagneesJoueur, " +
                 "nbPartiesPerduesJoueur, nbPartiesAbandonneeJoueur, partieEnCoursJoueur, trophee1, trophee2, trophee3)" +
-                " VALUES (\"titi\", 0, 0, 0, 0, 0, false, false, false);");
-        bdd.edit("INSERT INTO HISTORIQUE VALUES (null, 1, 2, \"2015-12-12\", \"PB1213-PB1213-PB1213-PB1213-PB1213-PB1213-PB1213\");");*/
-        //bdd.edit("INSERT INTO SAUVEGARDE VALUES (null, 1, 2, null, true, \"PB12-PN13-RN65\", 6);");
-        //ArrayList<ArrayList<String>> test = bdd.ask("SELECT * FROM HISTORIQUE;");
-       // System.out.println(test);
+                " VALUES (\"titi\", 0, 0, 0, 0, 0, false, false, false);");*/
+       //bdd.edit("INSERT INTO HISTORIQUE VALUES (null, 26, 28, '2015-2-12', 'PB1213-PB1213-PB1213-PB1213-PB1213-PB1213-PB1213');");
+        //bdd.edit("INSERT INTO SAUVEGARDE VALUES (null, 25, 26, null, true, 'PB12-PN13-RN65', 14);");
+        ArrayList<ArrayList<String>> test = bdd.ask("SELECT * FROM HISTORIQUE;");
+        for (int i = 0; i < test.size(); i++)
+        {
+            System.out.println(test.get(i));
+        }
 
         bdd.stop();
     }

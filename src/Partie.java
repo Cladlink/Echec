@@ -1,9 +1,5 @@
     import java.text.SimpleDateFormat;
-    import java.util.ArrayList;
-    import java.util.Date;
-    import java.util.Locale;
-    import java.util.TimerTask;
-    import java.util.Timer;
+    import java.util.*;
 
     /**
         Created by cladlink on 06/04/16.
@@ -182,10 +178,17 @@ class Partie
      * envoie l'insert en base de donnée afin de sauvegarder l'état du board
      *
      */
-    synchronized void save()
+    synchronized boolean save()
     {
         bdd.start();
-        String dateActuelle = new SimpleDateFormat("dd/mm/yyyy", Locale.FRANCE).format(new Date());
+
+        Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        int month = c.get(Calendar.MONTH);
+
+        String dateActuelle = year + "-" + month + "-" + day;
+
         String coupsJoues = "";
         int i, j;
         // sauvegarde de l'historique des coups joués dans la base de donnée
@@ -194,9 +197,21 @@ class Partie
             coupsJoues += this.historique.get(i) + "-";
         }
 
-        String requeteHistorique = "INSERT INTO HISTORIQUE VALUES (null, \"" + joueurBlanc.getId() + "\", \""
+        String verifHistorique = "SELECT HISTORIQUE.idHistorique FROM HISTORIQUE " +
+                "WHERE HISTORIQUE.joueurBlancPartie = " + joueurBlanc.getId() +
+                " AND HISTORIQUE.joueurNoirPartie = " + joueurNoir.getId() + ";";
+        ArrayList<ArrayList<String>> existeDeja = bdd.ask(verifHistorique);
+
+        if(!existeDeja.isEmpty())
+        {
+            return false;
+        }
+
+        String requeteHistorique = "INSERT INTO HISTORIQUE VALUES (null, " + joueurBlanc.getId() + ", "
                 + joueurNoir.getId()
-                + "\", \"" + dateActuelle + "\", \"" + coupsJoues + "\";";
+                + ", '" + dateActuelle + "', '" + coupsJoues + "');";
+        bdd.edit(requeteHistorique);  // todo: mon probleme c'etait que cette ligne était a la base tout en bas ce qui fait
+        // (todo) que la requete n'était pas encore dans la BDD quand on faisait le select
 
         // sauvegarde de l'état du plateau au moment de l'intéruption de la partie
         String listeEmplacementsPieces = "";
@@ -207,48 +222,29 @@ class Partie
             {
                 if(plateau[i][j].getPiece() != null)
                 {
-                    if(plateau[i][j].getPiece() instanceof Roi && plateau[i][j].getPiece().blanc)
-                        listeEmplacementsPieces += i + j + "RoB-";
-                    else if(plateau[i][j].getPiece() instanceof Roi && !plateau[i][j].getPiece().blanc)
-                        listeEmplacementsPieces += i + j + "RN-";
-                    else if(plateau[i][j].getPiece() instanceof Reine && plateau[i][j].getPiece().blanc)
-                        listeEmplacementsPieces += i + j + "ReB-";
-                    else if(plateau[i][j].getPiece() instanceof Reine && !plateau[i][j].getPiece().blanc)
-                        listeEmplacementsPieces += i + j + "ReN-";
-                    else if(plateau[i][j].getPiece() instanceof Tour && plateau[i][j].getPiece().blanc)
-                        listeEmplacementsPieces += i + j + "TB-";
-                    else if(plateau[i][j].getPiece() instanceof Tour && !plateau[i][j].getPiece().blanc)
-                        listeEmplacementsPieces += i + j + "TN-";
-                    else if(plateau[i][j].getPiece() instanceof Fou && plateau[i][j].getPiece().blanc)
-                        listeEmplacementsPieces += i + j + "FB-";
-                    else if(plateau[i][j].getPiece() instanceof Fou && !plateau[i][j].getPiece().blanc)
-                        listeEmplacementsPieces += i + j + "FN-";
-                    else if(plateau[i][j].getPiece() instanceof Cavalier && plateau[i][j].getPiece().blanc)
-                        listeEmplacementsPieces += i + j + "CB-";
-                    else if(plateau[i][j].getPiece() instanceof Cavalier && !plateau[i][j].getPiece().blanc)
-                        listeEmplacementsPieces += i + j + "CN-";
-                    else if(plateau[i][j].getPiece() instanceof Pion && plateau[i][j].getPiece().blanc)
-                        listeEmplacementsPieces += i + j + "PB-";
-                    else if(plateau[i][j].getPiece() instanceof Pion && !plateau[i][j].getPiece().blanc)
-                        listeEmplacementsPieces += i + j + "PN-";
+                    if(plateau[i][j].getPiece().blanc)
+                        listeEmplacementsPieces += i + "" + j + "" + histoTypePiece(plateau[i][j].getPiece()) + "b-";
+                    else
+                        listeEmplacementsPieces += i + "" + j + "" + histoTypePiece(plateau[i][j].getPiece()) + "n-";
                 }
             }
         }
         String requeteIdhistorique = "SELECT HISTORIQUE.idHistorique FROM HISTORIQUE " +
                 "WHERE HISTORIQUE.joueurBlancPartie = " + joueurBlanc.getId() +
-                "AND HISTORIQUE.joueurNoirPartie = " + joueurNoir.getId() + ";";
+                " AND HISTORIQUE.joueurNoirPartie = " + joueurNoir.getId() + ";";
+
+
         ArrayList<ArrayList<String>> resultat = bdd.ask(requeteIdhistorique);
         ArrayList<String> resultat2 = resultat.get(0);
         int idHistorique = Integer.parseInt(resultat2.get(0));
 
-        String requeteSauvegarde = "INSERT INTO SAUVEGARDE VALUES (null, \"" + joueurBlanc.getId() + "\", \""
-                + joueurNoir.getId()
-                + "\", \"" + dateActuelle + "\", \"" + tourBlanc + "\", \"" + listeEmplacementsPieces + "\", \""
-                + idHistorique;
+        String requeteSauvegarde = "INSERT INTO SAUVEGARDE VALUES (null, " + joueurBlanc.getId() + ", "
+                + joueurNoir.getId() + ", '" + dateActuelle + "', " + tourBlanc + ", '" + listeEmplacementsPieces
+                + "', " + idHistorique + ");";
 
-        bdd.edit(requeteHistorique);
         bdd.edit(requeteSauvegarde);
         bdd.stop();
+        return true;
     }
 
     /**
@@ -260,10 +256,10 @@ class Partie
     {
         //on recupere l'historique de la partie
        String requete = "SELECT HISTORIQUE.joueurNoirPartie, HISTORIQUE.datePartie," +
-                "HISTORIQUE.coupsJouee, SAUVEGARDE.tourSave, SAUVEGARDE.etaPlateauSave" +
+                " HISTORIQUE.coupsJouee, SAUVEGARDE.tourSave, SAUVEGARDE.etatPlateauSave" +
                 " FROM HISTORIQUE JOIN SAUVEGARDE ON" +
                 " HISTORIQUE.idHistorique = SAUVEGARDE.idHistorique" +
-                " WHERE idHistorique = "+joueurBlanc.getId()+";";
+                " WHERE HISTORIQUE.idHistorique = "+joueurBlanc.getId()+";";
         bdd.start();
         ArrayList<ArrayList<String>> historiqueRecup = bdd.ask(requete);
         bdd.stop();

@@ -6,7 +6,7 @@ import java.awt.*;
  */
 public class VueEchiquier extends JPanel
 {
-    private Vue vue;
+    private VueMainMenu vue;
     private Model model;
     private Board board;
 
@@ -20,7 +20,7 @@ public class VueEchiquier extends JPanel
 
     private Graphics g;
 
-    public VueEchiquier(Board board, Model model, Vue vue)
+    public VueEchiquier(Board board, Model model, VueMainMenu vue)
     {
         this.vue = vue;
         this.model = model;
@@ -119,7 +119,7 @@ public class VueEchiquier extends JPanel
         gyBlanc.paintMe(g, 110, 150);
         gyNoir.paintMe(g, 1060, 150);
         bs.paintMe(g, 0, getHeight());
-        chronoBlanc.paintMe(g, 160, 80, vue);
-        chronoNoir.paintMe(g, 1110, 80, vue);
+       // chronoBlanc.paintMe(g, 160, 80, vue);
+       // chronoNoir.paintMe(g, 1110, 80, vue);
     }
 }

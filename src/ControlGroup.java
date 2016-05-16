@@ -1,10 +1,11 @@
 /**
-  Created by cladlink on 25/03/16.
+ * Created by mlucile on 27/04/16.
  */
 public class ControlGroup
 {
     private Model model;
-    private Vue vue;
+    private VueMainMenu vueMainMenu;
+    public ControlButtonMenu controlButtonMenu;
 
     private ControlMenu controlMenu;
     private ControlButton controlButton;
@@ -12,8 +13,12 @@ public class ControlGroup
     public ControlGroup(Model model)
     {
         this.model = model;
-        vue = new Vue(model);
-        controlMenu = new ControlMenu(model, vue);
-        controlButton = new ControlButton(model, vue);
+        vueMainMenu = new VueMainMenu(model);
+        controlButtonMenu = new ControlButtonMenu(model, vueMainMenu);
+        controlMenu = new ControlMenu(model, vueMainMenu);
+        controlButton = new ControlButton(model, vueMainMenu);
+        vueMainMenu.display();
     }
+
+
 }
