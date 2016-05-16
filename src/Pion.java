@@ -27,7 +27,6 @@ class Pion extends Piece
     @Override
     public void casesAtteignables()
     {
-
         casesAtteignables.clear();
         int decal = blanc?-1:1;
 

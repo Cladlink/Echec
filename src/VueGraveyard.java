@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  Created by cladlink on 03/05/16.
  */
-public class VueGraveyard
+class VueGraveyard
 {
     private Partie partie;
     private ImageIcon bgCimetiere;

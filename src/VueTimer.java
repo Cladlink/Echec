@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 /**
  Created by cladlink on 03/05/16.
  */
-public class VueTimer
+class VueTimer
 {
     private Partie partie;
     private boolean isBlanc;

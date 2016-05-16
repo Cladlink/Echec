@@ -170,9 +170,10 @@ class Vue extends JFrame
             io.printStackTrace();
         }
         // Change la couleur de la police
-        Color couleurLabel = new Color(242, 145, 0);
+        Color couleurLabel = new Color(128, 0, 128);
         Color couleurChoix = new Color(255, 255, 255);
-        Color couleurColonneGauche = new Color(242, 100, 0);
+        Color couleurColonneGauche = new Color(0, 0, 0);
+
         reseau.setForeground(couleurLabel);
         joueurNoir.setForeground(couleurLabel);
         joueurBlanc.setForeground(couleurColonneGauche);
@@ -195,7 +196,7 @@ class Vue extends JFrame
 
         // Change la police d'écriture
         Font policeTitre = new Font("Ace Records", Font.BOLD, 150);
-        Font police = new Font("Cardinal", Font.BOLD, 25);
+        Font police = new Font("Cardinal", Font.BOLD, 27);
         Font policeChoix = new Font("CalligraphyFLF", Font.TRUETYPE_FONT, 28);
         titre.setFont(policeTitre);
         joueurBlanc.setFont(police);
@@ -341,7 +342,6 @@ class Vue extends JFrame
         setLayout(new BorderLayout());
         background = new JLabel(new ImageIcon("img/fond2.jpg"));
         background.setSize(xSize, ySize);
-        add(background);
         background.setLayout(new FlowLayout());
         background.add(organisation, BorderLayout.CENTER);
 
@@ -490,7 +490,6 @@ class Vue extends JFrame
                     "Promotion d'un pion", JOptionPane.INFORMATION_MESSAGE, 2, null, piecesPossibles, null);
         }
         while (pieceSelected > 3 || pieceSelected < 0);
-
         if (pieceSelected == 0)
             pion.promotion(1);
         else if (pieceSelected == 1)
@@ -582,8 +581,109 @@ class Vue extends JFrame
      *
      * @param histoCoups
      */
-    void afficherHistorique(ArrayList<ArrayList<String>> histoCoups) {
-        JOptionPane d = new JOptionPane();
+    void afficherHistoriqueLocal(ArrayList<String> histoCoups)
+    {
+        JPanel tableauCoup = new JPanel(new GridLayout(0,3));
+        tableauCoup.add(new JLabel("n°"));
+        tableauCoup.add(new JLabel("Joueur blanc"));
+        tableauCoup.add(new JLabel("Joueur noir"));
+
+        for (int i = 0;i<histoCoups.size();i++)
+        {
+            //ajoute le numéro
+            tableauCoup.add(new JLabel(String.valueOf(i+1)));
+            if (i%2 == 0)
+            {//si coups blanc
+                tableauCoup.add(new JLabel(lectureHumaineDeHistorique(histoCoups.get(i))));
+                tableauCoup.add(new JLabel());
+            }
+            else
+            {//sinon coup noir
+                tableauCoup.add(new JLabel());
+                tableauCoup.add(new JLabel(lectureHumaineDeHistorique(histoCoups.get(i))));
+            }
+        }
+        JScrollPane pScroll = new JScrollPane(tableauCoup,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        pScroll.setPreferredSize(new Dimension(400, 200));
+
+        JPanel pGlobal = new JPanel();
+        pGlobal.setLayout(new BoxLayout(pGlobal, BoxLayout.Y_AXIS));
+        pGlobal.add(pScroll);
+
+        JOptionPane.showMessageDialog( this, pGlobal, "Historique des coups jouées", JOptionPane.INFORMATION_MESSAGE );
+    }
+
+    public String lectureHumaineDeHistorique(String stringHistorique)
+    {
+        String reponse;
+
+        //type piece
+        if (stringHistorique.charAt(0) == 'p')
+            reponse = "Pion ";
+        else if (stringHistorique.charAt(0) == 't')
+            reponse = "Tour ";
+        else if (stringHistorique.charAt(0) == 'f')
+            reponse = "Fou ";
+        else if (stringHistorique.charAt(0) == 'c')
+            reponse = "Cavalier ";
+        else if (stringHistorique.charAt(0) == 'r')
+            reponse = "Roi ";
+        else
+            reponse = "Reine ";
+        //position départ
+        reponse += positionEnChar(String.valueOf(Math.abs(Integer.parseInt(String.valueOf(stringHistorique.charAt(2)))-8)).charAt(0));
+        reponse += Math.abs(Integer.parseInt(String.valueOf(stringHistorique.charAt(3)))-8);
+        //position final
+        reponse += positionEnChar(String.valueOf(Math.abs(Integer.parseInt(String.valueOf(stringHistorique.charAt(4)))-8)).charAt(0));
+        reponse += Math.abs(Integer.parseInt(String.valueOf(stringHistorique.charAt(5)))-8);
+        //si la une piece a été bouffé
+        if (stringHistorique.length() >= 7)
+        {
+            reponse += " en tuant ";
+            if (stringHistorique.charAt(7) == 'p')
+                reponse += "Pion ";
+            else if (stringHistorique.charAt(7) == 't')
+                reponse += "Tour ";
+            else if (stringHistorique.charAt(7) == 'f')
+                reponse += "Fou ";
+            else if (stringHistorique.charAt(7) == 'c')
+                reponse += "Cavalier ";
+            else if (stringHistorique.charAt(7) == 'r')
+                reponse += "Roi ";
+            else
+                reponse += "Reine ";
+        }
+        System.out.println(reponse);
+        return reponse;
+    }
+
+    private String positionEnChar(char position)
+    {
+        if (position == '8')
+            return  "A";
+        else if (position == '7')
+            return "B";
+        else if (position == '6')
+            return "C";
+        else if (position == '5')
+            return "D";
+        else if (position == '4')
+            return "E";
+        else if (position == '3')
+            return "F";
+        else if (position == '2')
+            return "G";
+        else if (position == '1')
+            return "H";
+        return " ";
+    }
+    /**
+     *
+     * @param histoCoups
+     */
+    void afficherHistorique(ArrayList<ArrayList<String>> histoCoups)
+    {
         JPanel titreColonne = new JPanel(new GridLayout(0, 3));
         titreColonne.add(new JLabel("n° coups"));
         titreColonne.add(new JLabel("Joueur blanc"));
@@ -613,7 +713,7 @@ class Vue extends JFrame
         pGlobal.add(titreColonne);
         pGlobal.add(pScroll);
 
-        d.showMessageDialog(this, pGlobal, "Historique", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, pGlobal, "Historique", JOptionPane.INFORMATION_MESSAGE);
     }
 
     // getters & setters

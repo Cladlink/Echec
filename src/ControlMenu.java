@@ -74,10 +74,8 @@ public class ControlMenu implements ActionListener
         }
         else if (e.getSource() == vue.getHistorique())
         {
-            ArrayList<ArrayList<ArrayList<String>>> histo = accueil.getPartie().requeteHistorique();
-            int choixFait = vue.choixHistorique(histo);
-            ArrayList<ArrayList<String>> histoDesCoups = accueil.getPartie().requeteCoupsHistorique(choixFait);
-            vue.afficherHistorique(histoDesCoups);
+            ArrayList<String> ListhistoriqueLocal = accueil.getPartie().getHistorique();
+            vue.afficherHistoriqueLocal(ListhistoriqueLocal);
         }
     }
 }

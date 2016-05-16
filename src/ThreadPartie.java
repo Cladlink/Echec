@@ -5,7 +5,7 @@ import java.net.Socket;
 /**
   Created by cladlink on 12/04/16.
  */
-public class ThreadPartie extends Thread
+class ThreadPartie extends Thread
 {
     private Joueur moi;
     private Partie partie;

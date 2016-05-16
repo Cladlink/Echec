@@ -4,7 +4,7 @@ import java.awt.*;
 /**
  Created by cladlink on 06/04/16.
  */
-public class VueEchiquier extends JPanel
+class VueEchiquier extends JPanel
 {
     private Vue vue;
     private Accueil accueil;

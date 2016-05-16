@@ -4,7 +4,7 @@ import java.util.ArrayList;
 /**
   Created by cladlink on 30/03/16.
  */
-public abstract class Piece
+abstract class Piece
 {
     protected boolean blanc;
     protected Case emplacementPiece;
