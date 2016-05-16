@@ -146,7 +146,6 @@ class Vue extends JFrame
         grSkinBlanc.add(skinBlancNormal);
         grSkinBlanc.add(skinBlancProfs);
         grSkinBlanc.add(skinBlancEleves);
-
         grSkinNoir.add(skinNoirNormal);
         grSkinNoir.add(skinNoirProfs);
         grSkinNoir.add(skinNoirEleves);
