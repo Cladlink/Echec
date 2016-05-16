@@ -39,6 +39,7 @@ public class Accueil
     private String retourMenuTitre;
     private String lancerPartieTitre;
 
+
     /**
      *
      */
