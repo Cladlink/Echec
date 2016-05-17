@@ -36,6 +36,7 @@ class Accueil
     private String chargerPartieTitre;
     private String retourMenuTitre;
     private String lancerPartieTitre;
+    private String quitterTitre;
 
 
     /**
@@ -58,6 +59,7 @@ class Accueil
         chargerPartieTitre = "Charger une partie";
         retourMenuTitre = "Retour";
         lancerPartieTitre = "Lancer la partie";
+        quitterTitre = "Quitter";
 
         partieNormaleTitre = "normale";
         partieTempsCoupsLimitesTitre = "temps limité par coup";
@@ -200,5 +202,8 @@ class Accueil
     }
     String getLancerPartieTitre() {
         return lancerPartieTitre;
+    }
+    public String getQuitterJeuTitre() {
+        return quitterTitre;
     }
 }

@@ -23,6 +23,9 @@ public class ControlButtonMenu implements ActionListener
         if(e.getSource().equals(vue.getNouveauJoueur()))
         {
             String pseudo = vue.messagePop("Entrez un nouveau pseudo :");
+            if (pseudo == null)
+                return;
+
             Vector<String> listeJoueurs = Joueur.listeJoueurs();
             for(int i = 0; i < listeJoueurs.size(); i++)
             {
@@ -75,6 +78,10 @@ public class ControlButtonMenu implements ActionListener
         {
             vue.jOptionMessage("Jeu développé par : \n Michael BOUTBOUL\n Marie-Lucile CANIARD\n Sylvain GUYOT" +
                     "\n Kevin LIMACHER\n Gabriel MERCIER\n Adonis N'DOLO.");
+        }
+        else if (e.getSource().equals(vue.getQuitterJeu()))
+        {
+            System.exit(0);
         }
     }
 }

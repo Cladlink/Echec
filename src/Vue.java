@@ -38,6 +38,7 @@ class Vue extends JFrame
     private transButton chargerPartie;
     private transButton retourMenu;
     private transButton lancerPartie;
+    private transButton quitterJeu;
 
     private JRadioButton partieNormale;
     private JRadioButton partieTempsCoupsLimites;
@@ -56,8 +57,8 @@ class Vue extends JFrame
     private ButtonGroup grSkinBlanc;
     private ButtonGroup grSkinNoir;
 
-    private JComboBox<String> listeJoueursBlancs;
-    private JComboBox<String> listeJoueursNoirs;
+    private chessComboBox listeJoueursBlancs;
+    private chessComboBox listeJoueursNoirs;
 
     /**
      * Vue
@@ -101,6 +102,7 @@ class Vue extends JFrame
         chargerPartie = new transButton(accueil.getChargerPartieTitre());
         retourMenu = new transButton(accueil.getRetourMenuTitre());
         lancerPartie = new transButton(accueil.getLancerPartieTitre());
+        quitterJeu = new transButton(accueil.getQuitterJeuTitre());
 
         partieNormale = new JRadioButton(accueil.getPartieNormaleTitre(), true);
         partieNormale.setActionCommand("1");
@@ -133,8 +135,8 @@ class Vue extends JFrame
         grSkinBlanc = new ButtonGroup();
         grSkinNoir = new ButtonGroup();
 
-        listeJoueursBlancs = new JComboBox<>(accueil.majListeJoueur());
-        listeJoueursNoirs = new JComboBox<>(accueil.majListeJoueur());
+        listeJoueursBlancs = new chessComboBox(accueil.majListeJoueur());
+        listeJoueursNoirs = new chessComboBox(accueil.majListeJoueur());
 
         // Création des groupes de RadioButton
         grTypePartie.add(partieNormale);
@@ -205,13 +207,6 @@ class Vue extends JFrame
         skinBlanc.setFont(police);
         reseau.setFont(police);
         skinNoir.setFont(police);
-        nouvellePartie.setFont(police);
-        rejoindrePartie.setFont(police);
-        nouveauJoueur.setFont(police);
-        credit.setFont(police);
-        chargerPartie.setFont(police);
-        retourMenu.setFont(police);
-        lancerPartie.setFont(police);
 
         partieNormale.setFont(policeChoix);
         partieTempsCoupsLimites.setFont(policeChoix);
@@ -247,8 +242,8 @@ class Vue extends JFrame
      */
     void majListeJoueur()
     {
-        listeJoueursBlancs = new JComboBox<>(accueil.majListeJoueur());
-        listeJoueursNoirs = new JComboBox<>(accueil.majListeJoueur());
+        listeJoueursBlancs = new chessComboBox(accueil.majListeJoueur());
+        listeJoueursNoirs = new chessComboBox(accueil.majListeJoueur());
     }
 
     /**
@@ -325,12 +320,11 @@ class Vue extends JFrame
         centre.add(Box.createVerticalGlue());
         centre.add(Box.createVerticalGlue());
         centre.add(Box.createVerticalGlue());
-        centre.add(Box.createVerticalGlue());
-        centre.add(Box.createVerticalGlue());
         centre.add(nouvellePartie);
         centre.add(chargerPartie);
         centre.add(rejoindrePartie);
         centre.add(credit);
+        centre.add(quitterJeu);
 
         JPanel organisation = new JPanel(new BorderLayout());
         organisation.setOpaque(false);
@@ -417,7 +411,7 @@ class Vue extends JFrame
 
         optionPartie.add(retourMenuPrincipal);
         optionPartie.addSeparator();
-        optionPartie.add(quitter);
+        optionPartie.add(quitterJeu);
 
         parametres.add(undo);
         parametres.add(historique);
@@ -457,9 +451,10 @@ class Vue extends JFrame
     void setControlMenu(ActionListener e)
     {
         retourMenuPrincipal.addActionListener(e);
-        quitter.addActionListener(e);
+        quitterJeu.addActionListener(e);
         undo.addActionListener(e);
         historique.addActionListener(e);
+        quitterJeu.addActionListener(e);
     }
 
     /**
@@ -736,4 +731,5 @@ class Vue extends JFrame
     transButton getRejoindrePartie() { return rejoindrePartie; }
     transButton getNouvellePartie() {return nouvellePartie; }
     transButton getRetourMenu() { return retourMenu; }
+    transButton getQuitterJeu() { return quitterJeu; }
 }

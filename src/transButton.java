@@ -8,6 +8,9 @@ import java.awt.geom.RoundRectangle2D;
 class transButton extends JButton
 {
     private String text;
+
+    Font police = new Font("Cardinal", Font.BOLD, 27);
+
     transButton(String text)
     {
         super(text, null);
@@ -18,6 +21,8 @@ class transButton extends JButton
         setBackground(Color.black);
         setForeground(Color.white);
         setFocusable(false);
+        setFont(police);
+
     }
     @Override
     public void paintComponent(Graphics g) {

@@ -52,7 +52,7 @@ public class ControlMenu implements ActionListener
             vue.setControlButtonMenu(new ControlButton(accueil, vue));
             vue.setVisible(true);
         }*/
-        if (e.getSource() == vue.getQuitter())
+        if (e.getSource() == vue.getQuitterJeu())
         {
             boolean sauvegarde = vue.boolJOptionPane("Voulez-vous sauvegarder avant de quitter ?");
             if (sauvegarde)
