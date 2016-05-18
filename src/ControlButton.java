@@ -28,7 +28,7 @@ class ControlButton extends MouseAdapter
         int row = (e.getY()-20)/80;
         int column = (e.getX()-360)/80;
         Case[][] plateau = accueil.getPartie().getBoard().getPlateau();
-        if (e.getSource() == vue.getVueEchiquier())
+        if (e.getSource().equals(vue.getVueEchiquier()))
         {
             if( row >= 0
                     && row <=7

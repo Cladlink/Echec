@@ -361,6 +361,7 @@ class Vue extends JFrame
         retourMenu.addActionListener(listener);
         lancerPartie.addActionListener(listener);
         credit.addActionListener(listener);
+        quitterJeu.addActionListener(listener);
     }
 
     /**
@@ -411,7 +412,7 @@ class Vue extends JFrame
 
         optionPartie.add(retourMenuPrincipal);
         optionPartie.addSeparator();
-        optionPartie.add(quitterJeu);
+        optionPartie.add(quitter);
 
         parametres.add(undo);
         parametres.add(historique);
@@ -451,10 +452,9 @@ class Vue extends JFrame
     void setControlMenu(ActionListener e)
     {
         retourMenuPrincipal.addActionListener(e);
-        quitterJeu.addActionListener(e);
         undo.addActionListener(e);
         historique.addActionListener(e);
-        quitterJeu.addActionListener(e);
+        quitter.addActionListener(e);
     }
 
     /**
@@ -465,18 +465,18 @@ class Vue extends JFrame
     {
         ImageIcon[] piecesPossibles = new ImageIcon[4];
         if (pion.blanc)
-        {
-            piecesPossibles[0] = new ImageIcon("img/BlancEleve/CavalierBlanc.png");
-            piecesPossibles[1] = new ImageIcon("img/BlancEleve/TourBlanc.png");
-            piecesPossibles[2] = new ImageIcon("img/BlancEleve/FouBlanc.png");
-            piecesPossibles[3] = new ImageIcon("img/BlancEleve/ReineBlanc.png");
+        {// todo revoir promotion
+            piecesPossibles[0] = new ImageIcon("Cavalier");
+            piecesPossibles[1] = new ImageIcon("Tour");
+            piecesPossibles[2] = new ImageIcon("Fou");
+            piecesPossibles[3] = new ImageIcon("Reine");
         }
         else
         {
-            piecesPossibles[0] = new ImageIcon("img/NoirEleve/CavalierNoir.png");
-            piecesPossibles[1] = new ImageIcon("img/NoirEleve/TourNoir.png");
-            piecesPossibles[2] = new ImageIcon("img/NoirEleve/FouNoir.png");
-            piecesPossibles[3] = new ImageIcon("img/NoirEleve/ReineNoir.png");
+            piecesPossibles[0] = new ImageIcon("Cavalier");
+            piecesPossibles[1] = new ImageIcon("Tour");
+            piecesPossibles[2] = new ImageIcon("Fou");
+            piecesPossibles[3] = new ImageIcon("Reine");
         }
         int pieceSelected;
         do
@@ -624,7 +624,7 @@ class Vue extends JFrame
 
         JScrollPane pScroll = new JScrollPane(tableau,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        pScroll.setPreferredSize(new Dimension(400, 200));
+        pScroll.setPreferredSize(new Dimension(500,200));
 
         JPanel pGlobal = new JPanel();
         pGlobal.setLayout(new BoxLayout(pGlobal, BoxLayout.Y_AXIS));

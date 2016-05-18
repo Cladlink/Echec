@@ -5,6 +5,7 @@ import java.awt.*;
  */
 class VueBarreStatut
 {
+    private String statutText;
     private Partie partie;
     private VueEchiquier vueEchiquier;
 
@@ -12,6 +13,7 @@ class VueBarreStatut
     {
         this.partie = partie;
         this.vueEchiquier = vueEchiquier;
+        this.statutText = "";
     }
     /**
      * PaintMe
@@ -26,6 +28,13 @@ class VueBarreStatut
         g.setColor(Color.black);
         g.fillRect(xBase,yBase-50, vueEchiquier.getWidth(), 40);
         g.setColor(Color.white);
-        g.drawString("La barre de statut", xBase + 5, yBase-32);
+        g.drawString(statutText, xBase + 5, yBase-32);
+    }
+
+    public String getStatutText() {
+        return statutText;
+    }
+    public void setStatutText(String statutText) {
+        this.statutText = statutText;
     }
 }
