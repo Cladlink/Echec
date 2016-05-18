@@ -578,27 +578,51 @@ class Vue extends JFrame
      */
     void afficherHistoriqueLocal(ArrayList<String> histoCoups)
     {
-        JPanel tableauCoup = new JPanel(new GridLayout(0,3));
-        tableauCoup.add(new JLabel("n°"));
-        tableauCoup.add(new JLabel("Joueur blanc"));
-        tableauCoup.add(new JLabel("Joueur noir"));
+
+        JLabel numero = new JLabel("n°");
+        JLabel jb = new JLabel("Joueur blanc");
+        JLabel jn = new JLabel("Joueur noir");
+
+        JPanel colonneNum = new JPanel();
+        colonneNum.setLayout(new BoxLayout(colonneNum, BoxLayout.Y_AXIS));
+        colonneNum.add(numero);
+        colonneNum.add(Box.createVerticalStrut(15));
+
+        JPanel colonneJB = new JPanel();
+        colonneJB.setLayout(new BoxLayout(colonneJB, BoxLayout.Y_AXIS));
+        colonneJB.add(jb);
+        colonneJB.add(Box.createVerticalStrut(15));
+
+        JPanel colonneJN = new JPanel();
+        colonneJN.setLayout(new BoxLayout(colonneJN, BoxLayout.Y_AXIS));
+        colonneJN.add(jn);
+        colonneJN.add(Box.createVerticalStrut(15));
 
         for (int i = 0;i<histoCoups.size();i++)
         {
             //ajoute le numéro
-            tableauCoup.add(new JLabel(String.valueOf(i+1)));
+            colonneNum.add(new JLabel(String.valueOf(i+1)));
+            colonneNum.add(Box.createVerticalStrut(6));
             if (i%2 == 0)
             {//si coups blanc
-                tableauCoup.add(new JLabel(lectureHumaineDeHistorique(histoCoups.get(i))));
-                tableauCoup.add(new JLabel());
+                colonneJB.add(new JLabel(lectureHumaineDeHistorique(histoCoups.get(i))));
+                colonneJB.add(Box.createVerticalStrut(6));
+                colonneJN.add(Box.createVerticalStrut(21));
             }
             else
             {//sinon coup noir
-                tableauCoup.add(new JLabel());
-                tableauCoup.add(new JLabel(lectureHumaineDeHistorique(histoCoups.get(i))));
+                colonneJB.add(Box.createVerticalStrut(21));
+                colonneJN.add(new JLabel(lectureHumaineDeHistorique(histoCoups.get(i))));
+                colonneJN.add(Box.createVerticalStrut(6));
             }
         }
-        JScrollPane pScroll = new JScrollPane(tableauCoup,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+
+        JPanel tableau = new JPanel();
+        tableau.add(colonneNum);
+        tableau.add(colonneJB);
+        tableau.add(colonneJN);
+
+        JScrollPane pScroll = new JScrollPane(tableau,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         pScroll.setPreferredSize(new Dimension(400, 200));
 
