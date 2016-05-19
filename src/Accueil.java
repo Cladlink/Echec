@@ -40,6 +40,8 @@ class Accueil
     private String lancerPartieTitre;
     private String quitterTitre;
 
+    private String partieSelectionneePourChargement;
+
 
     /**
      *Accueil
@@ -75,6 +77,8 @@ class Accueil
         skinNoirNormalTitre = "classique";
         skinNoirProfsTitre = "professeurs";
         skinNoirElevesTitre = "élèves";
+
+        partieSelectionneePourChargement = "";
 
     }
 
@@ -125,100 +129,106 @@ class Accueil
      * recoit un etat du board et redémarre la partie
      *
      */
-    void load()
+    void load(String pseudoBlanc)
     {
-        /*Joueur joueurBlanc, joueurNoir;
-        ArrayList<String> historique;
-        boolean tourBlanc;
-
-        ArrayList<Piece> cimetiereBlanc;
-        ArrayList<Piece> cimetiereNoir;
-        ArrayList<Piece> piecesBlanchesPlateau;
-        ArrayList<Piece> piecesNoiresPlateau;
-
-        int modePartie; // 0 = partie sans temps ; 1 = temps partie limitée; 2 = temps tour limités
-        boolean netPartie;
-
-        int choixJoueurBlanc;
-        int choixJoueurNoir;
-
-        //on recupere l'historique de la partie
-        String requete = "SELECT HISTORIQUE.joueurNoirPartie, HISTORIQUE.datePartie," +
-                " HISTORIQUE.coupsJouee, SAUVEGARDE.tourSave, SAUVEGARDE.etatPlateauSave" +
-                " FROM HISTORIQUE JOIN SAUVEGARDE ON" +
-                " HISTORIQUE.idHistorique = SAUVEGARDE.idHistorique" +
-                " WHERE HISTORIQUE.idHistorique = "+joueurBlanc.getId()+";";
-        bdd.start();
-        ArrayList<ArrayList<String>> historiqueRecup = bdd.ask(requete);
-        bdd.stop();
-
-        //load joueur
-        joueurNoir.setId(Integer.getInteger(historiqueRecup.get(0).get(0)));
-        //load temps //todo : ne sais pas dans quelle variable mettre le temps
-        int temps = Integer.getInteger(historiqueRecup.get(1).get(0));
-
-        String coupsJoues = "";
         int i;
-        for(i=0; i<historiqueRecup.get(2).size(); i++)
+
+        // On récupère l'id du joueur blanc
+        int idJoueurBlancChargement = Integer.parseInt(bdd.ask("SELECT idJoueur FROM JOUEUR WHERE pseudoJoueur = '"
+                + pseudoBlanc + "';").get(0).get(0));
+
+        // On récupère toutes les infos nécessaires au lancement de la partie qui concerne le joueur blanc
+        ArrayList<ArrayList<String>> elementsPartie = bdd.ask("SELECT * FROM SAUVEGARDE WHERE joueurBlancSave = "
+                + idJoueurBlancChargement + ";");
+
+        // Récupération de l'historique
+        int idHistorique = Integer.parseInt(elementsPartie.get(0).get(5));
+        String histo = bdd.ask("SELECT * FROM HISTORIQUE WHERE idHistorique = " + idHistorique + ";").get(0).get(3);
+        ArrayList<String> histoCoupsJoues = new ArrayList<>();
+        for(i=0; i<histo.split("-").length; i++)
+            histoCoupsJoues.add(histo.split("-")[i]);
+
+        // Définition du joueur qui a la main
+        boolean auTourDuBlanc;
+        if(histoCoupsJoues.get(histoCoupsJoues.size()-1).charAt(1) == 'n')
+            auTourDuBlanc = true;
+        else
+            auTourDuBlanc = false;
+
+
+        // Récupération du choix du skin de chaque joueur
+        int skinJoueurBlanc = Integer.parseInt(elementsPartie.get(0).get(8));
+        int skinJoueurNoir = Integer.parseInt(elementsPartie.get(0).get(9));
+
+        // Création du plateau a l'identique
+        String listeEmplacementPieces = elementsPartie.get(0).get(4);
+        String[] pieceParPiece = listeEmplacementPieces.split("-");
+        Case[][] plateauChargement = new Case[8][8];
+        int xCase;
+        int yCase;
+        boolean couleurBlanc;
+        for(i=0; i<pieceParPiece.length; i++)
         {
-            historique.add(historiqueRecup.get(2).get(i));
+            // coordonnées de la case ou se trouve la pièce
+            xCase = pieceParPiece[i].charAt(0);
+            yCase = pieceParPiece[i].charAt(1);
+
+            // couleur de la piece
+            if(pieceParPiece[i].charAt(3) == 'b')
+                couleurBlanc = true;
+            else
+                couleurBlanc = false;
+
+            // en fonction du type de la piece on crée de nouvelles pièces sur le plateau
+            if(pieceParPiece[i].charAt(3) == 'p')
+                plateauChargement[xCase][yCase].setPiece(new Pion(plateauChargement[xCase][yCase], couleurBlanc));
+            else if(pieceParPiece[i].charAt(3) == 'c')
+                plateauChargement[xCase][yCase].setPiece(new Cavalier(plateauChargement[xCase][yCase], couleurBlanc));
+            else if(pieceParPiece[i].charAt(3) == 't')
+                plateauChargement[xCase][yCase].setPiece(new Tour(plateauChargement[xCase][yCase], couleurBlanc));
+            else if(pieceParPiece[i].charAt(3) == 'f')
+                plateauChargement[xCase][yCase].setPiece(new Fou(plateauChargement[xCase][yCase], couleurBlanc));
+            else if(pieceParPiece[i].charAt(3) == 'r')
+                plateauChargement[xCase][yCase].setPiece(new Roi(plateauChargement[xCase][yCase], couleurBlanc));
         }
 
-        //--- Puis on charge la sauvegarde
-        //tourSave
-        if (Boolean.valueOf(historiqueRecup.get(3).get(0))) {
-            tourBlanc = true;
-        }
+        // Définition des deux joueurs
+        Joueur jb = new Joueur(true, pseudoBlanc);
+        int idJoueurN = Integer.parseInt(elementsPartie.get(0).get(2));
+        String pseudoNoir = bdd.ask("SELECT pseudoJoueur FROM JOUEUR WHERE idJoueur = " + idJoueurN + ";").get(0).get(0);
+        Joueur jn = new Joueur(false, pseudoNoir);
 
-        //etatPlateauSave
-        String etatPlateau = "";
-        for (i = 0; i < historiqueRecup.get(4).size(); i++) {
-            etatPlateau += historiqueRecup.get(4).get(i);
-        }
+        // Définition des cimetières
+        ArrayList<Piece> piecesCimetiereB = new ArrayList<>();
+        ArrayList<Piece> piecesCimetiereN = new ArrayList<>();
+        String nbPiecesB = elementsPartie.get(0).get(6);
+        String nbPiecesN = elementsPartie.get(0).get(7);
+        // Pour les blancs
+        for(i=0; i<nbPiecesB.charAt(0); i++)
+            piecesCimetiereB.add(new Pion(null, true));
+        for(i=0; i<nbPiecesB.charAt(1); i++)
+            piecesCimetiereB.add(new Tour(null, true));
+        for(i=0; i<nbPiecesB.charAt(2); i++)
+            piecesCimetiereB.add(new Cavalier(null, true));
+        for(i=0; i<nbPiecesB.charAt(3); i++)
+            piecesCimetiereB.add(new Fou(null, true));
+        for(i=0; i<nbPiecesB.charAt(4); i++)
+            piecesCimetiereB.add(new Reine(null, true));
+        // Pour les noirs
+        for(i=0; i<nbPiecesN.charAt(0); i++)
+            piecesCimetiereN.add(new Pion(null, false));
+        for(i=0; i<nbPiecesN.charAt(1); i++)
+            piecesCimetiereN.add(new Tour(null, false));
+        for(i=0; i<nbPiecesN.charAt(2); i++)
+            piecesCimetiereN.add(new Cavalier(null, false));
+        for(i=0; i<nbPiecesN.charAt(3); i++)
+            piecesCimetiereN.add(new Fou(null, false));
+        for(i=0; i<nbPiecesN.charAt(4); i++)
+            piecesCimetiereN.add(new Reine(null, false));
 
-        //split
-        String[] etatPlateauTab = etatPlateau.split("-");
-
-        for (i=0; i<etatPlateauTab.length;i++) {
-            //blanc ?
-            boolean estBlanc;
-            estBlanc = etatPlateau.charAt(1) == 'b';
-
-            //coordonne
-            int abscise = (int) etatPlateau.charAt(2);
-            int ordonnee = (int) etatPlateau.charAt(3);
-
-            Case casePiece = board.getPlateau()[abscise][ordonnee];
-
-            //piece
-            Piece piece;
-            if (etatPlateau.charAt(0)=='p') {
-                piece = new Pion(casePiece, estBlanc);
-            }
-            else if (etatPlateau.charAt(0)=='t') {
-                piece = new Tour(casePiece, estBlanc);
-            }
-            else if (etatPlateau.charAt(0)=='f') {
-                piece = new Fou(casePiece, estBlanc);
-            }
-            else if (etatPlateau.charAt(0)=='c') {
-                piece = new Cavalier(casePiece, estBlanc);
-            }
-            else if (etatPlateau.charAt(0)=='r') {
-                piece = new Roi(casePiece, estBlanc);
-            }
-            else {
-                piece = new Reine(casePiece, estBlanc);
-            }
-
-            //et on l'ajoute dans la liste de la partie
-            if (etatPlateau.charAt(1)=='b') {
-                piecesBlanchesPlateau.add(piece);
-            }
-            else{
-                piecesNoiresPlateau.add(piece);
-            }
-        }*/
+        Partie partieChargement = new Partie(jb, jn, auTourDuBlanc, histoCoupsJoues, skinJoueurBlanc, skinJoueurNoir,
+                plateauChargement, piecesCimetiereB, piecesCimetiereN);
+        
     }
 
 
@@ -315,5 +325,13 @@ class Accueil
     }
     String getPartieRandomTitre() {
         return partieRandomTitre;
+    }
+
+    String getPartieSelectionneePourChargement() {
+        return partieSelectionneePourChargement;
+    }
+
+    void setPartieSelectionneePourChargement(String partieSelectionneePourChargement) {
+        this.partieSelectionneePourChargement = partieSelectionneePourChargement;
     }
 }

@@ -13,7 +13,6 @@ CREATE TABLE HISTORIQUE
 	idHistorique INT(100) NOT NULL AUTO_INCREMENT,
 	joueurBlancPartie INT(100),
 	joueurNoirPartie INT(100),
-	datePartie date,
 	coupsJouee text,
 	CONSTRAINT fk_historique_joueurBlanc FOREIGN KEY (joueurBlancPartie) REFERENCES JOUEUR(idJoueur),
 	CONSTRAINT fk_historique_joueurNoir FOREIGN KEY (joueurNoirPartie) REFERENCES JOUEUR(idJoueur),

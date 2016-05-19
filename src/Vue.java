@@ -366,6 +366,7 @@ class Vue extends JFrame
         lancerPartie.addActionListener(listener);
         credit.addActionListener(listener);
         quitterJeu.addActionListener(listener);
+        chargerPartie.addActionListener(listener);
     }
 
     /**
@@ -577,6 +578,52 @@ class Vue extends JFrame
     }
 
     /**
+     * Affiche toutes les parties sauvegardées pour que l'utilisateur puisse en choisir une pour la continuer
+     */
+    public void historiquePartie()
+    {
+        int i,j;
+        BDDManager bdd = new BDDManager();
+        bdd.start();
+
+        // On récupère les id des joueurs ayants sauvegardé une partie
+        ArrayList<ArrayList<String>> idJoueursSauvegarde = bdd.ask("SELECT SAUVEGARDE.joueurBlancSave, joueurNoirSave FROM SAUVEGARDE;");
+
+        String[][] pseudosJoueurs = new String[idJoueursSauvegarde.size()][2];
+
+        String[] joueursBlancs = new String[idJoueursSauvegarde.size()];
+        String[] joueursNoirs = new String[idJoueursSauvegarde.size()];
+
+
+        // On récupère les pseudos corespondants à chaque id récupérés précédamment
+        for (i = 0; i < idJoueursSauvegarde.size(); i++)
+        {
+            for(j=0; j<idJoueursSauvegarde.get(i).size(); j++)
+            {
+                pseudosJoueurs[i][j] = bdd.ask("SELECT JOUEUR.pseudoJoueur FROM JOUEUR WHERE JOUEUR.idJoueur = "
+                        + idJoueursSauvegarde.get(i).get(j) + ";").get(0).get(0) + "";
+
+            }
+            joueursBlancs[i] = pseudosJoueurs[i][0];
+            joueursNoirs[i] = pseudosJoueurs[i][1];
+        }
+
+        // On crée une liste qui va être affichée dans une fenetre popup pour que l'utilisateur choisisse
+        // quelle sauvegarde il veut reprendre
+        String[] possibilitesParties = new String[idJoueursSauvegarde.size()];
+        for(i=0; i<possibilitesParties.length; i++)
+            possibilitesParties[i] = joueursBlancs[i] + " VS " + joueursNoirs[i];
+
+        // On crée la boite de dialogue
+        JOptionPane optionPane = new JOptionPane();
+        accueil.setPartieSelectionneePourChargement((String)optionPane.showInputDialog(null, "Quelle partie voulez-vous charger ?",
+                "Charger une partie interrompue", JOptionPane.QUESTION_MESSAGE, null, possibilitesParties,
+                possibilitesParties[0]));
+
+        bdd.stop();
+    }
+
+    /**
      *
      * @param histoCoups
      */
@@ -760,5 +807,9 @@ class Vue extends JFrame
     transButton getNouvellePartie() {return nouvellePartie; }
     transButton getRetourMenu() { return retourMenu; }
     transButton getQuitterJeu() { return quitterJeu; }
-    public transButton getPartieRandom() { return partieRandom; }
+    transButton getPartieRandom() { return partieRandom; }
+
+    public transButton getChargerPartie() {
+        return chargerPartie;
+    }
 }

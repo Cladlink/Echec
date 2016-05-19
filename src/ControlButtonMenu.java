@@ -96,5 +96,11 @@ public class ControlButtonMenu implements ActionListener
         {
             System.exit(0);
         }
+        else if(e.getSource().equals(vue.getChargerPartie()))
+        {
+            vue.historiquePartie();
+            accueil.load(accueil.getPartieSelectionneePourChargement().split(" ")[0]);
+
+        }
     }
 }
