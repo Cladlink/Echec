@@ -27,6 +27,17 @@ class Board
     }
 
     /**
+     * Board (Constructeur)
+     *
+     *
+     */
+    Board(Partie partie, Case[][] plateau)
+    {
+        this.partie = partie;
+        this.plateau = plateau;
+    }
+
+    /**
      * plateauDeBase
      * "soulage" le constructeur sur le placement des pièces au début d'une partie
      */

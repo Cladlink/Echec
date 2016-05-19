@@ -15,8 +15,9 @@ class chessComboBox extends JComboBox
         Font policeChoix = new Font("CalligraphyFLF", Font.TRUETYPE_FONT, 22);
         setFont(policeChoix);
         setBackground(new Color(0,0,0));
-
         setFocusable(false);
         setForeground(new Color(255, 255, 255));
     }
+
+
 }

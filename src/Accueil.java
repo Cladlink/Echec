@@ -6,6 +6,7 @@ import java.util.Vector;
  */
 class Accueil
 {
+    private final BDDManager bdd = new BDDManager();
     private ArrayList<Case> casesAtteignables; // move to partie
     private Partie partie;
     private Case caseMemoire; // move to partie
@@ -112,6 +113,107 @@ class Accueil
             jNoir = new Joueur(false, pseudoAdversaire);
 
         this.partie = new Partie(jBlanc, jNoir, modePartie, netPartie, choixJB, choixJN);
+    }
+
+    /**
+     * load todo
+     * recoit un etat du board et redémarre la partie
+     *
+     */
+    void load()
+    {
+        /*Joueur joueurBlanc, joueurNoir;
+        ArrayList<String> historique;
+        boolean tourBlanc;
+
+        ArrayList<Piece> cimetiereBlanc;
+        ArrayList<Piece> cimetiereNoir;
+        ArrayList<Piece> piecesBlanchesPlateau;
+        ArrayList<Piece> piecesNoiresPlateau;
+
+        int modePartie; // 0 = partie sans temps ; 1 = temps partie limitée; 2 = temps tour limités
+        boolean netPartie;
+
+        int choixJoueurBlanc;
+        int choixJoueurNoir;
+
+        //on recupere l'historique de la partie
+        String requete = "SELECT HISTORIQUE.joueurNoirPartie, HISTORIQUE.datePartie," +
+                " HISTORIQUE.coupsJouee, SAUVEGARDE.tourSave, SAUVEGARDE.etatPlateauSave" +
+                " FROM HISTORIQUE JOIN SAUVEGARDE ON" +
+                " HISTORIQUE.idHistorique = SAUVEGARDE.idHistorique" +
+                " WHERE HISTORIQUE.idHistorique = "+joueurBlanc.getId()+";";
+        bdd.start();
+        ArrayList<ArrayList<String>> historiqueRecup = bdd.ask(requete);
+        bdd.stop();
+
+        //load joueur
+        joueurNoir.setId(Integer.getInteger(historiqueRecup.get(0).get(0)));
+        //load temps //todo : ne sais pas dans quelle variable mettre le temps
+        int temps = Integer.getInteger(historiqueRecup.get(1).get(0));
+
+        String coupsJoues = "";
+        int i;
+        for(i=0; i<historiqueRecup.get(2).size(); i++)
+        {
+            historique.add(historiqueRecup.get(2).get(i));
+        }
+
+        //--- Puis on charge la sauvegarde
+        //tourSave
+        if (Boolean.valueOf(historiqueRecup.get(3).get(0))) {
+            tourBlanc = true;
+        }
+
+        //etatPlateauSave
+        String etatPlateau = "";
+        for (i = 0; i < historiqueRecup.get(4).size(); i++) {
+            etatPlateau += historiqueRecup.get(4).get(i);
+        }
+
+        //split
+        String[] etatPlateauTab = etatPlateau.split("-");
+
+        for (i=0; i<etatPlateauTab.length;i++) {
+            //blanc ?
+            boolean estBlanc;
+            estBlanc = etatPlateau.charAt(1) == 'b';
+
+            //coordonne
+            int abscise = (int) etatPlateau.charAt(2);
+            int ordonnee = (int) etatPlateau.charAt(3);
+
+            Case casePiece = board.getPlateau()[abscise][ordonnee];
+
+            //piece
+            Piece piece;
+            if (etatPlateau.charAt(0)=='p') {
+                piece = new Pion(casePiece, estBlanc);
+            }
+            else if (etatPlateau.charAt(0)=='t') {
+                piece = new Tour(casePiece, estBlanc);
+            }
+            else if (etatPlateau.charAt(0)=='f') {
+                piece = new Fou(casePiece, estBlanc);
+            }
+            else if (etatPlateau.charAt(0)=='c') {
+                piece = new Cavalier(casePiece, estBlanc);
+            }
+            else if (etatPlateau.charAt(0)=='r') {
+                piece = new Roi(casePiece, estBlanc);
+            }
+            else {
+                piece = new Reine(casePiece, estBlanc);
+            }
+
+            //et on l'ajoute dans la liste de la partie
+            if (etatPlateau.charAt(1)=='b') {
+                piecesBlanchesPlateau.add(piece);
+            }
+            else{
+                piecesNoiresPlateau.add(piece);
+            }
+        }*/
     }
 
 

@@ -29,9 +29,9 @@ class VueTimer
      */
     void paintMe(Graphics g, int xBase, int yBase, Vue vue)
     {
+        // todo côté model
         if ( partie.getModePartie() == 1 || partie.getModePartie() == 2 )
         {
-
             g.setColor(Color.BLUE);
             g.fillRect(xBase, yBase, 100, 50);// 160 80 || 1110 80
             g.fillRect(xBase, yBase, 100, 50);
