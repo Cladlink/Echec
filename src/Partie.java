@@ -217,13 +217,6 @@ class Partie
     {
         bdd.start();
 
-        Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int day = c.get(Calendar.DAY_OF_MONTH);
-        int month = c.get(Calendar.MONTH);
-
-        String dateActuelle = year + "-" + month + "-" + day;
-
         String coupsJoues = "";
         int i, j;
         // sauvegarde de l'historique des coups joués dans la base de donnée
@@ -243,8 +236,7 @@ class Partie
         }
 
         String requeteHistorique = "INSERT INTO HISTORIQUE VALUES (null, " + joueurBlanc.getId() + ", "
-                + joueurNoir.getId()
-                + ", '" + dateActuelle + "', '" + coupsJoues + "');";
+                + joueurNoir.getId() + ", '" + coupsJoues + "');";
         bdd.edit(requeteHistorique);  // todo: mon probleme c'etait que cette ligne était a la base tout en bas ce qui fait
         // (todo) que la requete n'était pas encore dans la BDD quand on faisait le select
 
@@ -273,14 +265,50 @@ class Partie
         ArrayList<String> resultat2 = resultat.get(0);
         int idHistorique = Integer.parseInt(resultat2.get(0));
 
+        // On récupère ce qu'il y a dans les cimetières
+        int pb=0,tb=0,cb=0,fb=0,rb=0;
+        int pn=0,tn=0,cn=0,fn=0,rn=0;
+        for(i = 0; i<cimetiereBlanc.size(); i++)
+        {
+            if(cimetiereBlanc.get(i) instanceof Pion)
+                pb++;
+            if(cimetiereBlanc.get(i) instanceof Tour)
+                tb++;
+            if(cimetiereBlanc.get(i) instanceof Cavalier)
+                cb++;
+            if(cimetiereBlanc.get(i) instanceof Fou)
+                fb++;
+            if(cimetiereBlanc.get(i) instanceof Reine)
+                rb++;
+        }
+        for(i = 0; i<cimetiereNoir.size(); i++)
+        {
+            if(cimetiereNoir.get(i) instanceof Pion)
+                pn++;
+            if(cimetiereNoir.get(i) instanceof Tour)
+                tn++;
+            if(cimetiereNoir.get(i) instanceof Cavalier)
+                cn++;
+            if(cimetiereNoir.get(i) instanceof Fou)
+                fn++;
+            if(cimetiereNoir.get(i) instanceof Reine)
+                rn++;
+        }
+
+        String cimetiereBlancSave = pb + "" + tb + "" + cb + "" + fb + "" + rb;
+        String cimetiereNoirSave = pn + "" + tn + "" + cn + "" + fn + "" + rn;
+
         String requeteSauvegarde = "INSERT INTO SAUVEGARDE VALUES (null, " + joueurBlanc.getId() + ", "
-                + joueurNoir.getId() + ", '" + dateActuelle + "', " + tourBlanc + ", '" + listeEmplacementsPieces
-                + "', " + idHistorique + ");";
+                + joueurNoir.getId() + ", " + tourBlanc + ", '" + listeEmplacementsPieces
+                + "', " + idHistorique + ", '" + cimetiereBlancSave + "', '" + cimetiereNoirSave
+                + "', " + choixJoueurBlanc + ", " + choixJoueurNoir + ");";
 
         bdd.edit(requeteSauvegarde);
         bdd.stop();
         return true;
     }
+    
+    
 
     /**
      * attenteAction
