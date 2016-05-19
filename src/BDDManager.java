@@ -163,7 +163,7 @@ class BDDManager
     {
         BDDManager bdd = new BDDManager();
         bdd.start();
-        //bdd.lire("src/BDDechec.sql");
+        bdd.lire("src/BDDechec.sql");
         //bdd.edit("DELETE FROM JOUEUR;");
         /*bdd.edit("INSERT INTO JOUEUR (pseudoJoueur, nbPartiesJoueur, nbPartiesGagneesJoueur," +
                 " nbPartiesPerduesJoueur, nbPartiesAbandonneeJoueur, partieEnCoursJoueur, trophee1, trophee2, trophee3)" +
