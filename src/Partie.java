@@ -1,8 +1,8 @@
 import java.util.*;
 
-    /**
-        Created by cladlink on 06/04/16.
-    */
+/**
+    Created by cladlink on 06/04/16.
+*/
 class Partie
 {
     private final static BDDManager bdd = new BDDManager();
@@ -32,10 +32,8 @@ class Partie
     private ArrayList<String> historique;
 
 
-    Partie(Joueur joueurBlanc, Joueur joueurNoir, int modePartie, boolean netPartie, boolean tourBlanc,
-           ArrayList<String> historique, int choixJoueurBlanc, int choixJoueurNoir, Case[][] plateau,
-           ArrayList<Piece> piecesBlanchesPlateau, ArrayList<Piece> piecesNoiresPlateau, ArrayList<Piece> cimetiereBlanc,
-           ArrayList<Piece> cimetiereNoir)
+    Partie(Joueur joueurBlanc, Joueur joueurNoir, boolean tourBlanc, ArrayList<String> historique, int choixJoueurBlanc,
+           int choixJoueurNoir, Case[][] plateau, ArrayList<Piece> cimetiereBlanc, ArrayList<Piece> cimetiereNoir)
     {
         //On ajoute les deux joueurs à la partie
         this.joueurBlanc = joueurBlanc;
@@ -44,8 +42,6 @@ class Partie
         this.choixJoueurBlanc = choixJoueurBlanc;
         this.choixJoueurNoir = choixJoueurNoir;
 
-        this.piecesBlanchesPlateau = piecesBlanchesPlateau;
-        this.piecesNoiresPlateau = piecesNoiresPlateau;
         this.cimetiereBlanc = cimetiereBlanc;
         this.cimetiereNoir = cimetiereNoir;
 
@@ -55,10 +51,10 @@ class Partie
         this.tourBlanc = tourBlanc;
 
         // choix du mode de la partie
-        this.modePartie = modePartie;
+        this.modePartie = 1;
 
         // pour la partie en réseau
-        this.netPartie = netPartie;
+        this.netPartie = false;
 
         // Le roi est protégé en début de partie, il n'y a donc pas d'échec
         echecBlanc = false;

@@ -35,6 +35,8 @@ class Board
     {
         this.partie = partie;
         this.plateau = plateau;
+
+        // initialiser roiBlanc roiNoir
     }
 
     /**

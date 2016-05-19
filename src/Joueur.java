@@ -13,12 +13,9 @@ class Joueur
     private boolean egalite;
     private boolean victoire;
     private int nbPartiesJoueur;
-    private int nbPartiesEnCours;
     private int nbVictoire;
     private int nbDefaite;
     private int nbEgalite;
-    private boolean partieEnCours;
-    private boolean partieSauvegardee;
 
     /**
      * Joueur (Constructeur)
@@ -34,12 +31,9 @@ class Joueur
         this.egalite = false;
         this.victoire = false;
         this.nbPartiesJoueur = 0;
-        this.nbPartiesEnCours = 0;
         this.nbVictoire = 0;
         this.nbDefaite = 0;
         this.nbEgalite = 0;
-        this.partieSauvegardee = false;
-        this.partieEnCours = false;
     }
 
     Joueur(boolean isBlanc, String pseudo)
@@ -57,7 +51,7 @@ class Joueur
      */
     private void loadJoueur(String pseudo)
     {
-        String requete = "SELECT *" + " FROM JOUEUR " + "WHERE pseudoJoueur = \"" + pseudo + "\";";
+        String requete = "SELECT * FROM JOUEUR WHERE pseudoJoueur = \"" + pseudo + "\";";
         bdd.start();
         ArrayList<ArrayList<String>> joueurRecup = bdd.ask(requete);
         bdd.stop();
@@ -72,15 +66,10 @@ class Joueur
         }
 
         this.id = Integer.valueOf(joueurRecup.get(0).get(0));
-        this.isBlanc = Boolean.getBoolean(joueurRecup.get(0).get(2));
-        this.egalite = Boolean.getBoolean(joueurRecup.get(0).get(3));
-        this.victoire = Boolean.getBoolean(joueurRecup.get(0).get(4));
-        this.nbPartiesJoueur = Integer.valueOf(joueurRecup.get(0).get(5));
-        this.nbPartiesEnCours = Integer.valueOf(joueurRecup.get(0).get(6));
-        this.partieEnCours = Boolean.getBoolean(joueurRecup.get(0).get(7));
-        this.nbVictoire = Integer.valueOf(joueurRecup.get(0).get(8));
-        this.nbEgalite = Integer.valueOf(joueurRecup.get(0).get(9));
-        this.partieSauvegardee = Boolean.getBoolean(joueurRecup.get(0).get(10));
+        this.victoire = Boolean.getBoolean(joueurRecup.get(0).get(2));
+        this.nbPartiesJoueur = Integer.valueOf(joueurRecup.get(0).get(3));
+        this.nbVictoire = Integer.valueOf(joueurRecup.get(0).get(4));
+        this.nbEgalite = Integer.valueOf(joueurRecup.get(0).get(5));
     }
 
     /**
@@ -92,7 +81,7 @@ class Joueur
     static void inscriptionJoueur(String pseudo)
     {
         bdd.start();
-        bdd.edit("INSERT INTO JOUEUR VALUES (null, \"" + pseudo + "\", 0, 0, 0, 0, false, 0, false, false, false);");
+        bdd.edit("INSERT INTO JOUEUR VALUES (null, \"" + pseudo + "\", 0, 0, 0, 0);");
         bdd.stop();
     }
 
@@ -146,12 +135,6 @@ class Joueur
     public void setNbPartiesJoueur(int nbPartiesJoueur) {
         this.nbPartiesJoueur = nbPartiesJoueur;
     }
-    public int getNbPartiesEnCours() {
-        return nbPartiesEnCours;
-    }
-    public void setNbPartiesEnCours(int nbPartiesEnCours) {
-        this.nbPartiesEnCours = nbPartiesEnCours;
-    }
     public int getNbVictoire() {
         return nbVictoire;
     }
@@ -170,19 +153,7 @@ class Joueur
     public void setNbEgalite(int nbEgalite) {
         this.nbEgalite = nbEgalite;
     }
-    public boolean isPartieSauvegardee() {
-        return partieSauvegardee;
-    }
-    public void setPartieSauvegardee(boolean partieSauvegardee) {
-        this.partieSauvegardee = partieSauvegardee;
-    }
     public BDDManager getBdd() {
         return bdd;
-    }
-    public boolean isPartieEnCours() {
-        return partieEnCours;
-    }
-    public void setPartieEnCours(boolean partieEnCours) {
-        this.partieEnCours = partieEnCours;
     }
 }
