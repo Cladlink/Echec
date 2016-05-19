@@ -11,6 +11,7 @@ class Accueil
     private Partie partie;
     private Case caseMemoire; // move to partie
 
+    private String partieRandomTitre;
     private String partieNormaleTitre;
     private String partieTempsCoupsLimitesTitre;
     private String partieTempsLimiteTitre;
@@ -46,6 +47,7 @@ class Accueil
      */
     Accueil()
     {
+        partieRandomTitre = "Partie rapide";
         titreLabel = "Echecs";
         joueurBlancLabel = "Selectionnez le joueur blanc :";
         joueurNoirLabel = "Selectionnez le joueur noir :";
@@ -108,7 +110,10 @@ class Accueil
 
         Joueur jNoir;
         if (pseudoAdversaire.equals("anonymous"))
+        {
+            System.out.println("coucou");
             jNoir = new Joueur(false);
+        }
         else
             jNoir = new Joueur(false, pseudoAdversaire);
 
@@ -305,7 +310,10 @@ class Accueil
     String getLancerPartieTitre() {
         return lancerPartieTitre;
     }
-    public String getQuitterJeuTitre() {
+    String getQuitterJeuTitre() {
         return quitterTitre;
+    }
+    String getPartieRandomTitre() {
+        return partieRandomTitre;
     }
 }

@@ -31,6 +31,7 @@ class Vue extends JFrame
     private JLabel reseau;
     private JLabel background;
 
+    private transButton partieRandom;
     private transButton nouvellePartie;
     private transButton rejoindrePartie;
     private transButton nouveauJoueur;
@@ -103,6 +104,7 @@ class Vue extends JFrame
         retourMenu = new transButton(accueil.getRetourMenuTitre());
         lancerPartie = new transButton(accueil.getLancerPartieTitre());
         quitterJeu = new transButton(accueil.getQuitterJeuTitre());
+        partieRandom = new transButton(accueil.getPartieRandomTitre());
 
         partieNormale = new JRadioButton(accueil.getPartieNormaleTitre(), true);
         partieNormale.setActionCommand("1");
@@ -321,6 +323,7 @@ class Vue extends JFrame
         centre.add(Box.createVerticalGlue());
         centre.add(Box.createVerticalGlue());
         centre.add(nouvellePartie);
+        centre.add(partieRandom);
         centre.add(chargerPartie);
         centre.add(rejoindrePartie);
         centre.add(credit);
@@ -356,6 +359,7 @@ class Vue extends JFrame
     void setButtonControl(ActionListener listener)
     {
         nouveauJoueur.addActionListener(listener);
+        partieRandom.addActionListener(listener);
         rejoindrePartie.addActionListener(listener);
         nouvellePartie.addActionListener(listener);
         retourMenu.addActionListener(listener);
@@ -756,4 +760,5 @@ class Vue extends JFrame
     transButton getNouvellePartie() {return nouvellePartie; }
     transButton getRetourMenu() { return retourMenu; }
     transButton getQuitterJeu() { return quitterJeu; }
+    public transButton getPartieRandom() { return partieRandom; }
 }

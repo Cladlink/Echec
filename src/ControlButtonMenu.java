@@ -45,6 +45,19 @@ public class ControlButtonMenu implements ActionListener
         }
         else if(e.getSource().equals(vue.getNouvellePartie()))
             vue.afficherFormulaire();
+        else if(e.getSource().equals(vue.getPartieRandom()))
+        {
+            accueil.lancementPartie(
+                    "anonymous", "anonymous",1 ,1 , 1, false);
+            vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
+            vue.creerWidgetPartie();
+            accueil.getPartie().getBoard().majCasesAtteignable();
+            vue.setControlButtonMenu(new ControlButton(accueil, vue));
+
+            vue.initMenuPartie();
+            vue.setControlMenu(new ControlMenu(accueil, vue));
+            vue.setVisible(true);
+        }
         else if(e.getSource().equals(vue.getRetourMenu()))
         {
             vue.afficherMenu();

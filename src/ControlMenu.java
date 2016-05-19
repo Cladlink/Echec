@@ -52,7 +52,7 @@ public class ControlMenu implements ActionListener
             vue.setControlButtonMenu(new ControlButton(accueil, vue));
             vue.setVisible(true);
         }*/
-        if (e.getSource() == vue.getQuitterJeu())
+        if (e.getSource().equals(vue.getQuitter()))
         {
             boolean sauvegarde = vue.boolJOptionPane("Voulez-vous sauvegarder avant de quitter ?");
             if (sauvegarde)
@@ -63,7 +63,7 @@ public class ControlMenu implements ActionListener
             else
                 System.exit(0);
         }
-        else if (e.getSource() == vue.getUndo())
+        else if (e.getSource().equals(vue.getUndo()))
         {
             boolean undo = vue.boolJOptionPane("voulez-vous annuler le dernier coup ?");
             if (undo)
