@@ -26,7 +26,7 @@ class VueEchiquier extends JPanel
         this.accueil = accueil;
         this.board = board;
 
-        bg = new ImageIcon("img/echec.jpg");
+        bg = new ImageIcon("img/echequier.png");
         deplacement = new ImageIcon("img/deplacement.png");
         deplacementAttaque = new ImageIcon("img/deplacementAttaque.png");
 
@@ -79,10 +79,10 @@ class VueEchiquier extends JPanel
                     }
                 }
                 // on peint la case, puis, on dessine l'image, noire si la case est vide, rouge si elle est pleine.
-                g.fillRect(j * board.getSizeCase() + 360,
+                /*g.fillRect(j * board.getSizeCase() + 360,
                     i * board.getSizeCase() + 20,
                     board.getSizeCase(),
-                    board.getSizeCase());
+                    board.getSizeCase());*/
 
                 if (isDepPossible)
                     g.drawImage(deplacement.getImage(),

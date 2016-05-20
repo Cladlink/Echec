@@ -99,8 +99,7 @@ public class ControlButtonMenu implements ActionListener
         {
             vue.historiquePartie();
             accueil.load(accueil.getPartieSelectionneePourChargement().split(" ")[0]);
-            vue.setVueEchiquier(new VueEchiquier( accueil.getPartie().getBoard(), accueil,
-                    vue));
+            vue.setVueEchiquier(new VueEchiquier( accueil.getPartie().getBoard(), accueil, vue));
             vue.creerWidgetPartie();
             accueil.getPartie().getBoard().majCasesAtteignable();
             vue.setControlButtonMenu(new ControlButton(accueil, vue));
