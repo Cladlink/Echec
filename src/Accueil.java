@@ -39,8 +39,10 @@ class Accueil
     private String retourMenuTitre;
     private String lancerPartieTitre;
     private String quitterTitre;
+    private String statsJoueurTitre;
 
     private String partieSelectionneePourChargement;
+    private String pseudoChoisi;
 
 
     /**
@@ -65,6 +67,7 @@ class Accueil
         retourMenuTitre = "Retour";
         lancerPartieTitre = "Lancer la partie";
         quitterTitre = "Quitter";
+        statsJoueurTitre = "Statistiques des joueurs";
 
         partieNormaleTitre = "normale";
         partieTempsCoupsLimitesTitre = "temps limité par coup";
@@ -79,6 +82,7 @@ class Accueil
         skinNoirElevesTitre = "élèves";
 
         partieSelectionneePourChargement = "";
+        pseudoChoisi = "";
 
     }
 
@@ -379,5 +383,17 @@ class Accueil
 
     void setPartieSelectionneePourChargement(String partieSelectionneePourChargement) {
         this.partieSelectionneePourChargement = partieSelectionneePourChargement;
+    }
+
+    public String getStatsJoueurTitre() {
+        return statsJoueurTitre;
+    }
+
+    public String getPseudoChoisi() {
+        return pseudoChoisi;
+    }
+
+    public void setPseudoChoisi(String pseudoChoisi) {
+        this.pseudoChoisi = pseudoChoisi;
     }
 }
