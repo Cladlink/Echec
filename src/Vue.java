@@ -4,6 +4,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 /**
  *Created by mlucile on 12/05/16.
@@ -40,6 +41,7 @@ class Vue extends JFrame
     private transButton retourMenu;
     private transButton lancerPartie;
     private transButton quitterJeu;
+    private transButton statsJoueur;
 
     private JRadioButton partieNormale;
     private JRadioButton partieTempsCoupsLimites;
@@ -105,6 +107,7 @@ class Vue extends JFrame
         lancerPartie = new transButton(accueil.getLancerPartieTitre());
         quitterJeu = new transButton(accueil.getQuitterJeuTitre());
         partieRandom = new transButton(accueil.getPartieRandomTitre());
+        statsJoueur = new transButton(accueil.getStatsJoueurTitre());
 
         partieNormale = new JRadioButton(accueil.getPartieNormaleTitre(), true);
         partieNormale.setActionCommand("1");
@@ -316,9 +319,8 @@ class Vue extends JFrame
      */
     void creerWidgetAccueil()
     {
-        JPanel centre = new JPanel(new GridLayout(10, 1, 0, 10));
+        JPanel centre = new JPanel(new GridLayout(11, 1, 0, 10));
         centre.setOpaque(false);
-        centre.add(Box.createVerticalGlue());
         centre.add(Box.createVerticalGlue());
         centre.add(Box.createVerticalGlue());
         centre.add(Box.createVerticalGlue());
@@ -326,6 +328,7 @@ class Vue extends JFrame
         centre.add(partieRandom);
         centre.add(chargerPartie);
         centre.add(rejoindrePartie);
+        centre.add(statsJoueur);
         centre.add(credit);
         centre.add(quitterJeu);
 
@@ -367,6 +370,7 @@ class Vue extends JFrame
         credit.addActionListener(listener);
         quitterJeu.addActionListener(listener);
         chargerPartie.addActionListener(listener);
+        statsJoueur.addActionListener(listener);
     }
 
     /**
@@ -623,6 +627,45 @@ class Vue extends JFrame
         bdd.stop();
     }
 
+
+    public void statistiquesJoueur()
+    {
+        int i, j;
+        BDDManager bdd = new BDDManager();
+        bdd.start();
+
+        ArrayList<ArrayList<String>> listeJoueur = bdd.ask("SELECT * FROM JOUEUR;");
+
+        String[] pseudoJoueurs = new String[listeJoueur.size()];
+        for(i=0;i<listeJoueur.size(); i++)
+            pseudoJoueurs[i] = listeJoueur.get(i).get(1);
+
+        JOptionPane optionPane = new JOptionPane();
+        accueil.setPseudoChoisi((String)optionPane.showInputDialog(null, "Afficher les statistique du joueur :",
+                "Charger une partie interrompue", JOptionPane.QUESTION_MESSAGE, null, pseudoJoueurs,
+                pseudoJoueurs[0]));
+
+        bdd.stop();
+    }
+
+    public void fenetreStatsJoueur(String pseudo)
+    {
+        BDDManager bdd = new BDDManager();
+        bdd.start();
+
+        ArrayList<String> caracteristique = bdd.ask("SELECT * FROM JOUEUR WHERE pseudoJoueur = '" + pseudo + "';").get(0);
+
+        String stats = "\n\nPseudo : " + caracteristique.get(1) + "\n" +
+                "Nombre de parties jouées : " + caracteristique.get(2) + "\n" +
+                "Nombre de parties gagnées : " + caracteristique.get(3) + "\n" +
+                "Nombre de parties perdues : " + caracteristique.get(4) + "\n" +
+                "Nombre de parties abandonnées : " + caracteristique.get(5);
+
+        JOptionPane.showMessageDialog(this, "Statistiques :" + stats, "Statistiques d'un joueur", JOptionPane.INFORMATION_MESSAGE);
+
+        bdd.stop();
+    }
+
     /**
      *
      * @param histoCoups
@@ -812,4 +855,13 @@ class Vue extends JFrame
     public transButton getChargerPartie() {
         return chargerPartie;
     }
+
+    public transButton getStatsJoueur() {
+        return statsJoueur;
+    }
+
+    public JMenuItem getRetourMenuPrincipal() {
+        return retourMenuPrincipal;
+    }
+
 }
