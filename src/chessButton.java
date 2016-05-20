@@ -5,13 +5,13 @@ import java.awt.geom.RoundRectangle2D;
 /**
  Created by cladlink on 16/05/16.
  */
-class transButton extends JButton
+class chessButton extends JButton
 {
     private String text;
 
     Font police = new Font("Cardinal", Font.BOLD, 27);
 
-    transButton(String text)
+    chessButton(String text)
     {
         super(text, null);
         this.text = text;

@@ -4,7 +4,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 /**
  *Created by mlucile on 12/05/16.
@@ -32,16 +31,16 @@ class Vue extends JFrame
     private JLabel reseau;
     private JLabel background;
 
-    private transButton partieRandom;
-    private transButton nouvellePartie;
-    private transButton rejoindrePartie;
-    private transButton nouveauJoueur;
-    private transButton credit;
-    private transButton chargerPartie;
-    private transButton retourMenu;
-    private transButton lancerPartie;
-    private transButton quitterJeu;
-    private transButton statsJoueur;
+    private chessButton partieRandom;
+    private chessButton nouvellePartie;
+    private chessButton rejoindrePartie;
+    private chessButton nouveauJoueur;
+    private chessButton credit;
+    private chessButton chargerPartie;
+    private chessButton retourMenu;
+    private chessButton lancerPartie;
+    private chessButton quitterJeu;
+    private chessButton statsJoueur;
 
     private JRadioButton partieNormale;
     private JRadioButton partieTempsCoupsLimites;
@@ -98,16 +97,16 @@ class Vue extends JFrame
         skinNoir = new JLabel(accueil.getSkinLabel());
         reseau = new JLabel(accueil.getReseauLabel());
 
-        nouvellePartie = new transButton(accueil.getNouvellePartieTitre());
-        rejoindrePartie = new transButton(accueil.getRejoindrePartieTitre());
-        nouveauJoueur = new transButton(accueil.getNouveauJoueurTitre());
-        credit = new transButton(accueil.getCreditTitre());
-        chargerPartie = new transButton(accueil.getChargerPartieTitre());
-        retourMenu = new transButton(accueil.getRetourMenuTitre());
-        lancerPartie = new transButton(accueil.getLancerPartieTitre());
-        quitterJeu = new transButton(accueil.getQuitterJeuTitre());
-        partieRandom = new transButton(accueil.getPartieRandomTitre());
-        statsJoueur = new transButton(accueil.getStatsJoueurTitre());
+        nouvellePartie = new chessButton(accueil.getNouvellePartieTitre());
+        rejoindrePartie = new chessButton(accueil.getRejoindrePartieTitre());
+        nouveauJoueur = new chessButton(accueil.getNouveauJoueurTitre());
+        credit = new chessButton(accueil.getCreditTitre());
+        chargerPartie = new chessButton(accueil.getChargerPartieTitre());
+        retourMenu = new chessButton(accueil.getRetourMenuTitre());
+        lancerPartie = new chessButton(accueil.getLancerPartieTitre());
+        quitterJeu = new chessButton(accueil.getQuitterJeuTitre());
+        partieRandom = new chessButton(accueil.getPartieRandomTitre());
+        statsJoueur = new chessButton(accueil.getStatsJoueurTitre());
 
         partieNormale = new JRadioButton(accueil.getPartieNormaleTitre(), true);
         partieNormale.setActionCommand("1");
@@ -142,7 +141,6 @@ class Vue extends JFrame
 
         listeJoueursBlancs = new chessComboBox(accueil.majListeJoueur());
         listeJoueursNoirs = new chessComboBox(accueil.majListeJoueur());
-
         // Création des groupes de RadioButton
         grTypePartie.add(partieNormale);
         grTypePartie.add(partieTempsCoupsLimites);
@@ -619,10 +617,10 @@ class Vue extends JFrame
             possibilitesParties[i] = joueursBlancs[i] + " VS " + joueursNoirs[i];
 
         // On crée la boite de dialogue
-        JOptionPane optionPane = new JOptionPane();
-        accueil.setPartieSelectionneePourChargement((String)optionPane.showInputDialog(null, "Quelle partie voulez-vous charger ?",
+        String partieSelect = (String) JOptionPane.showInputDialog(null, "Quelle partie voulez-vous charger ?",
                 "Charger une partie interrompue", JOptionPane.QUESTION_MESSAGE, null, possibilitesParties,
-                possibilitesParties[0]));
+                possibilitesParties[0]);
+        accueil.setPartieSelectionneePourChargement(partieSelect);
 
         bdd.stop();
     }
@@ -640,23 +638,26 @@ class Vue extends JFrame
         for(i=0;i<listeJoueur.size(); i++)
             pseudoJoueurs[i] = listeJoueur.get(i).get(1);
 
-        JOptionPane optionPane = new JOptionPane();
-        accueil.setPseudoChoisi((String)optionPane.showInputDialog(null, "Afficher les statistique du joueur :",
+        accueil.setPseudoChoisi((String) JOptionPane.showInputDialog(null, "Afficher les statistique du joueur :",
                 "Charger une partie interrompue", JOptionPane.QUESTION_MESSAGE, null, pseudoJoueurs,
                 pseudoJoueurs[0]));
 
         bdd.stop();
     }
 
-    public void fenetreStatsJoueur(String pseudo)
+    void fenetreStatsJoueur(String pseudo)
     {
         BDDManager bdd = new BDDManager();
         bdd.start();
 
         ArrayList<String> caracteristique = bdd.ask("SELECT * FROM JOUEUR WHERE pseudoJoueur = '" + pseudo + "';").get(0);
 
-        String stats = "\n\nPseudo : " + caracteristique.get(1) + "\n" +
-                "Nombre de parties jouées : " + caracteristique.get(2) + "\n" +
+        int partiesJouees = Integer.parseInt(caracteristique.get(3)) +
+                Integer.parseInt(caracteristique.get(4)) +
+                Integer.parseInt(caracteristique.get(5));
+
+                String stats = "\n\nPseudo : " + caracteristique.get(1) + "\n" +
+                "Nombre de parties jouées : " + partiesJouees + "\n" +
                 "Nombre de parties gagnées : " + caracteristique.get(3) + "\n" +
                 "Nombre de parties perdues : " + caracteristique.get(4) + "\n" +
                 "Nombre de parties abandonnées : " + caracteristique.get(5);
@@ -837,26 +838,26 @@ class Vue extends JFrame
     JMenuItem getHistorique() { return historique; }
     JMenuItem getUndo() { return undo; }
     JMenuItem getQuitter() { return quitter; }
-    transButton getLancerPartie() { return lancerPartie; }
-    transButton getCredit() { return credit; }
+    chessButton getLancerPartie() { return lancerPartie; }
+    chessButton getCredit() { return credit; }
     ButtonGroup getGrTypePartie() { return grTypePartie; }
     ButtonGroup getGrReseau() { return grReseau; }
     ButtonGroup getGrSkinBlanc() { return grSkinBlanc; }
     ButtonGroup getGrSkinNoir() { return grSkinNoir; }
     JComboBox<String> getListeJoueursBlancs() { return listeJoueursBlancs; }
     JComboBox<String> getListeJoueursNoirs() { return listeJoueursNoirs; }
-    transButton getNouveauJoueur() { return nouveauJoueur; }
-    transButton getRejoindrePartie() { return rejoindrePartie; }
-    transButton getNouvellePartie() {return nouvellePartie; }
-    transButton getRetourMenu() { return retourMenu; }
-    transButton getQuitterJeu() { return quitterJeu; }
-    transButton getPartieRandom() { return partieRandom; }
+    chessButton getNouveauJoueur() { return nouveauJoueur; }
+    chessButton getRejoindrePartie() { return rejoindrePartie; }
+    chessButton getNouvellePartie() {return nouvellePartie; }
+    chessButton getRetourMenu() { return retourMenu; }
+    chessButton getQuitterJeu() { return quitterJeu; }
+    chessButton getPartieRandom() { return partieRandom; }
 
-    public transButton getChargerPartie() {
+    public chessButton getChargerPartie() {
         return chargerPartie;
     }
 
-    public transButton getStatsJoueur() {
+    public chessButton getStatsJoueur() {
         return statsJoueur;
     }
 

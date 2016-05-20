@@ -64,7 +64,9 @@ class ControlButton extends MouseAdapter
                             Joueur.ajouteVictoire(joueurBlanc, joueurNoir);
                         else
                             Joueur.ajouteVictoire(joueurNoir, joueurBlanc);
-                        accueil.getPartie().deleteSave(joueurBlanc, joueurNoir);
+
+                        Partie.deleteSave(joueurBlanc, joueurNoir);
+                        accueil.getPartie().saveHistorique();
                         vue.setJMenuBar(null);
                         vue.afficherMenu();
                     }
@@ -75,7 +77,9 @@ class ControlButton extends MouseAdapter
                             Joueur.ajoutePat(joueurBlanc, joueurNoir);
                         else
                             Joueur.ajoutePat(joueurNoir, joueurBlanc);
-                        accueil.getPartie().deleteSave(joueurBlanc, joueurNoir);
+
+                        accueil.getPartie().saveHistorique();
+                        Partie.deleteSave(joueurBlanc, joueurNoir);
                         vue.setJMenuBar(null);
                         vue.afficherMenu();
                     }

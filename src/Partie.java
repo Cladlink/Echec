@@ -40,7 +40,7 @@ class Partie
         this.joueurNoir = joueurNoir;
 
         this.choixJoueurBlanc = choixJoueurBlanc;
-        this.choixJoueurNoir = choixJoueurNoir;
+            this.choixJoueurNoir = choixJoueurNoir;
 
         piecesBlanchesPlateau = new ArrayList<>();
         piecesNoiresPlateau = new ArrayList<>();
@@ -49,7 +49,6 @@ class Partie
 
         // On créé le plateau
         this.board = board;
-
 
         System.out.println(piecesBlanchesPlateau);
         System.out.println(piecesNoiresPlateau);
@@ -189,7 +188,6 @@ class Partie
             coup+='?';
 
         historique.add(coup);
-        System.out.println(historique);
     }
 
     /**
@@ -214,6 +212,7 @@ class Partie
             return 'r';
     }
 
+
     /**
      *
      *
@@ -235,30 +234,9 @@ class Partie
     synchronized boolean save()
     {
         bdd.start();
-
-        String coupsJoues = "";
         int i, j;
-        // sauvegarde de l'historique des coups joués dans la base de donnée
-        for(i=0; i<this.historique.size(); i++)
-        {
-            coupsJoues += this.historique.get(i) + "-";
-        }
 
-        String verifHistorique = "SELECT HISTORIQUE.idHistorique FROM HISTORIQUE " +
-                "WHERE HISTORIQUE.joueurBlancPartie = " + joueurBlanc.getId() +
-                " AND HISTORIQUE.joueurNoirPartie = " + joueurNoir.getId() + ";";
-        ArrayList<ArrayList<String>> existeDeja = bdd.ask(verifHistorique);
-
-        if(!existeDeja.isEmpty())
-        {
-            return false;
-        }
-
-        String requeteHistorique = "INSERT INTO HISTORIQUE VALUES (null, " + joueurBlanc.getId() + ", "
-                + joueurNoir.getId() + ", '" + coupsJoues + "');";
-        bdd.edit(requeteHistorique);  // todo: mon probleme c'etait que cette ligne était a la base tout en bas ce qui fait
-        // (todo) que la requete n'était pas encore dans la BDD quand on faisait le select
-
+        saveHistorique();
         // sauvegarde de l'état du plateau au moment de l'intéruption de la partie
         String listeEmplacementsPieces = "";
         Case[][] plateau = board.getPlateau();
@@ -287,30 +265,31 @@ class Partie
         // On récupère ce qu'il y a dans les cimetières
         int pb=0,tb=0,cb=0,fb=0,rb=0;
         int pn=0,tn=0,cn=0,fn=0,rn=0;
+
         for(i = 0; i<cimetiereBlanc.size(); i++)
         {
             if(cimetiereBlanc.get(i) instanceof Pion)
                 pb++;
-            if(cimetiereBlanc.get(i) instanceof Tour)
+            else if(cimetiereBlanc.get(i) instanceof Tour)
                 tb++;
-            if(cimetiereBlanc.get(i) instanceof Cavalier)
+            else if(cimetiereBlanc.get(i) instanceof Cavalier)
                 cb++;
-            if(cimetiereBlanc.get(i) instanceof Fou)
+            else if(cimetiereBlanc.get(i) instanceof Fou)
                 fb++;
-            if(cimetiereBlanc.get(i) instanceof Reine)
+            else if(cimetiereBlanc.get(i) instanceof Reine)
                 rb++;
         }
         for(i = 0; i<cimetiereNoir.size(); i++)
         {
             if(cimetiereNoir.get(i) instanceof Pion)
                 pn++;
-            if(cimetiereNoir.get(i) instanceof Tour)
+            else if(cimetiereNoir.get(i) instanceof Tour)
                 tn++;
-            if(cimetiereNoir.get(i) instanceof Cavalier)
+            else if(cimetiereNoir.get(i) instanceof Cavalier)
                 cn++;
-            if(cimetiereNoir.get(i) instanceof Fou)
+            else if(cimetiereNoir.get(i) instanceof Fou)
                 fn++;
-            if(cimetiereNoir.get(i) instanceof Reine)
+            else if(cimetiereNoir.get(i) instanceof Reine)
                 rn++;
         }
 
@@ -325,6 +304,21 @@ class Partie
         bdd.edit(requeteSauvegarde);
         bdd.stop();
         return true;
+    }
+
+    synchronized void saveHistorique()
+    {
+        String coupsJoues = "";
+        // sauvegarde de l'historique des coups joués dans la base de donnée
+        for(int i=0; i<this.historique.size(); i++)
+        {
+            coupsJoues += this.historique.get(i) + "-";
+        }
+
+        String requeteHistorique = "INSERT INTO HISTORIQUE VALUES (null, " + joueurBlanc.getId() + ", "
+                + joueurNoir.getId() + ", '" + coupsJoues + "');";
+        bdd.edit(requeteHistorique);  // todo: mon probleme c'etait que cette ligne était a la base tout en bas ce qui fait
+        // (todo) que la requete n'était pas encore dans la BDD quand on faisait le select
     }
     
     
