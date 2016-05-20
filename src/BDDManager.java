@@ -174,17 +174,17 @@ class BDDManager
                 " VALUES (\"titi\", 0, 0, 0, 0, 0, false, false, false);");*/
        //bdd.edit("INSERT INTO HISTORIQUE VALUES (null, 26, 28, '2015-2-12', 'PB1213-PB1213-PB1213-PB1213-PB1213-PB1213-PB1213');");
         //bdd.edit("INSERT INTO SAUVEGARDE VALUES (null, 25, 26, null, true, 'PB12-PN13-RN65', 14);");
-        /*ArrayList<ArrayList<String>> test = bdd.ask("SELECT * FROM JOUEUR WHERE pseudoJoueur = \"Marie-Lulu\";");
-        for (int i = 0; i < test.size(); i++)
-        {
-            System.out.println(test.get(i));
-        }*/
-
-        ArrayList<ArrayList<String>> test = bdd.ask("SELECT idJoueur FROM JOUEUR WHERE pseudoJoueur = 'Camille';");
+        ArrayList<ArrayList<String>> test = bdd.ask("SELECT * FROM SAUVEGARDE;");
         for (int i = 0; i < test.size(); i++)
         {
             System.out.println(test.get(i));
         }
+
+        /*ArrayList<ArrayList<String>> test = bdd.ask("SELECT idJoueur FROM JOUEUR WHERE pseudoJoueur = 'Camille';");
+        for (int i = 0; i < test.size(); i++)
+        {
+            System.out.println(test.get(i));
+        }*/
         bdd.stop();
     }
 }

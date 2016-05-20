@@ -251,29 +251,29 @@ class Accueil
                 }
             }
         }
-        /*// Pour les blancs
-        for(i=0; i<nbPiecesB.charAt(0); i++)
-            piecesCimetiereB.add(new Pion(new Case(), true));
-        for(i=0; i<nbPiecesB.charAt(1); i++)
-            piecesCimetiereB.add(new Tour(new Case(), true));
-        for(i=0; i<nbPiecesB.charAt(2); i++)
-            piecesCimetiereB.add(new Cavalier(new Case(), true));
-        for(i=0; i<nbPiecesB.charAt(3); i++)
-            piecesCimetiereB.add(new Fou(new Case(), true));
-        for(i=0; i<nbPiecesB.charAt(4); i++)
-            piecesCimetiereB.add(new Reine(new Case(), true));
+        Case cim = new Case(8, 8, null, board ,true);
+        // Pour les blancs
+        for(i=0; i<Character.getNumericValue(nbPiecesB.charAt(0)); i++)
+            piecesCimetiereB.add(new Pion(cim, true));
+        for(i=0; i<Character.getNumericValue(nbPiecesB.charAt(1)); i++)
+            piecesCimetiereB.add(new Tour(cim, true));
+        for(i=0; i<Character.getNumericValue(nbPiecesB.charAt(2)); i++)
+            piecesCimetiereB.add(new Cavalier(cim, true));
+        for(i=0; i<Character.getNumericValue(nbPiecesB.charAt(3)); i++)
+            piecesCimetiereB.add(new Fou(cim, true));
+        for(i=0; i<Character.getNumericValue(nbPiecesB.charAt(4)); i++)
+            piecesCimetiereB.add(new Reine(cim, true));
         // Pour les noirs
-        for(i=0; i<nbPiecesN.charAt(0); i++)
-            piecesCimetiereN.add(new Pion(new Case(), false));
-        for(i=0; i<nbPiecesN.charAt(1); i++)
-            piecesCimetiereN.add(new Tour(new Case(), false));
-        for(i=0; i<nbPiecesN.charAt(2); i++)
-            piecesCimetiereN.add(new Cavalier(new Case(), false));
-        for(i=0; i<nbPiecesN.charAt(3); i++)
-            piecesCimetiereN.add(new Fou(new Case(), false));
-        for(i=0; i<nbPiecesN.charAt(4); i++)
-            piecesCimetiereN.add(new Reine(new Case(), false));
-            */
+        for(i=0; i<Character.getNumericValue(nbPiecesN.charAt(0)); i++)
+            piecesCimetiereN.add(new Pion(cim, false));
+        for(i=0; i<Character.getNumericValue(nbPiecesN.charAt(1)); i++)
+            piecesCimetiereN.add(new Tour(cim, false));
+        for(i=0; i<Character.getNumericValue(nbPiecesN.charAt(2)); i++)
+            piecesCimetiereN.add(new Cavalier(cim, false));
+        for(i=0; i<Character.getNumericValue(nbPiecesN.charAt(3)); i++)
+            piecesCimetiereN.add(new Fou(cim, false));
+        for(i=0; i<Character.getNumericValue(nbPiecesN.charAt(4)); i++)
+            piecesCimetiereN.add(new Reine(cim, false));
         
     }
 
