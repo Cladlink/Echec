@@ -215,6 +215,19 @@ class Partie
     }
 
     /**
+     *
+     *
+     * @param joueurBlanc
+     * @param joueurNoir
+     */
+    synchronized static void deleteSave (String joueurBlanc, String joueurNoir)
+    {
+        bdd.start();
+        bdd.ask("SELECT joueurBlancSave, joueurNoirSave FROM SAUVEGARDE WHERE joueurBlancSave = " +
+                "\"" + joueurBlanc + "\" and joueurNoirSave = \"" + joueurNoir + "\" ;");
+        bdd.stop();
+    }
+    /**
      * save todo
      * envoie l'insert en base de donnée afin de sauvegarder l'état du board
      *

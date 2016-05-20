@@ -55,14 +55,29 @@ class ControlButton extends MouseAdapter
                     accueil.setCasesAtteignables(null);
                     accueil.getPartie().setTourBlanc(!accueil.getPartie().isTourBlanc());
                     accueil.getPartie().getBoard().majCasesAtteignable();
-
+                    String joueurBlanc = accueil.getPartie().getJoueurBlanc().getPseudo();
+                    String joueurNoir = accueil.getPartie().getJoueurNoir().getPseudo();
                     if (accueil.getPartie().isEchecEtMat())
                     {
                         vue.jOptionMessage("ECHEC ET MAT !");
+                        if (accueil.getPartie().isTourBlanc())
+                            Joueur.ajouteVictoire(joueurBlanc, joueurNoir);
+                        else
+                            Joueur.ajouteVictoire(joueurNoir, joueurBlanc);
+                        accueil.getPartie().deleteSave(joueurBlanc, joueurNoir);
+                        vue.setJMenuBar(null);
+                        vue.afficherMenu();
                     }
                     else if (accueil.getPartie().isPat())
                     {
                         vue.jOptionMessage("PAT");
+                        if (accueil.getPartie().isTourBlanc())
+                            Joueur.ajoutePat(joueurBlanc, joueurNoir);
+                        else
+                            Joueur.ajoutePat(joueurNoir, joueurBlanc);
+                        accueil.getPartie().deleteSave(joueurBlanc, joueurNoir);
+                        vue.setJMenuBar(null);
+                        vue.afficherMenu();
                     }
                     else if (accueil.getPartie().isEchec())
                     {

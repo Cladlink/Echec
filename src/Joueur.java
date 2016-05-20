@@ -98,6 +98,36 @@ class Joueur
         return listeJoueurs;
     }
 
+    /**
+     *
+     * @param JoueurGagnant
+     * @param JoueurPerdant
+     */
+    public static void ajouteVictoire(String JoueurGagnant, String JoueurPerdant)
+    {
+        bdd.start();
+        bdd.edit("UPDATE JOUEUR " +
+                "SET nbPartiesGagneesJoueur = nbPartiesGagneesJoueur+1 " +
+                "WHERE pseudoJoueur = \"" + JoueurGagnant + "\";");
+        bdd.edit("UPDATE JOUEUR " +
+                "SET nbPartiesPerduesJoueur = nbPartiesPerduesJoueur+1 " +
+                "WHERE pseudoJoueur = \"" + JoueurPerdant + "\";");
+        bdd.stop();
+    }
+
+    /**
+     *
+     * @param Joueur1
+     * @param Joueur2
+     */
+    public static void ajoutePat(String Joueur1, String Joueur2)
+    {
+        bdd.start();
+        bdd.edit("UPDATE JOUEUR" +
+                "SET nbPartiesAbandonneeJoueur = nbPartiesAbandonneeJoueur+1" +
+                "WHERE pseudoJoueur = \"" + Joueur1 + "\" or pseudoJoueur = \" " + Joueur2 + " ;");
+        bdd.stop();
+    }
     // getters & setters
     public boolean isBlanc() {
         return isBlanc;

@@ -72,10 +72,15 @@ public class ControlMenu implements ActionListener
                 vue.repaint();
             }
         }
-        else if (e.getSource() == vue.getHistorique())
+        else if (e.getSource().equals(vue.getHistorique()))
         {
             ArrayList<String> ListhistoriqueLocal = accueil.getPartie().getHistorique();
             vue.afficherHistoriqueLocal(ListhistoriqueLocal);
+        }
+        else if (e.getSource().equals(vue.getRetourMenuPrincipal()))
+        {
+            vue.setJMenuBar(null);
+            vue.afficherMenu();
         }
     }
 }

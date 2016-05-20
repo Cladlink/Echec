@@ -71,7 +71,8 @@ public class ControlButtonMenu implements ActionListener
             String pseudoB = vue.getListeJoueursBlancs().getSelectedItem().toString();
             String pseudoN = vue.getListeJoueursNoirs().getSelectedItem().toString();
 
-            if(pseudoB.equals(pseudoN)) {
+            if(pseudoB.equals(pseudoN))
+            {
                 vue.jOptionMessage("Vous ne pouvez pas jouer contre vous-même !");
                 return;
             }
@@ -109,6 +110,11 @@ public class ControlButtonMenu implements ActionListener
             vue.initMenuPartie();
             vue.setControlMenu(new ControlMenu(accueil, vue));
             vue.setVisible(true);
+        }
+        else if(e.getSource().equals(vue.getStatsJoueur()))
+        {
+            vue.statistiquesJoueur();
+            vue.fenetreStatsJoueur(accueil.getPseudoChoisi());
         }
     }
 }
