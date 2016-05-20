@@ -596,7 +596,6 @@ class Vue extends JFrame
         String[] joueursBlancs = new String[idJoueursSauvegarde.size()];
         String[] joueursNoirs = new String[idJoueursSauvegarde.size()];
 
-
         // On récupère les pseudos corespondants à chaque id récupérés précédamment
         for (i = 0; i < idJoueursSauvegarde.size(); i++)
         {
