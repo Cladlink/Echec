@@ -17,6 +17,7 @@ class Cavalier extends Piece
         initChoixSkinPiece();
     }
 
+
     /**
      * casesAtteignables
      * Liste les cases où la pièce peut se déplacer

@@ -168,7 +168,7 @@ class BDDManager
         //bdd.edit("drop table JOUEUR;");
         /*bdd.edit("INSERT INTO JOUEUR (pseudoJoueur, nbPartiesJoueur, nbPartiesGagneesJoueur," +
                 " nbPartiesPerduesJoueur, nbPartiesAbandonneeJoueur, partieEnCoursJoueur, trophee1, trophee2, trophee3)" +
-                " VALUES (\"toto\", 0, 0, 0, 0, 0, false, false, false);");
+                       " VALUES (\"toto\", 0, 0, 0, 0, 0, false, false, false);");
         bdd.edit("INSERT INTO JOUEUR (pseudoJoueur, nbPartiesJoueur, nbPartiesGagneesJoueur, " +
                 "nbPartiesPerduesJoueur, nbPartiesAbandonneeJoueur, partieEnCoursJoueur, trophee1, trophee2, trophee3)" +
                 " VALUES (\"titi\", 0, 0, 0, 0, 0, false, false, false);");*/
@@ -180,7 +180,7 @@ class BDDManager
             System.out.println(test.get(i));
         }*/
 
-        ArrayList<ArrayList<String>> test = bdd.ask("SELECT joueurBlancSave, JoueurNoirSave FROM SAUVEGARDE;");
+        ArrayList<ArrayList<String>> test = bdd.ask("SELECT idJoueur FROM JOUEUR WHERE pseudoJoueur = 'Camille';");
         for (int i = 0; i < test.size(); i++)
         {
             System.out.println(test.get(i));

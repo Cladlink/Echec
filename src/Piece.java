@@ -32,6 +32,8 @@ abstract class Piece
         // les trois autres attributs sont initialisés dans le constructeur de chaque pièces
     }
 
+    public Piece(){}
+
     public void initChoixSkinPiece()
     {
         if (blanc)

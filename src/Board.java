@@ -33,10 +33,9 @@ class Board
      */
     Board(Partie partie, Case[][] plateau)
     {
+
         this.partie = partie;
         this.plateau = plateau;
-
-        // initialiser roiBlanc roiNoir
     }
 
     /**
@@ -46,7 +45,10 @@ class Board
     private void plateauDeBase()
     {
         boolean white = true;
-        
+
+        ArrayList<Piece> piecesBlanchesPlateau = partie.getPiecesBlanchesPlateau();
+        ArrayList<Piece> piecesNoiresPlateau = partie.getPiecesNoiresPlateau();
+
         //initie les cases vides avec leurs couleurs
         for (int i = 0; i < plateau.length; i++)
         {
@@ -58,17 +60,15 @@ class Board
             white =!white;
         }
         roiBlanc = new Roi(plateau[7][4], true);
-
-        ArrayList<Piece> piecesBlanchesPlateau = partie.getPiecesBlanchesPlateau();
-        ArrayList<Piece> piecesNoiresPlateau = partie.getPiecesNoiresPlateau();
-
         piecesBlanchesPlateau.add(roiBlanc);
         Piece reineBlanche = new Reine(plateau[7][3], true);
         piecesBlanchesPlateau.add(reineBlanche);
+
         roiNoir = new Roi(plateau[0][4], false);
         piecesNoiresPlateau.add(roiNoir);
         Piece reineNoire = new Reine(plateau[0][3], false);
         piecesNoiresPlateau.add(reineNoire);
+
         Piece tourBlanche1 = new Tour(plateau[7][0], true);
         piecesBlanchesPlateau.add(tourBlanche1);
         Piece tourBlanche2 = new Tour(plateau[7][7], true);
@@ -304,5 +304,16 @@ class Board
     }
     public Piece getRoiBlanc() {
         return roiBlanc;
+    }
+    public void setPartie(Partie partie) {
+        this.partie = partie;
+    }
+
+    public void setRoiBlanc(Piece roiBlanc) {
+        this.roiBlanc = roiBlanc;
+    }
+
+    public void setRoiNoir(Piece roiNoir) {
+        this.roiNoir = roiNoir;
     }
 }

@@ -33,7 +33,7 @@ class Partie
 
 
     Partie(Joueur joueurBlanc, Joueur joueurNoir, boolean tourBlanc, ArrayList<String> historique, int choixJoueurBlanc,
-           int choixJoueurNoir, Case[][] plateau, ArrayList<Piece> cimetiereBlanc, ArrayList<Piece> cimetiereNoir)
+           int choixJoueurNoir, Board board, ArrayList<Piece> cimetiereBlanc, ArrayList<Piece> cimetiereNoir)
     {
         //On ajoute les deux joueurs à la partie
         this.joueurBlanc = joueurBlanc;
@@ -42,11 +42,17 @@ class Partie
         this.choixJoueurBlanc = choixJoueurBlanc;
         this.choixJoueurNoir = choixJoueurNoir;
 
+        piecesBlanchesPlateau = new ArrayList<>();
+        piecesNoiresPlateau = new ArrayList<>();
         this.cimetiereBlanc = cimetiereBlanc;
         this.cimetiereNoir = cimetiereNoir;
 
         // On créé le plateau
-        board = new Board(this, plateau);
+        this.board = board;
+
+
+        System.out.println(piecesBlanchesPlateau);
+        System.out.println(piecesNoiresPlateau);
 
         this.tourBlanc = tourBlanc;
 

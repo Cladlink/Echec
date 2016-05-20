@@ -41,6 +41,7 @@ public class Case
         this.board = old.board;
         this.isWhite = old.isWhite;
     }
+    public Case(){}
 
 
     // getters & setters

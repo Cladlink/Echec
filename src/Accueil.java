@@ -132,8 +132,8 @@ class Accueil
     void load(String pseudoBlanc)
     {
         int i;
-
         // On récupère l'id du joueur blanc
+        bdd.start();
         int idJoueurBlancChargement = Integer.parseInt(bdd.ask("SELECT idJoueur FROM JOUEUR WHERE pseudoJoueur = '"
                 + pseudoBlanc + "';").get(0).get(0));
 
@@ -161,36 +161,14 @@ class Accueil
         int skinJoueurNoir = Integer.parseInt(elementsPartie.get(0).get(9));
 
         // Création du plateau a l'identique
+        boolean white = false;
         String listeEmplacementPieces = elementsPartie.get(0).get(4);
         String[] pieceParPiece = listeEmplacementPieces.split("-");
-        Case[][] plateauChargement = new Case[8][8];
+        Case[][] plateau = new Case[8][8];
+        Board board = new Board(partie, plateau);
         int xCase;
         int yCase;
         boolean couleurBlanc;
-        for(i=0; i<pieceParPiece.length; i++)
-        {
-            // coordonnées de la case ou se trouve la pièce
-            xCase = pieceParPiece[i].charAt(0);
-            yCase = pieceParPiece[i].charAt(1);
-
-            // couleur de la piece
-            if(pieceParPiece[i].charAt(3) == 'b')
-                couleurBlanc = true;
-            else
-                couleurBlanc = false;
-
-            // en fonction du type de la piece on crée de nouvelles pièces sur le plateau
-            if(pieceParPiece[i].charAt(3) == 'p')
-                plateauChargement[xCase][yCase].setPiece(new Pion(plateauChargement[xCase][yCase], couleurBlanc));
-            else if(pieceParPiece[i].charAt(3) == 'c')
-                plateauChargement[xCase][yCase].setPiece(new Cavalier(plateauChargement[xCase][yCase], couleurBlanc));
-            else if(pieceParPiece[i].charAt(3) == 't')
-                plateauChargement[xCase][yCase].setPiece(new Tour(plateauChargement[xCase][yCase], couleurBlanc));
-            else if(pieceParPiece[i].charAt(3) == 'f')
-                plateauChargement[xCase][yCase].setPiece(new Fou(plateauChargement[xCase][yCase], couleurBlanc));
-            else if(pieceParPiece[i].charAt(3) == 'r')
-                plateauChargement[xCase][yCase].setPiece(new Roi(plateauChargement[xCase][yCase], couleurBlanc));
-        }
 
         // Définition des deux joueurs
         Joueur jb = new Joueur(true, pseudoBlanc);
@@ -203,31 +181,99 @@ class Accueil
         ArrayList<Piece> piecesCimetiereN = new ArrayList<>();
         String nbPiecesB = elementsPartie.get(0).get(6);
         String nbPiecesN = elementsPartie.get(0).get(7);
-        // Pour les blancs
+
+
+        partie = new Partie(jb, jn, auTourDuBlanc, histoCoupsJoues, skinJoueurBlanc, skinJoueurNoir,
+                board, piecesCimetiereB, piecesCimetiereN);
+        board.setPartie(partie);
+        //initie les cases vides avec leurs couleurs
+        for (i = 0; i < plateau.length; i++)
+        {
+            for (int j = 0; j < plateau[i].length; j++)
+            {
+                plateau[i][j] = new Case(i, j, null, board, white);
+                white = !white;
+            }
+            white =!white;
+        }
+        for(i=0; i<pieceParPiece.length; i++)
+        {
+            System.out.println(pieceParPiece[i]);
+            // coordonnées de la case ou se trouve la pièce
+            xCase = Character.getNumericValue(pieceParPiece[i].charAt(0));
+            yCase = Character.getNumericValue(pieceParPiece[i].charAt(1));
+            // couleur de la piece
+            if(pieceParPiece[i].charAt(3) == 'b')
+                couleurBlanc = true;
+            else
+                couleurBlanc = false;
+            Roi roiBlanc, roiNoir;
+            // en fonction du type de la piece on crée de nouvelles pièces sur le plateau
+            if(pieceParPiece[i].charAt(2) == 'p')
+                plateau[xCase][yCase].setPiece(new Pion(plateau[xCase][yCase], couleurBlanc));
+            else if(pieceParPiece[i].charAt(2) == 'c')
+                plateau[xCase][yCase].setPiece(new Cavalier(plateau[xCase][yCase], couleurBlanc));
+            else if(pieceParPiece[i].charAt(2) == 't')
+                plateau[xCase][yCase].setPiece(new Tour(plateau[xCase][yCase], couleurBlanc));
+            else if(pieceParPiece[i].charAt(2) == 'f')
+                plateau[xCase][yCase].setPiece(new Fou(plateau[xCase][yCase], couleurBlanc));
+            else if(pieceParPiece[i].charAt(2) == 'r')
+            {
+                if (couleurBlanc)
+                {
+                    roiBlanc = new Roi(plateau[xCase][yCase], true);
+                    board.setRoiBlanc(roiBlanc);
+                    plateau[xCase][yCase].setPiece(roiBlanc);
+                }
+                else
+                {
+                    roiNoir = new Roi(plateau[xCase][yCase], false);
+                    board.setRoiNoir(roiNoir);
+                    plateau[xCase][yCase].setPiece(roiNoir);
+                }
+
+
+            }
+        }
+        for (i = 0; i < board.getPlateau().length; i++)
+        {
+            for (int j = 0; j < board.getPlateau()[i].length; j++)
+            {
+                if (board.getPlateau()[i][j].getPiece() != null
+                        && board.getPlateau()[i][j].getPiece().blanc)
+                {
+                    partie.getPiecesBlanchesPlateau().add(board.getPlateau()[i][j].getPiece());
+                }
+                else if (board.getPlateau()[i][j].getPiece() != null
+                        && !board.getPlateau()[i][j].getPiece().blanc)
+                {
+                    partie.getPiecesNoiresPlateau().add(board.getPlateau()[i][j].getPiece());
+                }
+            }
+        }
+        /*// Pour les blancs
         for(i=0; i<nbPiecesB.charAt(0); i++)
-            piecesCimetiereB.add(new Pion(null, true));
+            piecesCimetiereB.add(new Pion(new Case(), true));
         for(i=0; i<nbPiecesB.charAt(1); i++)
-            piecesCimetiereB.add(new Tour(null, true));
+            piecesCimetiereB.add(new Tour(new Case(), true));
         for(i=0; i<nbPiecesB.charAt(2); i++)
-            piecesCimetiereB.add(new Cavalier(null, true));
+            piecesCimetiereB.add(new Cavalier(new Case(), true));
         for(i=0; i<nbPiecesB.charAt(3); i++)
-            piecesCimetiereB.add(new Fou(null, true));
+            piecesCimetiereB.add(new Fou(new Case(), true));
         for(i=0; i<nbPiecesB.charAt(4); i++)
-            piecesCimetiereB.add(new Reine(null, true));
+            piecesCimetiereB.add(new Reine(new Case(), true));
         // Pour les noirs
         for(i=0; i<nbPiecesN.charAt(0); i++)
-            piecesCimetiereN.add(new Pion(null, false));
+            piecesCimetiereN.add(new Pion(new Case(), false));
         for(i=0; i<nbPiecesN.charAt(1); i++)
-            piecesCimetiereN.add(new Tour(null, false));
+            piecesCimetiereN.add(new Tour(new Case(), false));
         for(i=0; i<nbPiecesN.charAt(2); i++)
-            piecesCimetiereN.add(new Cavalier(null, false));
+            piecesCimetiereN.add(new Cavalier(new Case(), false));
         for(i=0; i<nbPiecesN.charAt(3); i++)
-            piecesCimetiereN.add(new Fou(null, false));
+            piecesCimetiereN.add(new Fou(new Case(), false));
         for(i=0; i<nbPiecesN.charAt(4); i++)
-            piecesCimetiereN.add(new Reine(null, false));
-
-        Partie partieChargement = new Partie(jb, jn, auTourDuBlanc, histoCoupsJoues, skinJoueurBlanc, skinJoueurNoir,
-                plateauChargement, piecesCimetiereB, piecesCimetiereN);
+            piecesCimetiereN.add(new Reine(new Case(), false));
+            */
         
     }
 
