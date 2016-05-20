@@ -76,9 +76,7 @@ public class ControlButtonMenu implements ActionListener
                 vue.jOptionMessage("Vous ne pouvez pas jouer contre vous-même !");
                 return;
             }
-
-            accueil.lancementPartie(pseudoB, pseudoN,
-                    choixJoueurB, choixJOueurN, modePartie, netPartie);
+            accueil.lancementPartie(pseudoB, pseudoN, choixJoueurB, choixJOueurN, modePartie, netPartie);
             vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
             vue.creerWidgetPartie();
             accueil.getPartie().getBoard().majCasesAtteignable();
