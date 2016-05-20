@@ -5,12 +5,12 @@ import java.util.Vector;
 /**
  Created by mlucile on 12/05/16.
  */
-class ControlButtonMenu implements ActionListener
+public class ControlButtonMenu implements ActionListener
 {
     private Vue vue;
     private Accueil accueil;
 
-    ControlButtonMenu(Accueil accueil, Vue vue)
+    public ControlButtonMenu(Accueil accueil, Vue vue)
     {
         this.accueil = accueil;
         this.vue = vue;
@@ -98,15 +98,7 @@ class ControlButtonMenu implements ActionListener
         else if(e.getSource().equals(vue.getChargerPartie()))
         {
             vue.historiquePartie();
-            try
-            {
-                accueil.load(accueil.getPartieSelectionneePourChargement().split(" ")[0]);
-            }
-            catch (NullPointerException npe)
-            {
-                System.err.println("escape");
-                return;
-            }
+            accueil.load(accueil.getPartieSelectionneePourChargement().split(" ")[0]);
             vue.setVueEchiquier(new VueEchiquier( accueil.getPartie().getBoard(), accueil,
                     vue));
             vue.creerWidgetPartie();
@@ -120,14 +112,7 @@ class ControlButtonMenu implements ActionListener
         else if(e.getSource().equals(vue.getStatsJoueur()))
         {
             vue.statistiquesJoueur();
-            try
-            {
-                vue.fenetreStatsJoueur(accueil.getPseudoChoisi());
-            }
-            catch (IndexOutOfBoundsException iobe)
-            {
-                System.err.println("escape");
-            }
+            vue.fenetreStatsJoueur(accueil.getPseudoChoisi());
         }
     }
 }
