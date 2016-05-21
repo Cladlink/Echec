@@ -659,7 +659,7 @@ class Vue extends JFrame
                 "Nombre de parties jouées : " + partiesJouees + "\n" +
                 "Nombre de parties gagnées : " + caracteristique.get(3) + "\n" +
                 "Nombre de parties perdues : " + caracteristique.get(4) + "\n" +
-                "Nombre de parties abandonnées : " + caracteristique.get(5);
+                "Nombre de parties pat : " + caracteristique.get(5);
 
         JOptionPane.showMessageDialog(this, "Statistiques :" + stats, "Statistiques d'un joueur", JOptionPane.INFORMATION_MESSAGE);
 

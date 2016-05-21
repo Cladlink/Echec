@@ -5,7 +5,7 @@ CREATE TABLE JOUEUR
 	nbPartiesJoueur INT(100),
 	nbPartiesGagneesJoueur INT(100),
 	nbPartiesPerduesJoueur INT(100),
-	nbPartiesAbandonneeJoueur INT(100)
+	nbPartiesEgaliteJoueur INT(100)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE HISTORIQUE
@@ -14,6 +14,7 @@ CREATE TABLE HISTORIQUE
 	joueurBlancPartie INT(100),
 	joueurNoirPartie INT(100),
 	coupsJouee text,
+	dateHistorique DATETIME,
 	CONSTRAINT fk_historique_joueurBlanc FOREIGN KEY (joueurBlancPartie) REFERENCES JOUEUR(idJoueur),
 	CONSTRAINT fk_historique_joueurNoir FOREIGN KEY (joueurNoirPartie) REFERENCES JOUEUR(idJoueur),
 	PRIMARY KEY(idHistorique)

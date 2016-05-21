@@ -5,12 +5,12 @@ import java.util.Vector;
 /**
  Created by mlucile on 12/05/16.
  */
-public class ControlButtonMenu implements ActionListener
+class ControlButtonMenu implements ActionListener
 {
     private Vue vue;
     private Accueil accueil;
 
-    public ControlButtonMenu(Accueil accueil, Vue vue)
+    ControlButtonMenu(Accueil accueil, Vue vue)
     {
         this.accueil = accueil;
         this.vue = vue;
@@ -27,14 +27,13 @@ public class ControlButtonMenu implements ActionListener
                 return;
 
             Vector<String> listeJoueurs = Joueur.listeJoueurs();
-            for(int i = 0; i < listeJoueurs.size(); i++)
-            {
-                if (listeJoueurs.get(i).equals(pseudo))
+            for (String listeJoueur : listeJoueurs)
+                if (listeJoueur.equals(pseudo))
                 {
                     vue.jOptionMessage("Ce pseudo n'est pas disponible");
                     return;
                 }
-            }
+
             Joueur.inscriptionJoueur(pseudo);
             vue.majListeJoueur();
             vue.afficherFormulaire();

@@ -308,17 +308,17 @@ class Partie
 
     synchronized void saveHistorique()
     {
+        bdd.start();
         String coupsJoues = "";
         // sauvegarde de l'historique des coups joués dans la base de donnée
-        for(int i=0; i<this.historique.size(); i++)
-        {
-            coupsJoues += this.historique.get(i) + "-";
-        }
+        for (String aHistorique : this.historique)
+            coupsJoues += aHistorique + "-";
 
         String requeteHistorique = "INSERT INTO HISTORIQUE VALUES (null, " + joueurBlanc.getId() + ", "
                 + joueurNoir.getId() + ", '" + coupsJoues + "');";
         bdd.edit(requeteHistorique);  // todo: mon probleme c'etait que cette ligne était a la base tout en bas ce qui fait
         // (todo) que la requete n'était pas encore dans la BDD quand on faisait le select
+        bdd.stop();
     }
     
     

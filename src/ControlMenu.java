@@ -26,32 +26,6 @@ public class ControlMenu implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        /*if (e.getSource() == vue.getNvlPart())
-        {
-            int modePartie = vue.choixMode();
-            accueil.setModePartie(modePartie);
-
-            String pseudoAdv;
-            String pseudo;
-
-            do
-            {
-                pseudo = vue.askJOption("Joueur 1");
-            }
-            while (pseudo.length()==0 || pseudo.equals("anonymous"));
-            do
-            {
-                pseudoAdv = vue.askJOption("Joueur 2");
-            }
-            while (Objects.equals(pseudo, pseudoAdv) || pseudoAdv.length()==0 || pseudoAdv.equals("anonymous"));
-            //todo voir avec Domas pour fermer le Accueil
-            accueil.lancementPartie(pseudo, pseudoAdv);
-            accueil.getPartie().getBoard().majCasesAtteignable();
-            vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
-            vue.creerWidgetPartie();
-            vue.setControlButtonMenu(new ControlButton(accueil, vue));
-            vue.setVisible(true);
-        }*/
         if (e.getSource().equals(vue.getQuitter()))
         {
             boolean sauvegarde = vue.boolJOptionPane("Voulez-vous sauvegarder avant de quitter ?");
