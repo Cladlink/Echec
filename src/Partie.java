@@ -482,6 +482,30 @@ class Partie
             board.getPlateau()[rowArrivee][columnArrivee].setPiece(pieceMangee);
             pieceMangee.setEmplacementPiece(board.getPlateau()[rowArrivee][columnArrivee]);
         }
+
+        // Si un roque a eu lieu
+        int diff = Math.abs(Character.getNumericValue(dernierCoup.charAt(2)) - Character.getNumericValue(dernierCoup.charAt(4)));
+
+        if(pieceBougee instanceof Roi)
+        {
+            if(diff == 3)
+            {
+                Piece tourGrandRoque = board.getPlateau()[rowArrivee][columnArrivee+1].getPiece();
+                tourGrandRoque.setEmplacementPiece(board.getPlateau()[rowArrivee][columnArrivee-1]);
+                board.getPlateau()[rowArrivee][columnArrivee+1].setPiece(null);
+                board.getPlateau()[rowArrivee][columnArrivee-1].setPiece(tourGrandRoque);
+                ((Roi) pieceBougee).setGrandRoque(true);
+            }
+            if(diff == 2)
+            {
+                Piece tourPetitRoque = board.getPlateau()[rowArrivee][columnArrivee-1].getPiece();
+                tourPetitRoque.setEmplacementPiece(board.getPlateau()[rowArrivee][columnArrivee+1]);
+                board.getPlateau()[rowArrivee][columnArrivee-1].setPiece(null);
+                board.getPlateau()[rowArrivee][columnArrivee+1].setPiece(tourPetitRoque);
+                ((Roi) pieceBougee).setPetitRoque(true);
+            }
+        }
+
         if(tabCoupDecoupe.length  == 7 || tabCoupDecoupe.length == 10)
         {
             pieceBougee.emplacementPiece.setPiece(null);
@@ -495,11 +519,17 @@ class Partie
             }
             else
             {
+                if(pieceBougee instanceof Roi && diff == 3)
+                {
+
+                }
                 piecesNoiresPlateau.remove(piecesNoiresPlateau.size()-1);
                 piecesNoiresPlateau.add(pieceBougee.emplacementPiece.getPiece());
                 cimetiereNoir.remove(cimetiereNoir.size()-1);
             }
         }
+
+
         tourBlanc = !tourBlanc;
         historique.remove(historique.size()-1);
         board.majCasesAtteignable();
