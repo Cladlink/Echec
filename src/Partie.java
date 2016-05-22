@@ -495,6 +495,7 @@ class Partie
                 board.getPlateau()[rowArrivee][columnArrivee+1].setPiece(null);
                 board.getPlateau()[rowArrivee][columnArrivee-1].setPiece(tourGrandRoque);
                 ((Roi) pieceBougee).setGrandRoque(true);
+                ((Roi) pieceBougee).setPetitRoque(true);
             }
             if(diff == 2)
             {
@@ -502,6 +503,7 @@ class Partie
                 tourPetitRoque.setEmplacementPiece(board.getPlateau()[rowArrivee][columnArrivee+1]);
                 board.getPlateau()[rowArrivee][columnArrivee-1].setPiece(null);
                 board.getPlateau()[rowArrivee][columnArrivee+1].setPiece(tourPetitRoque);
+                ((Roi) pieceBougee).setGrandRoque(true);
                 ((Roi) pieceBougee).setPetitRoque(true);
             }
         }
