@@ -129,7 +129,7 @@ class Accueil
     }
 
     /**
-     * load todo
+     * load
      * recoit un etat du board et redémarre la partie
      *
      */
@@ -139,15 +139,17 @@ class Accueil
         // On récupère l'id du joueur blanc
         bdd.start();
         int idJoueurBlancChargement = Integer.parseInt(bdd.ask("SELECT idJoueur FROM JOUEUR WHERE pseudoJoueur = '"
-                + pseudoBlanc + "';").get(0).get(0));
+                    + pseudoBlanc + "';").get(0).get(0));
 
         // On récupère toutes les infos nécessaires au lancement de la partie qui concerne le joueur blanc
         ArrayList<ArrayList<String>> elementsPartie = bdd.ask("SELECT * FROM SAUVEGARDE WHERE joueurBlancSave = "
                 + idJoueurBlancChargement + ";");
+        System.out.println(elementsPartie);
 
         // Récupération de l'historique
         int idHistorique = Integer.parseInt(elementsPartie.get(0).get(5));
-        String histo = bdd.ask("SELECT * FROM HISTORIQUE WHERE idHistorique = " + idHistorique + ";").get(0).get(3);
+        String histo = bdd.ask("SELECT * FROM HISTORIQUE WHERE idHistorique = " + idHistorique + ";").get(0).get(4);
+
         ArrayList<String> histoCoupsJoues = new ArrayList<>();
         for(i=0; i<histo.split("-").length; i++)
             histoCoupsJoues.add(histo.split("-")[i]);

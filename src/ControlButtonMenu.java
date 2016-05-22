@@ -96,7 +96,15 @@ class ControlButtonMenu implements ActionListener
         }
         else if(e.getSource().equals(vue.getChargerPartie()))
         {
-            vue.historiquePartie();
+            try
+            {
+                vue.historiquePartie();
+            }
+            catch(ArrayIndexOutOfBoundsException aiobe)
+            {
+                vue.jOptionMessage("Il n'y a pas de parties sauvegardées" );
+                return;
+            }
             try
             {
                 accueil.load(accueil.getPartieSelectionneePourChargement().split(" ")[0]);

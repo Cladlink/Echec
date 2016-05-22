@@ -31,7 +31,6 @@ class Partie
 
     private ArrayList<String> historique;
 
-
     Partie(Joueur joueurBlanc, Joueur joueurNoir, boolean tourBlanc, ArrayList<String> historique, int choixJoueurBlanc,
            int choixJoueurNoir, Board board, ArrayList<Piece> cimetiereBlanc, ArrayList<Piece> cimetiereNoir)
     {
@@ -188,6 +187,7 @@ class Partie
             coup+='?';
 
         historique.add(coup);
+        System.out.println(historique);
     }
 
     /**
@@ -233,7 +233,6 @@ class Partie
      */
     synchronized boolean save()
     {
-        bdd.start();
         int i, j;
 
         saveHistorique();
@@ -257,7 +256,7 @@ class Partie
                 "WHERE HISTORIQUE.joueurBlancPartie = " + joueurBlanc.getId() +
                 " AND HISTORIQUE.joueurNoirPartie = " + joueurNoir.getId() + ";";
 
-
+        bdd.start();
         ArrayList<ArrayList<String>> resultat = bdd.ask(requeteIdhistorique);
         ArrayList<String> resultat2 = resultat.get(0);
         int idHistorique = Integer.parseInt(resultat2.get(0));
@@ -306,6 +305,9 @@ class Partie
         return true;
     }
 
+    /**
+     *
+     */
     synchronized void saveHistorique()
     {
         bdd.start();
@@ -315,9 +317,8 @@ class Partie
             coupsJoues += aHistorique + "-";
 
         String requeteHistorique = "INSERT INTO HISTORIQUE VALUES (null, " + joueurBlanc.getId() + ", "
-                + joueurNoir.getId() + ", '" + coupsJoues + "');";
-        bdd.edit(requeteHistorique);  // todo: mon probleme c'etait que cette ligne était a la base tout en bas ce qui fait
-        // (todo) que la requete n'était pas encore dans la BDD quand on faisait le select
+                + joueurNoir.getId() + ", '" + coupsJoues + "', NOW());";
+        bdd.edit(requeteHistorique);
         bdd.stop();
     }
     

@@ -3,7 +3,6 @@
  */
 class Roi extends Piece
 {
-
     private boolean grandRoque;
     private boolean petitRoque;
     Roi(Case caseInitiale, boolean isBlanc)

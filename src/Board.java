@@ -4,9 +4,9 @@ import java.util.ArrayList;
  */
 class Board
 {
-    private final int row = 8;
-    private final int column = 8;
-    private final int sizeCase = 80;
+    private static final int row = 8;
+    private static final int column = 8;
+    private static final int sizeCase = 80;
     private Case[][] plateau;
     private Partie partie;
     private Piece roiNoir, roiBlanc;
@@ -262,7 +262,7 @@ class Board
      */
     private void deplacerGrandRoque(Case[][] plateau, int row, int column) {
         Piece tourRoque;
-        tourRoque = plateau[row][column + 3].getPiece();
+        tourRoque = plateau[row][column - 4].getPiece();
 
         plateau[row][column - 4].setPiece(null);
         tourRoque.emplacementPiece = plateau[row][column - 2];
@@ -308,11 +308,9 @@ class Board
     public void setPartie(Partie partie) {
         this.partie = partie;
     }
-
     public void setRoiBlanc(Piece roiBlanc) {
         this.roiBlanc = roiBlanc;
     }
-
     public void setRoiNoir(Piece roiNoir) {
         this.roiNoir = roiNoir;
     }

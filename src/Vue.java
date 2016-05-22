@@ -300,7 +300,6 @@ class Vue extends JFrame
         organisation.add(formulaire, BorderLayout.CENTER);
         organisation.add(nouveauJP, BorderLayout.EAST);
 
-
         // Mise en place du fond d'écran
         setLayout(new BorderLayout());
         background = new JLabel(new ImageIcon("img/fond2_2.jpg"));
@@ -378,13 +377,13 @@ class Vue extends JFrame
      */
     String messagePop(String message)
     {
-        return JOptionPane.showInputDialog(this, message, "Enregistrement", JOptionPane.QUESTION_MESSAGE);
+        return JOptionPane.showInputDialog(this, message, "Alerte", JOptionPane.QUESTION_MESSAGE);
     }
 
     /**
      *
      */
-    public void afficherFormulaire()
+    void afficherFormulaire()
     {
         creerWidgetFormulaire();
         setVisible(true);
@@ -393,12 +392,11 @@ class Vue extends JFrame
     /**
      *
      */
-    public void afficherMenu()
+    void afficherMenu()
     {
         creerWidgetAccueil();
         setVisible(true);
     }
-
 
     /**
      * initAttribut
@@ -434,7 +432,7 @@ class Vue extends JFrame
      * creerWidget
      * dessine la vue
      */
-    public void creerWidgetPartie() {
+    void creerWidgetPartie() {
         setContentPane(vueEchiquier);
     }
 
@@ -582,7 +580,7 @@ class Vue extends JFrame
     /**
      * Affiche toutes les parties sauvegardées pour que l'utilisateur puisse en choisir une pour la continuer
      */
-    public void historiquePartie()
+    void historiquePartie()
     {
         int i,j;
         BDDManager bdd = new BDDManager();
@@ -624,8 +622,10 @@ class Vue extends JFrame
         bdd.stop();
     }
 
-
-    public void statistiquesJoueur()
+    /**
+     *
+     */
+    void statistiquesJoueur()
     {
         int i, j;
         BDDManager bdd = new BDDManager();
@@ -644,13 +644,20 @@ class Vue extends JFrame
         bdd.stop();
     }
 
+    /**
+     *
+     * @param pseudo
+     */
     void fenetreStatsJoueur(String pseudo)
     {
         BDDManager bdd = new BDDManager();
         bdd.start();
 
         ArrayList<String> caracteristique = bdd.ask("SELECT * FROM JOUEUR WHERE pseudoJoueur = '" + pseudo + "';").get(0);
-
+        if (caracteristique.size() == 0)
+        {
+            jOptionMessage("il n'y a pas de joueurs dans la base de donnée !");
+        }
         int partiesJouees = Integer.parseInt(caracteristique.get(3)) +
                 Integer.parseInt(caracteristique.get(4)) +
                 Integer.parseInt(caracteristique.get(5));
@@ -727,7 +734,7 @@ class Vue extends JFrame
         JOptionPane.showMessageDialog( this, pGlobal, "Historique des coups jouées", JOptionPane.INFORMATION_MESSAGE );
     }
 
-    public String lectureHumaineDeHistorique(String stringHistorique)
+    String lectureHumaineDeHistorique(String stringHistorique)
     {
         String reponse;
 
@@ -851,17 +858,7 @@ class Vue extends JFrame
     chessButton getRetourMenu() { return retourMenu; }
     chessButton getQuitterJeu() { return quitterJeu; }
     chessButton getPartieRandom() { return partieRandom; }
-
-    public chessButton getChargerPartie() {
-        return chargerPartie;
-    }
-
-    public chessButton getStatsJoueur() {
-        return statsJoueur;
-    }
-
-    public JMenuItem getRetourMenuPrincipal() {
-        return retourMenuPrincipal;
-    }
-
+    chessButton getChargerPartie() { return chargerPartie; }
+    chessButton getStatsJoueur() { return statsJoueur; }
+    JMenuItem getRetourMenuPrincipal() { return retourMenuPrincipal; }
 }
