@@ -20,20 +20,22 @@ class ControlButtonMenu implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
+        String pseudo ="";
         if(e.getSource().equals(vue.getNouveauJoueur()))
         {
-            String pseudo = vue.messagePop("Entrez un nouveau pseudo :");
+            pseudo = vue.messagePop("Entrez un nouveau pseudo :");
             if (pseudo == null)
                 return;
 
             Vector<String> listeJoueurs = Joueur.listeJoueurs();
-            for (String listeJoueur : listeJoueurs)
-                if (listeJoueur.equals(pseudo))
+            for(int i = 0; i < listeJoueurs.size(); i++)
+            {
+                if (listeJoueurs.get(i).equals(pseudo))
                 {
                     vue.jOptionMessage("Ce pseudo n'est pas disponible");
                     return;
                 }
-
+            }
             Joueur.inscriptionJoueur(pseudo);
             vue.majListeJoueur();
             vue.afficherFormulaire();
@@ -41,6 +43,28 @@ class ControlButtonMenu implements ActionListener
         else if(e.getSource().equals(vue.getRejoindrePartie()))
         {
             vue.messagePop("Entrez l'adresse IP de l'adversaire :");
+
+	    // ajout SD : à modifier, notamment sur les pseudos puisque à priori le joueur client
+	    // ne connait pas forcément le pseudo de l'autre.
+
+	    accueil.rejoindrePartieReseau(pseudo, 1); //modePartie);
+	    // ajout SD : voir pour le choix de qui est blanc/noir
+	    // + skins
+            vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
+            vue.creerWidgetPartie();
+            accueil.getPartie().getBoard().majCasesAtteignable();
+            vue.setControlButtonMenu(new ControlButton(accueil, vue));
+
+            vue.initMenuPartie();
+            vue.setControlMenu(new ControlMenu(accueil, vue));
+            vue.setVisible(true);
+
+	    /* TO DO:
+	       - invalider la vue (setEnable ??)
+	       - créer un ThreadPartie client
+	     */
+
+	    
         }
         else if(e.getSource().equals(vue.getNouvellePartie()))
             vue.afficherFormulaire();
@@ -58,9 +82,7 @@ class ControlButtonMenu implements ActionListener
             vue.setVisible(true);
         }
         else if(e.getSource().equals(vue.getRetourMenu()))
-        {
             vue.afficherMenu();
-        }
         else if(e.getSource().equals(vue.getLancerPartie()))
         {
             int modePartie = Integer.parseInt(vue.getGrTypePartie().getSelection().getActionCommand());
@@ -84,34 +106,27 @@ class ControlButtonMenu implements ActionListener
             vue.initMenuPartie();
             vue.setControlMenu(new ControlMenu(accueil, vue));
             vue.setVisible(true);
+
+	    // ajout SD 
+	    /* TO DO:
+	       si partie en réseau :
+	          - invalider la vue (setEnable ??)
+	          - créer un ThreadPartie serveur
+	     */
         }
         else if(e.getSource().equals(vue.getCredit()))
-        {
             vue.jOptionMessage("Jeu développé par : \n Michael BOUTBOUL\n Marie-Lucile CANIARD\n Sylvain GUYOT" +
                     "\n Kevin LIMACHER\n Gabriel MERCIER\n Adonis N'DOLO.");
-        }
         else if (e.getSource().equals(vue.getQuitterJeu()))
-        {
             System.exit(0);
-        }
         else if(e.getSource().equals(vue.getChargerPartie()))
         {
-            try
-            {
-                vue.historiquePartie();
-            }
-            catch(ArrayIndexOutOfBoundsException aiobe)
-            {
-                vue.jOptionMessage("Il n'y a pas de parties sauvegardées" );
-                return;
-            }
-            try
-            {
+            vue.historiquePartie();
+            if( accueil.getPartieSelectionneePourChargement() != null)
                 accueil.load(accueil.getPartieSelectionneePourChargement().split(" ")[0]);
-            }
-            catch (NullPointerException npe)
+            else
             {
-                System.err.println("Escape");
+                System.err.println("escape");
                 return;
             }
             vue.setVueEchiquier(new VueEchiquier( accueil.getPartie().getBoard(), accueil,
@@ -127,14 +142,10 @@ class ControlButtonMenu implements ActionListener
         else if(e.getSource().equals(vue.getStatsJoueur()))
         {
             vue.statistiquesJoueur();
-            try
-            {
+            if (accueil.getPseudoChoisi() != null)
                 vue.fenetreStatsJoueur(accueil.getPseudoChoisi());
-            }
-            catch (IndexOutOfBoundsException iobe)
-            {
+            else
                 System.err.println("escape");
-            }
         }
     }
 }

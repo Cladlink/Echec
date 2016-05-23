@@ -3,6 +3,7 @@
  */
 class Roi extends Piece
 {
+
     private boolean grandRoque;
     private boolean petitRoque;
     Roi(Case caseInitiale, boolean isBlanc)
@@ -106,13 +107,5 @@ class Roi extends Piece
         int gapCol = Math.abs( emplacementPiece.getColumn() - caseRoi.getColumn() );
 
         return gapRow <= 1 && gapCol <= 1;
-    }
-
-    public void setPetitRoque(boolean petitRoque) {
-        this.petitRoque = petitRoque;
-    }
-
-    public void setGrandRoque(boolean grandRoque) {
-        this.grandRoque = grandRoque;
     }
 }

@@ -123,9 +123,9 @@ class Joueur
     public static void ajoutePat(String Joueur1, String Joueur2)
     {
         bdd.start();
-        bdd.edit("UPDATE JOUEUR " +
-                "SET nbPartiesEgaliteJoueur = nbPartiesEgaliteJoueur+1 " +
-                "WHERE pseudoJoueur = \"" + Joueur1 + "\" or pseudoJoueur = \"" + Joueur2 + "\"  ;");
+        bdd.edit("UPDATE JOUEUR" +
+                "SET nbPartiesAbandonneeJoueur = nbPartiesAbandonneeJoueur+1" +
+                "WHERE pseudoJoueur = \"" + Joueur1 + "\" or pseudoJoueur = \" " + Joueur2 + " ;");
         bdd.stop();
     }
     // getters & setters

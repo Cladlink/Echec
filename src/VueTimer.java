@@ -32,15 +32,21 @@ class VueTimer
         // todo côté model
         if ( partie.getModePartie() == 1 || partie.getModePartie() == 2 )
         {
+	    // ajout SD
+	    // minute = ...; // a calculer en fonction du chrono du joueur courant
+	    // seconde = ...; // a calculer en fonction du chrono du joueur courant
+	    
             g.setColor(Color.BLUE);
             g.fillRect(xBase, yBase, 100, 50);// 160 80 || 1110 80
             g.fillRect(xBase, yBase, 100, 50);
             g.setColor(Color.BLACK);
             g.drawString(minute + " : " + seconde, xBase+30, yBase+30);
 
+	    /* supprimé -> mis dans ControlButton
             int delais;
             if (partie.getModePartie() == 1)
             {
+		
                 minute = 0;
                 seconde = 30;
                 delais = 1000; // ce qu'il faut pour compter toutes les 1 secondes
@@ -55,6 +61,7 @@ class VueTimer
                 chrono = new Timer(delais, al);
                 chrono.start();
             }
+	    */
         }
     }
 }

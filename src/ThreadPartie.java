@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -9,75 +11,96 @@ class ThreadPartie extends Thread
 {
     private Joueur moi;
     private Partie partie;
-    private Boolean isServer;
+    private boolean isServer;
     private ServerSocket conn;
     private Socket comm;
     private ControlButton controller;
     private int port;
 
-    public ThreadPartie(Partie partie, Boolean isServer, ControlButton controller, int port)
+    // ajout SD
+    private String ipServer;
+    private ObjectInputStream ois;
+    private ObjectOutputStream oos;
+    private int id; // =1 si joueur blanc et 2 si joueur noir
+    
+    /*public ThreadPartie(Partie partie, ControlButton controller, int port, boolean isServer, String ipServer)
     {
         this.partie = partie;
         this.isServer = isServer;
         this.controller = controller;
         this.port = port;
+	this.ipServer = ipServer;
     }
 
     @Override
     public void run()
     {
-        if(isServer)// todo y a pas un soucis à faire comme ca ? on va pas réinitialiser la connection à chaque fois ? si ?
-        {
-            try
-            {
-                conn = new ServerSocket(port);
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-        }
-        else
-        {
-            comm = new Socket();
-        }
+	boolean stop = false;
+	try {
 
-        // créer les objets flux
-        // échanger les infos (pseudos, qui joue en premier, ...)
-        boolean myTurn;
-        if (true)// todo mettre ici le teste si il y a une réponse du serveur
-        {
-            this.moi = partie.getJoueurBlanc();
-            myTurn = true;
+	    if(isServer) {
+		initServer();
+	    }
+	    else {
+		initClient();
+	    }
         }
-        else
-        {
-            this.moi = partie.getJoueurNoir();
-            myTurn = false;
+	catch (IOException e) {
+	    e.printStackTrace();
+	}
+
+	// ajout SD
+	try {
+	    while (!stop) {
+
+		// si je suis le joueur courant
+		if (id == partie.getIdCurrentPlayer()) {
+
+		    *//* TO DO :
+		      - début du tour (via controleur)
+		      - attendre fin tour
+		      - envoyer les infos
+		      Rq: pour faciliter, on peut envoyer tout le temps les même infos qqs soit le mode
+		      par exemple: rowsrc,colsrc,rowdest,coldest,typeroque, typepromo, chronojoueurblanc,chronojoueurnoir,partiefinie
+		      les 4 premiers servent aux déplacements (sauf roque)
+		      typeroque = 0 si pas de roque, = 1 petit roque, = 2 grand roque
+		      typepromo = 0 si pas de promo, = 1,2,... (type pièce) si promo
+		    *//*
+		}
+		else {
+		    *//* TO DO :
+		       - invalider la vue (via controleur)
+		       - recevoir les infos
+		       - si partiFinie == true : l'autre joueur à dépassé son temps de jeu (partie ou tour)  -> j'ai gagné
+		       - sinon appeler control.updatePartie()
+
+		    *//*
+
+		}
+		// - si partieFinie == true -> stop = true
+	    }
         }
-        boolean stop = false;
-        partie.attenteDebutPartie();
-        while(!stop)
-        {
-            if (myTurn)
-            {
-                partie.attenteAction();// j'attends que le joueur ai joué;
-                // envoyer à l'autre le coup joué
-                if (partie.isEchecEtMat() || partie.isPat())
-                    stop = true;
-                else
-                    myTurn = false;
-            }
-            else
-            {
-                // attendre coup joué (sur la socket)
-                // appel d'une méthode du controller qui met à jour la partie avec le coup joué
-                partie.attenteAction();
-                if (partie.isEchecEtMat() || partie.isPat())
-                    stop = true;
-                else
-                    myTurn = false;
-            }
-        }
+	catch (IOException e) {
+	    e.printStackTrace();
+	}
+
     }
+
+    private void initServer() throws IOException {
+	conn = new ServerSocket(port);
+	comm = conn.accept();
+	oos = new ObjectOutputStream(comm.getOutputStream());
+	oos.flush();
+	ois = new ObjectInputStream(comm.getInputStream());
+	// échanger les infos (pseudos, qui joue en premier, ...)
+    }
+
+    private void initClient() throws IOException {
+	comm = new Socket(ipServer, port);
+	ois = new ObjectInputStream(comm.getInputStream());
+	oos = new ObjectOutputStream(comm.getOutputStream());
+	oos.flush();
+	// échanger les infos (pseudos, qui joue en premier, ...)
+    }
+    */
 }

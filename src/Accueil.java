@@ -110,26 +110,37 @@ class Accueil
     void lancementPartie(String pseudo, String pseudoAdversaire,
                                 int choixJB, int choixJN, int modePartie, boolean netPartie)
     {
-        Joueur jBlanc;
-        if (pseudo.equals("anonymous"))
-            jBlanc = new Joueur(true);
-        else
-            jBlanc = new Joueur(true, pseudo);
 
-        Joueur jNoir;
-        if (pseudoAdversaire.equals("anonymous"))
-        {
-            System.out.println("coucou");
-            jNoir = new Joueur(false);
-        }
-        else
-            jNoir = new Joueur(false, pseudoAdversaire);
+	    Joueur jBlanc;
+	    if (pseudo.equals("anonymous"))
+		jBlanc = new Joueur(true);
+	    else
+		jBlanc = new Joueur(true, pseudo);
 
-        this.partie = new Partie(jBlanc, jNoir, modePartie, netPartie, choixJB, choixJN);
+	    Joueur jNoir;
+	    if (pseudoAdversaire.equals("anonymous"))
+		{
+		    System.out.println("coucou");
+		    jNoir = new Joueur(false);
+		}
+	    else
+		jNoir = new Joueur(false, pseudoAdversaire);
+
+	    this.partie = new Partie(jBlanc, jNoir, modePartie, netPartie, choixJB, choixJN);
     }
+    
+    // ajout SD : méthodes spécifique pour le réseau.   
+    void lancementPartieReseau(String pseudo, int modePartie)
+    {
 
+    }
+    void rejoindrePartieReseau(String pseudo, int modePartie)
+    {
+	
+    }
+	
     /**
-     * load
+     * load todo
      * recoit un etat du board et redémarre la partie
      *
      */
@@ -139,17 +150,15 @@ class Accueil
         // On récupère l'id du joueur blanc
         bdd.start();
         int idJoueurBlancChargement = Integer.parseInt(bdd.ask("SELECT idJoueur FROM JOUEUR WHERE pseudoJoueur = '"
-                    + pseudoBlanc + "';").get(0).get(0));
+                + pseudoBlanc + "';").get(0).get(0));
 
         // On récupère toutes les infos nécessaires au lancement de la partie qui concerne le joueur blanc
         ArrayList<ArrayList<String>> elementsPartie = bdd.ask("SELECT * FROM SAUVEGARDE WHERE joueurBlancSave = "
                 + idJoueurBlancChargement + ";");
-        System.out.println(elementsPartie);
 
         // Récupération de l'historique
         int idHistorique = Integer.parseInt(elementsPartie.get(0).get(5));
-        String histo = bdd.ask("SELECT * FROM HISTORIQUE WHERE idHistorique = " + idHistorique + ";").get(0).get(4);
-
+        String histo = bdd.ask("SELECT * FROM HISTORIQUE WHERE idHistorique = " + idHistorique + ";").get(0).get(3);
         ArrayList<String> histoCoupsJoues = new ArrayList<>();
         for(i=0; i<histo.split("-").length; i++)
             histoCoupsJoues.add(histo.split("-")[i]);

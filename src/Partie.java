@@ -20,16 +20,33 @@ class Partie
 
     private Board board;
     private boolean tourBlanc;
+    // ajout SD : plus partique de gérer avec un id que un boolean
+    private int idCurrentPlayer; // = 1 si joueur courant = blanc, = 2 sinon
+    
 
     private int modePartie; // 0 = partie sans temps ; 1 = temps partie limitée; 2 = temps tour limités
     private boolean netPartie;
+    // ajout SD
+    private boolean endOfTurn; // pour signaler la fin d'un tour (mode réseau)
+    private Case caseSrc; // pour conserver quel coup vient d'être joueur -> envoi par réseau
+    private Case caseDest; // pour conserver quel coup vient d'être joueur -> envoi par réseau
 
+    // ajout SD : pour plus de lisibilité avec les modes -> changer les valeurs en dur dans le code
+    final static int MODE_NOTIMER = 1;
+    final static int MODE_TIMERPARTY = 2;
+    final static int MODE_TIMERTURN = 3;
+
+    // ajout SD : pour gérer la partie avec chrono limite pour chaque joueur
+    private long chronoJoueurBlanc; // temps total alloué en ms au joueur 1 (=blanc) (mode TIMERPARTY)
+    private long chronoJoueurNoir; // temps total alloué en ms au joueur 2 (=noir) (mode TIMERPARTY)
+    
     private boolean echecBlanc;
     private boolean echecNoir;
 
     private boolean partieFinie;
 
     private ArrayList<String> historique;
+
 
     Partie(Joueur joueurBlanc, Joueur joueurNoir, boolean tourBlanc, ArrayList<String> historique, int choixJoueurBlanc,
            int choixJoueurNoir, Board board, ArrayList<Piece> cimetiereBlanc, ArrayList<Piece> cimetiereNoir)
@@ -53,6 +70,10 @@ class Partie
         System.out.println(piecesNoiresPlateau);
 
         this.tourBlanc = tourBlanc;
+
+	// ajout SD
+	if (tourBlanc) idCurrentPlayer = 1;
+	else idCurrentPlayer = 2;
 
         // choix du mode de la partie
         this.modePartie = 1;
@@ -92,12 +113,21 @@ class Partie
         // On créé le plateau
         board = new Board(this);
         tourBlanc = true;
+	// ajout SD
+	idCurrentPlayer = 1;
 
         // choix du mode de la partie
         this.modePartie = modePartie;
 
+	// ajout SD : init chrono : par défaut 15 minutes -> à changer pour le mettre en construction
+	if (modePartie == MODE_TIMERPARTY) {
+            chronoJoueurBlanc = 900000;
+            chronoJoueurNoir = 90000;
+	}
+	
         // pour la partie en réseau
         this.netPartie = netPartie;
+	this.endOfTurn = false;
 
         // Le roi est protégé en début de partie, il n'y a donc pas d'échec
         echecBlanc = false;
@@ -107,9 +137,11 @@ class Partie
 
         historique = new ArrayList<>();
     }
+
     // todo
     synchronized void tourLimite()
     {
+	// ajout SD : mettre tm en attribut sinon inaccessible par d'autres méthodes
         Timer tm = new Timer();
         TimerTask tt = new TimerTask() {
             @Override
@@ -124,12 +156,14 @@ class Partie
     // todo
     synchronized void tempsLimite()
     {
-
+	// utilité de cette méthode ??
     }
 
     // todo
     private synchronized void finDeJeuTemps()
     {
+	// ajout SD : pas besoin de tout ça : juste mettre partieFinie à true.
+	
         if (tourBlanc)
         {
            // finir la partie en défaveur des blancs
@@ -140,6 +174,47 @@ class Partie
         }
     }
 
+    // ajout SD : après un coup joué, qq soit le mode -> modifier le controller
+    // pour appeler cette méthode
+    synchronized void coupFait(Case caseSrc, Case caseDest) {
+
+	/* TO DO:
+	   - mettre à jour caseSrc et caseDest,
+	   - si mode temps par tour : annuler le timer tm
+	   - sinon si mode temps partie : 
+	      - cf. rq ci-dessous
+	      - si chrono joueur courant <=0 partieFinie = true
+
+	      Rq sur les chronos : soit la Vue du chrono se base sur chronoJoueurBlanc/Noir pour faire son
+	      affichage, soit elle se base sur un autre attribut. Dans le premier cas, on peut avoir un Timer (swing)
+	      qui a accès à chronoJoueurBlanc/Noir et qui le décrémente de 1000 toutes les secondes avant de faire
+	      un repaint() sur l'emplacement visuel du chrono. Dans le deuxième cas, le Timer swing décremente un 
+	      autre attribut et quand le coup est joué, le chrono s'arrête et on prend sa valeur pour la retrancher
+	      de chronoJoueurBlanc/Noir.
+	 */
+    }
+
+    // ajout SD : à la fin du tour courant : débloquer le thread courant pour qu'il
+    // envoi à l'autre quel coup a été joué
+    synchronized void finTour() {
+
+	endOfTurn = true;
+	notifyAll();
+    }
+    
+    // ajout SD : attente fin de tour pour le thread du joueur courant et partie réseau
+    // uniquement
+    public synchronized void waitFinTour() {
+
+        while (!endOfTurn) {
+            try {
+                wait();
+            }
+            catch (InterruptedException e) {}
+        }
+        endOfTurn = false;
+    }
+    
     /**
      * historiqueCoups
      * met a jours l'arrayList de coups jouées a chaque deplacement
@@ -187,7 +262,6 @@ class Partie
             coup+='?';
 
         historique.add(coup);
-        System.out.println(historique);
     }
 
     /**
@@ -233,6 +307,7 @@ class Partie
      */
     synchronized boolean save()
     {
+        bdd.start();
         int i, j;
 
         saveHistorique();
@@ -256,7 +331,7 @@ class Partie
                 "WHERE HISTORIQUE.joueurBlancPartie = " + joueurBlanc.getId() +
                 " AND HISTORIQUE.joueurNoirPartie = " + joueurNoir.getId() + ";";
 
-        bdd.start();
+
         ArrayList<ArrayList<String>> resultat = bdd.ask(requeteIdhistorique);
         ArrayList<String> resultat2 = resultat.get(0);
         int idHistorique = Integer.parseInt(resultat2.get(0));
@@ -305,21 +380,19 @@ class Partie
         return true;
     }
 
-    /**
-     *
-     */
     synchronized void saveHistorique()
     {
-        bdd.start();
         String coupsJoues = "";
         // sauvegarde de l'historique des coups joués dans la base de donnée
-        for (String aHistorique : this.historique)
-            coupsJoues += aHistorique + "-";
+        for(int i=0; i<this.historique.size(); i++)
+        {
+            coupsJoues += this.historique.get(i) + "-";
+        }
 
         String requeteHistorique = "INSERT INTO HISTORIQUE VALUES (null, " + joueurBlanc.getId() + ", "
-                + joueurNoir.getId() + ", '" + coupsJoues + "', NOW());";
-        bdd.edit(requeteHistorique);
-        bdd.stop();
+                + joueurNoir.getId() + ", '" + coupsJoues + "');";
+        bdd.edit(requeteHistorique);  // todo: mon probleme c'etait que cette ligne était a la base tout en bas ce qui fait
+        // (todo) que la requete n'était pas encore dans la BDD quand on faisait le select
     }
     
     
@@ -482,32 +555,6 @@ class Partie
             board.getPlateau()[rowArrivee][columnArrivee].setPiece(pieceMangee);
             pieceMangee.setEmplacementPiece(board.getPlateau()[rowArrivee][columnArrivee]);
         }
-
-        // Si un roque a eu lieu
-        int diff = Math.abs(Character.getNumericValue(dernierCoup.charAt(2)) - Character.getNumericValue(dernierCoup.charAt(4)));
-
-        if(pieceBougee instanceof Roi)
-        {
-            if(diff == 3)
-            {
-                Piece tourGrandRoque = board.getPlateau()[rowArrivee][columnArrivee+1].getPiece();
-                tourGrandRoque.setEmplacementPiece(board.getPlateau()[rowArrivee][columnArrivee-1]);
-                board.getPlateau()[rowArrivee][columnArrivee+1].setPiece(null);
-                board.getPlateau()[rowArrivee][columnArrivee-1].setPiece(tourGrandRoque);
-                ((Roi) pieceBougee).setGrandRoque(true);
-                ((Roi) pieceBougee).setPetitRoque(true);
-            }
-            if(diff == 2)
-            {
-                Piece tourPetitRoque = board.getPlateau()[rowArrivee][columnArrivee-1].getPiece();
-                tourPetitRoque.setEmplacementPiece(board.getPlateau()[rowArrivee][columnArrivee+1]);
-                board.getPlateau()[rowArrivee][columnArrivee-1].setPiece(null);
-                board.getPlateau()[rowArrivee][columnArrivee+1].setPiece(tourPetitRoque);
-                ((Roi) pieceBougee).setGrandRoque(true);
-                ((Roi) pieceBougee).setPetitRoque(true);
-            }
-        }
-
         if(tabCoupDecoupe.length  == 7 || tabCoupDecoupe.length == 10)
         {
             pieceBougee.emplacementPiece.setPiece(null);
@@ -521,17 +568,11 @@ class Partie
             }
             else
             {
-                if(pieceBougee instanceof Roi && diff == 3)
-                {
-
-                }
                 piecesNoiresPlateau.remove(piecesNoiresPlateau.size()-1);
                 piecesNoiresPlateau.add(pieceBougee.emplacementPiece.getPiece());
                 cimetiereNoir.remove(cimetiereNoir.size()-1);
             }
         }
-
-
         tourBlanc = !tourBlanc;
         historique.remove(historique.size()-1);
         board.majCasesAtteignable();
@@ -614,6 +655,9 @@ class Partie
     }
     synchronized void setTourBlanc(boolean tourBlanc) {
         this.tourBlanc = tourBlanc;
+	// ajout SD
+	if (tourBlanc) idCurrentPlayer = 1;
+	else idCurrentPlayer = 2;
     }
     synchronized ArrayList<Piece> getCimetiereBlanc() {
         return cimetiereBlanc;
