@@ -556,7 +556,7 @@ class Partie
         String dernierCoup = historique.get(historique.size()-1);
         String[] tabCoupDecoupe = dernierCoup.split("");
         boolean isBlanc = tabCoupDecoupe[1].equals("b");
-        
+
         int columnDepart = Integer.parseInt(tabCoupDecoupe[2]);
         int rowDepart = Integer.parseInt(tabCoupDecoupe[3]);
         int columnArrivee = Integer.parseInt(tabCoupDecoupe[4]);
@@ -591,14 +591,22 @@ class Partie
         // Si un roque a eu lieu
         int diff = Math.abs(Character.getNumericValue(dernierCoup.charAt(2)) - Character.getNumericValue(dernierCoup.charAt(4)));
         boolean deplacementsRoi = false;
-        for(String aHistorique : historique)
-            if (aHistorique.split("")[0].equals("r")) {
-                deplacementsRoi = true;
-                break;
-            }
+
 
         if(pieceBougee instanceof Roi)
         {
+            for(int i=0; i<historique.size()-1; i++)   // historique.size()-1  --> pour ne pas prendre en compte la ligne que l'on veut annuler
+                if (historique.get(i).split("")[0].equals("r"))
+                {
+                    deplacementsRoi = true;
+                    break;
+                }
+
+            if(!deplacementsRoi)
+            {
+                ((Roi)pieceBougee).setPetitRoque(true);
+                ((Roi)pieceBougee).setGrandRoque(true);
+            }
             if(diff == 3)
             {
                 Piece tourGrandRoque = board.getPlateau()[rowArrivee][columnArrivee+1].getPiece();
@@ -610,10 +618,10 @@ class Partie
             }
             if(diff == 2)
             {
-                Piece tourPetitRoque = board.getPlateau()[rowArrivee][columnArrivee-1].getPiece();
-                tourPetitRoque.setEmplacementPiece(board.getPlateau()[rowArrivee][columnArrivee+1]);
-                board.getPlateau()[rowArrivee][columnArrivee-1].setPiece(null);
-                board.getPlateau()[rowArrivee][columnArrivee+1].setPiece(tourPetitRoque);
+                Piece tourPetitRoque = board.getPlateau()[rowArrivee][columnArrivee - 1].getPiece();
+                tourPetitRoque.setEmplacementPiece(board.getPlateau()[rowArrivee][columnArrivee + 1]);
+                board.getPlateau()[rowArrivee][columnArrivee - 1].setPiece(null);
+                board.getPlateau()[rowArrivee][columnArrivee + 1].setPiece(tourPetitRoque);
                 ((Roi) pieceBougee).setPetitRoque(true);
                 ((Roi) pieceBougee).setGrandRoque(true);
             }
