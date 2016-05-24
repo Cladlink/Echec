@@ -588,25 +588,67 @@ class Partie
             pieceMangee.setEmplacementPiece(board.getPlateau()[rowArrivee][columnArrivee]);
         }
 
+        // Si c'est une tour qui a été déplacée on autorise de nouveau le roque si c'est son premier déplacement
+        boolean deplacementsTour = false;
+        if(pieceBougee instanceof Tour)
+        {
+            if(isBlanc)
+            {
+                for (int i = 0; i < historique.size() - 1; i++)   // historique.size()-1  --> pour ne pas prendre en compte la ligne que l'on veut annuler
+                    if (historique.get(i).split("")[0].equals("t") && historique.get(i).split("")[1].equals("b")) {
+                        deplacementsTour = true;
+                        break;
+                    }
+
+                if (!deplacementsTour) {
+                    ((Roi)board.getRoiBlanc()).setPetitRoque(true);
+                    ((Roi)board.getRoiBlanc()).setGrandRoque(true);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < historique.size() - 1; i++)   // historique.size()-1  --> pour ne pas prendre en compte la ligne que l'on veut annuler
+                    if (historique.get(i).split("")[0].equals("t") && historique.get(i).split("")[1].equals("n")) {
+                        deplacementsTour = true;
+                        break;
+                    }
+
+                if (!deplacementsTour) {
+                    ((Roi)board.getRoiNoir()).setPetitRoque(true);
+                    ((Roi)board.getRoiNoir()).setGrandRoque(true);
+                }
+            }
+        }
+
+
         // Si un roque a eu lieu
         int diff = Math.abs(Character.getNumericValue(dernierCoup.charAt(2)) - Character.getNumericValue(dernierCoup.charAt(4)));
         boolean deplacementsRoi = false;
-
-
         if(pieceBougee instanceof Roi)
         {
-            for(int i=0; i<historique.size()-1; i++)   // historique.size()-1  --> pour ne pas prendre en compte la ligne que l'on veut annuler
-                if (historique.get(i).split("")[0].equals("r"))
-                {
-                    deplacementsRoi = true;
-                    break;
-                }
+            if(isBlanc)
+            {
+                for (int i = 0; i < historique.size() - 1; i++)   // historique.size()-1  --> pour ne pas prendre en compte la ligne que l'on veut annuler
+                    if (historique.get(i).split("")[0].equals("r") && historique.get(i).split("")[1].equals("b")) {
+                        deplacementsRoi = true;
+                        break;
+                    }
+            }
+            else
+            {
+                for (int i = 0; i < historique.size() - 1; i++)   // historique.size()-1  --> pour ne pas prendre en compte la ligne que l'on veut annuler
+                    if (historique.get(i).split("")[0].equals("r") && historique.get(i).split("")[1].equals("n")) {
+                        deplacementsRoi = true;
+                        break;
+                    }
+            }
 
             if(!deplacementsRoi)
             {
                 ((Roi)pieceBougee).setPetitRoque(true);
                 ((Roi)pieceBougee).setGrandRoque(true);
             }
+
             if(diff == 3)
             {
                 Piece tourGrandRoque = board.getPlateau()[rowArrivee][columnArrivee+1].getPiece();
