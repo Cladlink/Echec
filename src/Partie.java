@@ -47,6 +47,11 @@ class Partie
 
     private ArrayList<String> historique;
 
+    //variable pour mode de partie
+    private boolean isDateBlancDepart, isDateNoirDepart;
+    private Date dateBlancDepart, dateNoirDepart;
+
+
 
     Partie(Joueur joueurBlanc, Joueur joueurNoir, boolean tourBlanc, ArrayList<String> historique, int choixJoueurBlanc,
            int choixJoueurNoir, Board board, ArrayList<Piece> cimetiereBlanc, ArrayList<Piece> cimetiereNoir)
@@ -156,7 +161,32 @@ class Partie
     // todo
     synchronized void tempsLimite()
     {
-	// utilité de cette méthode ??
+        Calendar calendar = new GregorianCalendar();
+        Date tempsActuel = calendar.getTime();
+        //tour blanc
+        if (!isDateBlancDepart && tourBlanc){
+            calendar.add(Calendar.MINUTE,15);
+            tempsActuel = calendar.getTime();
+            dateBlancDepart = tempsActuel;
+        }
+        else{
+            if (tempsActuel.compareTo(dateBlancDepart)<0){
+                finDeJeuTemps();
+            }
+        }
+
+        //tour noir
+        if (!isDateNoirDepart && !tourBlanc){
+            calendar.add(Calendar.MINUTE,15);
+            tempsActuel = calendar.getTime();
+            dateBlancDepart = tempsActuel;
+            dateNoirDepart = tempsActuel;
+        }
+        else{
+            if (tempsActuel.compareTo(dateNoirDepart)<0){
+                finDeJeuTemps();
+            }
+        }
     }
 
     // todo
@@ -167,10 +197,12 @@ class Partie
         if (tourBlanc)
         {
            // finir la partie en défaveur des blancs
+            System.out.println("blanc gagne");
         }
         else
         {
             // finir la partie en défaveut des noirs
+            System.out.println("noir gagne");
         }
     }
 
@@ -585,7 +617,6 @@ class Partie
                 ((Roi) pieceBougee).setPetitRoque(true);
                 ((Roi) pieceBougee).setGrandRoque(true);
             }
-            else if()
         }
 
         if(tabCoupDecoupe.length  == 7 || tabCoupDecoupe.length == 10)
