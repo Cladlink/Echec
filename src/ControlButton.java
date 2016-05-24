@@ -126,7 +126,7 @@ class ControlButton extends MouseAdapter
                     accueil.getPartie().getBoard().deplacer(accueil.getCaseMemoire(), plateau[row][column], this.vue);
                     accueil.setCasesAtteignables(null);
 		    accueil.getPartie().setTourBlanc(!accueil.getPartie().isTourBlanc());// changer joueur courant.
-
+            accueil.getPartie().getBoard().majCasesAtteignable();
 		    /* ajout SD : 
 		       - arrêter chrono si besoin
 		       - appeler coupFait()
