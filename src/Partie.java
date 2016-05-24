@@ -555,6 +555,39 @@ class Partie
             board.getPlateau()[rowArrivee][columnArrivee].setPiece(pieceMangee);
             pieceMangee.setEmplacementPiece(board.getPlateau()[rowArrivee][columnArrivee]);
         }
+
+        // Si un roque a eu lieu
+        int diff = Math.abs(Character.getNumericValue(dernierCoup.charAt(2)) - Character.getNumericValue(dernierCoup.charAt(4)));
+        boolean deplacementsRoi = false;
+        for(String aHistorique : historique)
+            if (aHistorique.split("")[0].equals("r")) {
+                deplacementsRoi = true;
+                break;
+            }
+
+        if(pieceBougee instanceof Roi)
+        {
+            if(diff == 3)
+            {
+                Piece tourGrandRoque = board.getPlateau()[rowArrivee][columnArrivee+1].getPiece();
+                tourGrandRoque.setEmplacementPiece(board.getPlateau()[rowArrivee][columnArrivee-1]);
+                board.getPlateau()[rowArrivee][columnArrivee+1].setPiece(null);
+                board.getPlateau()[rowArrivee][columnArrivee-1].setPiece(tourGrandRoque);
+                ((Roi) pieceBougee).setGrandRoque(true);
+                ((Roi) pieceBougee).setPetitRoque(true);
+            }
+            if(diff == 2)
+            {
+                Piece tourPetitRoque = board.getPlateau()[rowArrivee][columnArrivee-1].getPiece();
+                tourPetitRoque.setEmplacementPiece(board.getPlateau()[rowArrivee][columnArrivee+1]);
+                board.getPlateau()[rowArrivee][columnArrivee-1].setPiece(null);
+                board.getPlateau()[rowArrivee][columnArrivee+1].setPiece(tourPetitRoque);
+                ((Roi) pieceBougee).setPetitRoque(true);
+                ((Roi) pieceBougee).setGrandRoque(true);
+            }
+            else if()
+        }
+
         if(tabCoupDecoupe.length  == 7 || tabCoupDecoupe.length == 10)
         {
             pieceBougee.emplacementPiece.setPiece(null);

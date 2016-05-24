@@ -108,4 +108,12 @@ class Roi extends Piece
 
         return gapRow <= 1 && gapCol <= 1;
     }
+
+    public void setGrandRoque(boolean grandRoque) {
+        this.grandRoque = grandRoque;
+    }
+
+    public void setPetitRoque(boolean petitRoque) {
+        this.petitRoque = petitRoque;
+    }
 }
