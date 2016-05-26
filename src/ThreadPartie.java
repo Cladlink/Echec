@@ -80,7 +80,6 @@ class ThreadPartie extends Thread
                        - sinon appeler control.updatePartie()
 
                     */
-
                 }
             // - si partieFinie == true -> stop = true
             }
