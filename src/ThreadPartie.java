@@ -36,7 +36,7 @@ class ThreadPartie extends Thread
     @Override
     public void run()
     {
-        boolean stop = false;
+       /* boolean stop = false;
         try
         {
 
@@ -60,7 +60,7 @@ class ThreadPartie extends Thread
                 if (id == partie.getIdCurrentPlayer())
                 {
 
-                    /* TO DO :
+                    *//* TO DO :
                       - début du tour (via controleur)
                       - attendre fin tour
                       - envoyer les infos
@@ -69,17 +69,17 @@ class ThreadPartie extends Thread
                       les 4 premiers servent aux déplacements (sauf roque)
                       typeroque = 0 si pas de roque, = 1 petit roque, = 2 grand roque
                       typepromo = 0 si pas de promo, = 1,2,... (type pièce) si promo
-                    */
+                    *//*
                 }
                 else
                 {
-                    /* TO DO :
+                    *//* TO DO :
                        - invalider la vue (via controleur)
                        - recevoir les infos
                        - si partiFinie == true : l'autre joueur à dépassé son temps de jeu (partie ou tour)  -> j'ai gagné
                        - sinon appeler control.updatePartie()
 
-                    */
+                    *//*
                 }
             // - si partieFinie == true -> stop = true
             }
@@ -88,18 +88,19 @@ class ThreadPartie extends Thread
         {
             e.printStackTrace();
         }
-
+*/
     }
 
-    private void initServer() throws IOException,ClassNotFoundException {
+    private void initServer() throws IOException,ClassNotFoundException
+    {
 	conn = new ServerSocket(port);
 	comm = conn.accept();
 	oos = new ObjectOutputStream(comm.getOutputStream());
 	oos.flush();
 	ois = new ObjectInputStream(comm.getInputStream());
 	// échanger les infos (pseudos, qui joue en premier, ...)
-        oos.writeObject(pseudo);
-        oos.writeInt(minskin);
+        /*oos.writeObject(pseudo);
+        oos.writeInt(minskin);*/
         // ...
         oos.flush();
         // envoi : mon pseudo, mon skin, mode partie, qui est blanc
@@ -108,7 +109,8 @@ class ThreadPartie extends Thread
         // mettre à jour partie
     }
 
-    private void initClient() throws IOException,ClassNotFoundException {
+    private void initClient() throws IOException,ClassNotFoundException
+    {
 	comm = new Socket(ipServer, port);
 	ois = new ObjectInputStream(comm.getInputStream());
 	oos = new ObjectOutputStream(comm.getOutputStream());

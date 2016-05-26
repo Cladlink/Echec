@@ -31,11 +31,6 @@ class Partie
     private Case caseSrc; // pour conserver quel coup vient d'être joueur -> envoi par réseau
     private Case caseDest; // pour conserver quel coup vient d'être joueur -> envoi par réseau
 
-    // ajout SD : pour plus de lisibilité avec les modes -> changer les valeurs en dur dans le code
-    private final static int MODE_NOTIMER = 1;
-    private final static int MODE_TIMERTURN = 2;
-    private final static int MODE_TIMERPARTY = 3;
-
     // ajout SD : pour gérer la partie avec chrono limite pour chaque joueur
     private long chronoJoueurBlanc; // temps total alloué en ms au joueur 1 (=blanc) (mode TIMERPARTY)
     private long chronoJoueurNoir; // temps total alloué en ms au joueur 2 (=noir) (mode TIMERPARTY)
@@ -43,16 +38,12 @@ class Partie
     private boolean echecBlanc;
     private boolean echecNoir;
 
-    private boolean partieFinie;
-
     private ArrayList<String> historique;
 
-    //variable pour mode de partie
-    private boolean isDateBlancDepart, isDateNoirDepart;
-    private Date dateBlancDepart, dateNoirDepart;
-    private Timer tmBlanc, tmNoir, tm;
-
-
+    private boolean partieFinie;    // ajout SD : pour plus de lisibilité avec les modes -> changer les valeurs en dur dans le code
+    final static int MODE_NOTIMER = 1;
+    final static int MODE_TIMERTURN = 2;
+    final static int MODE_TIMERPARTY = 3;
 
     Partie(Joueur joueurBlanc, Joueur joueurNoir, boolean tourBlanc, ArrayList<String> historique, int choixJoueurBlanc,
            int choixJoueurNoir, Board board, ArrayList<Piece> cimetiereBlanc, ArrayList<Piece> cimetiereNoir)
@@ -128,17 +119,12 @@ class Partie
         // choix du mode de la partie
         this.modePartie = modePartie;
 
+        // ajout SD : init chrono : par défaut 15 minutes -> à changer pour le mettre en construction
         if (modePartie == MODE_TIMERPARTY)
-            tourLimite();
-        else if(modePartie == MODE_TIMERTURN)
-            tempsLimite();
-
-	// ajout SD : init chrono : par défaut 15 minutes -> à changer pour le mettre en construction
-	if (modePartie == MODE_TIMERPARTY)
-    {
-            chronoJoueurBlanc = 900000;
-            chronoJoueurNoir = 90000;
-	}
+        {
+                chronoJoueurBlanc = 900000;
+                chronoJoueurNoir = 90000;
+        }
 	
         // pour la partie en réseau
         this.netPartie = netPartie;
@@ -151,91 +137,6 @@ class Partie
         partieFinie = false;
 
         historique = new ArrayList<>();
-    }
-
-    /**
-     *
-     */
-    synchronized void tourLimite()
-    {
-        // ajout SD : mettre tm en attribut sinon inaccessible par d'autres méthodes
-        TimerTask tt = new TimerTask()
-        {
-            @Override
-            public void run()
-            {
-                finDeJeuTemps();
-            }
-        };
-        if (isTourBlanc())
-        {
-            if (tmBlanc != null)
-                tmBlanc.cancel();
-            tmBlanc = new Timer();
-            tmBlanc.schedule(tt, 30000);
-        }
-        else
-        {
-            if (tmNoir != null)
-                tmNoir.cancel();
-            tmNoir = new Timer();
-            tmNoir.schedule(tt, 30000);
-        }
-    }
-
-    /**
-     *
-     */
-    synchronized void tempsLimite()
-    {
-        Calendar calendar = Calendar.getInstance(); // creates calendar
-        calendar.setTime(new Date()); // sets calendar time/date
-
-        Date tempsActuel = calendar.getTime();;
-        //tour blanc
-        if ( tourBlanc )
-        {
-            if (!isDateBlancDepart )
-            {
-                calendar.add(Calendar.MINUTE,15);
-                tempsActuel = calendar.getTime();
-                dateBlancDepart = tempsActuel;
-                isDateBlancDepart = true;
-            }
-            else if (tempsActuel.after(dateBlancDepart))
-                finDeJeuTemps();
-        }
-        //tour noir
-        else
-        {
-            if (!isDateNoirDepart)
-            {
-                calendar.add(Calendar.MINUTE,15);
-                tempsActuel = calendar.getTime();
-                dateNoirDepart = tempsActuel;
-                isDateNoirDepart = true;
-            }
-            if (tempsActuel.after(dateNoirDepart))
-                finDeJeuTemps();
-        }
-        //verifie chaque seconde le temps
-        TimerTask tt = new TimerTask()
-        {
-            @Override
-            public void run() {
-                tempsLimite();
-            }
-        };
-        tm = new Timer();
-        tm.schedule(tt, 1000);
-    }
-
-    /**
-     *
-     */
-    private synchronized void finDeJeuTemps()
-    {
-        partieFinie = true;
     }
 
     // ajout SD : après un coup joué, qq soit le mode -> modifier le controller
@@ -267,10 +168,10 @@ class Partie
 
     // ajout SD : à la fin du tour courant : débloquer le thread courant pour qu'il
     // envoi à l'autre quel coup a été joué
-    synchronized void finTour() {
-
-	endOfTurn = true;
-	notifyAll();
+    synchronized void finTour()
+    {
+        endOfTurn = true;
+        notifyAll();
     }
     
     // ajout SD : attente fin de tour pour le thread du joueur courant et partie réseau
@@ -363,7 +264,6 @@ class Partie
             return 'r';
     }
 
-
     /**
      *
      *
@@ -378,7 +278,7 @@ class Partie
         bdd.stop();
     }
     /**
-     * save todo
+     * save
      * envoie l'insert en base de donnée afin de sauvegarder l'état du board
      *
      */
@@ -430,6 +330,7 @@ class Partie
             else if(cimetiereBlanc.get(i) instanceof Reine)
                 rb++;
         }
+
         for(i = 0; i<cimetiereNoir.size(); i++)
         {
             if(cimetiereNoir.get(i) instanceof Pion)
@@ -465,13 +366,11 @@ class Partie
             coupsJoues += aHistorique + "-";
 
         String requeteHistorique = "INSERT INTO HISTORIQUE VALUES (null, " + joueurBlanc.getId() + ", "
-                + joueurNoir.getId() + ", '" + coupsJoues + "');";
+                + joueurNoir.getId() + ", '" + coupsJoues + "', now());";
         System.out.println(requeteHistorique);
         if (requeteHistorique.length() != 0)
             bdd.edit(requeteHistorique);
     }
-    
-    
 
     /**
      * attenteAction
@@ -967,61 +866,5 @@ class Partie
 
     public void setHistorique(ArrayList<String> historique) {
         this.historique = historique;
-    }
-
-    public boolean isDateBlancDepart() {
-        return isDateBlancDepart;
-    }
-
-    public void setDateBlancDepart(boolean dateBlancDepart) {
-        isDateBlancDepart = dateBlancDepart;
-    }
-
-    public boolean isDateNoirDepart() {
-        return isDateNoirDepart;
-    }
-
-    public void setDateNoirDepart(boolean dateNoirDepart) {
-        isDateNoirDepart = dateNoirDepart;
-    }
-
-    public Date getDateBlancDepart() {
-        return dateBlancDepart;
-    }
-
-    public void setDateBlancDepart(Date dateBlancDepart) {
-        this.dateBlancDepart = dateBlancDepart;
-    }
-
-    public Date getDateNoirDepart() {
-        return dateNoirDepart;
-    }
-
-    public void setDateNoirDepart(Date dateNoirDepart) {
-        this.dateNoirDepart = dateNoirDepart;
-    }
-
-    public Timer getTmBlanc() {
-        return tmBlanc;
-    }
-
-    public void setTmBlanc(Timer tmBlanc) {
-        this.tmBlanc = tmBlanc;
-    }
-
-    public Timer getTmNoir() {
-        return tmNoir;
-    }
-
-    public void setTmNoir(Timer tmNoir) {
-        this.tmNoir = tmNoir;
-    }
-
-    public Timer getTm() {
-        return tm;
-    }
-
-    public void setTm(Timer tm) {
-        this.tm = tm;
     }
 }

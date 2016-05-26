@@ -14,9 +14,9 @@ public class ControlGroup
     {
         this.accueil = accueil;
         vue = new Vue(accueil);
-        controlButtonMenu = new ControlButtonMenu(accueil, vue);
-        controlMenu = new ControlMenu(accueil, vue);
         controlButton = new ControlButton(accueil, vue);
+        controlButtonMenu = new ControlButtonMenu(accueil, vue, controlButton);
+        controlMenu = new ControlMenu(accueil, vue);
         vue.display();
     }
 

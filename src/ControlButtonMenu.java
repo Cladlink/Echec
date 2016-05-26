@@ -53,12 +53,12 @@ class ControlButtonMenu implements ActionListener
         {
             vue.messagePop("Entrez l'adresse IP de l'adversaire :");
 
-	    // ajout SD : à modifier, notamment sur les pseudos puisque à priori le joueur client
-	    // ne connait pas forcément le pseudo de l'autre.
+            // ajout SD : à modifier, notamment sur les pseudos puisque à priori le joueur client
+            // ne connait pas forcément le pseudo de l'autre.
 
-	    accueil.rejoindrePartieReseau(pseudo, skin); //modePartie);
-	    // ajout SD : voir pour le choix de qui est blanc/noir
-	    // + skins
+            //accueil.rejoindrePartieReseau(pseudo, skin); //modePartie);
+            // ajout SD : voir pour le choix de qui est blanc/noir
+            // + skins
             vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
             vue.creerWidgetPartie();
             accueil.getPartie().getBoard().majCasesAtteignable();
@@ -104,18 +104,22 @@ class ControlButtonMenu implements ActionListener
             if(pseudoB.equals(pseudoN))
             {
                 vue.jOptionMessage("Vous ne pouvez pas jouer contre vous-même !");
-                return;
             }
-            accueil.lancementPartie(pseudoB, pseudoN, choixJoueurB, choixJOueurN, modePartie, netPartie);
-            vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
-            vue.creerWidgetPartie();
-            accueil.getPartie().getBoard().majCasesAtteignable();
-            vue.setControlButtonMenu(new ControlButton(accueil, vue));
-
-            vue.initMenuPartie();
-            vue.setControlMenu(new ControlMenu(accueil, vue));
-            vue.setVisible(true);
-
+            else if (!netPartie)
+            {
+                accueil.lancementPartie(pseudoB, pseudoN, choixJoueurB, choixJOueurN, modePartie, netPartie);
+                vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
+                vue.creerWidgetPartie();
+                accueil.getPartie().getBoard().majCasesAtteignable();
+                vue.setControlButtonMenu(new ControlButton(accueil, vue));
+                vue.initMenuPartie();
+                vue.setControlMenu(new ControlMenu(accueil, vue));
+                vue.setVisible(true);
+            }
+            else
+            {
+                accueil.lancementPartieReseau(pseudoB, choixJoueurB, modePartie);
+            }
 	    // ajout SD 
 	    /* TO DO:
 	       si partie en réseau :

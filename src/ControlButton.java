@@ -1,5 +1,8 @@
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimerTask;
 import javax.swing.Timer;
 
 /**
@@ -7,9 +10,13 @@ import javax.swing.Timer;
  */
 class ControlButton extends MouseAdapter
 {
-    // ajout SD
-    Timer chronoBlanc;
-    Timer chronoNoir;
+    //variable pour mode de partie
+    private boolean isDateBlancDepart, isDateNoirDepart;
+    private Date dateBlancDepart, dateNoirDepart;
+    private java.util.Timer tmBlanc, tmNoir, tm;
+    private Timer chronoBlanc;
+    private Timer chronoNoir;
+    private String joueurBlanc, joueurNoir;
 
     private Accueil accueil;
     private Vue vue;
@@ -124,6 +131,101 @@ class ControlButton extends MouseAdapter
                 secondeNoir = 30;
             chronoNoir.start();
         }
+    }
+
+    /**
+     *
+     */
+    synchronized void tourLimite()
+    {
+        // ajout SD : mettre tm en attribut sinon inaccessible par d'autres méthodes
+        TimerTask tt = new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                finDeJeuTemps();
+            }
+        };
+        if (accueil.getPartie().isTourBlanc())
+        {
+            if (tmBlanc != null)
+                tmBlanc.cancel();
+            tmBlanc = new java.util.Timer();
+            tmBlanc.schedule(tt, 30000);
+        }
+        else
+        {
+            if (tmNoir != null)
+                tmNoir.cancel();
+            tmNoir = new java.util.Timer();
+            tmNoir.schedule(tt, 30000);
+        }
+    }
+
+    /**
+     *
+     */
+    synchronized void tempsLimite()
+    {
+        Calendar calendar = Calendar.getInstance(); // creates calendar
+        calendar.setTime(new Date()); // sets calendar time/date
+
+        Date tempsActuel = calendar.getTime();;
+        //tour blanc
+        if ( accueil.getPartie().isTourBlanc())
+        {
+            if (!isDateBlancDepart )
+            {
+                calendar.add(Calendar.MINUTE,15);
+                tempsActuel = calendar.getTime();
+                dateBlancDepart = tempsActuel;
+                isDateBlancDepart = true;
+            }
+            else if (tempsActuel.after(dateBlancDepart))
+                finDeJeuTemps();
+        }
+        //tour noir
+        else
+        {
+            if (!isDateNoirDepart)
+            {
+                calendar.add(Calendar.MINUTE,15);
+                tempsActuel = calendar.getTime();
+                dateNoirDepart = tempsActuel;
+                isDateNoirDepart = true;
+            }
+            if (tempsActuel.after(dateNoirDepart))
+                finDeJeuTemps();
+        }
+        //verifie chaque seconde le temps
+        TimerTask tt = new TimerTask()
+        {
+            @Override
+            public void run() {
+                tempsLimite();
+            }
+        };
+        tm = new java.util.Timer();
+        tm.schedule(tt, 1000);
+    }
+
+    /**
+     *
+     */
+    private synchronized void finDeJeuTemps()
+    {
+        accueil.getPartie().setPartieFinie(true);
+        if (accueil.getPartie().getModePartie() == 2
+                || accueil.getPartie().getModePartie() == 3)
+            if (accueil.getPartie().isPartieFinie())
+            {
+                vue.jOptionMessage("vous avez perdu !");
+                //accueil.getPartie().saveHistorique(); todo
+                Partie.deleteSave(joueurBlanc, joueurNoir);
+                vue.setJMenuBar(null);
+                vue.afficherMenu();
+            }
     }
 
     // ajout SD : valide ou invalide (selon state) les élément de la vue qui ne doivent plus
@@ -263,26 +365,15 @@ class ControlButton extends MouseAdapter
 
                     //kevin : appele l'algo pour savoir si partie fini ou pas
                     if (accueil.getPartie().getModePartie() == 2)
-                        accueil.getPartie().tourLimite();
+                        tourLimite();
                     else if (accueil.getPartie().getModePartie() == 3)
-                        accueil.getPartie().tempsLimite();
+                        tempsLimite();
 
                     //change de joueur donc chrono inversé
                     stopChrono();
                 }
             }
         }
-        if (accueil.getPartie().getModePartie() == 2
-                || accueil.getPartie().getModePartie() == 3)
-            if (accueil.getPartie().isPartieFinie())
-            {
-                accueil.getPartie().getTm().cancel();
-                vue.jOptionMessage("vous avez perdu !");
-                accueil.getPartie().saveHistorique();
-                Partie.deleteSave(joueurBlanc, joueurNoir);
-                vue.setJMenuBar(null);
-                vue.afficherMenu();
-            }
     }
 
     /**
@@ -305,18 +396,5 @@ class ControlButton extends MouseAdapter
     public void mouseExited(MouseEvent e)
     {
 
-    }
-
-    public int getMinuteBlanc(){
-        return minuteBlanc;
-    }
-    public int getSecondeBlanc(){
-        return secondeBlanc;
-    }
-    public int getMinuteNoir(){
-        return minuteNoir;
-    }
-    public int getSecondeNoir(){
-        return secondeNoir;
     }
 }
