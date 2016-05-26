@@ -10,6 +10,11 @@ class ControlButtonMenu implements ActionListener
     private Vue vue;
     private Accueil accueil;
 
+    /**
+     *
+     * @param accueil ()
+     * @param vue ()
+     */
     ControlButtonMenu(Accueil accueil, Vue vue)
     {
         this.accueil = accueil;
@@ -17,6 +22,10 @@ class ControlButtonMenu implements ActionListener
         vue.setButtonControl(this);
     }
 
+    /**
+     *
+     * @param e ()
+     */
     @Override
     public void actionPerformed(ActionEvent e)
     {
