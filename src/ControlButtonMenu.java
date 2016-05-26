@@ -7,6 +7,7 @@ import java.util.Vector;
  */
 class ControlButtonMenu implements ActionListener
 {
+    private ControlButton controlButton;
     private Vue vue;
     private Accueil accueil;
 
@@ -15,11 +16,12 @@ class ControlButtonMenu implements ActionListener
      * @param accueil ()
      * @param vue ()
      */
-    ControlButtonMenu(Accueil accueil, Vue vue)
+    ControlButtonMenu(Accueil accueil, Vue vue, ControlButton controlButton)
     {
         this.accueil = accueil;
         this.vue = vue;
         vue.setButtonControl(this);
+        this.controlButton = controlButton;
     }
 
     /**
@@ -115,6 +117,7 @@ class ControlButtonMenu implements ActionListener
                 vue.initMenuPartie();
                 vue.setControlMenu(new ControlMenu(accueil, vue));
                 vue.setVisible(true);
+                MusiqueChess.stopMedievalTheme();
             }
             else
             {

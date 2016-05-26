@@ -122,7 +122,7 @@ class Partie
         // ajout SD : init chrono : par défaut 15 minutes -> à changer pour le mettre en construction
         if (modePartie == MODE_TIMERPARTY)
         {
-                chronoJoueurBlanc = 900000;
+                chronoJoueurBlanc = 90000;
                 chronoJoueurNoir = 90000;
         }
 	
@@ -359,6 +359,7 @@ class Partie
 
     synchronized void saveHistorique()
     {
+        bdd.start();
         String coupsJoues = "";
         // sauvegarde de l'historique des coups joués dans la base de donnée
         for (String aHistorique : this.historique)
@@ -369,6 +370,7 @@ class Partie
         System.out.println(requeteHistorique);
         if (requeteHistorique.length() != 0)
             bdd.edit(requeteHistorique);
+        bdd.stop();
     }
 
     /**
@@ -729,19 +731,19 @@ class Partie
     synchronized int getModePartie() {
         return modePartie;
     }
-    public int getChoixJoueurBlanc() {
+    int getChoixJoueurBlanc() {
         return choixJoueurBlanc;
     }
-    public int getChoixJoueurNoir() {
+    int getChoixJoueurNoir() {
         return choixJoueurNoir;
     }
-    public ArrayList<String> getHistorique() {
+    ArrayList<String> getHistorique() {
         return historique;
     }
-    public boolean isPartieFinie() {
+    boolean isPartieFinie() {
         return partieFinie;
     }
-    public void setPartieFinie(boolean partieFinie) {
+    void setPartieFinie(boolean partieFinie) {
         this.partieFinie = partieFinie;
     }
     public void setHistorique(ArrayList<String> historique) {

@@ -138,6 +138,14 @@ class ControlButton extends MouseAdapter
      */
     synchronized void tourLimite()
     {
+        java.util.Timer timer;
+        if (accueil.getPartie().isTourBlanc())
+        {
+            timer = tmBlanc;
+        }
+        else
+            timer = tmNoir;
+
         // ajout SD : mettre tm en attribut sinon inaccessible par d'autres méthodes
         TimerTask tt = new TimerTask()
         {
@@ -147,20 +155,10 @@ class ControlButton extends MouseAdapter
                 finDeJeuTemps();
             }
         };
-        if (accueil.getPartie().isTourBlanc())
-        {
-            if (tmBlanc != null)
-                tmBlanc.cancel();
-            tmBlanc = new java.util.Timer();
-            tmBlanc.schedule(tt, 30000);
-        }
-        else
-        {
-            if (tmNoir != null)
-                tmNoir.cancel();
-            tmNoir = new java.util.Timer();
-            tmNoir.schedule(tt, 30000);
-        }
+            if (timer != null)
+                timer.cancel();
+            timer = new java.util.Timer();
+            timer.schedule(tt, 30000);
     }
 
     /**
@@ -221,7 +219,7 @@ class ControlButton extends MouseAdapter
             if (accueil.getPartie().isPartieFinie())
             {
                 vue.jOptionMessage("vous avez perdu !");
-                //accueil.getPartie().saveHistorique(); todo
+                accueil.getPartie().saveHistorique();
                 Partie.deleteSave(joueurBlanc, joueurNoir);
                 vue.setJMenuBar(null);
                 vue.afficherMenu();
@@ -280,8 +278,8 @@ class ControlButton extends MouseAdapter
         int row = (e.getY()-20)/80;
         int column = (e.getX()-360)/80;
         Case[][] plateau = accueil.getPartie().getBoard().getPlateau();
-        String joueurBlanc  = accueil.getPartie().getJoueurBlanc().getPseudo();
-        String joueurNoir = accueil.getPartie().getJoueurNoir().getPseudo();
+        joueurBlanc  = accueil.getPartie().getJoueurBlanc().getPseudo();
+        joueurNoir = accueil.getPartie().getJoueurNoir().getPseudo();
         if (e.getSource().equals(vue.getVueEchiquier()))
         {
             if( row >= 0
