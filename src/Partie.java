@@ -191,31 +191,33 @@ class Partie
         Calendar calendar = Calendar.getInstance(); // creates calendar
         calendar.setTime(new Date()); // sets calendar time/date
 
-        Date tempsActuel = calendar.getTime();
+        Date tempsActuel = calendar.getTime();;
         //tour blanc
-        if (!isDateBlancDepart && tourBlanc){
-            calendar.add(Calendar.SECOND,5);//todo : a mettre minute, 15
-            tempsActuel = calendar.getTime();
-            dateBlancDepart = tempsActuel;
-            isDateBlancDepart = true;
-        }
-        else if (isDateBlancDepart && tourBlanc)
-            if (tempsActuel.after(dateBlancDepart))
-                finDeJeuTemps();
-
-        //tour noir
-        else if (!isDateNoirDepart && !tourBlanc){
-               calendar.add(Calendar.MINUTE,15);
-            tempsActuel = calendar.getTime();
-            dateNoirDepart = tempsActuel;
-            isDateNoirDepart = true;
-        }
-        else
-        if (tempsActuel.after(dateNoirDepart))
+        if ( tourBlanc )
         {
-            finDeJeuTemps();
+            if (!isDateBlancDepart )
+            {
+                calendar.add(Calendar.MINUTE,15);
+                tempsActuel = calendar.getTime();
+                dateBlancDepart = tempsActuel;
+                isDateBlancDepart = true;
+            }
+            else if (tempsActuel.after(dateBlancDepart))
+                finDeJeuTemps();
         }
-        System.out.println(tempsActuel);
+        //tour noir
+        else
+        {
+            if (!isDateNoirDepart)
+            {
+                calendar.add(Calendar.MINUTE,15);
+                tempsActuel = calendar.getTime();
+                dateNoirDepart = tempsActuel;
+                isDateNoirDepart = true;
+            }
+            if (tempsActuel.after(dateNoirDepart))
+                finDeJeuTemps();
+        }
         //verifie chaque seconde le temps
         TimerTask tt = new TimerTask()
         {
