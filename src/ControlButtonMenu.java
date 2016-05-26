@@ -160,5 +160,9 @@ class ControlButtonMenu implements ActionListener
             else
                 System.err.println("escape");
         }
+        else if(e.getSource().equals(vue.getLancerPartieReseau()))
+        {
+            vue.creerWidgetFormulaireReseau();
+        }
     }
 }

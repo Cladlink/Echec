@@ -23,8 +23,8 @@ class Vue extends JFrame
     private int ySize;
 
     private JLabel titre;
-    private JLabel joueurBlanc;
-    private JLabel joueurNoir;
+    private JLabel joueur1;
+    private JLabel joueur2;
     private JLabel typePartie;
     private JLabel skinBlanc;
     private JLabel skinNoir;
@@ -41,6 +41,7 @@ class Vue extends JFrame
     private chessButton lancerPartie;
     private chessButton quitterJeu;
     private chessButton statsJoueur;
+    private chessButton lancerPartieReseau;
 
     private JRadioButton partieNormale;
     private JRadioButton partieTempsCoupsLimites;
@@ -90,8 +91,8 @@ class Vue extends JFrame
     {
         // Initialisation des variables
         titre = new JLabel(accueil.getTitreLabel());
-        joueurBlanc = new JLabel(accueil.getJoueurBlancLabel());
-        joueurNoir = new JLabel(accueil.getJoueurNoirLabel());
+        joueur1 = new JLabel(accueil.getJoueurBlancLabel());
+        joueur2 = new JLabel(accueil.getJoueurNoirLabel());
         typePartie = new JLabel(accueil.getTypePartieLabel());
         skinBlanc = new JLabel(accueil.getSkinLabel());
         skinNoir = new JLabel(accueil.getSkinLabel());
@@ -107,6 +108,7 @@ class Vue extends JFrame
         quitterJeu = new chessButton(accueil.getQuitterJeuTitre());
         partieRandom = new chessButton(accueil.getPartieRandomTitre());
         statsJoueur = new chessButton(accueil.getStatsJoueurTitre());
+        lancerPartieReseau = new chessButton(accueil.getLancerPartieReseauTitre());
 
         partieNormale = new JRadioButton(accueil.getPartieNormaleTitre(), true);
         partieNormale.setActionCommand("1");
@@ -181,8 +183,8 @@ class Vue extends JFrame
         Color couleurColonneGauche = new Color(0, 0, 0);
 
         reseau.setForeground(couleurLabel);
-        joueurNoir.setForeground(couleurLabel);
-        joueurBlanc.setForeground(couleurColonneGauche);
+        joueur2.setForeground(couleurLabel);
+        joueur1.setForeground(couleurColonneGauche);
         typePartie.setForeground(couleurColonneGauche);
         skinBlanc.setForeground(couleurColonneGauche);
         skinNoir.setForeground(couleurLabel);
@@ -205,8 +207,8 @@ class Vue extends JFrame
         Font police = new Font("Cardinal", Font.BOLD, 27);
         Font policeChoix = new Font("CalligraphyFLF", Font.TRUETYPE_FONT, 28);
         titre.setFont(policeTitre);
-        joueurBlanc.setFont(police);
-        joueurNoir.setFont(police);
+        joueur1.setFont(police);
+        joueur2.setFont(police);
         typePartie.setFont(police);
         skinBlanc.setFont(police);
         reseau.setFont(police);
@@ -261,8 +263,8 @@ class Vue extends JFrame
 
         JPanel formulaire = new JPanel(new GridLayout(13, 2, 100, 0));
         formulaire.setOpaque(false);
-        formulaire.add(joueurBlanc);
-        formulaire.add(joueurNoir);
+        formulaire.add(joueur1);
+        formulaire.add(joueur2);
         formulaire.add(listeJoueursBlancs);
         formulaire.add(listeJoueursNoirs);
         formulaire.add(skinBlanc);
@@ -312,6 +314,56 @@ class Vue extends JFrame
         setContentPane(background);
     }
 
+    public void creerWidgetFormulaireReseau()
+    {
+        JPanel titreJeu = new JPanel();
+        titreJeu.setOpaque(false);
+        titreJeu.add(titre);
+
+        JPanel formulaire = new JPanel(new GridLayout(13, 1, 100, 0));
+        formulaire.setOpaque(false);
+        formulaire.add(joueur1);
+        formulaire.add(listeJoueursNoirs);
+        formulaire.add(skinNoir);
+        formulaire.add(skinBlancNormal);
+        formulaire.add(skinBlancProfs);
+        formulaire.add(skinBlancEleves);
+        formulaire.add(typePartie);
+        formulaire.add(partieNormale);
+        formulaire.add(partieTempsCoupsLimites);
+        formulaire.add(partieTempsLimite);
+
+        JPanel nouveauJ = new JPanel(new GridLayout(6, 1, 0, 30));
+        nouveauJ.setOpaque(false);
+        nouveauJ.add(nouveauJoueur);
+        nouveauJ.add(lancerPartie);
+        nouveauJ.add(Box.createVerticalGlue());
+        nouveauJ.add(Box.createVerticalGlue());
+        nouveauJ.add(Box.createVerticalGlue());
+        nouveauJ.add(retourMenu);
+
+        JPanel nouveauJP = new JPanel();
+        nouveauJP.add(Box.createHorizontalStrut(100));
+        nouveauJP.setOpaque(false);
+        nouveauJP.add(nouveauJ);
+
+        JPanel organisation = new JPanel(new BorderLayout());
+        organisation.setOpaque(false);
+        organisation.add(titreJeu, BorderLayout.NORTH);
+        organisation.add(formulaire, BorderLayout.CENTER);
+        organisation.add(nouveauJP, BorderLayout.EAST);
+
+
+        // Mise en place du fond d'écran
+        setLayout(new BorderLayout());
+        background = new JLabel(new ImageIcon("img/fond2_2.jpg"));
+        background.setSize(xSize, ySize);
+        background.setLayout(new FlowLayout());
+        background.add(organisation, BorderLayout.CENTER);
+
+        setContentPane(background);
+    }
+
     /**
      * creerWidgetAccueil
      *
@@ -322,11 +374,11 @@ class Vue extends JFrame
         centre.setOpaque(false);
         centre.add(Box.createVerticalGlue());
         centre.add(Box.createVerticalGlue());
-        centre.add(Box.createVerticalGlue());
         centre.add(nouvellePartie);
-        centre.add(partieRandom);
         centre.add(chargerPartie);
+        centre.add(lancerPartieReseau);
         centre.add(rejoindrePartie);
+        centre.add(partieRandom);
         centre.add(statsJoueur);
         centre.add(credit);
         centre.add(quitterJeu);
@@ -370,6 +422,7 @@ class Vue extends JFrame
         quitterJeu.addActionListener(listener);
         chargerPartie.addActionListener(listener);
         statsJoueur.addActionListener(listener);
+        lancerPartieReseau.addActionListener(listener);
     }
 
     /**
@@ -549,10 +602,10 @@ class Vue extends JFrame
 
         for (int i = 0; i < nombreDePartie; i++)
         {
-            //joueurBlanc
+            //joueur1
             JPanel joueurBlanc = new JPanel();
             joueurBlanc.add(new Label(historiqueRecup.get(0).get(i).get(0)));
-            //joueurNoir
+            //joueur2
             JPanel joueurNoir = new JPanel();
             joueurNoir.add(new Label(historiqueRecup.get(1).get(i).get(0)));
             //date
@@ -866,4 +919,7 @@ class Vue extends JFrame
         return retourMenuPrincipal;
     }
 
+    public chessButton getLancerPartieReseau() {
+        return lancerPartieReseau;
+    }
 }

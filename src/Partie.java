@@ -149,21 +149,20 @@ class Partie
      */
     synchronized void coupFait(Case caseSrc, Case caseDest)
     {
+        /* todo:
+           - mettre à jour caseSrc et caseDest,
+           - si mode temps par tour : annuler le timer tm
+           - sinon si mode temps partie :
+              - cf. rq ci-dessous
+              - si chrono joueur courant <=0 partieFinie = true
 
-	/* TO DO:
-	   - mettre à jour caseSrc et caseDest,
-	   - si mode temps par tour : annuler le timer tm
-	   - sinon si mode temps partie : 
-	      - cf. rq ci-dessous
-	      - si chrono joueur courant <=0 partieFinie = true
-
-	      Rq sur les chronos : soit la Vue du chrono se base sur chronoJoueurBlanc/Noir pour faire son
-	      affichage, soit elle se base sur un autre attribut. Dans le premier cas, on peut avoir un Timer (swing)
-	      qui a accès à chronoJoueurBlanc/Noir et qui le décrémente de 1000 toutes les secondes avant de faire
-	      un repaint() sur l'emplacement visuel du chrono. Dans le deuxième cas, le Timer swing décremente un 
-	      autre attribut et quand le coup est joué, le chrono s'arrête et on prend sa valeur pour la retrancher
-	      de chronoJoueurBlanc/Noir.
-	 */
+              Rq sur les chronos : soit la Vue du chrono se base sur chronoJoueurBlanc/Noir pour faire son
+              affichage, soit elle se base sur un autre attribut. Dans le premier cas, on peut avoir un Timer (swing)
+              qui a accès à chronoJoueurBlanc/Noir et qui le décrémente de 1000 toutes les secondes avant de faire
+              un repaint() sur l'emplacement visuel du chrono. Dans le deuxième cas, le Timer swing décremente un
+              autre attribut et quand le coup est joué, le chrono s'arrête et on prend sa valeur pour la retrancher
+              de chronoJoueurBlanc/Noir.
+         */
     }
 
     // ajout SD : à la fin du tour courant : débloquer le thread courant pour qu'il

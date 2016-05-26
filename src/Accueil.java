@@ -7,6 +7,10 @@ import java.util.Vector;
 class Accueil
 {
     // attribut pour pesudorezo, ipserveur,skinrzo
+    private String adresseIpReseau;
+    private String pseudoReseau;
+    private int choixSkinReseau;
+
     private final BDDManager bdd = new BDDManager();
     private ArrayList<Case> casesAtteignables; // move to partie
     private Partie partie;
@@ -41,6 +45,7 @@ class Accueil
     private String lancerPartieTitre;
     private String quitterTitre;
     private String statsJoueurTitre;
+    private String lancerPartieReseauTitre;
 
     private String partieSelectionneePourChargement;
     private String pseudoChoisi;
@@ -54,21 +59,22 @@ class Accueil
     {
         partieRandomTitre = "Partie rapide";
         titreLabel = "Echecs";
-        joueurBlancLabel = "Selectionnez le joueur blanc :";
-        joueurNoirLabel = "Selectionnez le joueur noir :";
+        joueurBlancLabel = "Selectionnez le joueur 1 :";
+        joueurNoirLabel = "Selectionnez le joueur 2 :";
         typePartieLabel = "Type de partie :";
         skinLabel = "Skin des pièces :";
         reseauLabel = "Voulez-vous faire une partie en réseau ?";
 
-        nouvellePartieTitre = "Lancer une partie";
-        rejoindrePartieTitre = "Rejoindre une partie";
+        nouvellePartieTitre = "Lancer une partie locale";
+        rejoindrePartieTitre = "Rejoindre une partie en réseau";
         nouveauJoueurTitre = "Nouveau joueur";
         creditTitre = "Credits";
-        chargerPartieTitre = "Charger une partie";
+        chargerPartieTitre = "Charger une partie locale";
         retourMenuTitre = "Retour";
         lancerPartieTitre = "Lancer la partie";
         quitterTitre = "Quitter";
         statsJoueurTitre = "Statistiques des joueurs";
+        lancerPartieReseauTitre = "Lancer une partie en réseau";
 
         partieNormaleTitre = "normale";
         partieTempsCoupsLimitesTitre = "temps limité par coup";
@@ -85,6 +91,9 @@ class Accueil
         partieSelectionneePourChargement = "";
         pseudoChoisi = "";
 
+        pseudoReseau = "";
+        adresseIpReseau = "";
+        choixSkinReseau = 0;
     }
 
     /**
@@ -407,5 +416,33 @@ class Accueil
 
     public void setPseudoChoisi(String pseudoChoisi) {
         this.pseudoChoisi = pseudoChoisi;
+    }
+
+    public int getChoixSkinReseau() {
+        return choixSkinReseau;
+    }
+
+    public void setChoixSkinReseau(int choixSkinReseau) {
+        this.choixSkinReseau = choixSkinReseau;
+    }
+
+    public String getPseudoReseau() {
+        return pseudoReseau;
+    }
+
+    public void setPseudoReseau(String pseudoReseau) {
+        this.pseudoReseau = pseudoReseau;
+    }
+
+    public String getAdresseIpReseau() {
+        return adresseIpReseau;
+    }
+
+    public void setAdresseIpReseau(String adresseIpReseau) {
+        this.adresseIpReseau = adresseIpReseau;
+    }
+
+    public String getLancerPartieReseauTitre() {
+        return lancerPartieReseauTitre;
     }
 }
