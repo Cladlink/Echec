@@ -214,7 +214,6 @@ class Partie
         if (tempsActuel.after(dateNoirDepart))
         {
             finDeJeuTemps();
-            // todo
         }
         System.out.println(tempsActuel);
         //verifie chaque seconde le temps
