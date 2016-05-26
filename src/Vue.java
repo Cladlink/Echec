@@ -115,9 +115,9 @@ class Vue extends JFrame
         partieTempsLimite = new JRadioButton(accueil.getPartieTempsLimiteTitre());
         partieTempsLimite.setActionCommand("3");
 
-        reseauOui = new JRadioButton(accueil.getReseauOuiTitre(), true);
+        reseauOui = new JRadioButton(accueil.getReseauOuiTitre());
         reseauOui.setActionCommand("true");
-        reseauNon = new JRadioButton(accueil.getReseauNonTitre());
+        reseauNon = new JRadioButton(accueil.getReseauNonTitre(), true);
         reseauNon.setActionCommand("fasle");
 
         skinBlancNormal = new JRadioButton(accueil.getSkinBlancNormalTitre(), true);
@@ -276,9 +276,9 @@ class Vue extends JFrame
         formulaire.add(typePartie);
         formulaire.add(reseau);
         formulaire.add(partieNormale);
-        formulaire.add(reseauOui);
-        formulaire.add(partieTempsCoupsLimites);
         formulaire.add(reseauNon);
+        formulaire.add(partieTempsCoupsLimites);
+        formulaire.add(reseauOui);
         formulaire.add(partieTempsLimite);
 
         JPanel nouveauJ = new JPanel(new GridLayout(6, 1, 0, 30));
@@ -379,7 +379,7 @@ class Vue extends JFrame
      */
     String messagePop(String message)
     {
-        return JOptionPane.showInputDialog(this, message, "Enregistrement", JOptionPane.QUESTION_MESSAGE);
+        return JOptionPane.showInputDialog(this, message, "ChessMaster", JOptionPane.QUESTION_MESSAGE);
     }
 
     /**

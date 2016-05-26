@@ -2,7 +2,13 @@
   Created by cladlink on 25/03/16.
  */
 
-public class Launcher
+/*
+ todo visuel promotion
+ todo bug switch de timer
+ todo relire tout
+
+ */
+public class Chess
 {
     public static void main (String[] args)
     {

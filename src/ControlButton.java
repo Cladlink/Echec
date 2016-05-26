@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import javax.swing.Timer;
 
 /**
-  Created by Michael on 06/04/16.
+ Created by Michael on 06/04/16.
  */
 class ControlButton extends MouseAdapter
 {
@@ -13,55 +13,125 @@ class ControlButton extends MouseAdapter
 
     private Accueil accueil;
     private Vue vue;
+    private int secondeBlanc=0, minuteBlanc=0, secondeNoir=0, minuteNoir=0;
 
     ControlButton(Accueil accueil, Vue vue)
     {
         this.accueil = accueil;
         this.vue = vue;
-	
-	// ajout SD
-	ActionListener alBlanc = new ActionListener() {
-		@Override
-		public void actionPerformed(ActionEvent exprLambda)
-		{
-		    // décrementer le chrono du joueur blanc si > 0
-		    // si chrono > 0 vue.repaint(...);
-		    // sinon invalider vue + arrêter chrono
-		}
-	    };
-	chronoBlanc = new Timer(1000,alBlanc);
-	ActionListener alNoir = new ActionListener() {
-		@Override
-		public void actionPerformed(ActionEvent exprLambda)
-		{
-		    // décrementer le chrono du joueur noir si > 0
-		    // si chrono > 0 vue.repaint(...);
-		    // sinon invalider vue + arrêter chrono
-		}
-	    };
-	chronoNoir = new Timer(1000,alNoir);
-	
+
+        // ajout SD
+        ActionListener alBlanc = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent exprLambda)
+            {
+                // décrementer le chrono du joueur blanc si > 0
+                // si chrono > 0 vue.repaint(...);
+                // sinon invalider vue + arrêter chrono
+
+                //decremente de 1 la seconde
+                secondeBlanc--;
+                if (secondeBlanc < 0)
+                {
+                    secondeBlanc = 59;
+                    minuteBlanc--;
+                }
+                if (minuteBlanc >= 0 && secondeBlanc >= 0) {
+                    //maj des variables dans VueTimer
+                    vue.getVueEchiquier().getChronoBlanc().setSeconde(secondeBlanc);
+                    vue.getVueEchiquier().getChronoBlanc().setMinute(minuteBlanc);
+
+                    vue.repaint();
+                }
+            }
+        };
+        chronoBlanc = new Timer(1000,alBlanc);
+
+        ActionListener alNoir = new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent exprLambda)
+            {
+                // décrementer le chrono du joueur noir si > 0
+                // si chrono > 0 vue.repaint(...);
+                // sinon invalider vue + arrêter chrono
+                //decremente de 1 la seconde
+                secondeNoir--;
+                if (secondeNoir < 0)
+                {
+                    secondeNoir = 59;
+                    minuteNoir--;
+                }
+                if (minuteNoir >= 0 && secondeNoir >= 0)
+                {
+                    //maj des variables dans VueTimer
+                    vue.getVueEchiquier().getChronoNoir().setSeconde(secondeNoir);
+                    vue.getVueEchiquier().getChronoNoir().setMinute(minuteNoir);
+
+                    vue.repaint();
+                }
+            }
+        };
+        chronoNoir = new Timer(1000,alNoir);
+
+        startChrono();
+
     }
 
     // ajout SD : lance le chrono du joueur courant
-    private void startChrono() {
+    private void startChrono()
+    {
 	/* TO DO:
 	   - si mode temps par tour : mettre à 30s chronoJoueurBlanc/Noir selon le joueur courant
 	   - si joueur courant == blanc -> démarrer chronoBlanc sinon chronoNoir
-	*/
+	 */
+
+        //initialisation du chrono
+        if (accueil.getPartie() != null)
+        {
+            if (accueil.getPartie().getModePartie() == 2)
+            {
+                secondeBlanc = 30;
+                minuteBlanc = 0;
+                secondeNoir = 30;
+                minuteNoir = 0;
+            } else if (accueil.getPartie().getModePartie() == 3)
+            {
+                secondeBlanc = 0;
+                minuteBlanc = 15;
+                secondeNoir = 0;
+                minuteNoir = 15;
+            }
+            chronoBlanc.start();
+        }
     }
 
     // ajout SD : arrête le chrono du joueur courant
     private void stopChrono() {
-	/* TO DO:
-
-	*/
+        if (accueil.getPartie().isTourBlanc())
+        {
+            chronoNoir.stop();
+            //remet a 30 si c'est un mode 2
+            if (accueil.getPartie().getModePartie()==2)
+                secondeBlanc = 30;
+            chronoBlanc.start();
+        }
+        else
+        {
+            chronoBlanc.stop();
+            //remet a 30 si c'est un mode 2
+            if (accueil.getPartie().getModePartie()==2)
+                secondeNoir = 30;
+            chronoNoir.start();
+        }
     }
-    
+
     // ajout SD : valide ou invalide (selon state) les élément de la vue qui ne doivent plus
     // être en interaction avec l'utilisateur quand ce n'est pas son tour et
     // que la partie est en réseau
-    public void enableView(boolean state) {
+    public void enableView(boolean state)
+    {
+
     }
 
     // ajout SD : déclenche le début du tour pour partie réseau et joueur courant
@@ -85,7 +155,7 @@ class ControlButton extends MouseAdapter
 	   - reste quasi identique au cas normal excepté appel à finTour() qu'il ne faut pas faire
 	 */
     }
-    
+
     /**
      * mouseClicked
      * définir évenement lorsque cliqué
@@ -98,6 +168,8 @@ class ControlButton extends MouseAdapter
         int row = (e.getY()-20)/80;
         int column = (e.getX()-360)/80;
         Case[][] plateau = accueil.getPartie().getBoard().getPlateau();
+        String joueurBlanc  = accueil.getPartie().getJoueurBlanc().getPseudo();
+        String joueurNoir = accueil.getPartie().getJoueurNoir().getPseudo();
         if (e.getSource().equals(vue.getVueEchiquier()))
         {
             if( row >= 0
@@ -121,35 +193,31 @@ class ControlButton extends MouseAdapter
                         && accueil.getCasesAtteignables().contains(plateau[row][column])
                         && accueil.getPartie().isTourBlanc() == accueil.getCaseMemoire().getPiece().isBlanc() )
                 {
-		    // ajout SD : à modifier pour ne pas passer la vue en param -> ajouter un attribut is Promotion
-		    // pour tester ce cas là.
+                    // ajout SD : à modifier pour ne pas passer la vue en param -> ajouter un attribut is Promotion
+                    // pour tester ce cas là.
                     accueil.getPartie().getBoard().deplacer(accueil.getCaseMemoire(), plateau[row][column], this.vue);
                     accueil.setCasesAtteignables(null);
-		    accueil.getPartie().setTourBlanc(!accueil.getPartie().isTourBlanc());// changer joueur courant.
-            accueil.getPartie().getBoard().majCasesAtteignable();
-		    /* ajout SD : 
+                    accueil.getPartie().setTourBlanc(!accueil.getPartie().isTourBlanc());// changer joueur courant.
+                    accueil.getPartie().getBoard().majCasesAtteignable();
+		    /* ajout SD :
 		       - arrêter chrono si besoin
 		       - appeler coupFait()
 		    */
-
-		    
-                    String joueurBlanc = accueil.getPartie().getJoueurBlanc().getPseudo();
-                    String joueurNoir = accueil.getPartie().getJoueurNoir().getPseudo();
 
 		    /* ajout SD : test à ajouter en premier
 		       - si partieFinie est déjà à true -> perdu à cause du temps -> message
 		     */
                     if (accueil.getPartie().isEchecEtMat())
                     {
-			// ajout SD : mettre à jour partie.partieFinie
+                        // ajout SD : mettre à jour partie.partieFinie
                         vue.jOptionMessage("ECHEC ET MAT !");
                         if (accueil.getPartie().isTourBlanc())
                             Joueur.ajouteVictoire(joueurBlanc, joueurNoir);
                         else
                             Joueur.ajouteVictoire(joueurNoir, joueurBlanc);
 
-			// ajout SD : à ne faire que si la partie n'est pas en réseau
-			// ou si je suis le serveur
+                        // ajout SD : à ne faire que si la partie n'est pas en réseau
+                        // ou si je suis le serveur
                         Partie.deleteSave(joueurBlanc, joueurNoir);
                         accueil.getPartie().saveHistorique();
                         vue.setJMenuBar(null);
@@ -157,15 +225,15 @@ class ControlButton extends MouseAdapter
                     }
                     else if (accueil.getPartie().isPat())
                     {
-			// ajout SD : mettre à jour partie.partieFinie
+                        // ajout SD : mettre à jour partie.partieFinie
                         vue.jOptionMessage("PAT");
                         if (accueil.getPartie().isTourBlanc())
                             Joueur.ajoutePat(joueurBlanc, joueurNoir);
                         else
                             Joueur.ajoutePat(joueurNoir, joueurBlanc);
 
-			// ajout SD : à ne faire que si la partie n'est pas en réseau
-			// ou si je suis le serveur
+                        // ajout SD : à ne faire que si la partie n'est pas en réseau
+                        // ou si je suis le serveur
                         accueil.getPartie().saveHistorique();
                         Partie.deleteSave(joueurBlanc, joueurNoir);
                         vue.setJMenuBar(null);
@@ -182,9 +250,29 @@ class ControlButton extends MouseAdapter
 		          - si mode temps par tour : lancer le chrono visuel
 			  - sinon si mode temps partie : (re)demarrer le chrono visuel
 		    */
+
+                    //kevin : appele l'algo pour savoir si partie fini ou pas
+                    if (accueil.getPartie().getModePartie() == 2)
+                        accueil.getPartie().tourLimite();
+                    else if (accueil.getPartie().getModePartie() == 3)
+                        accueil.getPartie().tempsLimite();
+
+                    //change de joueur donc chrono inversé
+                    stopChrono();
                 }
             }
         }
+        if (accueil.getPartie().getModePartie() == 2
+                || accueil.getPartie().getModePartie() == 3)
+            if (accueil.getPartie().isPartieFinie())
+            {
+                accueil.getPartie().getTm().cancel();
+                vue.jOptionMessage("vous avez perdu !");
+                accueil.getPartie().saveHistorique();
+                Partie.deleteSave(joueurBlanc, joueurNoir);
+                vue.setJMenuBar(null);
+                vue.afficherMenu();
+            }
     }
 
     /**
@@ -207,5 +295,18 @@ class ControlButton extends MouseAdapter
     public void mouseExited(MouseEvent e)
     {
 
+    }
+
+    public int getMinuteBlanc(){
+        return minuteBlanc;
+    }
+    public int getSecondeBlanc(){
+        return secondeBlanc;
+    }
+    public int getMinuteNoir(){
+        return minuteNoir;
+    }
+    public int getSecondeNoir(){
+        return secondeNoir;
     }
 }

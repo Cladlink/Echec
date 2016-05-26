@@ -32,9 +32,9 @@ class Partie
     private Case caseDest; // pour conserver quel coup vient d'être joueur -> envoi par réseau
 
     // ajout SD : pour plus de lisibilité avec les modes -> changer les valeurs en dur dans le code
-    final static int MODE_NOTIMER = 1;
-    final static int MODE_TIMERPARTY = 2;
-    final static int MODE_TIMERTURN = 3;
+    private final static int MODE_NOTIMER = 1;
+    private final static int MODE_TIMERTURN = 2;
+    private final static int MODE_TIMERPARTY = 3;
 
     // ajout SD : pour gérer la partie avec chrono limite pour chaque joueur
     private long chronoJoueurBlanc; // temps total alloué en ms au joueur 1 (=blanc) (mode TIMERPARTY)
@@ -50,6 +50,7 @@ class Partie
     //variable pour mode de partie
     private boolean isDateBlancDepart, isDateNoirDepart;
     private Date dateBlancDepart, dateNoirDepart;
+    private Timer tmBlanc, tmNoir, tm;
 
 
 
@@ -61,7 +62,7 @@ class Partie
         this.joueurNoir = joueurNoir;
 
         this.choixJoueurBlanc = choixJoueurBlanc;
-            this.choixJoueurNoir = choixJoueurNoir;
+        this.choixJoueurNoir = choixJoueurNoir;
 
         piecesBlanchesPlateau = new ArrayList<>();
         piecesNoiresPlateau = new ArrayList<>();
@@ -76,9 +77,11 @@ class Partie
 
         this.tourBlanc = tourBlanc;
 
-	// ajout SD
-	if (tourBlanc) idCurrentPlayer = 1;
-	else idCurrentPlayer = 2;
+        // ajout SD
+        if (tourBlanc)
+            idCurrentPlayer = 1;
+        else
+            idCurrentPlayer = 2;
 
         // choix du mode de la partie
         this.modePartie = 1;
@@ -118,21 +121,28 @@ class Partie
         // On créé le plateau
         board = new Board(this);
         tourBlanc = true;
-	// ajout SD
-	idCurrentPlayer = 1;
+
+        // ajout SD
+        idCurrentPlayer = 1;
 
         // choix du mode de la partie
         this.modePartie = modePartie;
 
+        if (modePartie == MODE_TIMERPARTY)
+            tourLimite();
+        else if(modePartie == MODE_TIMERTURN)
+            tempsLimite();
+
 	// ajout SD : init chrono : par défaut 15 minutes -> à changer pour le mettre en construction
-	if (modePartie == MODE_TIMERPARTY) {
+	if (modePartie == MODE_TIMERPARTY)
+    {
             chronoJoueurBlanc = 900000;
             chronoJoueurNoir = 90000;
 	}
 	
         // pour la partie en réseau
         this.netPartie = netPartie;
-	this.endOfTurn = false;
+	    this.endOfTurn = false;
 
         // Le roi est protégé en début de partie, il n'y a donc pas d'échec
         echecBlanc = false;
@@ -143,72 +153,101 @@ class Partie
         historique = new ArrayList<>();
     }
 
-    // todo
+    /**
+     *
+     */
     synchronized void tourLimite()
     {
-	// ajout SD : mettre tm en attribut sinon inaccessible par d'autres méthodes
-        Timer tm = new Timer();
-        TimerTask tt = new TimerTask() {
+        // ajout SD : mettre tm en attribut sinon inaccessible par d'autres méthodes
+        TimerTask tt = new TimerTask()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 finDeJeuTemps();
             }
         };
-        tm.schedule(tt, 30000);
-
-    }
-
-    // todo
-    synchronized void tempsLimite()
-    {
-        Calendar calendar = new GregorianCalendar();
-        Date tempsActuel = calendar.getTime();
-        //tour blanc
-        if (!isDateBlancDepart && tourBlanc){
-            calendar.add(Calendar.MINUTE,15);
-            tempsActuel = calendar.getTime();
-            dateBlancDepart = tempsActuel;
-        }
-        else{
-            if (tempsActuel.compareTo(dateBlancDepart)<0){
-                finDeJeuTemps();
-            }
-        }
-
-        //tour noir
-        if (!isDateNoirDepart && !tourBlanc){
-            calendar.add(Calendar.MINUTE,15);
-            tempsActuel = calendar.getTime();
-            dateBlancDepart = tempsActuel;
-            dateNoirDepart = tempsActuel;
-        }
-        else{
-            if (tempsActuel.compareTo(dateNoirDepart)<0){
-                finDeJeuTemps();
-            }
-        }
-    }
-
-    // todo
-    private synchronized void finDeJeuTemps()
-    {
-	// ajout SD : pas besoin de tout ça : juste mettre partieFinie à true.
-	
-        if (tourBlanc)
+        if (isTourBlanc())
         {
-           // finir la partie en défaveur des blancs
-            System.out.println("blanc gagne");
+            if (tmBlanc != null)
+                tmBlanc.cancel();
+            tmBlanc = new Timer();
+            tmBlanc.schedule(tt, 30000);
         }
         else
         {
-            // finir la partie en défaveut des noirs
-            System.out.println("noir gagne");
+            if (tmNoir != null)
+                tmNoir.cancel();
+            tmNoir = new Timer();
+            tmNoir.schedule(tt, 30000);
         }
+    }
+
+    /**
+     *
+     */
+    synchronized void tempsLimite()
+    {
+        Calendar calendar = Calendar.getInstance(); // creates calendar
+        calendar.setTime(new Date()); // sets calendar time/date
+
+        Date tempsActuel = calendar.getTime();
+        //tour blanc
+        if (!isDateBlancDepart && tourBlanc){
+            calendar.add(Calendar.SECOND,5);//todo : a mettre minute, 15
+            tempsActuel = calendar.getTime();
+            dateBlancDepart = tempsActuel;
+            isDateBlancDepart = true;
+        }
+        else if (isDateBlancDepart && tourBlanc)
+            if (tempsActuel.after(dateBlancDepart))
+                finDeJeuTemps();
+
+        //tour noir
+        else if (!isDateNoirDepart && !tourBlanc){
+               calendar.add(Calendar.MINUTE,15);
+            tempsActuel = calendar.getTime();
+            dateNoirDepart = tempsActuel;
+            isDateNoirDepart = true;
+        }
+        else
+        if (tempsActuel.after(dateNoirDepart))
+        {
+            finDeJeuTemps();
+            // todo
+        }
+        System.out.println(tempsActuel);
+        //verifie chaque seconde le temps
+        TimerTask tt = new TimerTask()
+        {
+            @Override
+            public void run() {
+                tempsLimite();
+            }
+        };
+        tm = new Timer();
+        tm.schedule(tt, 1000);
+    }
+
+    /**
+     *
+     */
+    private synchronized void finDeJeuTemps()
+    {
+        partieFinie = true;
+        // todo DOMAS comment faire pour générer une action ?!?
     }
 
     // ajout SD : après un coup joué, qq soit le mode -> modifier le controller
     // pour appeler cette méthode
-    synchronized void coupFait(Case caseSrc, Case caseDest) {
+
+    /**
+     *
+     * @param caseSrc ()
+     * @param caseDest ()
+     */
+    synchronized void coupFait(Case caseSrc, Case caseDest)
+    {
 
 	/* TO DO:
 	   - mettre à jour caseSrc et caseDest,
@@ -236,13 +275,19 @@ class Partie
     
     // ajout SD : attente fin de tour pour le thread du joueur courant et partie réseau
     // uniquement
-    public synchronized void waitFinTour() {
+    public synchronized void waitFinTour()
+    {
 
-        while (!endOfTurn) {
-            try {
+        while (!endOfTurn)
+        {
+            try
+            {
                 wait();
             }
-            catch (InterruptedException e) {}
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
         }
         endOfTurn = false;
     }
@@ -322,8 +367,8 @@ class Partie
     /**
      *
      *
-     * @param joueurBlanc
-     * @param joueurNoir
+     * @param joueurBlanc ()
+     * @param joueurNoir ()
      */
     synchronized static void deleteSave (String joueurBlanc, String joueurNoir)
     {
@@ -416,15 +461,14 @@ class Partie
     {
         String coupsJoues = "";
         // sauvegarde de l'historique des coups joués dans la base de donnée
-        for(int i=0; i<this.historique.size(); i++)
-        {
-            coupsJoues += this.historique.get(i) + "-";
-        }
+        for (String aHistorique : this.historique)
+            coupsJoues += aHistorique + "-";
 
         String requeteHistorique = "INSERT INTO HISTORIQUE VALUES (null, " + joueurBlanc.getId() + ", "
                 + joueurNoir.getId() + ", '" + coupsJoues + "');";
-        bdd.edit(requeteHistorique);  // todo: mon probleme c'etait que cette ligne était a la base tout en bas ce qui fait
-        // (todo) que la requete n'était pas encore dans la BDD quand on faisait le select
+        System.out.println(requeteHistorique);
+        if (requeteHistorique.length() != 0)
+            bdd.edit(requeteHistorique);
     }
     
     
@@ -489,8 +533,8 @@ class Partie
         else
             pieceEnJeu = piecesNoiresPlateau;
 
-        for (int i = 0; i < pieceEnJeu.size(); i++)
-            if (!pieceEnJeu.get(i).casesAtteignables.isEmpty())
+        for (Piece aPieceEnJeu : pieceEnJeu)
+            if (!aPieceEnJeu.casesAtteignables.isEmpty())
                 return false;
         return true;
     }
@@ -696,7 +740,7 @@ class Partie
     /**
      * requeteHistorique
      *
-     * @return
+     * @return ()
      */
     synchronized ArrayList<ArrayList<ArrayList<String>>> requeteHistorique()
     {
@@ -729,8 +773,8 @@ class Partie
     /**
      * requeteCoupsHistorique
      *
-     * @param id
-     * @return
+     * @param id ()
+     * @return ()
      */
     ArrayList<ArrayList<String>> requeteCoupsHistorique(int id)
     {
@@ -776,76 +820,208 @@ class Partie
     synchronized ArrayList<Piece> getCimetiereBlanc() {
         return cimetiereBlanc;
     }
-    synchronized void setCimetiereBlanc(ArrayList<Piece> cimetiereBlanc) {
-        this.cimetiereBlanc = cimetiereBlanc;
-    }
     synchronized ArrayList<Piece> getCimetiereNoir() {
         return cimetiereNoir;
-    }
-    synchronized void setCimetiereNoir(ArrayList<Piece> cimetiereNoir) {
-        this.cimetiereNoir = cimetiereNoir;
-    }
-    synchronized ArrayList<Piece> getPiecesBlanchesPlateau() {
+    }    synchronized ArrayList<Piece> getPiecesBlanchesPlateau() {
         return piecesBlanchesPlateau;
-    }
-    synchronized void setPiecesBlanchesPlateau(ArrayList<Piece> piecesBlanchesPlateau) {
-        this.piecesBlanchesPlateau = piecesBlanchesPlateau;
     }
     synchronized ArrayList<Piece> getPiecesNoiresPlateau() {
         return piecesNoiresPlateau;
     }
-    synchronized void setPiecesNoiresPlateau(ArrayList<Piece> piecesNoiresPlateau) {
-        this.piecesNoiresPlateau = piecesNoiresPlateau;
-    }
     synchronized int getModePartie() {
         return modePartie;
-    }
-    synchronized void setModePartie(int modePartie) {
-        this.modePartie = modePartie;
-    }
-    synchronized boolean isNetPartie() {
-        return netPartie;
-    }
-    synchronized void setNetPartie(boolean netPartie) {
-        this.netPartie = netPartie;
-    }
-    synchronized boolean isEchecBlanc() {
-        return echecBlanc;
-    }
-    synchronized void setEchecBlanc(boolean echecBlanc) {
-        this.echecBlanc = echecBlanc;
-    }
-    synchronized boolean isEchecNoir() {
-        return echecNoir;
-    }
-    synchronized void setEchecNoir(boolean echecNoir) {
-        this.echecNoir = echecNoir;
-    }
-    public BDDManager getBdd() {
-        return bdd;
     }
     public int getChoixJoueurBlanc() {
         return choixJoueurBlanc;
     }
-    public void setChoixJoueurBlanc(int choixJoueurBlanc) {
-        this.choixJoueurBlanc = choixJoueurBlanc;
-    }
     public int getChoixJoueurNoir() {
         return choixJoueurNoir;
-    }
-    public void setChoixJoueurNoir(int choixJoueurNoir) {
-        this.choixJoueurNoir = choixJoueurNoir;
-    }
-    public boolean isPartieFinie() {
-        return partieFinie;
-    }
-    public void setPartieFinie(boolean partieFinie) {
-        this.partieFinie = partieFinie;
     }
     public ArrayList<String> getHistorique() {
         return historique;
     }
+
+    public static BDDManager getBdd() {
+        return bdd;
+    }
+
+    public void setChoixJoueurBlanc(int choixJoueurBlanc) {
+        this.choixJoueurBlanc = choixJoueurBlanc;
+    }
+
+    public void setChoixJoueurNoir(int choixJoueurNoir) {
+        this.choixJoueurNoir = choixJoueurNoir;
+    }
+
+    public void setCimetiereBlanc(ArrayList<Piece> cimetiereBlanc) {
+        this.cimetiereBlanc = cimetiereBlanc;
+    }
+
+    public void setCimetiereNoir(ArrayList<Piece> cimetiereNoir) {
+        this.cimetiereNoir = cimetiereNoir;
+    }
+
+    public void setPiecesBlanchesPlateau(ArrayList<Piece> piecesBlanchesPlateau) {
+        this.piecesBlanchesPlateau = piecesBlanchesPlateau;
+    }
+
+    public void setPiecesNoiresPlateau(ArrayList<Piece> piecesNoiresPlateau) {
+        this.piecesNoiresPlateau = piecesNoiresPlateau;
+    }
+
+    public int getIdCurrentPlayer() {
+        return idCurrentPlayer;
+    }
+
+    public void setIdCurrentPlayer(int idCurrentPlayer) {
+        this.idCurrentPlayer = idCurrentPlayer;
+    }
+
+    public void setModePartie(int modePartie) {
+        this.modePartie = modePartie;
+    }
+
+    public boolean isNetPartie() {
+        return netPartie;
+    }
+
+    public void setNetPartie(boolean netPartie) {
+        this.netPartie = netPartie;
+    }
+
+    public boolean isEndOfTurn() {
+        return endOfTurn;
+    }
+
+    public void setEndOfTurn(boolean endOfTurn) {
+        this.endOfTurn = endOfTurn;
+    }
+
+    public Case getCaseSrc() {
+        return caseSrc;
+    }
+
+    public void setCaseSrc(Case caseSrc) {
+        this.caseSrc = caseSrc;
+    }
+
+    public Case getCaseDest() {
+        return caseDest;
+    }
+
+    public void setCaseDest(Case caseDest) {
+        this.caseDest = caseDest;
+    }
+
+    public static int getModeNotimer() {
+        return MODE_NOTIMER;
+    }
+
+    public static int getModeTimerparty() {
+        return MODE_TIMERPARTY;
+    }
+
+    public static int getModeTimerturn() {
+        return MODE_TIMERTURN;
+    }
+
+    public long getChronoJoueurBlanc() {
+        return chronoJoueurBlanc;
+    }
+
+    public void setChronoJoueurBlanc(long chronoJoueurBlanc) {
+        this.chronoJoueurBlanc = chronoJoueurBlanc;
+    }
+
+    public long getChronoJoueurNoir() {
+        return chronoJoueurNoir;
+    }
+
+    public void setChronoJoueurNoir(long chronoJoueurNoir) {
+        this.chronoJoueurNoir = chronoJoueurNoir;
+    }
+
+    public boolean isEchecBlanc() {
+        return echecBlanc;
+    }
+
+    public void setEchecBlanc(boolean echecBlanc) {
+        this.echecBlanc = echecBlanc;
+    }
+
+    public boolean isEchecNoir() {
+        return echecNoir;
+    }
+
+    public void setEchecNoir(boolean echecNoir) {
+        this.echecNoir = echecNoir;
+    }
+
+    public boolean isPartieFinie() {
+        return partieFinie;
+    }
+
+    public void setPartieFinie(boolean partieFinie) {
+        this.partieFinie = partieFinie;
+    }
+
     public void setHistorique(ArrayList<String> historique) {
         this.historique = historique;
+    }
+
+    public boolean isDateBlancDepart() {
+        return isDateBlancDepart;
+    }
+
+    public void setDateBlancDepart(boolean dateBlancDepart) {
+        isDateBlancDepart = dateBlancDepart;
+    }
+
+    public boolean isDateNoirDepart() {
+        return isDateNoirDepart;
+    }
+
+    public void setDateNoirDepart(boolean dateNoirDepart) {
+        isDateNoirDepart = dateNoirDepart;
+    }
+
+    public Date getDateBlancDepart() {
+        return dateBlancDepart;
+    }
+
+    public void setDateBlancDepart(Date dateBlancDepart) {
+        this.dateBlancDepart = dateBlancDepart;
+    }
+
+    public Date getDateNoirDepart() {
+        return dateNoirDepart;
+    }
+
+    public void setDateNoirDepart(Date dateNoirDepart) {
+        this.dateNoirDepart = dateNoirDepart;
+    }
+
+    public Timer getTmBlanc() {
+        return tmBlanc;
+    }
+
+    public void setTmBlanc(Timer tmBlanc) {
+        this.tmBlanc = tmBlanc;
+    }
+
+    public Timer getTmNoir() {
+        return tmNoir;
+    }
+
+    public void setTmNoir(Timer tmNoir) {
+        this.tmNoir = tmNoir;
+    }
+
+    public Timer getTm() {
+        return tm;
+    }
+
+    public void setTm(Timer tm) {
+        this.tm = tm;
     }
 }

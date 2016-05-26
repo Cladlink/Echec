@@ -17,6 +17,16 @@ class VueTimer
     {
         this.partie = partie;
         this.isBlanc = isBlanc;
+        if (partie.getModePartie() == 2)
+        {
+            minute = 0;
+            seconde = 30;
+        }
+        else if (partie.getModePartie() == 3)
+        {
+            minute = 15;
+            seconde = 0;
+        }
     }
 
     /**
@@ -30,7 +40,8 @@ class VueTimer
     void paintMe(Graphics g, int xBase, int yBase, Vue vue)
     {
         // todo côté model
-        if ( partie.getModePartie() == 1 || partie.getModePartie() == 2 )
+        if ( partie.getModePartie() == 2
+                || partie.getModePartie() == 3 )
         {
 	    // ajout SD
 	    // minute = ...; // a calculer en fonction du chrono du joueur courant
@@ -42,26 +53,46 @@ class VueTimer
             g.setColor(Color.BLACK);
             g.drawString(minute + " : " + seconde, xBase+30, yBase+30);
 
-	    /* supprimé -> mis dans ControlButton
-            int delais;
-            if (partie.getModePartie() == 1)
-            {
-		
-                minute = 0;
-                seconde = 30;
-                delais = 1000; // ce qu'il faut pour compter toutes les 1 secondes
-                ActionListener al = new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent exprLambda)
-                    {
-                        g.drawString(minute + " : " + seconde, xBase + 30, yBase + 30);
-                        seconde--;
-                    }
-                };
-                chrono = new Timer(delais, al);
-                chrono.start();
-            }
-	    */
         }
+    }
+
+    public Partie getPartie() {
+        return partie;
+    }
+
+    public void setPartie(Partie partie) {
+        this.partie = partie;
+    }
+
+    public boolean isBlanc() {
+        return isBlanc;
+    }
+
+    public void setBlanc(boolean blanc) {
+        isBlanc = blanc;
+    }
+
+    public int getMinute() {
+        return minute;
+    }
+
+    public void setMinute(int minute) {
+        this.minute = minute;
+    }
+
+    public int getSeconde() {
+        return seconde;
+    }
+
+    public void setSeconde(int seconde) {
+        this.seconde = seconde;
+    }
+
+    public Timer getChrono() {
+        return chrono;
+    }
+
+    public void setChrono(Timer chrono) {
+        this.chrono = chrono;
     }
 }
