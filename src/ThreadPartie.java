@@ -23,84 +23,103 @@ class ThreadPartie extends Thread
     private ObjectOutputStream oos;
     private int id; // =1 si joueur blanc et 2 si joueur noir
     
-    /*public ThreadPartie(Partie partie, ControlButton controller, int port, boolean isServer, String ipServer)
+    public ThreadPartie(
+            Partie partie, ControlButton controller, int port, boolean isServer, String ipServer)
     {
         this.partie = partie;
         this.isServer = isServer;
         this.controller = controller;
         this.port = port;
-	this.ipServer = ipServer;
+        this.ipServer = ipServer;
     }
 
     @Override
     public void run()
     {
-	boolean stop = false;
-	try {
+        boolean stop = false;
+        try
+        {
 
-	    if(isServer) {
-		initServer();
-	    }
-	    else {
-		initClient();
-	    }
+            if(isServer)
+                initServer();
+            else
+                initClient();
         }
-	catch (IOException e) {
-	    e.printStackTrace();
-	}
-
-	// ajout SD
-	try {
-	    while (!stop) {
-
-		// si je suis le joueur courant
-		if (id == partie.getIdCurrentPlayer()) {
-
-		    *//* TO DO :
-		      - début du tour (via controleur)
-		      - attendre fin tour
-		      - envoyer les infos
-		      Rq: pour faciliter, on peut envoyer tout le temps les même infos qqs soit le mode
-		      par exemple: rowsrc,colsrc,rowdest,coldest,typeroque, typepromo, chronojoueurblanc,chronojoueurnoir,partiefinie
-		      les 4 premiers servent aux déplacements (sauf roque)
-		      typeroque = 0 si pas de roque, = 1 petit roque, = 2 grand roque
-		      typepromo = 0 si pas de promo, = 1,2,... (type pièce) si promo
-		    *//*
-		}
-		else {
-		    *//* TO DO :
-		       - invalider la vue (via controleur)
-		       - recevoir les infos
-		       - si partiFinie == true : l'autre joueur à dépassé son temps de jeu (partie ou tour)  -> j'ai gagné
-		       - sinon appeler control.updatePartie()
-
-		    *//*
-
-		}
-		// - si partieFinie == true -> stop = true
-	    }
+        catch (IOException e)
+        {
+            e.printStackTrace();
         }
-	catch (IOException e) {
-	    e.printStackTrace();
-	}
+
+        // ajout SD
+        try
+        {
+            while (!stop)
+            {
+
+            // si je suis le joueur courant
+                if (id == partie.getIdCurrentPlayer())
+                {
+
+                    /* TO DO :
+                      - début du tour (via controleur)
+                      - attendre fin tour
+                      - envoyer les infos
+                      Rq: pour faciliter, on peut envoyer tout le temps les même infos qqs soit le mode
+                      par exemple: rowsrc,colsrc,rowdest,coldest,typeroque, typepromo, chronojoueurblanc,chronojoueurnoir,partiefinie
+                      les 4 premiers servent aux déplacements (sauf roque)
+                      typeroque = 0 si pas de roque, = 1 petit roque, = 2 grand roque
+                      typepromo = 0 si pas de promo, = 1,2,... (type pièce) si promo
+                    */
+                }
+                else
+                {
+                    /* TO DO :
+                       - invalider la vue (via controleur)
+                       - recevoir les infos
+                       - si partiFinie == true : l'autre joueur à dépassé son temps de jeu (partie ou tour)  -> j'ai gagné
+                       - sinon appeler control.updatePartie()
+
+                    */
+
+                }
+            // - si partieFinie == true -> stop = true
+            }
+            }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
 
     }
 
-    private void initServer() throws IOException {
+    private void initServer() throws IOException,ClassNotFoundException {
 	conn = new ServerSocket(port);
 	comm = conn.accept();
 	oos = new ObjectOutputStream(comm.getOutputStream());
 	oos.flush();
 	ois = new ObjectInputStream(comm.getInputStream());
 	// échanger les infos (pseudos, qui joue en premier, ...)
+        oos.writeObject(pseudo);
+        oos.writeInt(minskin);
+        // ...
+        oos.flush();
+        // envoi : mon pseudo, mon skin, mode partie, qui est blanc
+        // recoi : autre pseudo, autre skin,*
+
+        // mettre à jour partie
     }
 
-    private void initClient() throws IOException {
+    private void initClient() throws IOException,ClassNotFoundException {
 	comm = new Socket(ipServer, port);
 	ois = new ObjectInputStream(comm.getInputStream());
 	oos = new ObjectOutputStream(comm.getOutputStream());
 	oos.flush();
 	// échanger les infos (pseudos, qui joue en premier, ...)
+        // recoi : autre pseudo, autre skin, mode partie, qui est blanc
+        // envoi : mon pseudo, mon skin
+        String autrePseudo = (String)ois.readObject();
+        int monskin = ois.readInt();
+
+        // mettre à jour Partie
     }
-    */
 }

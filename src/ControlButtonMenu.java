@@ -47,7 +47,7 @@ class ControlButtonMenu implements ActionListener
 	    // ajout SD : à modifier, notamment sur les pseudos puisque à priori le joueur client
 	    // ne connait pas forcément le pseudo de l'autre.
 
-	    accueil.rejoindrePartieReseau(pseudo, 1); //modePartie);
+	    accueil.rejoindrePartieReseau(pseudo, skin); //modePartie);
 	    // ajout SD : voir pour le choix de qui est blanc/noir
 	    // + skins
             vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));

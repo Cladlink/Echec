@@ -236,7 +236,6 @@ class Partie
     private synchronized void finDeJeuTemps()
     {
         partieFinie = true;
-        // todo DOMAS comment faire pour générer une action ?!?
     }
 
     // ajout SD : après un coup joué, qq soit le mode -> modifier le controller

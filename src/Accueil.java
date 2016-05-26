@@ -6,6 +6,7 @@ import java.util.Vector;
  */
 class Accueil
 {
+    // attribut pour pesudorezo, ipserveur,skinrzo
     private final BDDManager bdd = new BDDManager();
     private ArrayList<Case> casesAtteignables; // move to partie
     private Partie partie;
@@ -130,13 +131,13 @@ class Accueil
     }
     
     // ajout SD : méthodes spécifique pour le réseau.   
-    void lancementPartieReseau(String pseudo, int modePartie)
+    void lancementPartieReseau(String pseudo, int choixSkin, int modePartie)
     {
 
     }
-    void rejoindrePartieReseau(String pseudo, int modePartie)
+    void rejoindrePartieReseau(String pseudo, int choixSkin)
     {
-	
+	// instaciation de Partie avec ipserver
     }
 	
     /**

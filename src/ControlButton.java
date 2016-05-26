@@ -85,7 +85,7 @@ class ControlButton extends MouseAdapter
 	   - si mode temps par tour : mettre à 30s chronoJoueurBlanc/Noir selon le joueur courant
 	   - si joueur courant == blanc -> démarrer chronoBlanc sinon chronoNoir
 	 */
-
+        
         //initialisation du chrono
         if (accueil.getPartie() != null)
         {
@@ -129,15 +129,25 @@ class ControlButton extends MouseAdapter
     // ajout SD : valide ou invalide (selon state) les élément de la vue qui ne doivent plus
     // être en interaction avec l'utilisateur quand ce n'est pas son tour et
     // que la partie est en réseau
+
+    /**
+     *
+     * @param state ()
+     */
     public void enableView(boolean state)
     {
 
     }
 
     // ajout SD : déclenche le début du tour pour partie réseau et joueur courant
-    public void debutTour() {
-	/* TO DO :
-	     - si mode temps par tour : appeler partie.tourLimite() + lancer le chrono visuel
+
+    /**
+     *
+     */
+    public void debutTour()
+    {
+	/* todo:
+	     - si mode temps par tour: appeler partie.tourLimite() + lancer le chrono visuel
 	     - sinon si mode temps partie : (re)démarrer le chrono visuel
 	     - valider la vue
 	 */
@@ -147,7 +157,7 @@ class ControlButton extends MouseAdapter
     // réseau uniquement
     public void updatePartie(int rowSrc, int colSrc, int rowDest, int colDest, int typeRoque, int typePromo, long chronoJoueurBlanc, long chronoJoueurNoir) {
 
-	/* TO DO : quasi identique au cas normal
+	/* todo: quasi identique au cas normal
 	   - mettre à jour les chrono,
 	   - tester si roque
 	   - faire le dplt + éventuellement promo
