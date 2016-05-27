@@ -10,6 +10,7 @@ import javax.swing.Timer;
  */
 class ControlButton extends MouseAdapter
 {
+
     //variable pour mode de partie
     private boolean isDateBlancDepart, isDateNoirDepart;
     private Date dateBlancDepart, dateNoirDepart;
@@ -82,7 +83,6 @@ class ControlButton extends MouseAdapter
         chronoNoir = new Timer(1000,alNoir);
 
         startChrono();
-
     }
 
     // ajout SD : lance le chrono du joueur courant
@@ -102,7 +102,8 @@ class ControlButton extends MouseAdapter
                 minuteBlanc = 0;
                 secondeNoir = 30;
                 minuteNoir = 0;
-            } else if (accueil.getPartie().getModePartie() == 3)
+            }
+            else if (accueil.getPartie().getModePartie() == 3)
             {
                 secondeBlanc = 0;
                 minuteBlanc = 15;
@@ -114,7 +115,8 @@ class ControlButton extends MouseAdapter
     }
 
     // ajout SD : arrête le chrono du joueur courant
-    private void stopChrono() {
+    private void stopChrono()
+    {
         if (accueil.getPartie().isTourBlanc())
         {
             chronoNoir.stop();
