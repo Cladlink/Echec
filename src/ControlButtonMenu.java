@@ -92,9 +92,9 @@ class ControlButtonMenu implements ActionListener
             vue.setControlMenu(new ControlMenu(accueil, vue));
             vue.setVisible(true);
         }
-        else if(e.getSource().equals(vue.getRetourMenu()))
+        else if( e.getSource().equals(vue.getRetourMenu()) )
             vue.afficherMenu();
-        else if(e.getSource().equals(vue.getLancerPartie()))
+        else if( e.getSource().equals(vue.getLancerPartie()) )
         {
             int modePartie = Integer.parseInt(vue.getGrTypePartie().getSelection().getActionCommand());
             boolean netPartie = Boolean.parseBoolean(vue.getGrReseau().getSelection().getActionCommand());
@@ -103,7 +103,7 @@ class ControlButtonMenu implements ActionListener
             String pseudoB = vue.getListeJoueursBlancs().getSelectedItem().toString();
             String pseudoN = vue.getListeJoueursNoirs().getSelectedItem().toString();
 
-            if(pseudoB.equals(pseudoN))
+            if( pseudoB.equals(pseudoN) )
             {
                 vue.jOptionMessage("Vous ne pouvez pas jouer contre vous-même !");
             }

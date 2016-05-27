@@ -28,7 +28,6 @@ class Vue extends JFrame
     private JLabel typePartie;
     private JLabel skinBlanc;
     private JLabel skinNoir;
-    private JLabel reseau;
     private JLabel background;
 
     private chessButton partieRandom;
@@ -46,8 +45,6 @@ class Vue extends JFrame
     private JRadioButton partieNormale;
     private JRadioButton partieTempsCoupsLimites;
     private JRadioButton partieTempsLimite;
-    private JRadioButton reseauOui;
-    private JRadioButton reseauNon;
     private JRadioButton skinBlancNormal;
     private JRadioButton skinBlancProfs;
     private JRadioButton skinBlancEleves;
@@ -96,7 +93,6 @@ class Vue extends JFrame
         typePartie = new JLabel(accueil.getTypePartieLabel());
         skinBlanc = new JLabel(accueil.getSkinLabel());
         skinNoir = new JLabel(accueil.getSkinLabel());
-        reseau = new JLabel(accueil.getReseauLabel());
 
         nouvellePartie = new chessButton(accueil.getNouvellePartieTitre());
         rejoindrePartie = new chessButton(accueil.getRejoindrePartieTitre());
@@ -116,11 +112,6 @@ class Vue extends JFrame
         partieTempsCoupsLimites.setActionCommand("2");
         partieTempsLimite = new JRadioButton(accueil.getPartieTempsLimiteTitre());
         partieTempsLimite.setActionCommand("3");
-
-        reseauOui = new JRadioButton(accueil.getReseauOuiTitre());
-        reseauOui.setActionCommand("true");
-        reseauNon = new JRadioButton(accueil.getReseauNonTitre(), true);
-        reseauNon.setActionCommand("fasle");
 
         skinBlancNormal = new JRadioButton(accueil.getSkinBlancNormalTitre(), true);
         skinBlancNormal.setActionCommand("1");
@@ -148,9 +139,6 @@ class Vue extends JFrame
         grTypePartie.add(partieNormale);
         grTypePartie.add(partieTempsCoupsLimites);
         grTypePartie.add(partieTempsLimite);
-
-        grReseau.add(reseauOui);
-        grReseau.add(reseauNon);
 
         grSkinBlanc.add(skinBlancNormal);
         grSkinBlanc.add(skinBlancProfs);
@@ -182,7 +170,6 @@ class Vue extends JFrame
         Color couleurChoix = new Color(255, 255, 255);
         Color couleurColonneGauche = new Color(0, 0, 0);
 
-        reseau.setForeground(couleurLabel);
         joueur2.setForeground(couleurLabel);
         joueur1.setForeground(couleurColonneGauche);
         typePartie.setForeground(couleurColonneGauche);
@@ -193,8 +180,6 @@ class Vue extends JFrame
         partieNormale.setForeground(couleurChoix);
         partieTempsCoupsLimites.setForeground(couleurChoix);
         partieTempsLimite.setForeground(couleurChoix);
-        reseauNon.setForeground(couleurChoix);
-        reseauOui.setForeground(couleurChoix);
         skinBlancNormal.setForeground(couleurChoix);
         skinBlancProfs.setForeground(couleurChoix);
         skinBlancEleves.setForeground(couleurChoix);
@@ -211,7 +196,6 @@ class Vue extends JFrame
         joueur2.setFont(police);
         typePartie.setFont(police);
         skinBlanc.setFont(police);
-        reseau.setFont(police);
         skinNoir.setFont(police);
 
         partieNormale.setFont(policeChoix);
@@ -223,8 +207,6 @@ class Vue extends JFrame
         skinBlancProfs.setFont(policeChoix);
         skinBlancNormal.setFont(policeChoix);
         skinBlancEleves.setFont(policeChoix);
-        reseauOui.setFont(policeChoix);
-        reseauNon.setFont(policeChoix);
 
         // Le fond de chaque élément est transparent
         listeJoueursBlancs.setOpaque(false);
@@ -234,8 +216,6 @@ class Vue extends JFrame
         skinBlancNormal.setOpaque(false);
         skinBlancProfs.setOpaque(false);
         skinBlancEleves.setOpaque(false);
-        reseauOui.setOpaque(false);
-        reseauNon.setOpaque(false);
         skinNoirNormal.setOpaque(false);
         skinNoirProfs.setOpaque(false);
         skinNoirEleves.setOpaque(false);
@@ -261,7 +241,7 @@ class Vue extends JFrame
         titreJeu.setOpaque(false);
         titreJeu.add(titre);
 
-        JPanel formulaire = new JPanel(new GridLayout(13, 2, 100, 0));
+        JPanel formulaire = new JPanel(new GridLayout(16, 2, 100, 0));
         formulaire.setOpaque(false);
         formulaire.add(joueur1);
         formulaire.add(joueur2);
@@ -276,14 +256,14 @@ class Vue extends JFrame
         formulaire.add(skinBlancEleves);
         formulaire.add(skinNoirEleves);
         formulaire.add(typePartie);
-        formulaire.add(reseau);
+        formulaire.add(Box.createVerticalGlue());
         formulaire.add(partieNormale);
-        formulaire.add(reseauNon);
+        formulaire.add(Box.createVerticalGlue());
         formulaire.add(partieTempsCoupsLimites);
-        formulaire.add(reseauOui);
+        formulaire.add(Box.createVerticalGlue());
         formulaire.add(partieTempsLimite);
 
-        JPanel nouveauJ = new JPanel(new GridLayout(6, 1, 0, 30));
+        JPanel nouveauJ = new JPanel( new GridLayout(9, 1, 0, 30) );
         nouveauJ.setOpaque(false);
         nouveauJ.add(nouveauJoueur);
         nouveauJ.add(lancerPartie);

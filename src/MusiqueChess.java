@@ -9,17 +9,20 @@ import java.nio.file.Paths;
  */
 public class MusiqueChess
 {
-    private static MediaPlayer ais;
+    private static MediaPlayer mp;
+    private static final String PERCU = "Musique/Percu.mp3";
     private static final String MEDIEVAL_THEME = "Musique/MedievalTheme.mp3";
 
-    public static void playMedievalTheme()
+    static void playMedievalTheme()
     {
         JFXPanel jfxPanel = new JFXPanel();
-        ais = new MediaPlayer(new Media(Paths.get(MEDIEVAL_THEME).toUri().toString()));
-        ais.play();
+        mp = new MediaPlayer(new Media(Paths.get(PERCU).toUri().toString()));
+        mp.play();
+        mp.setCycleCount(MediaPlayer.INDEFINITE);
+
     }
-    public static void stopMedievalTheme()
+    static void stopMedievalTheme()
     {
-        ais.stop();
+        mp.stop();
     }
 }
