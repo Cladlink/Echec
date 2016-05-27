@@ -111,6 +111,7 @@ class Accueil
         return Joueur.listeJoueurs();
     }
 
+
     /**
      * lancementPartie
      * Départ une partie selon les critères choisis dans le formulaire
