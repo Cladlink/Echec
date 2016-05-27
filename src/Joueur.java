@@ -99,9 +99,10 @@ class Joueur
     }
 
     /**
+     * ajouteVictoire
      *
-     * @param JoueurGagnant
-     * @param JoueurPerdant
+     * @param JoueurGagnant ()
+     * @param JoueurPerdant ()
      */
     public static void ajouteVictoire(String JoueurGagnant, String JoueurPerdant)
     {
@@ -117,8 +118,8 @@ class Joueur
 
     /**
      *
-     * @param Joueur1
-     * @param Joueur2
+     * @param Joueur1 ()
+     * @param Joueur2 ()
      */
     public static void ajoutePat(String Joueur1, String Joueur2)
     {

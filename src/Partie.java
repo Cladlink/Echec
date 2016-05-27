@@ -90,16 +90,31 @@ class Partie
     }
 
     /**
-     * Partie Constructeur
      *
-     * @param joueurBlanc j1
-     * @param joueurNoir j2
+     * @param pseudo ()
+     * @param pseudoAdversaire ()
+     * @param modePartie ()
+     * @param netPartie ()
+     * @param choixJoueurB ()
+     * @param choixJoueurN ()
      */
-    Partie(Joueur joueurBlanc, Joueur joueurNoir, int modePartie, boolean netPartie, int choixJoueurB, int choixJoueurN)
+    Partie(String pseudo, String pseudoAdversaire, int modePartie,
+           boolean netPartie, int choixJoueurB, int choixJoueurN)
     {
-        //On ajoute les deux joueurs à la partie
-        this.joueurBlanc = joueurBlanc;
-        this.joueurNoir = joueurNoir;
+        initPartie(pseudo, pseudoAdversaire, modePartie, netPartie, choixJoueurB, choixJoueurN);
+    }
+
+    void initPartie(String pseudo, String pseudoAdversaire, int modePartie,
+                            boolean netPartie, int choixJoueurB, int choixJoueurN) {
+        if (pseudo.equals("anonymous"))
+            this.joueurBlanc = new Joueur(true);
+        else
+            this.joueurNoir = new Joueur(true, pseudo);
+
+        if (pseudoAdversaire.equals("anonymous"))
+            this.joueurBlanc = new Joueur(false);
+        else
+            this.joueurNoir = new Joueur(false, pseudoAdversaire);
 
         this.choixJoueurBlanc = choixJoueurB;
         this.choixJoueurNoir = choixJoueurN;
@@ -123,12 +138,12 @@ class Partie
         if (modePartie == MODE_TIMERPARTY)
         {
                 chronoJoueurBlanc = 90000;
-                chronoJoueurNoir = 90000;
+                chronoJoueurNoir  = 90000;
         }
-	
+
         // pour la partie en réseau
         this.netPartie = netPartie;
-	    this.endOfTurn = false;
+        this.endOfTurn = false;
 
         // Le roi est protégé en début de partie, il n'y a donc pas d'échec
         echecBlanc = false;
@@ -137,6 +152,60 @@ class Partie
         partieFinie = false;
 
         historique = new ArrayList<>();
+    }
+
+    Partie(){}
+
+    /**
+     *
+     * @param pseudo
+     * @param modePartie
+     */
+    Partie(String pseudo, int modePartie)
+    {
+        piecesBlanchesPlateau = new ArrayList<>();
+        piecesNoiresPlateau = new ArrayList<>();
+        cimetiereBlanc = new ArrayList<>();
+        cimetiereNoir = new ArrayList<>();
+
+        // On créé le plateau
+        board = new Board(this);
+        tourBlanc = true;
+
+        // ajout SD
+        idCurrentPlayer = 1;
+
+        netPartie = true;
+        this.modePartie = modePartie;
+
+        echecBlanc = false;
+        echecNoir = false;
+        partieFinie = false;
+
+        this.endOfTurn = false;
+
+        historique = new ArrayList<>();
+
+        boolean jeSuisBlanc = jeSuisBlanc();
+
+        if (jeSuisBlanc)
+            this.joueurBlanc = new Joueur(true, pseudo);
+        else
+            this.joueurNoir = new Joueur(false, pseudo);
+    }
+
+
+
+    /**
+     * jeSuisBlanc
+     * Décide aleatoirement si le joueur qui créer la partie est blanc
+     *
+     * @return (retourne une valeur au hazard blanc ou noir)
+     */
+    private boolean jeSuisBlanc()
+    {
+        Random rand = new Random();
+        return rand.nextBoolean();
     }
 
     // ajout SD : après un coup joué, qq soit le mode -> modifier le controller
@@ -383,15 +452,6 @@ class Partie
 
     }
 
-    /**
-     * attenteDebutPartie
-     * comportement d'attente du début de la partie
-     *
-     */
-    synchronized void attenteDebutPartie()
-    {
-
-    }
 
     /**
      * isEchec

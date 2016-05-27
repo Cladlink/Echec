@@ -109,7 +109,7 @@ class ControlButtonMenu implements ActionListener
         else if( e.getSource().equals(vue.getLancerPartie()) )
         {
             int modePartie = Integer.parseInt(vue.getGrTypePartie().getSelection().getActionCommand());
-            boolean netPartie = Boolean.parseBoolean(vue.getGrReseau().getSelection().getActionCommand());
+            boolean netPartie = false;
             int choixJoueurB = Integer.parseInt(vue.getGrSkinBlanc().getSelection().getActionCommand());
             int choixJOueurN = Integer.parseInt(vue.getGrSkinNoir().getSelection().getActionCommand());
             String pseudoB = vue.getListeJoueursBlancs().getSelectedItem().toString();
@@ -118,9 +118,9 @@ class ControlButtonMenu implements ActionListener
             if( pseudoB.equals(pseudoN) )
             {
                 vue.jOptionMessage("Vous ne pouvez pas jouer contre vous-même !");
+                return;
             }
-            else if (!netPartie)
-            {
+
                 accueil.lancementPartie(pseudoB, pseudoN, choixJoueurB, choixJOueurN, modePartie, netPartie);
                 vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
                 vue.creerWidgetPartie();
@@ -130,17 +130,30 @@ class ControlButtonMenu implements ActionListener
                 vue.setControlMenu(new ControlMenu(accueil, vue));
                 vue.setVisible(true);
                 MusiqueChess.stopMedievalTheme();
-            }
-            else
-            {
-                accueil.lancementPartieReseau(pseudoB, choixJoueurB, modePartie);
-            }
+
 	    // ajout SD 
 	    /* TO DO:
 	       si partie en réseau :
 	          - invalider la vue (setEnable ??)
 	          - créer un ThreadPartie serveur
 	     */
+        }
+        else if(e.getSource().equals(vue.getLancerPartieReseau()))
+        {
+            int choixJoueur = Integer.parseInt(vue.getGrSkinBlanc().getSelection().getActionCommand());
+            String pseudoJoueur = vue.getListeJoueursBlancs().getSelectedItem().toString();
+            vue.setEnabled(false);
+
+            ThreadPartie tp = new ThreadPartie(accueil.getPartie(), controlButton, 1234, true, "127.0.0.1");
+
+            /*accueil.lancementPartieReseau(pseudoJoueur, choixJoueur);
+            vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
+            vue.creerWidgetPartie();
+            accueil.getPartie().getBoard().majCasesAtteignable();
+            vue.setControlButtonMenu(new ControlButton(accueil, vue));
+            vue.initMenuPartie();
+            vue.setControlMenu(new ControlMenu(accueil, vue));
+            vue.setVisible(true);*/
         }
         else if(e.getSource().equals(vue.getCredit()))
             vue.jOptionMessage("Jeu développé par : \n Michael BOUTBOUL\n Marie-Lucile CANIARD\n Sylvain GUYOT" +

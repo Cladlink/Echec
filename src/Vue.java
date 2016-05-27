@@ -405,6 +405,7 @@ class Vue extends JFrame
         chargerPartie.addActionListener(listener);
         statsJoueur.addActionListener(listener);
         creerPartieReseau.addActionListener(listener);
+        lancerPartieReseau.addActionListener(listener);
     }
 
     /**
@@ -941,5 +942,237 @@ class Vue extends JFrame
     }
     chessButton getCreerPartieReseau() {
         return creerPartieReseau;
+    }
+
+    public void setQuitter(JMenuItem quitter) {
+        this.quitter = quitter;
+    }
+
+    public void setUndo(JMenuItem undo) {
+        this.undo = undo;
+    }
+
+    public void setHistorique(JMenuItem historique) {
+        this.historique = historique;
+    }
+
+    public void setRetourMenuPrincipal(JMenuItem retourMenuPrincipal) {
+        this.retourMenuPrincipal = retourMenuPrincipal;
+    }
+
+    public int getxSize() {
+        return xSize;
+    }
+
+    public void setxSize(int xSize) {
+        this.xSize = xSize;
+    }
+
+    public int getySize() {
+        return ySize;
+    }
+
+    public void setySize(int ySize) {
+        this.ySize = ySize;
+    }
+
+    public JLabel getTitre() {
+        return titre;
+    }
+
+    public void setTitre(JLabel titre) {
+        this.titre = titre;
+    }
+
+    public JLabel getJoueur1() {
+        return joueur1;
+    }
+
+    public void setJoueur1(JLabel joueur1) {
+        this.joueur1 = joueur1;
+    }
+
+    public JLabel getJoueur2() {
+        return joueur2;
+    }
+
+    public void setJoueur2(JLabel joueur2) {
+        this.joueur2 = joueur2;
+    }
+
+    public JLabel getTypePartie() {
+        return typePartie;
+    }
+
+    public void setTypePartie(JLabel typePartie) {
+        this.typePartie = typePartie;
+    }
+
+    public JLabel getSkinBlanc() {
+        return skinBlanc;
+    }
+
+    public void setSkinBlanc(JLabel skinBlanc) {
+        this.skinBlanc = skinBlanc;
+    }
+
+    public JLabel getSkinNoir() {
+        return skinNoir;
+    }
+
+    public void setSkinNoir(JLabel skinNoir) {
+        this.skinNoir = skinNoir;
+    }
+
+    public void setBackground(JLabel background) {
+        this.background = background;
+    }
+
+    public void setPartieRandom(chessButton partieRandom) {
+        this.partieRandom = partieRandom;
+    }
+
+    public void setNouvellePartie(chessButton nouvellePartie) {
+        this.nouvellePartie = nouvellePartie;
+    }
+
+    public void setRejoindrePartie(chessButton rejoindrePartie) {
+        this.rejoindrePartie = rejoindrePartie;
+    }
+
+    public void setNouveauJoueur(chessButton nouveauJoueur) {
+        this.nouveauJoueur = nouveauJoueur;
+    }
+
+    public void setCredit(chessButton credit) {
+        this.credit = credit;
+    }
+
+    public void setChargerPartie(chessButton chargerPartie) {
+        this.chargerPartie = chargerPartie;
+    }
+
+    public void setRetourMenu(chessButton retourMenu) {
+        this.retourMenu = retourMenu;
+    }
+
+    public void setLancerPartie(chessButton lancerPartie) {
+        this.lancerPartie = lancerPartie;
+    }
+
+    public void setQuitterJeu(chessButton quitterJeu) {
+        this.quitterJeu = quitterJeu;
+    }
+
+    public void setStatsJoueur(chessButton statsJoueur) {
+        this.statsJoueur = statsJoueur;
+    }
+
+    public void setCreerPartieReseau(chessButton creerPartieReseau) {
+        this.creerPartieReseau = creerPartieReseau;
+    }
+
+    public chessButton getLancerPartieReseau() {
+        return lancerPartieReseau;
+    }
+
+    public void setLancerPartieReseau(chessButton lancerPartieReseau) {
+        this.lancerPartieReseau = lancerPartieReseau;
+    }
+
+    public JRadioButton getPartieNormale() {
+        return partieNormale;
+    }
+
+    public void setPartieNormale(JRadioButton partieNormale) {
+        this.partieNormale = partieNormale;
+    }
+
+    public JRadioButton getPartieTempsCoupsLimites() {
+        return partieTempsCoupsLimites;
+    }
+
+    public void setPartieTempsCoupsLimites(JRadioButton partieTempsCoupsLimites) {
+        this.partieTempsCoupsLimites = partieTempsCoupsLimites;
+    }
+
+    public JRadioButton getPartieTempsLimite() {
+        return partieTempsLimite;
+    }
+
+    public void setPartieTempsLimite(JRadioButton partieTempsLimite) {
+        this.partieTempsLimite = partieTempsLimite;
+    }
+
+    public JRadioButton getSkinBlancNormal() {
+        return skinBlancNormal;
+    }
+
+    public void setSkinBlancNormal(JRadioButton skinBlancNormal) {
+        this.skinBlancNormal = skinBlancNormal;
+    }
+
+    public JRadioButton getSkinBlancProfs() {
+        return skinBlancProfs;
+    }
+
+    public void setSkinBlancProfs(JRadioButton skinBlancProfs) {
+        this.skinBlancProfs = skinBlancProfs;
+    }
+
+    public JRadioButton getSkinBlancEleves() {
+        return skinBlancEleves;
+    }
+
+    public void setSkinBlancEleves(JRadioButton skinBlancEleves) {
+        this.skinBlancEleves = skinBlancEleves;
+    }
+
+    public JRadioButton getSkinNoirNormal() {
+        return skinNoirNormal;
+    }
+
+    public void setSkinNoirNormal(JRadioButton skinNoirNormal) {
+        this.skinNoirNormal = skinNoirNormal;
+    }
+
+    public JRadioButton getSkinNoirProfs() {
+        return skinNoirProfs;
+    }
+
+    public void setSkinNoirProfs(JRadioButton skinNoirProfs) {
+        this.skinNoirProfs = skinNoirProfs;
+    }
+
+    public JRadioButton getSkinNoirEleves() {
+        return skinNoirEleves;
+    }
+
+    public void setSkinNoirEleves(JRadioButton skinNoirEleves) {
+        this.skinNoirEleves = skinNoirEleves;
+    }
+
+    public void setGrTypePartie(ButtonGroup grTypePartie) {
+        this.grTypePartie = grTypePartie;
+    }
+
+    public void setGrReseau(ButtonGroup grReseau) {
+        this.grReseau = grReseau;
+    }
+
+    public void setGrSkinBlanc(ButtonGroup grSkinBlanc) {
+        this.grSkinBlanc = grSkinBlanc;
+    }
+
+    public void setGrSkinNoir(ButtonGroup grSkinNoir) {
+        this.grSkinNoir = grSkinNoir;
+    }
+
+    public void setListeJoueursBlancs(chessComboBox listeJoueursBlancs) {
+        this.listeJoueursBlancs = listeJoueursBlancs;
+    }
+
+    public void setListeJoueursNoirs(chessComboBox listeJoueursNoirs) {
+        this.listeJoueursNoirs = listeJoueursNoirs;
     }
 }

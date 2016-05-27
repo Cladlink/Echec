@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Vector;
 
 /**
@@ -111,7 +112,7 @@ class Accueil
     /**
      * lancementPartie
      * Départ une partie selon les critères choisis dans le formulaire
-     * 
+     *
      * @param pseudo (pseudo du joueur1)
      * @param pseudoAdversaire (pseudo du joueur 2)
      * @param choixJB (choix de l'aspect des pièces blanches)
@@ -122,37 +123,35 @@ class Accueil
     void lancementPartie(String pseudo, String pseudoAdversaire,
                                 int choixJB, int choixJN, int modePartie, boolean netPartie)
     {
-
-	    Joueur jBlanc;
-	    if (pseudo.equals("anonymous"))
-		jBlanc = new Joueur(true);
-	    else
-		jBlanc = new Joueur(true, pseudo);
-
-	    Joueur jNoir;
-	    if (pseudoAdversaire.equals("anonymous"))
-		{
-		    System.out.println("coucou");
-		    jNoir = new Joueur(false);
-		}
-	    else
-		jNoir = new Joueur(false, pseudoAdversaire);
-
-	    this.partie = new Partie(jBlanc, jNoir, modePartie, netPartie, choixJB, choixJN);
+	    this.partie = new Partie(pseudo, pseudoAdversaire, modePartie, netPartie, choixJB, choixJN);
     }
-    
-    // ajout SD : méthodes spécifique pour le réseau.   
-    void lancementPartieReseau(String pseudo, int choixSkin, int modePartie)
+
+    // ajout SD : méthodes spécifique pour le réseau
+    /**
+     * lancementPartieReseau
+     *
+     *
+     * @param pseudo ()
+     * @param choixSkin ()
+     */
+    void lancementPartieReseau(String pseudo, int choixSkin)
     {
-
+        this.partie = new Partie(pseudo, choixSkin);
     }
+
+    /**
+      rejoindrePartieReseau
+
+     * @param pseudo ()
+     * @param choixSkin ()
+     */
     void rejoindrePartieReseau(String pseudo, int choixSkin)
     {
-	// instaciation de Partie avec ipserver
+	    // instaciation de Partie avec ipserver
     }
-	
+
     /**
-     * load todo
+     * load
      * recoit un etat du board et redémarre la partie
      *
      */
@@ -301,9 +300,18 @@ class Accueil
             piecesCimetiereN.add(new Fou(cim, false));
         for(i=0; i<Character.getNumericValue(nbPiecesN.charAt(4)); i++)
             piecesCimetiereN.add(new Reine(cim, false));
-        
+
     }
 
+    /**
+     * attenteDebutPartie
+     * comportement d'attente du début de la partie
+     *
+     */
+    synchronized void attenteDebutPartie()
+    {
+
+    }
 
     // getters & setters
     Partie getPartie() {
