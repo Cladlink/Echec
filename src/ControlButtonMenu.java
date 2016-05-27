@@ -47,6 +47,7 @@ class ControlButtonMenu implements ActionListener
                     return;
                 }
             }
+
             Joueur.inscriptionJoueur(pseudo);
             vue.majListeJoueur();
             vue.afficherFormulaire();

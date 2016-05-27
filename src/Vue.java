@@ -390,6 +390,7 @@ class Vue extends JFrame
         setVisible(true);
     }
 
+
     /**
      *
      * @param listener
