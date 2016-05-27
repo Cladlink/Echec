@@ -42,6 +42,7 @@ class Vue extends JFrame
     private chessButton statsJoueur;
     private chessButton creerPartieReseau;
     private chessButton lancerPartieReseau;
+    private chessButton rejoindrePartieReseau;
 
     private JRadioButton partieNormale;
     private JRadioButton partieTempsCoupsLimites;
@@ -107,6 +108,7 @@ class Vue extends JFrame
         statsJoueur = new chessButton(accueil.getStatsJoueurTitre());
         creerPartieReseau = new chessButton(accueil.getCreerPartieReseauTitre());
         lancerPartieReseau = new chessButton(accueil.getLancerPartieReseauTitre());
+        rejoindrePartieReseau = new chessButton(accueil.getRejoindrePartieReseauTitre());
 
         partieNormale = new JRadioButton(accueil.getPartieNormaleTitre(), true);
         partieNormale.setActionCommand("1");
@@ -406,6 +408,55 @@ class Vue extends JFrame
         statsJoueur.addActionListener(listener);
         creerPartieReseau.addActionListener(listener);
         lancerPartieReseau.addActionListener(listener);
+        rejoindrePartieReseau.addActionListener(listener);
+    }
+
+    public void creerWidgetRejoindrePartieReseau()
+    {
+        JPanel titreJeu = new JPanel();
+        titreJeu.setOpaque(false);
+        titreJeu.add(titre);
+
+        JPanel formulaire = new JPanel(new GridLayout(13, 1, 100, 0));
+        formulaire.setOpaque(false);
+        formulaire.add(Box.createVerticalGlue());
+        formulaire.add(Box.createVerticalGlue());
+        formulaire.add(joueur1);
+        formulaire.add(listeJoueursNoirs);
+        formulaire.add(Box.createVerticalGlue());
+        formulaire.add(skinNoir);
+        formulaire.add(skinBlancNormal);
+        formulaire.add(skinBlancProfs);
+        formulaire.add(skinBlancEleves);
+
+        JPanel nouveauJ = new JPanel(new GridLayout(6, 1, 0, 30));
+        nouveauJ.setOpaque(false);
+        nouveauJ.add(Box.createVerticalGlue());
+        nouveauJ.add(nouveauJoueur);
+        nouveauJ.add(rejoindrePartieReseau);
+        nouveauJ.add(Box.createVerticalGlue());
+        nouveauJ.add(retourMenu);
+
+        JPanel nouveauJP = new JPanel();
+        nouveauJP.add(Box.createHorizontalStrut(100));
+        nouveauJP.setOpaque(false);
+        nouveauJP.add(nouveauJ);
+
+        JPanel organisation = new JPanel(new BorderLayout());
+        organisation.setOpaque(false);
+        organisation.add(titreJeu, BorderLayout.NORTH);
+        organisation.add(formulaire, BorderLayout.CENTER);
+        organisation.add(nouveauJP, BorderLayout.EAST);
+
+
+        // Mise en place du fond d'écran
+        setLayout(new BorderLayout());
+        background = new JLabel(new ImageIcon("img/fond2_2.jpg"));
+        background.setSize(xSize, ySize);
+        background.setLayout(new FlowLayout());
+        background.add(organisation, BorderLayout.CENTER);
+
+        setContentPane(background);
     }
 
     /**
@@ -1174,5 +1225,9 @@ class Vue extends JFrame
 
     public void setListeJoueursNoirs(chessComboBox listeJoueursNoirs) {
         this.listeJoueursNoirs = listeJoueursNoirs;
+    }
+
+    public chessButton getRejoindrePartieReseau() {
+        return rejoindrePartieReseau;
     }
 }

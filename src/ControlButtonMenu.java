@@ -51,28 +51,21 @@ class ControlButtonMenu implements ActionListener
             vue.majListeJoueur();
             vue.afficherFormulaire();
         }
-        else if(e.getSource().equals(vue.getRejoindrePartie()))
+        else if(e.getSource().equals(vue.getRejoindrePartieReseau()))
         {
-            String adresse = vue.messagePop("Entrez l'adresse IP de l'adversaire :");
-            accueil.setAdresseIpReseau(adresse);
-            vue.pseudoJoueurReseau();
-            if(accueil.getPseudoReseau() == null)
-            {
-                String pseudoR = vue.messagePop("Voulez vous créer un nouveau joueur ?");
-                if(pseudoR == null)
-                    return;
-                else
-                    accueil.setPseudoReseau(pseudoR);
-            }
-            vue.skinReseau();
-
-
+            accueil.setAdresseIpReseau(vue.messagePop("Entrez l'adresse IP de l'adversaire :"));
+            accueil.setPseudoReseau(vue.getListeJoueursNoirs().getSelectedItem().toString());
+            accueil.setChoixSkinReseau(Integer.parseInt(vue.getGrSkinBlanc().getSelection().getActionCommand()));
             // ajout SD : à modifier, notamment sur les pseudos puisque à priori le joueur client
             // ne connait pas forcément le pseudo de l'autre.
 
             //accueil.rejoindrePartieReseau(pseudo, skin); //modePartie);
             // ajout SD : voir pour le choix de qui est blanc/noir (aléatoire)
             // + skins
+            if(accueil.getAdresseIpReseau() == null)
+                return;
+
+            accueil.rejoindrePartieReseau(accueil.getPseudoReseau(), accueil.getChoixSkinReseau());
             vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
             vue.creerWidgetPartie();
             accueil.getPartie().getBoard().majCasesAtteignable();
@@ -82,12 +75,15 @@ class ControlButtonMenu implements ActionListener
             vue.setControlMenu(new ControlMenu(accueil, vue));
             vue.setVisible(true);
 
-	    /* TO DO:
-	       - invalider la vue (setEnable ??)
-	       - créer un ThreadPartie client
-	     */
+            vue.setEnabled(false);
+            //ThreadPartie threadClient = new ThreadPartie(accueil.getPartie(), this.controlButton, 1234, false,
+                    //accueil.getAdresseIpReseau());
 
-	    
+            /* TO DO:
+               - invalider la vue (setEnable ??)
+               - créer un ThreadPartie client
+             */
+
         }
         else if(e.getSource().equals(vue.getNouvellePartie()))
             vue.afficherFormulaire();
@@ -106,6 +102,9 @@ class ControlButtonMenu implements ActionListener
         }
         else if( e.getSource().equals(vue.getRetourMenu()) )
             vue.afficherMenu();
+        else if(e.getSource().equals(vue.getRejoindrePartie()))
+            vue.creerWidgetRejoindrePartieReseau();
+
         else if( e.getSource().equals(vue.getLancerPartie()) )
         {
             int modePartie = Integer.parseInt(vue.getGrTypePartie().getSelection().getActionCommand());
@@ -144,7 +143,7 @@ class ControlButtonMenu implements ActionListener
             String pseudoJoueur = vue.getListeJoueursBlancs().getSelectedItem().toString();
             vue.setEnabled(false);
 
-            ThreadPartie tp = new ThreadPartie(accueil.getPartie(), controlButton, 1234, true, "127.0.0.1");
+            //ThreadPartie tp = new ThreadPartie(accueil.getPartie(), controlButton, 1234, true, "127.0.0.1");
 
             /*accueil.lancementPartieReseau(pseudoJoueur, choixJoueur);
             vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));

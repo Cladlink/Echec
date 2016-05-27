@@ -48,6 +48,7 @@ class Accueil
     private String statsJoueurTitre;
     private String creerPartieReseauTitre;
     private String lancerPartieReseauTitre;
+    private String rejoindrePartieReseauTitre;
 
     private String partieSelectionneePourChargement;
     private String pseudoChoisi;
@@ -78,6 +79,7 @@ class Accueil
         statsJoueurTitre = "Statistiques des joueurs";
         creerPartieReseauTitre = "Lancer une partie en réseau";
         lancerPartieReseauTitre = "Lancer la partie";
+        rejoindrePartieReseauTitre = "Rejoindre la partie";
 
         partieNormaleTitre = "normale";
         partieTempsCoupsLimitesTitre = "temps limité par coup";
@@ -462,5 +464,9 @@ class Accueil
 
     public void setLancerPartieReseauTitre(String lancerPartieReseauTitre) {
         this.lancerPartieReseauTitre = lancerPartieReseauTitre;
+    }
+
+    public String getRejoindrePartieReseauTitre() {
+        return rejoindrePartieReseauTitre;
     }
 }

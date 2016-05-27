@@ -1,12 +1,15 @@
+/*
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+*/
 /**
   Created by cladlink on 12/04/16.
- */
+ *//*
+
 class ThreadPartie extends Thread
 {
     private Joueur moi;
@@ -66,7 +69,8 @@ class ThreadPartie extends Thread
             // si je suis le joueur courant
                 if ( id == partie.getIdCurrentPlayer() )
                 {
-                     /*todo :
+                     */
+/*todo :
                       - début du tour (via controleur)
                       - attendre fin tour
                       - envoyer les infos
@@ -75,16 +79,19 @@ class ThreadPartie extends Thread
                       les 4 premiers servent aux déplacements (sauf roque)
                       typeroque = 0 si pas de roque, = 1 petit roque, = 2 grand roque
                       typepromo = 0 si pas de promo, = 1,2,... (type pièce) si promo
-                    */
+                    *//*
+
                 }
                 else
                 {
-                     /*todo :
+                     */
+/*todo :
                        - invalider la vue (via controleur)
                        - recevoir les infos
                        - si partiFinie == true : l'autre joueur à dépassé son temps de jeu (partie ou tour)  -> j'ai gagné
                        - sinon appeler control.updatePartie()
-                     */
+                     *//*
+
                     
                 }
             // - si partieFinie == true -> stop = true
@@ -141,3 +148,4 @@ class ThreadPartie extends Thread
         // mettre à jour Partie
     }
 }
+*/

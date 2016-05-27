@@ -12,6 +12,7 @@ class ControlButton extends MouseAdapter
 {
 
     //variable pour mode de partie
+
     private boolean isDateBlancDepart, isDateNoirDepart;
     private Date dateBlancDepart, dateNoirDepart;
     private java.util.Timer tmBlanc, tmNoir, tm;
