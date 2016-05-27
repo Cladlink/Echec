@@ -105,7 +105,9 @@ class Partie
     }
 
     void initPartie(String pseudo, String pseudoAdversaire, int modePartie,
-                            boolean netPartie, int choixJoueurB, int choixJoueurN) {
+                            boolean netPartie, int choixJoueurB, int choixJoueurN)
+    {
+
         if (pseudo.equals("anonymous"))
             this.joueurBlanc = new Joueur(true);
         else
@@ -137,8 +139,8 @@ class Partie
         // ajout SD : init chrono : par défaut 15 minutes -> à changer pour le mettre en construction
         if (modePartie == MODE_TIMERPARTY)
         {
-                chronoJoueurBlanc = 90000;
-                chronoJoueurNoir  = 90000;
+            chronoJoueurBlanc = 90000;
+            chronoJoueurNoir  = 90000;
         }
 
         // pour la partie en réseau
