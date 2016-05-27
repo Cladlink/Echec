@@ -40,6 +40,7 @@ class Vue extends JFrame
     private chessButton lancerPartie;
     private chessButton quitterJeu;
     private chessButton statsJoueur;
+    private chessButton creerPartieReseau;
     private chessButton lancerPartieReseau;
 
     private JRadioButton partieNormale;
@@ -104,6 +105,7 @@ class Vue extends JFrame
         quitterJeu = new chessButton(accueil.getQuitterJeuTitre());
         partieRandom = new chessButton(accueil.getPartieRandomTitre());
         statsJoueur = new chessButton(accueil.getStatsJoueurTitre());
+        creerPartieReseau = new chessButton(accueil.getCreerPartieReseauTitre());
         lancerPartieReseau = new chessButton(accueil.getLancerPartieReseauTitre());
 
         partieNormale = new JRadioButton(accueil.getPartieNormaleTitre(), true);
@@ -316,7 +318,7 @@ class Vue extends JFrame
         JPanel nouveauJ = new JPanel(new GridLayout(6, 1, 0, 30));
         nouveauJ.setOpaque(false);
         nouveauJ.add(nouveauJoueur);
-        nouveauJ.add(lancerPartie);
+        nouveauJ.add(lancerPartieReseau);
         nouveauJ.add(Box.createVerticalGlue());
         nouveauJ.add(Box.createVerticalGlue());
         nouveauJ.add(Box.createVerticalGlue());
@@ -356,7 +358,7 @@ class Vue extends JFrame
         centre.add(Box.createVerticalGlue());
         centre.add(nouvellePartie);
         centre.add(chargerPartie);
-        centre.add(lancerPartieReseau);
+        centre.add(creerPartieReseau);
         centre.add(rejoindrePartie);
         centre.add(partieRandom);
         centre.add(statsJoueur);
@@ -402,7 +404,7 @@ class Vue extends JFrame
         quitterJeu.addActionListener(listener);
         chargerPartie.addActionListener(listener);
         statsJoueur.addActionListener(listener);
-        lancerPartieReseau.addActionListener(listener);
+        creerPartieReseau.addActionListener(listener);
     }
 
     /**
@@ -662,7 +664,7 @@ class Vue extends JFrame
 
     public void statistiquesJoueur()
     {
-        int i, j;
+        int i;
         BDDManager bdd = new BDDManager();
         bdd.start();
 
@@ -673,7 +675,7 @@ class Vue extends JFrame
             pseudoJoueurs[i] = listeJoueur.get(i).get(1);
 
         accueil.setPseudoChoisi((String) JOptionPane.showInputDialog(null, "Afficher les statistique du joueur :",
-                "XXXXXXXXXXXXXXXXXX", JOptionPane.QUESTION_MESSAGE, null, pseudoJoueurs,
+                "Statistiques", JOptionPane.QUESTION_MESSAGE, null, pseudoJoueurs,
                 pseudoJoueurs[0]));
 
         bdd.stop();
@@ -700,6 +702,47 @@ class Vue extends JFrame
 
         bdd.stop();
     }
+
+    void pseudoJoueurReseau()
+    {
+        int i;
+        BDDManager bdd = new BDDManager();
+        bdd.start();
+
+        ArrayList<ArrayList<String>> listeJoueur = bdd.ask("SELECT * FROM JOUEUR;");
+
+        String[] pseudoJoueurs = new String[listeJoueur.size()];
+        for(i=0;i<listeJoueur.size(); i++)
+            pseudoJoueurs[i] = listeJoueur.get(i).get(1);
+
+        accueil.setPseudoReseau((String) JOptionPane.showInputDialog(null, "Choisissez un pseudo :",
+                "Pseudo", JOptionPane.QUESTION_MESSAGE, null, pseudoJoueurs,
+                pseudoJoueurs[0]));
+
+        bdd.stop();
+    }
+
+    void skinReseau()
+    {
+        String[] choix = {"Normal", "Profeseur", "Elève"};
+
+        String skin = ((String)JOptionPane.showInputDialog(null, "Choisissez un skin pour vos pièces :", "Choix du skin",
+                JOptionPane.QUESTION_MESSAGE, null, choix, choix[0]));
+
+        switch (skin)
+        {
+            case "Normal":
+                accueil.setChoixSkinReseau(1);
+                break;
+            case "Professeur":
+                accueil.setChoixSkinReseau(2);
+                break;
+            case "Elève":
+                accueil.setChoixSkinReseau(3);
+                break;
+        }
+    }
+
 
     /**
      *
@@ -826,6 +869,7 @@ class Vue extends JFrame
             return "H";
         return " ";
     }
+
     /**
      *
      * @param histoCoups
@@ -886,20 +930,16 @@ class Vue extends JFrame
     chessButton getRetourMenu() { return retourMenu; }
     chessButton getQuitterJeu() { return quitterJeu; }
     chessButton getPartieRandom() { return partieRandom; }
-
-    public chessButton getChargerPartie() {
+    chessButton getChargerPartie() {
         return chargerPartie;
     }
-
-    public chessButton getStatsJoueur() {
+    chessButton getStatsJoueur() {
         return statsJoueur;
     }
-
-    public JMenuItem getRetourMenuPrincipal() {
+    JMenuItem getRetourMenuPrincipal() {
         return retourMenuPrincipal;
     }
-
-    public chessButton getLancerPartieReseau() {
-        return lancerPartieReseau;
+    chessButton getCreerPartieReseau() {
+        return creerPartieReseau;
     }
 }

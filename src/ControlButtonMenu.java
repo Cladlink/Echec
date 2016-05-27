@@ -53,13 +53,25 @@ class ControlButtonMenu implements ActionListener
         }
         else if(e.getSource().equals(vue.getRejoindrePartie()))
         {
-            vue.messagePop("Entrez l'adresse IP de l'adversaire :");
+            String adresse = vue.messagePop("Entrez l'adresse IP de l'adversaire :");
+            accueil.setAdresseIpReseau(adresse);
+            vue.pseudoJoueurReseau();
+            if(accueil.getPseudoReseau() == null)
+            {
+                String pseudoR = vue.messagePop("Voulez vous créer un nouveau joueur ?");
+                if(pseudoR == null)
+                    return;
+                else
+                    accueil.setPseudoReseau(pseudoR);
+            }
+            vue.skinReseau();
+
 
             // ajout SD : à modifier, notamment sur les pseudos puisque à priori le joueur client
             // ne connait pas forcément le pseudo de l'autre.
 
             //accueil.rejoindrePartieReseau(pseudo, skin); //modePartie);
-            // ajout SD : voir pour le choix de qui est blanc/noir
+            // ajout SD : voir pour le choix de qui est blanc/noir (aléatoire)
             // + skins
             vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
             vue.creerWidgetPartie();
@@ -163,7 +175,7 @@ class ControlButtonMenu implements ActionListener
             else
                 System.err.println("escape");
         }
-        else if(e.getSource().equals(vue.getLancerPartieReseau()))
+        else if(e.getSource().equals(vue.getCreerPartieReseau()))
         {
             vue.creerWidgetFormulaireReseau();
         }
