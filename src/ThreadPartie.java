@@ -13,6 +13,7 @@ class ThreadPartie extends Thread
     private String monPseudo, pseudoAdversaire;
     private int monSkin, skinAdversaire;
     private int modePartie;
+    private boolean jeSuisBlanc;
     private Partie partie;
     private boolean isServer;
     private ServerSocket conn;
@@ -62,41 +63,43 @@ class ThreadPartie extends Thread
         
 
         // ajout SD
-        try
+        /*try
         {
             while (!stop)
             {
             // si je suis le joueur courant
                 if ( id == partie.getIdCurrentPlayer() )
                 {
-                    /*todo :
-                            - début du tour (via controleur)
-                            - attendre fin tour
-                            - envoyer les infos
-                            Rq: pour faciliter, on peut envoyer tout le temps les même infos qqs soit le mode
-                            par exemple: rowsrc,colsrc,rowdest,coldest,typeroque, typepromo, chronojoueurblanc,chronojoueurnoir,partiefinie
-                            les 4 premiers servent aux déplacements (sauf roque)
-                            typeroque = 0 si pas de roque, = 1 petit roque, = 2 grand roque
-                            typepromo = 0 si pas de promo, = 1,2,... (type pièce) si promo
+                    /*
+                    todo :
+                        - début du tour (via controleur)
+                        - attendre fin tour
+                        - envoyer les infos
+                        Rq: pour faciliter, on peut envoyer tout le temps les même infos qqs soit le mode
+                        par exemple: rowsrc,colsrc,rowdest,coldest,typeroque, typepromo, chronojoueurblanc,chronojoueurnoir,partiefinie
+                        les 4 premiers servent aux déplacements (sauf roque)
+                        typeroque = 0 si pas de roque, = 1 petit roque, = 2 grand roque
+                        typepromo = 0 si pas de promo, = 1,2,... (type pièce) si promo
                     */
-                }
+               /* }
                 else
-                {
-                     /*todo :
+                {*/
+                     /*
+                     todo :
                        - invalider la vue (via controleur)
                        - recevoir les infos
                        - si partiFinie == true : l'autre joueur à dépassé son temps de jeu (partie ou tour)  -> j'ai gagné
                        - sinon appeler control.updatePartie()
                      */
                     
-                }
+                /*}
             // - si partieFinie == true -> stop = true
             }
         }
         catch (IOException e)
         {
             e.printStackTrace();
-        }
+        }*/
 
     }
 
@@ -118,10 +121,9 @@ class ThreadPartie extends Thread
         oos.writeInt(monSkin);
         oos.writeInt(modePartie);
         oos.writeBoolean(jeSuisBlanc);
-        String autrePseudo = (String)ois.readObject();
-        int skinAdversaire = ois.readInt();
-
-        // mettre à jour partie
+        pseudoAdversaire = (String)ois.readObject();
+        skinAdversaire = ois.readInt();
+        partie.initPartie(monPseudo, pseudoAdversaire, modePartie, true, monSkin, skinAdversaire);
     }
 
     private void initClient() throws IOException,ClassNotFoundException
@@ -133,14 +135,12 @@ class ThreadPartie extends Thread
         // échanger les infos (pseudos, qui joue en premier, ...)
         // recoi : autre pseudo, autre skin, mode partie, qui est blanc
         // envoi : mon pseudo, mon skin
-        String autrePseudo = (String)ois.readObject();
-        int skinAdversaire = ois.readInt();
-        int modePartie = ois.readInt();
-        boolean jeSuisBlanc = ois.readBoolean();
+        pseudoAdversaire = (String)ois.readObject();
+        skinAdversaire = ois.readInt();
+        modePartie = ois.readInt();
+        jeSuisBlanc = ois.readBoolean();
         oos.writeObject(monPseudo);
         oos.writeInt(monSkin);
-
-
-        // mettre à jour Partie
+        partie.initPartie(monPseudo, pseudoAdversaire, modePartie, true, monSkin, skinAdversaire);
     }
 }
