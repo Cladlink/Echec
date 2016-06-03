@@ -84,7 +84,6 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
             }
         };
         chronoNoir = new Timer(1000,alNoir);
-
         startChrono();
     }
 
@@ -168,7 +167,7 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
         Calendar calendar = Calendar.getInstance(); // creates calendar
         calendar.setTime(new Date()); // sets calendar time/date
 
-        Date tempsActuel = calendar.getTime();;
+        Date tempsActuel = calendar.getTime();
         //tour blanc
         if ( accueil.getPartie().isTourBlanc())
         {
@@ -252,6 +251,16 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
 	     - sinon si mode temps partie : (re)démarrer le chrono visuel
 	     - valider la vue
 	 */
+        if(accueil.getPartie().getModePartie() == 2)
+        {
+
+        }
+        else if(accueil.getPartie().getModePartie() == 3)
+        {
+
+        }
+
+        vue.validate();
     }
 
     // ajout SD : met à jour modèle+vue en fonction des infos recues, partie en
