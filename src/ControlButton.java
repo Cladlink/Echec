@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -8,7 +9,7 @@ import javax.swing.Timer;
 /**
  Created by Michael on 06/04/16.
  */
-class ControlButton extends MouseAdapter
+class ControlButton extends MouseAdapter implements MouseMotionListener
 {
 
     //variable pour mode de partie
@@ -281,8 +282,6 @@ class ControlButton extends MouseAdapter
         int row = (e.getY()-20)/80;
         int column = (e.getX()-360)/80;
         Case[][] plateau = accueil.getPartie().getBoard().getPlateau();
-        joueurBlanc  = accueil.getPartie().getJoueurBlanc().getPseudo();
-        joueurNoir = accueil.getPartie().getJoueurNoir().getPseudo();
         if (e.getSource().equals(vue.getVueEchiquier()))
         {
             if( row >= 0
@@ -324,6 +323,7 @@ class ControlButton extends MouseAdapter
                     {
                         // ajout SD : mettre à jour partie.partieFinie
                         vue.jOptionMessage("ECHEC ET MAT !");
+
                         if (accueil.getPartie().isTourBlanc())
                             Joueur.ajouteVictoire(joueurBlanc, joueurNoir);
                         else
@@ -340,6 +340,7 @@ class ControlButton extends MouseAdapter
                     {
                         // ajout SD : mettre à jour partie.partieFinie
                         vue.jOptionMessage("PAT");
+
                         if (accueil.getPartie().isTourBlanc())
                             Joueur.ajoutePat(joueurBlanc, joueurNoir);
                         else
@@ -375,6 +376,64 @@ class ControlButton extends MouseAdapter
                 }
             }
         }
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+
+        Point point = e.getPoint();
+        /**
+         * Modifier ça : s'amuser avec les coordonnées pour trouver le bon calibrage
+         */
+        // int row = (int) ((point.getY() - 100) / 80) ;
+        // int column = (int) ((point.getX() - 450 ) / 80);
+        int row = (int) ((point.getY() - 20) / 80) ;
+        int column = (int) ((point.getX() - 360 ) / 80);
+        Case[][] plateau = accueil.getPartie().getBoard().getPlateau();
+        // pour rester dans le plateau
+        String barreStatutMessage = "";
+        if (row >= 0
+                && row <= 7
+                && column >= 0
+                && column <= 7)
+        {
+            switch (column)
+            {
+                case 0 :
+                    barreStatutMessage += 'A';
+                    break;
+                case 1 :
+                    barreStatutMessage += 'B';
+                    break;
+                case 2 :
+                    barreStatutMessage += 'C';
+                    break;
+                case 3 :
+                    barreStatutMessage += 'D';
+                    break;
+                case 4 :
+                    barreStatutMessage += 'E';
+                    break;
+                case 5 :
+                    barreStatutMessage += 'F';
+                    break;
+                case 6 :
+                    barreStatutMessage += 'G';
+                    break;
+                case 7 :
+                    barreStatutMessage += 'H';
+                    break;
+            }
+            barreStatutMessage += " " + (Math.abs(row-8));
+            vue.getVueEchiquier().getBs().setStatutText(barreStatutMessage);
+            vue.getVueEchiquier().repaint();
+        }
+
+
+    }
+
+    public void mouseDragged(MouseEvent e){
+
     }
 
     /**

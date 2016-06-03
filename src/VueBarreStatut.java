@@ -6,6 +6,7 @@ import java.awt.*;
 class VueBarreStatut
 {
     private String statutText;
+    private String joueurBlanc = "", joueurNoir = "";
     private Partie partie;
     private VueEchiquier vueEchiquier;
 
@@ -14,6 +15,8 @@ class VueBarreStatut
         this.partie = partie;
         this.vueEchiquier = vueEchiquier;
         this.statutText = "";
+        this.joueurBlanc += "joueur Blanc : " + this.partie.getJoueurBlanc().getPseudo();
+        this.joueurNoir += " joueur Noir : " + this.partie.getJoueurNoir().getPseudo();
     }
     /**
      * PaintMe
@@ -28,10 +31,14 @@ class VueBarreStatut
         g.setColor(Color.black);
         g.fillRect(xBase,yBase-50, vueEchiquier.getWidth(), 40);
         g.setColor(Color.white);
-        g.drawString(statutText, xBase + 5, yBase-32);
+
+        g.drawString(statutText, xBase + 650, yBase-32);
+        g.drawString(joueurBlanc, xBase + 5, yBase -32);
+        g.drawString(joueurNoir, xBase + 1200, yBase -32);
     }
 
-    public String getStatutText() {
+    public String getStatutText()
+    {
         return statutText;
     }
     public void setStatutText(String statutText) {

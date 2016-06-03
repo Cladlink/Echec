@@ -18,7 +18,7 @@ class ThreadPartie extends Thread
     private boolean isServer;
     private ServerSocket conn;
     private Socket comm;
-    private ControlButtonMenu controller;
+    private ControlButton controller;
     private int port;
 
     // ajout SD
@@ -27,7 +27,7 @@ class ThreadPartie extends Thread
     private ObjectOutputStream oos;
     private int id; // =1 si joueur blanc et 2 si joueur noir
     
-    public ThreadPartie(Partie partie, ControlButtonMenu controller, int port, boolean isServer,
+    public ThreadPartie(Partie partie, ControlButton controller, int port, boolean isServer,
                         String ipServer)
     {
         this.partie = partie;
@@ -70,7 +70,7 @@ class ThreadPartie extends Thread
             // si je suis le joueur courant
                 if ( id == partie.getIdCurrentPlayer() )
                 {
-                    /*
+                   */ /*
                     todo :
                         - début du tour (via controleur)
                         - attendre fin tour

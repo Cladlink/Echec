@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -537,6 +538,15 @@ class Vue extends JFrame
     {
         if (vueEchiquier != null)
             vueEchiquier.addMouseListener(e);
+    }
+
+    /**
+     * setControlMotion
+     */
+    void setControlMotion(MouseMotionListener e)
+    {
+        if (vueEchiquier != null)
+            vueEchiquier.addMouseMotionListener(e);
     }
 
     /**
@@ -1231,4 +1241,5 @@ class Vue extends JFrame
     public chessButton getRejoindrePartieReseau() {
         return rejoindrePartieReseau;
     }
+
 }

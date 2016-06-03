@@ -71,7 +71,6 @@ class ControlButtonMenu implements ActionListener
             vue.creerWidgetPartie();
             accueil.getPartie().getBoard().majCasesAtteignable();
             vue.setControlButtonMenu(new ControlButton(accueil, vue));
-
             vue.initMenuPartie();
             vue.setControlMenu(new ControlMenu(accueil, vue));
             vue.setVisible(true);
@@ -90,13 +89,12 @@ class ControlButtonMenu implements ActionListener
             vue.afficherFormulaire();
         else if(e.getSource().equals(vue.getPartieRandom()))
         {
-            accueil.lancementPartie(
-                    "anonymous", "anonymous",1 ,1 , 1, false);
+            accueil.lancementPartie("anonymous", "anonymous",1 ,1 , 1, false);
             vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
             vue.creerWidgetPartie();
             accueil.getPartie().getBoard().majCasesAtteignable();
             vue.setControlButtonMenu(new ControlButton(accueil, vue));
-
+            vue.setControlMotion(new ControlButton(accueil, vue));
             vue.initMenuPartie();
             vue.setControlMenu(new ControlMenu(accueil, vue));
             vue.setVisible(true);
@@ -109,7 +107,6 @@ class ControlButtonMenu implements ActionListener
         else if( e.getSource().equals(vue.getLancerPartie()) )
         {
             int modePartie = Integer.parseInt(vue.getGrTypePartie().getSelection().getActionCommand());
-            boolean netPartie = false;
             int choixJoueurB = Integer.parseInt(vue.getGrSkinBlanc().getSelection().getActionCommand());
             int choixJOueurN = Integer.parseInt(vue.getGrSkinNoir().getSelection().getActionCommand());
             String pseudoB = vue.getListeJoueursBlancs().getSelectedItem().toString();
@@ -120,12 +117,12 @@ class ControlButtonMenu implements ActionListener
                 vue.jOptionMessage("Vous ne pouvez pas jouer contre vous-même !");
                 return;
             }
-
-                accueil.lancementPartie(pseudoB, pseudoN, choixJoueurB, choixJOueurN, modePartie, netPartie);
+                accueil.lancementPartie(pseudoB, pseudoN, choixJoueurB, choixJOueurN, modePartie, false);
                 vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
                 vue.creerWidgetPartie();
                 accueil.getPartie().getBoard().majCasesAtteignable();
                 vue.setControlButtonMenu(new ControlButton(accueil, vue));
+                vue.setControlMotion(new ControlButton(accueil, vue));
                 vue.initMenuPartie();
                 vue.setControlMenu(new ControlMenu(accueil, vue));
                 vue.setVisible(true);

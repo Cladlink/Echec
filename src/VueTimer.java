@@ -12,6 +12,7 @@ class VueTimer
     private boolean isBlanc;
     private int minute, seconde;
     private Timer chrono;
+    private DigitalNumber digitDizaineMinute, digitMinute, digitDizaineSeconde, digitSeconde;
 
     VueTimer(Partie partie, boolean isBlanc)
     {
@@ -39,19 +40,53 @@ class VueTimer
      */
     void paintMe(Graphics g, int xBase, int yBase, Vue vue)
     {
+        int xBaseDigit = xBase+20;
+        int yBaseDigit = yBase+25;
+
         // todo côté model
         if ( partie.getModePartie() == 2
                 || partie.getModePartie() == 3 )
         {
-	    // ajout SD
-	    // minute = ...; // a calculer en fonction du chrono du joueur courant
-	    // seconde = ...; // a calculer en fonction du chrono du joueur courant
-	    
-            g.setColor(Color.BLUE);
+            // ajout SD
+            // minute = ...; // a calculer en fonction du chrono du joueur courant
+            // seconde = ...; // a calculer en fonction du chrono du joueur courant
+
+            g.setColor(Color.WHITE);
             g.fillRect(xBase, yBase, 100, 50);// 160 80 || 1110 80
             g.fillRect(xBase, yBase, 100, 50);
-            g.setColor(Color.BLACK);
-            g.drawString(minute + " : " + seconde, xBase+30, yBase+30);
+            //plus besoin car digit mtn
+            //g.setColor(Color.BLACK);
+            //g.drawString(minute + " : " + seconde, xBase+30, yBase+30);
+
+            //set digit
+            digitDizaineMinute = new DigitalNumber(xBaseDigit, yBaseDigit,1);
+            digitMinute = new DigitalNumber(xBaseDigit+15, yBaseDigit,1);
+            digitDizaineSeconde = new DigitalNumber(xBaseDigit+40, yBaseDigit,1);
+            digitSeconde = new DigitalNumber(xBaseDigit+55, yBaseDigit,1);
+
+            //-minutes
+            if (minute>=10) {
+                digitDizaineMinute.setNumber(minute/10);
+                digitMinute.setNumber(minute%10);
+            }
+            else{
+                digitDizaineMinute.setNumber(0);
+                digitMinute.setNumber(minute%10);
+            }
+            //seconde
+            if (seconde>=10){
+                digitDizaineSeconde.setNumber(seconde/10);
+                digitSeconde.setNumber(seconde%10);
+            }
+            else{
+                digitDizaineSeconde.setNumber(0);
+                digitSeconde.setNumber(seconde%10);
+            }
+
+            digitDizaineMinute.drawNumber(g);
+            digitMinute.drawNumber(g);
+            digitDizaineSeconde.drawNumber(g);
+            digitSeconde.drawNumber(g);
 
         }
     }

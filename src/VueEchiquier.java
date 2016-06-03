@@ -57,6 +57,11 @@ class VueEchiquier extends JPanel
         super.paintComponent(g);
         g.drawImage(bg.getImage(), 0, 0, 1380, 768, null);
         this.g = g;
+        if(vue.getAccueil().getPartie().isTourBlanc())
+        {
+            g.setColor(Color.WHITE);
+            g.drawRect(355, 15, 650, 650);
+        }
         for (int i = 0; i < 8; i++)
         {
             for (int j = 0; j < 8; j++)
@@ -97,6 +102,7 @@ class VueEchiquier extends JPanel
                 isDepPossible = false;
                 isDepPossiblePiece = false;
             }
+
 
         }
 

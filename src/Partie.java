@@ -111,10 +111,10 @@ class Partie
         if (pseudo.equals("anonymous"))
             this.joueurBlanc = new Joueur(true);
         else
-            this.joueurNoir = new Joueur(true, pseudo);
+            this.joueurBlanc = new Joueur(true, pseudo);
 
         if (pseudoAdversaire.equals("anonymous"))
-            this.joueurBlanc = new Joueur(false);
+            this.joueurNoir = new Joueur(false);
         else
             this.joueurNoir = new Joueur(false, pseudoAdversaire);
 
