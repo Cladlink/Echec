@@ -16,7 +16,7 @@ public class MusiqueChess
     static void playMedievalTheme()
     {
         JFXPanel jfxPanel = new JFXPanel();
-        mp = new MediaPlayer(new Media(Paths.get(PERCU).toUri().toString()));
+        mp = new MediaPlayer(new Media(Paths.get(MEDIEVAL_THEME).toUri().toString()));
         //mp.play();
         mp.setCycleCount(MediaPlayer.INDEFINITE);
     }

@@ -16,11 +16,12 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
 
     private boolean isDateBlancDepart, isDateNoirDepart;
     private Date dateBlancDepart, dateNoirDepart;
-    private java.util.Timer tmBlanc, tmNoir, tm;
+    private java.util.Timer tm;
     private Timer chronoBlanc;
     private Timer chronoNoir;
     private String joueurBlanc, joueurNoir;
-
+    private TimerTask tt;
+    private java.util.Timer timer;
     private Accueil accueil;
     private Vue vue;
     private int secondeBlanc=0, minuteBlanc=0, secondeNoir=0, minuteNoir=0;
@@ -112,27 +113,28 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
                 secondeNoir = 0;
                 minuteNoir = 15;
             }
-            chronoBlanc.start();
         }
     }
 
     // ajout SD : arrête le chrono du joueur courant
+
+    /**
+     * stopChrono
+     * arrete le chrono et demarre celui d'après
+     *
+     */
     private void stopChrono()
     {
         if (accueil.getPartie().isTourBlanc())
         {
             chronoNoir.stop();
-            //remet a 30 si c'est un mode 2
-            if (accueil.getPartie().getModePartie()==2)
-                secondeBlanc = 30;
+            secondeBlanc = 30;
             chronoBlanc.start();
         }
         else
         {
             chronoBlanc.stop();
-            //remet a 30 si c'est un mode 2
-            if (accueil.getPartie().getModePartie()==2)
-                secondeNoir = 30;
+            secondeNoir = 30;
             chronoNoir.start();
         }
     }
@@ -140,18 +142,13 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
     /**
      *
      */
-    synchronized void tourLimite()
+    private synchronized void tourLimite()
     {
-        java.util.Timer timer;
-        if (accueil.getPartie().isTourBlanc())
-        {
-            timer = tmBlanc;
-        }
-        else
-            timer = tmNoir;
-
+        if (timer != null)
+            timer.cancel();
         // ajout SD : mettre tm en attribut sinon inaccessible par d'autres méthodes
-        TimerTask tt = new TimerTask()
+        timer = new java.util.Timer();
+        tt = new TimerTask()
         {
             @Override
             public void run()
@@ -159,10 +156,8 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
                 finDeJeuTemps();
             }
         };
-            if (timer != null)
-                timer.cancel();
-            timer = new java.util.Timer();
-            timer.schedule(tt, 30000);
+
+        timer.schedule(tt, 30000);
     }
 
     /**
@@ -213,6 +208,8 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
     }
 
     /**
+     * finDeJeuTemps
+     * Met fin à la partie si la variable partieFinie est à true dans Partie.
      *
      */
     private synchronized void finDeJeuTemps()
@@ -389,7 +386,6 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
         // int column = (int) ((point.getX() - 450 ) / 80);
         int row = (int) ((point.getY() - 20) / 80) ;
         int column = (int) ((point.getX() - 360 ) / 80);
-        Case[][] plateau = accueil.getPartie().getBoard().getPlateau();
         // pour rester dans le plateau
         String barreStatutMessage = "";
         if (row >= 0
