@@ -75,7 +75,7 @@ class ThreadPartie extends Thread
                         - attendre fin tour
                         - envoyer les infos
                         Rq: pour faciliter, on peut envoyer tout le temps les même infos qqs soit le mode
-                        par exemple: rowsrc,colsrc,rowdest,coldest,typeroque, typepromo, chronojoueurblanc,chronojoueurnoir,partiefinie
+                        par exemple: rowsrc,colsrc,rowdest,coldest, typeroque, typepromo, chronojoueurblanc,chronojoueurnoir,partiefinie
                         les 4 premiers servent aux déplacements (sauf roque)
                         typeroque = 0 si pas de roque, = 1 petit roque, = 2 grand roque
                         typepromo = 0 si pas de promo, = 1,2,... (type pièce) si promo
@@ -84,7 +84,8 @@ class ThreadPartie extends Thread
                     partie.waitFinTour();
                     oos.writeObject(partie.getCaseSrc());
                     oos.writeObject(partie.getCaseDest());
-               }
+                    oos.writeObject(partie.isPartieFinie());
+                }
                 else
                 {
                      /*

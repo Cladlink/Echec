@@ -236,7 +236,7 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
      */
     public void enableView(boolean state)
     {
-
+        vue.setEnabled(!state);
     }
 
     // ajout SD : déclenche le début du tour pour partie réseau et joueur courant
@@ -251,16 +251,26 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
 	     - sinon si mode temps partie : (re)démarrer le chrono visuel
 	     - valider la vue
 	 */
-        if(accueil.getPartie().getModePartie() == 2)
+
+
+        if(accueil.getPartie().getModePartie() == 2) //Temps par tour
         {
+            tourLimite();
+            //kevin : appele l'algo pour savoir si partie fini ou pas
+            if (accueil.getPartie().getModePartie() == 2)
+                tourLimite();
+            else if (accueil.getPartie().getModePartie() == 3)
+                tempsLimite();
 
+            //change de joueur donc chrono inversé
+            stopChrono();
         }
-        else if(accueil.getPartie().getModePartie() == 3)
+        else if(accueil.getPartie().getModePartie() == 3) //temps par partie
         {
-
+            //todo : Michael
         }
 
-        vue.validate();
+        vue.setEnabled(true);
     }
 
     // ajout SD : met à jour modèle+vue en fonction des infos recues, partie en
