@@ -65,7 +65,8 @@ class VueTimer
             digitSeconde = new DigitalNumber(xBaseDigit+55, yBaseDigit,1);
 
             //-minutes
-            if (minute>=10) {
+            if (minute>=10)
+            {
                 digitDizaineMinute.setNumber(minute/10);
                 digitMinute.setNumber(minute%10);
             }
@@ -74,60 +75,39 @@ class VueTimer
                 digitMinute.setNumber(minute%10);
             }
             //seconde
-            if (seconde>=10){
+            if (seconde>=10)
+            {
                 digitDizaineSeconde.setNumber(seconde/10);
                 digitSeconde.setNumber(seconde%10);
             }
-            else{
+            else
+            {
                 digitDizaineSeconde.setNumber(0);
                 digitSeconde.setNumber(seconde%10);
             }
-
             digitDizaineMinute.drawNumber(g);
             digitMinute.drawNumber(g);
             digitDizaineSeconde.drawNumber(g);
             digitSeconde.drawNumber(g);
-
         }
     }
 
     public Partie getPartie() {
         return partie;
     }
-
     public void setPartie(Partie partie) {
         this.partie = partie;
     }
-
     public boolean isBlanc() {
         return isBlanc;
     }
-
     public void setBlanc(boolean blanc) {
         isBlanc = blanc;
     }
-
-    public int getMinute() {
-        return minute;
-    }
-
     public void setMinute(int minute) {
         this.minute = minute;
     }
-
-    public int getSeconde() {
-        return seconde;
-    }
-
     public void setSeconde(int seconde) {
         this.seconde = seconde;
-    }
-
-    public Timer getChrono() {
-        return chrono;
-    }
-
-    public void setChrono(Timer chrono) {
-        this.chrono = chrono;
     }
 }

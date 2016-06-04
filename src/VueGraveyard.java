@@ -11,6 +11,11 @@ class VueGraveyard
     private ImageIcon bgCimetiere;
     private boolean isBlanc;
 
+    /**
+     * VueGraveYard todo
+     * @param partie ()
+     * @param isBlanc ()
+     */
     VueGraveyard(Partie partie, boolean isBlanc)
     {
         this.partie = partie;

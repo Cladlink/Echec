@@ -3,7 +3,11 @@
  */
 class Reine extends Piece
 {
-
+    /**
+     * Reine todo
+     * @param caseInitiale
+     * @param isBlanc
+     */
     Reine(Case caseInitiale, boolean isBlanc)
     {
         super(caseInitiale, isBlanc);

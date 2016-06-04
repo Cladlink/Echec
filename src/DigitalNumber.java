@@ -7,6 +7,14 @@ class DigitalNumber
 {
     private Led[] leds;
 
+    /**
+     * DigitalNumber
+     *
+     * @param x ()
+     * @param y ()
+     * @param k ()
+     * TODO adonis
+     */
     DigitalNumber(int x, int y, int k)
     {
         leds = new Led[7];
@@ -19,6 +27,12 @@ class DigitalNumber
         leds[6] = new Led(x+2*k,y+11*k,k,"horiz");
     }
 
+    /**
+     * setNumber
+     * @param num
+     *
+     * TODO adonis
+     */
     void setNumber(int num)
     {
         if(num==0)
@@ -122,18 +136,15 @@ class DigitalNumber
         }
     }
 
-    public void turnOffNumber()
-    {
-        for(int i=0;i<7;i++)
-        {
-            leds[i].setState(false);
-        }
-    }
-
+    /**
+     * drawNumber
+     * dessine le nombre voulu
+     * todoAdonis
+     * @param g2 (sert à dessiner les leds)
+     */
     void drawNumber(Graphics g2)
     {
-        for(int i=0; i<7; i++){
+        for(int i=0; i<7; i++)
             leds[i].render(g2);
-        }
     }
 }

@@ -419,55 +419,43 @@ class Accueil
         this.partieSelectionneePourChargement = partieSelectionneePourChargement;
     }
 
-    public String getStatsJoueurTitre() {
+    String getStatsJoueurTitre() {
         return statsJoueurTitre;
     }
-
-    public String getPseudoChoisi() {
+    String getPseudoChoisi() {
         return pseudoChoisi;
     }
-
-    public void setPseudoChoisi(String pseudoChoisi) {
+    void setPseudoChoisi(String pseudoChoisi) {
         this.pseudoChoisi = pseudoChoisi;
     }
-
-    public int getChoixSkinReseau() {
+    int getChoixSkinReseau() {
         return choixSkinReseau;
     }
-
-    public void setChoixSkinReseau(int choixSkinReseau) {
+    void setChoixSkinReseau(int choixSkinReseau) {
         this.choixSkinReseau = choixSkinReseau;
     }
-
-    public String getPseudoReseau() {
+    String getPseudoReseau() {
         return pseudoReseau;
     }
-
-    public void setPseudoReseau(String pseudoReseau) {
+    void setPseudoReseau(String pseudoReseau) {
         this.pseudoReseau = pseudoReseau;
     }
-
-    public String getAdresseIpReseau() {
+    String getAdresseIpReseau() {
         return adresseIpReseau;
     }
-
-    public void setAdresseIpReseau(String adresseIpReseau) {
+    void setAdresseIpReseau(String adresseIpReseau) {
         this.adresseIpReseau = adresseIpReseau;
     }
-
-    public String getCreerPartieReseauTitre() {
+    String getCreerPartieReseauTitre() {
         return creerPartieReseauTitre;
     }
-
-    public String getLancerPartieReseauTitre() {
+    String getLancerPartieReseauTitre() {
         return lancerPartieReseauTitre;
     }
-
-    public void setLancerPartieReseauTitre(String lancerPartieReseauTitre) {
+    void setLancerPartieReseauTitre(String lancerPartieReseauTitre) {
         this.lancerPartieReseauTitre = lancerPartieReseauTitre;
     }
-
-    public String getRejoindrePartieReseauTitre() {
+    String getRejoindrePartieReseauTitre() {
         return rejoindrePartieReseauTitre;
     }
 }

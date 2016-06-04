@@ -4,17 +4,21 @@
 
 /*
  todo visuel promotion
- todo bug switch de timer
+ todo reseau
+ todo historique visuel (KEVIN ?!?)
+ todo animation (Marie-Lucile)
+ +++ todo IA (voir GNU Chess)
  todo relire tout
-
  */
 public class Chess
 {
     public static void main (String[] args)
     {
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+        javax.swing.SwingUtilities.invokeLater(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 Accueil accueil = new Accueil();
                 ControlGroup controler = new ControlGroup(accueil);
             }

@@ -1,10 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimerTask;
-import javax.swing.Timer;
 
 /**
  Created by Michael on 06/04/16.
@@ -14,205 +10,27 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
 
     //variable pour mode de partie
 
-    private boolean isDateBlancDepart, isDateNoirDepart;
-    private Date dateBlancDepart, dateNoirDepart;
-    private java.util.Timer tm;
-    private Timer chronoBlanc;
-    private Timer chronoNoir;
     private String joueurBlanc, joueurNoir;
-    private TimerTask tt;
-    private java.util.Timer timer;
     private Accueil accueil;
     private Vue vue;
-    private int secondeBlanc=0, minuteBlanc=0, secondeNoir=0, minuteNoir=0;
+    private ChronoMode chrono;
 
     ControlButton(Accueil accueil, Vue vue)
     {
         this.accueil = accueil;
         this.vue = vue;
-
-        // ajout SD
-        ActionListener alBlanc = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent exprLambda)
-            {
-                // décrementer le chrono du joueur blanc si > 0
-                // si chrono > 0 vue.repaint(...);
-                // sinon invalider vue + arrêter chrono
-
-                //decremente de 1 la seconde
-                secondeBlanc--;
-                if (secondeBlanc < 0)
-                {
-                    secondeBlanc = 59;
-                    minuteBlanc--;
-                }
-                if (minuteBlanc >= 0 && secondeBlanc >= 0) {
-                    //maj des variables dans VueTimer
-                    vue.getVueEchiquier().getChronoBlanc().setSeconde(secondeBlanc);
-                    vue.getVueEchiquier().getChronoBlanc().setMinute(minuteBlanc);
-
-                    vue.repaint();
-                }
-            }
-        };
-        chronoBlanc = new Timer(1000,alBlanc);
-
-        ActionListener alNoir = new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent exprLambda)
-            {
-                // décrementer le chrono du joueur noir si > 0
-                // si chrono > 0 vue.repaint(...);
-                // sinon invalider vue + arrêter chrono
-                //decremente de 1 la seconde
-                secondeNoir--;
-                if (secondeNoir < 0)
-                {
-                    secondeNoir = 59;
-                    minuteNoir--;
-                }
-                if (minuteNoir >= 0 && secondeNoir >= 0)
-                {
-                    //maj des variables dans VueTimer
-                    vue.getVueEchiquier().getChronoNoir().setSeconde(secondeNoir);
-                    vue.getVueEchiquier().getChronoNoir().setMinute(minuteNoir);
-
-                    vue.repaint();
-                }
-            }
-        };
-        chronoNoir = new Timer(1000,alNoir);
-
-        startChrono();
+        this.chrono = new ChronoMode(vue, accueil, this);
     }
 
     // ajout SD : lance le chrono du joueur courant
-    private void startChrono()
-    {
-	/* TO DO:
-	   - si mode temps par tour : mettre à 30s chronoJoueurBlanc/Noir selon le joueur courant
-	   - si joueur courant == blanc -> démarrer chronoBlanc sinon chronoNoir
-	 */
-        
-        //initialisation du chrono
-        if (accueil.getPartie() != null)
-        {
-            if (accueil.getPartie().getModePartie() == 2)
-            {
-                secondeBlanc = 30;
-                minuteBlanc = 0;
-                secondeNoir = 30;
-                minuteNoir = 0;
-            }
-            else if (accueil.getPartie().getModePartie() == 3)
-            {
-                secondeBlanc = 0;
-                minuteBlanc = 15;
-                secondeNoir = 0;
-                minuteNoir = 15;
-            }
-        }
-    }
 
-    // ajout SD : arrête le chrono du joueur courant
-
-    /**
-     * stopChrono
-     * arrete le chrono et demarre celui d'après
-     *
-     */
-    private void stopChrono()
-    {
-        if (accueil.getPartie().isTourBlanc())
-        {
-            chronoNoir.stop();
-            secondeBlanc = 30;
-            chronoBlanc.start();
-        }
-        else
-        {
-            chronoBlanc.stop();
-            secondeNoir = 30;
-            chronoNoir.start();
-        }
-    }
-
-    /**
-     *
-     */
-    private synchronized void tourLimite()
-    {
-        if (timer != null)
-            timer.cancel();
-        // ajout SD : mettre tm en attribut sinon inaccessible par d'autres méthodes
-        timer = new java.util.Timer();
-        tt = new TimerTask()
-        {
-            @Override
-            public void run()
-            {
-                finDeJeuTemps();
-            }
-        };
-
-        timer.schedule(tt, 30000);
-    }
-
-    /**
-     *
-     */
-    synchronized void tempsLimite()
-    {
-        Calendar calendar = Calendar.getInstance(); // creates calendar
-        calendar.setTime(new Date()); // sets calendar time/date
-
-        Date tempsActuel = calendar.getTime();;
-        //tour blanc
-        if ( accueil.getPartie().isTourBlanc())
-        {
-            if (!isDateBlancDepart )
-            {
-                calendar.add(Calendar.MINUTE,15);
-                tempsActuel = calendar.getTime();
-                dateBlancDepart = tempsActuel;
-                isDateBlancDepart = true;
-            }
-            else if (tempsActuel.after(dateBlancDepart))
-                finDeJeuTemps();
-        }
-        //tour noir
-        else
-        {
-            if (!isDateNoirDepart)
-            {
-                calendar.add(Calendar.MINUTE,15);
-                tempsActuel = calendar.getTime();
-                dateNoirDepart = tempsActuel;
-                isDateNoirDepart = true;
-            }
-            if (tempsActuel.after(dateNoirDepart))
-                finDeJeuTemps();
-        }
-        //verifie chaque seconde le temps
-        TimerTask tt = new TimerTask()
-        {
-            @Override
-            public void run() {
-                tempsLimite();
-            }
-        };
-        tm = new java.util.Timer();
-        tm.schedule(tt, 1000);
-    }
 
     /**
      * finDeJeuTemps
      * Met fin à la partie si la variable partieFinie est à true dans Partie.
      *
      */
-    private synchronized void finDeJeuTemps()
+    void finDeJeuTemps()
     {
         accueil.getPartie().setPartieFinie(true);
         if (accueil.getPartie().getModePartie() == 2
@@ -292,8 +110,7 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
                 if ( plateau[row][column].getPiece() != null
                         && accueil.getPartie().isTourBlanc() == plateau[row][column].getPiece().isBlanc() )
                 {
-                    ArrayList<Case> casesAtteignables =
-                            accueil.getPartie().getBoard().getPlateau()[row][column].getPiece().casesAtteignables;
+                    ArrayList<Case> casesAtteignables = accueil.getPartie().getBoard().getPlateau()[row][column].getPiece().casesAtteignables;
                     accueil.setCasesAtteignables(casesAtteignables);
                     accueil.setCaseMemoire(accueil.getPartie().getBoard().getPlateau()[row][column]);
                     vue.repaint();
@@ -308,14 +125,13 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
                     accueil.setCasesAtteignables(null);
                     accueil.getPartie().setTourBlanc(!accueil.getPartie().isTourBlanc());// changer joueur courant.
                     accueil.getPartie().getBoard().majCasesAtteignable();
-		    /* ajout SD :
-		       - arrêter chrono si besoin
-		       - appeler coupFait()
-		    */
-
-		    /* ajout SD : test à ajouter en premier
-		       - si partieFinie est déjà à true -> perdu à cause du temps -> message
-		     */
+                    /* ajout SD :
+                       - arrêter chrono si besoin
+                       - appeler coupFait()
+                    */
+                    /* ajout SD : test à ajouter en premier
+                       - si partieFinie est déjà à true -> perdu à cause du temps -> message
+                     */
                     if (accueil.getPartie().isEchecEtMat())
                     {
                         // ajout SD : mettre à jour partie.partieFinie
@@ -355,29 +171,29 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
                         vue.jOptionMessage("ECHEC !");
                     }
                     vue.repaint();
-		    /* ajout SD :
-		      - si mode réseau appeler partie.finTour()
-		      - sinon si partie pas finie :
-		          - si mode temps par tour : lancer le chrono visuel
-			  - sinon si mode temps partie : (re)demarrer le chrono visuel
-		    */
-
+                    /* ajout SD :
+                      - si mode réseau appeler partie.finTour()
+                      - sinon si partie pas finie :
+                      - si mode temps par tour : lancer le chrono visuel
+                      - sinon si mode temps partie : (re)demarrer le chrono visuel
+                    */
                     //kevin : appele l'algo pour savoir si partie fini ou pas
+
                     if (accueil.getPartie().getModePartie() == 2)
-                        tourLimite();
+                        chrono.tourLimite();
                     else if (accueil.getPartie().getModePartie() == 3)
-                        tempsLimite();
+                        chrono.tempsLimite();
 
                     //change de joueur donc chrono inversé
-                    stopChrono();
+                    chrono.stopChrono();
                 }
             }
         }
     }
 
     @Override
-    public void mouseMoved(MouseEvent e) {
-
+    public void mouseMoved(MouseEvent e)
+    {
         Point point = e.getPoint();
         /**
          * Modifier ça : s'amuser avec les coordonnées pour trouver le bon calibrage

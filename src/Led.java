@@ -8,6 +8,15 @@ class Led
     private Polygon polygon;        // forme
     private boolean lightOn = false;        // état de la led
 
+    /**
+     * Led
+     * @param x ()
+     * @param y ()
+     * @param k ()
+     * @param orientation ()
+     *
+     * Todo adonis
+     */
     Led(int x, int y, int k, String orientation)
     {
         polygon = new Polygon();
@@ -33,8 +42,10 @@ class Led
     }
 
     /**
+     * render
      * Methode à appelé dans VueTimer. Car c'est elle qui dessine les polygones.
-     * @param g2
+     *
+     * @param g2 (outil graphique permettant de dessiner)
      */
 
     void render(Graphics g2)

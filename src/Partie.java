@@ -755,20 +755,11 @@ class Partie
     synchronized Joueur getJoueurBlanc() {
         return joueurBlanc;
     }
-    synchronized void setJoueurBlanc(Joueur joueurBlanc) {
-        this.joueurBlanc = joueurBlanc;
-    }
     synchronized Joueur getJoueurNoir() {
         return joueurNoir;
     }
-    synchronized void setJoueurNoir(Joueur joueurNoir) {
-        this.joueurNoir = joueurNoir;
-    }
     synchronized Board getBoard() {
         return board;
-    }
-    synchronized void setBoard(Board board) {
-        this.board = board;
     }
     synchronized boolean isTourBlanc() {
         return tourBlanc;
@@ -807,124 +798,5 @@ class Partie
     }
     void setPartieFinie(boolean partieFinie) {
         this.partieFinie = partieFinie;
-    }
-    public void setHistorique(ArrayList<String> historique) {
-        this.historique = historique;
-    }
-
-    public static BDDManager getBdd() {
-        return bdd;
-    }
-
-    public void setChoixJoueurBlanc(int choixJoueurBlanc) {
-        this.choixJoueurBlanc = choixJoueurBlanc;
-    }
-
-    public void setChoixJoueurNoir(int choixJoueurNoir) {
-        this.choixJoueurNoir = choixJoueurNoir;
-    }
-
-    public void setCimetiereBlanc(ArrayList<Piece> cimetiereBlanc) {
-        this.cimetiereBlanc = cimetiereBlanc;
-    }
-
-    public void setCimetiereNoir(ArrayList<Piece> cimetiereNoir) {
-        this.cimetiereNoir = cimetiereNoir;
-    }
-
-    public void setPiecesBlanchesPlateau(ArrayList<Piece> piecesBlanchesPlateau) {
-        this.piecesBlanchesPlateau = piecesBlanchesPlateau;
-    }
-
-    public void setPiecesNoiresPlateau(ArrayList<Piece> piecesNoiresPlateau) {
-        this.piecesNoiresPlateau = piecesNoiresPlateau;
-    }
-
-    public int getIdCurrentPlayer() {
-        return idCurrentPlayer;
-    }
-
-    public void setIdCurrentPlayer(int idCurrentPlayer) {
-        this.idCurrentPlayer = idCurrentPlayer;
-    }
-
-    public void setModePartie(int modePartie) {
-        this.modePartie = modePartie;
-    }
-
-    public boolean isNetPartie() {
-        return netPartie;
-    }
-
-    public void setNetPartie(boolean netPartie) {
-        this.netPartie = netPartie;
-    }
-
-    public boolean isEndOfTurn() {
-        return endOfTurn;
-    }
-
-    public void setEndOfTurn(boolean endOfTurn) {
-        this.endOfTurn = endOfTurn;
-    }
-
-    public Case getCaseSrc() {
-        return caseSrc;
-    }
-
-    public void setCaseSrc(Case caseSrc) {
-        this.caseSrc = caseSrc;
-    }
-
-    public Case getCaseDest() {
-        return caseDest;
-    }
-
-    public void setCaseDest(Case caseDest) {
-        this.caseDest = caseDest;
-    }
-
-    public long getChronoJoueurBlanc() {
-        return chronoJoueurBlanc;
-    }
-
-    public void setChronoJoueurBlanc(long chronoJoueurBlanc) {
-        this.chronoJoueurBlanc = chronoJoueurBlanc;
-    }
-
-    public long getChronoJoueurNoir() {
-        return chronoJoueurNoir;
-    }
-
-    public void setChronoJoueurNoir(long chronoJoueurNoir) {
-        this.chronoJoueurNoir = chronoJoueurNoir;
-    }
-
-    public boolean isEchecBlanc() {
-        return echecBlanc;
-    }
-
-    public void setEchecBlanc(boolean echecBlanc) {
-        this.echecBlanc = echecBlanc;
-    }
-
-    public boolean isEchecNoir() {
-        return echecNoir;
-    }
-
-    public void setEchecNoir(boolean echecNoir) {
-        this.echecNoir = echecNoir;
-    }
-
-    public static int getModeNotimer() {
-        return MODE_NOTIMER;
-    }
-
-    public static int getModeTimerturn() {
-        return MODE_TIMERTURN;
-    }
-
-    public static int getModeTimerparty() {
-        return MODE_TIMERPARTY;
     }
 }

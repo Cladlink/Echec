@@ -7,7 +7,7 @@ public class ConnexionPane extends JOptionPane
 {
     private Partie partie;
 
-    public ConnexionPane(Partie partie)
+    ConnexionPane(Partie partie)
     {
         this.partie = partie;
     }

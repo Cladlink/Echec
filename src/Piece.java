@@ -24,7 +24,7 @@ abstract class Piece
      * @param caseInitiale (place la pièce à la première case qu'elle occupera en début de partie)
      * @param blanc (définit si la pièce sera blanche ou noire)
      */
-    public Piece(Case caseInitiale, boolean blanc)
+    Piece(Case caseInitiale, boolean blanc)
     {
         this.blanc = blanc;
         this.emplacementPiece = caseInitiale;
@@ -32,9 +32,9 @@ abstract class Piece
         // les trois autres attributs sont initialisés dans le constructeur de chaque pièces
     }
 
-    public Piece(){}
+    Piece(){}
 
-    public void initChoixSkinPiece()
+    void initChoixSkinPiece()
     {
         if (blanc)
         {
@@ -61,7 +61,7 @@ abstract class Piece
      * déplace la pièce d'un point A à un point B
      * @param destination (case où la pièce selectionnée doit se rendre)
      */
-    public void deplacer(Case destination)
+    void deplacer(Case destination)
     {
         emplacementPiece.setPiece(null); // on vide la case actuelle
         emplacementPiece = destination; // on définit l'emplacement de la pièce avec la destination
@@ -75,7 +75,7 @@ abstract class Piece
      * @param caseRoi case qui contient le roi
      * @return (return true si caseRoi peut être atteint)
      */
-    public boolean peutAtteindreRoi(Case caseRoi)
+    boolean peutAtteindreRoi(Case caseRoi)
     {
         casesAtteignables();
         return casesAtteignables != null && this.casesAtteignables.contains(caseRoi);
@@ -87,7 +87,7 @@ abstract class Piece
      * et on teste avec un déplacement fictif si le roi est mis en danger.
      *
      */
-    public void deplacementPossible()
+    void deplacementPossible()
     {
         Case emplacementPieceDeBase;
         Piece tempPiece;
@@ -97,7 +97,6 @@ abstract class Piece
             piecesEnJeu = emplacementPiece.getBoard().getPartie().getPiecesNoiresPlateau();
         else
             piecesEnJeu = emplacementPiece.getBoard().getPartie().getPiecesBlanchesPlateau();
-
 
         for (int i = 0; i < casesAtteignables.size(); i++)
         {
@@ -133,37 +132,10 @@ abstract class Piece
      * Doit être définie pour chaque pièces en fonction de sa façon de se déplacer
      *
      */
-    public abstract void casesAtteignables();
+    abstract void casesAtteignables();
 
     //getters & setters
-    public Case getEmplacementPiece() {
-        return emplacementPiece;
-    }
-    public void setEmplacementPiece(Case emplacementPiece) {
-        this.emplacementPiece = emplacementPiece;
-    }
-    public ImageIcon getSkin() {
-        return skin;
-    }
-    public void setSkin(ImageIcon skin) {
-        this.skin = skin;
-    }
-    public boolean isBlanc() {
-        return blanc;
-    }
-    public void setBlanc(boolean blanc) {
-        this.blanc = blanc;
-    }
-    public String getAdresseImageNoire() {
-        return adresseImageNoire;
-    }
-    public void setAdresseImageNoire(String adresseImageNoire) {
-        this.adresseImageNoire = adresseImageNoire;
-    }
-    public String getAdresseImageBlanche() {
-        return adresseImageBlanche;
-    }
-    public void setAdresseImageBlanche(String adresseImageBlanche) {
-        this.adresseImageBlanche = adresseImageBlanche;
-    }
+    void setEmplacementPiece(Case emplacementPiece) { this.emplacementPiece = emplacementPiece; }
+    boolean isBlanc() { return blanc; }
+    void setBlanc(boolean blanc) { this.blanc = blanc; }
 }

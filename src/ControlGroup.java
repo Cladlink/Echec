@@ -1,16 +1,16 @@
 /**
  * Created by mlucile on 27/04/16.
  */
-public class ControlGroup
+class ControlGroup
 {
     private Accueil accueil;
     private Vue vue;
-    public ControlButtonMenu controlButtonMenu;
+    ControlButtonMenu controlButtonMenu;
 
     private ControlMenu controlMenu;
     private ControlButton controlButton;
 
-    public ControlGroup(Accueil accueil)
+    ControlGroup(Accueil accueil)
     {
         this.accueil = accueil;
         vue = new Vue(accueil);

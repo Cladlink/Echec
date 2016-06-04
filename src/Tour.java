@@ -5,6 +5,12 @@
 class Tour extends Piece
 {
 
+    /**
+     * Tour
+     *
+     * @param caseInitiale ()
+     * @param isBlanc ()
+     */
     Tour(Case caseInitiale, boolean isBlanc)
     {
         super(caseInitiale, isBlanc);

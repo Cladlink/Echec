@@ -17,7 +17,7 @@ public class MusiqueChess
     {
         JFXPanel jfxPanel = new JFXPanel();
         mp = new MediaPlayer(new Media(Paths.get(MEDIEVAL_THEME).toUri().toString()));
-        //mp.play();
+        mp.play();
         mp.setCycleCount(MediaPlayer.INDEFINITE);
     }
     static void stopMedievalTheme()

@@ -11,16 +11,17 @@ class BDDManager
     private final String BDD_USER = "KfK3f9Z7rd4v467z";
     private final String BDD_PASSWORD =  "Cbup4w7aJ9hGSsJz";
     private Connection cn;
-    private Statement  st;
+    private Statement st;
 
 
     /**
      * start()
      * sert à initialiser la connexion à la BDD
      */
-    public void start()
+    void start()
     {
-        try {
+        try
+        {
             Class.forName("com.mysql.jdbc.Driver");
             cn = DriverManager.getConnection(BDD_URL, BDD_USER, BDD_PASSWORD);
             st = cn.createStatement();
@@ -35,7 +36,7 @@ class BDDManager
      * stop()
      * Sert à rompre la connexion avec le BDD
      */
-    public void stop()
+    void stop()
     {
 
         try
@@ -52,9 +53,9 @@ class BDDManager
     /**
      * edit
      * Sert pour l'envoie de toutes requêtes sauf les SELECT
-     * @param requete
+     * @param requete ()
      */
-    public void edit(String requete)
+    void edit(String requete)
     {
         System.out.println(requete);
         try
@@ -70,10 +71,10 @@ class BDDManager
     /**
      * ask(String Requete)
      * Sert à envoyer au serveur toute requête de type SELECT
-     * @param requete
-     * @return
+     * @param requete ()
+     * @return ()
      */
-    public ArrayList<ArrayList<String>> ask(String requete)
+    ArrayList<ArrayList<String>> ask(String requete)
     {
         System.out.println(requete);
         ArrayList<ArrayList<String>> select = new ArrayList<>();
@@ -104,7 +105,7 @@ class BDDManager
      * lire()
      * permet de lire un fichier sql et de l'exécuter
      */
-    public void lire(String adressSQLFile)
+    void lire(String adressSQLFile)
     {
         BufferedReader lecture;
         String fichier = "", fichierTemp;
@@ -126,13 +127,9 @@ class BDDManager
                     System.out.println(i);
                     System.out.println(requete[i]);
                     if (requete[i].contains("SELECT"))
-                    {
                         this.ask(requete[i]);
-                    }
                     else
-                    {
                         this.edit(requete[i]);
-                    }
                 }
             }
             catch (EOFException e)
@@ -141,7 +138,14 @@ class BDDManager
             }
             finally
             {
-                lecture.close();
+                try
+                {
+                    lecture.close();
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
             }
 
         }
@@ -159,7 +163,7 @@ class BDDManager
      * main
      * ce main n'est utiliser que pour créer les tables.
      */
-    public static void main(String[] args)
+    static void main(String[] args)
     {
         BDDManager bdd = new BDDManager();
         bdd.start();

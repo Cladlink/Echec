@@ -22,7 +22,6 @@ class Board
     {
         plateau = new Case[row][column];
         this.partie = partie;
-
         plateauDeBase();
     }
 
@@ -33,7 +32,6 @@ class Board
      */
     Board(Partie partie, Case[][] plateau)
     {
-
         this.partie = partie;
         this.plateau = plateau;
     }
@@ -224,13 +222,9 @@ class Board
             int column = caseCliquee.getColumn();
 
             if (Math.abs( column - destination.getColumn() ) == 2)
-            {
                 deplacerPetitRoque(plateau, row, column);
-            }
             else if (Math.abs( column - destination.getColumn() ) == 3)
-            {
                 deplacerGrandRoque(plateau, row, column);
-            }
         }
     }
 
@@ -290,30 +284,28 @@ class Board
     }
 
     //getters & setters
-    public Case[][] getPlateau() {
+    Case[][] getPlateau() {
         return plateau;
     }
-    public Partie getPartie() {
+    Partie getPartie() {
         return partie;
     }
-    public int getSizeCase() {
+    int getSizeCase() {
         return sizeCase;
     }
-    public Piece getRoiNoir() {
+    Piece getRoiNoir() {
         return roiNoir;
     }
-    public Piece getRoiBlanc() {
+    Piece getRoiBlanc() {
         return roiBlanc;
     }
-    public void setPartie(Partie partie) {
+    void setPartie(Partie partie) {
         this.partie = partie;
     }
-
-    public void setRoiBlanc(Piece roiBlanc) {
+    void setRoiBlanc(Piece roiBlanc) {
         this.roiBlanc = roiBlanc;
     }
-
-    public void setRoiNoir(Piece roiNoir) {
+    void setRoiNoir(Piece roiNoir) {
         this.roiNoir = roiNoir;
     }
 }

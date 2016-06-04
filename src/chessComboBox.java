@@ -19,5 +19,4 @@ class chessComboBox extends JComboBox
         setForeground(new Color(255, 255, 255));
     }
 
-
 }

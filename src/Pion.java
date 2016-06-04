@@ -6,6 +6,11 @@ import java.util.ArrayList;
 class Pion extends Piece
 {
 
+    /**
+     * Pion
+     * @param caseInitiale
+     * @param blanc
+     */
     Pion(Case caseInitiale, boolean blanc)
     {
         super(caseInitiale, blanc);

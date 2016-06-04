@@ -3,9 +3,14 @@
  */
 class Roi extends Piece
 {
-
     private boolean grandRoque;
     private boolean petitRoque;
+
+    /**
+     * Roi todo
+     * @param caseInitiale
+     * @param isBlanc
+     */
     Roi(Case caseInitiale, boolean isBlanc)
     {
         super(caseInitiale, isBlanc);

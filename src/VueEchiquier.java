@@ -20,7 +20,7 @@ class VueEchiquier extends JPanel
 
     private Graphics g;
 
-    public VueEchiquier(Board board, Accueil accueil, Vue vue)
+    VueEchiquier(Board board, Accueil accueil, Vue vue)
     {
         this.vue = vue;
         this.accueil = accueil;
@@ -102,125 +102,27 @@ class VueEchiquier extends JPanel
                 isDepPossible = false;
                 isDepPossiblePiece = false;
             }
-
-
         }
 
 
         // on dessine toutes les pièces
         for (int i = 0; i < board.getPlateau().length; i++)
-        {
             for (int j = 0; j < board.getPlateau().length; j++)
-            {
                 if (board.getPlateau()[i][j].getPiece() != null)
-                {
                     g.drawImage(board.getPlateau()[i][j].getPiece().skin.getImage(),
                             j * board.getSizeCase() + 360,
                             i * board.getSizeCase() + 20,
                             null);
-                }
-            }
-        }
         gyBlanc.paintMe(g, 110, 150);
         gyNoir.paintMe(g, 1060, 150);
         bs.paintMe(g, 0, getHeight());
         chronoBlanc.paintMe(g, 160, 80, vue);
         chronoNoir.paintMe(g, 1110, 80, vue);
     }
-
-    public Vue getVue() {
-        return vue;
-    }
-
-    public void setVue(Vue vue) {
-        this.vue = vue;
-    }
-
-    public Accueil getAccueil() {
-        return accueil;
-    }
-
-    public void setAccueil(Accueil accueil) {
-        this.accueil = accueil;
-    }
-
-    public Board getBoard() {
-        return board;
-    }
-
-    public void setBoard(Board board) {
-        this.board = board;
-    }
-
-    public ImageIcon getBg() {
-        return bg;
-    }
-
-    public void setBg(ImageIcon bg) {
-        this.bg = bg;
-    }
-
-    public ImageIcon getDeplacement() {
-        return deplacement;
-    }
-
-    public void setDeplacement(ImageIcon deplacement) {
-        this.deplacement = deplacement;
-    }
-
-    public ImageIcon getDeplacementAttaque() {
-        return deplacementAttaque;
-    }
-
-    public void setDeplacementAttaque(ImageIcon deplacementAttaque) {
-        this.deplacementAttaque = deplacementAttaque;
-    }
-
-    public VueGraveyard getGyBlanc() {
-        return gyBlanc;
-    }
-
-    public void setGyBlanc(VueGraveyard gyBlanc) {
-        this.gyBlanc = gyBlanc;
-    }
-
-    public VueGraveyard getGyNoir() {
-        return gyNoir;
-    }
-
-    public void setGyNoir(VueGraveyard gyNoir) {
-        this.gyNoir = gyNoir;
-    }
-
-    public VueBarreStatut getBs() {
-        return bs;
-    }
-
-    public void setBs(VueBarreStatut bs) {
-        this.bs = bs;
-    }
-
-    public VueTimer getChronoBlanc() {
-        return chronoBlanc;
-    }
-
-    public void setChronoBlanc(VueTimer chronoBlanc) {
-        this.chronoBlanc = chronoBlanc;
-    }
-
-    public VueTimer getChronoNoir() {
-        return chronoNoir;
-    }
-
-    public void setChronoNoir(VueTimer chronoNoir) {
-        this.chronoNoir = chronoNoir;
-    }
-
-    public Graphics getG() {
-        return g;
-    }
-
-    public void setG(Graphics g) {
-        this.g = g;
-    }
+    Vue getVue() { return vue; }
+    void setVue(Vue vue) { this.vue = vue; }
+    Board getBoard() { return board; }
+    VueBarreStatut getBs() { return bs; }
+    VueTimer getChronoBlanc() { return chronoBlanc; }
+    VueTimer getChronoNoir() { return chronoNoir; }
 }

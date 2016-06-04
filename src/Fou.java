@@ -4,6 +4,11 @@
 class Fou extends Piece
 {
 
+    /**
+     * Fou TODO
+     * @param caseInitiale ()
+     * @param isBlanc ()
+     */
     Fou(Case caseInitiale, boolean isBlanc)
     {
         super(caseInitiale, isBlanc);

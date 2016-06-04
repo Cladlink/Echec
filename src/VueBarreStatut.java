@@ -7,17 +7,23 @@ class VueBarreStatut
 {
     private String statutText;
     private String joueurBlanc = "", joueurNoir = "";
-    private Partie partie;
     private VueEchiquier vueEchiquier;
 
+    /**
+     * VueBarreStatut
+     *
+     * @param partie ()
+     * @param vueEchiquier ()
+     *
+     */
     VueBarreStatut(Partie partie, VueEchiquier vueEchiquier)
     {
-        this.partie = partie;
         this.vueEchiquier = vueEchiquier;
         this.statutText = "";
-        this.joueurBlanc += "joueur Blanc : " + this.partie.getJoueurBlanc().getPseudo();
-        this.joueurNoir += " joueur Noir : " + this.partie.getJoueurNoir().getPseudo();
+        this.joueurBlanc += "joueur Blanc : " + partie.getJoueurBlanc().getPseudo();
+        this.joueurNoir += " joueur Noir : " + partie.getJoueurNoir().getPseudo();
     }
+
     /**
      * PaintMe
      * Paint l'objet graphique
@@ -37,11 +43,7 @@ class VueBarreStatut
         g.drawString(joueurNoir, xBase + 1200, yBase -32);
     }
 
-    public String getStatutText()
-    {
-        return statutText;
-    }
-    public void setStatutText(String statutText) {
+    void setStatutText(String statutText) {
         this.statutText = statutText;
     }
 }

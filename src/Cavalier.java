@@ -3,7 +3,11 @@
  */
 class Cavalier extends Piece
 {
-
+    /**
+     * Cavalier todo
+     * @param caseInitiale ()
+     * @param isBlanc ()
+     */
     Cavalier(Case caseInitiale, boolean isBlanc)
     {
         super(caseInitiale, isBlanc);
@@ -16,7 +20,6 @@ class Cavalier extends Piece
 
         initChoixSkinPiece();
     }
-
 
     /**
      * casesAtteignables
@@ -89,6 +92,11 @@ class Cavalier extends Piece
             casesAtteignables.add(plateau[row + 2][column + 1]);
     }
 
+    /**
+     * peutAtteindreRoi tod
+     * @param caseRoi case qui contient le roi
+     * @return ()
+     */
     @Override
     public boolean peutAtteindreRoi(Case caseRoi)
     {

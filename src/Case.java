@@ -1,7 +1,7 @@
 /**
   Created by cladlink on 06/04/16.
  */
-public class Case
+class Case
 {
     private int row;
     private int column;
@@ -18,7 +18,7 @@ public class Case
      * @param piece (représente la pièce)
      * @param board (représente le board)
      */
-    public Case(int row, int column, Piece piece, Board board, boolean isWhite)
+    Case(int row, int column, Piece piece, Board board, boolean isWhite)
     {
         this.row = row;
         this.column = column;
@@ -33,7 +33,7 @@ public class Case
      *
      * @param old (case d'origine)
      */
-    public Case(Case old)
+    Case(Case old)
     {
         this.row = old.row;
         this.column = old.column;
@@ -41,38 +41,26 @@ public class Case
         this.board = old.board;
         this.isWhite = old.isWhite;
     }
-    public Case(){}
+    Case(){}
 
 
     // getters & setters
-    public int getRow() {
+    int getRow() {
         return row;
     }
-    public void setRow(int row) {
-        this.row = row;
-    }
-    public int getColumn() {
+    int getColumn() {
         return column;
     }
-    public void setColumn(int column) {
-        this.column = column;
-    }
-    public Piece getPiece() {
+    Piece getPiece() {
         return piece;
     }
-    public void setPiece(Piece piece) {
+    void setPiece(Piece piece) {
         this.piece = piece;
     }
-    public Board getBoard() {
+    Board getBoard() {
         return board;
     }
-    public void setBoard(Board board) {
-        this.board = board;
-    }
-    public boolean isWhite() {
+    boolean isWhite() {
         return isWhite;
-    }
-    public void setWhite(boolean white) {
-        isWhite = white;
     }
 }
