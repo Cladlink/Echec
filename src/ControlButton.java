@@ -78,15 +78,15 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
 
         if(accueil.getPartie().getModePartie() == 2) //Temps par tour
         {
-            tourLimite();
+            chrono.tourLimite();
             //kevin : appele l'algo pour savoir si partie fini ou pas
             if (accueil.getPartie().getModePartie() == 2)
-                tourLimite();
+                chrono.tourLimite();
             else if (accueil.getPartie().getModePartie() == 3)
-                tempsLimite();
+                chrono.tempsLimite();
 
             //change de joueur donc chrono inversé
-            stopChrono();
+            chrono.stopChrono();
         }
         else if(accueil.getPartie().getModePartie() == 3) //temps par partie
         {
@@ -206,12 +206,12 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
 
                     //kevin : appele l'algo pour savoir si partie fini ou pas
                     if (accueil.getPartie().getModePartie() == 2)
-                        tourLimite();
+                        chrono.tourLimite();
                     else if (accueil.getPartie().getModePartie() == 3)
-                        tempsLimite();
+                        chrono.tempsLimite();
 
                     //change de joueur donc chrono inversé
-                    stopChrono();
+                    chrono.stopChrono();
                 }
             }
         }
