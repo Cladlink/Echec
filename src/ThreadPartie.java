@@ -35,9 +35,8 @@ class ThreadPartie extends Thread
         this.port = port;
         this.isServer = isServer;
         this.ipServer = ipServer;
-        this.skinAdversaire = choixJoueur;
-        this.pseudoAdversaire = pseudo;
-        this.modePartie = 1;
+        this.monSkin = choixJoueur;
+        this.monPseudo = pseudo;
     }
 
     ThreadPartie(Partie partie, ControlButton controller, int port, boolean isServer,
@@ -97,12 +96,13 @@ class ThreadPartie extends Thread
                         typeroque = 0 si pas de roque, = 1 petit roque, = 2 grand roque
                         typepromo = 0 si pas de promo, = 1,2,... (type pièce) si promo
                     */
-
                     controller.debutTour();
                     partie.waitFinTour();
+
                     oos.writeObject(partie.getCaseSrc().getRow());
                     oos.writeObject(partie.getCaseSrc().getColumn());
                     oos.writeObject(partie.getCaseDest().getRow());
+                    oos.writeObject(partie.getCaseDest().getColumn());
                     // on se casse pas la tête pour l'instant : on voit si ca marche en mode normal
                     oos.writeObject(0);
                     oos.writeObject(0);
@@ -158,22 +158,16 @@ class ThreadPartie extends Thread
         // échanger les infos (pseudos, qui joue en premier, ...)
         // envoi : mon pseudo, mon skin, mode partie, qui est blanc
         // recoi : autre pseudo, autre skin,*
-        oos.writeObject(pseudoAdversaire);
-        oos.writeInt(skinAdversaire);
+        oos.writeObject(monPseudo);
+        oos.writeInt(monSkin);
         oos.writeInt(modePartie);
         oos.writeBoolean(!jeSuisBlanc);
         oos.flush();
-        monPseudo = (String)ois.readObject();
-        monSkin = ois.readInt();
+        pseudoAdversaire = (String)ois.readObject();
+        skinAdversaire = ois.readInt();
+        System.out.println(monPseudo);
+        System.out.println(pseudoAdversaire);
         partie.initPartie(monPseudo, pseudoAdversaire, modePartie, true, monSkin, skinAdversaire);
-        /**
-         * todo MarieLucile :
-         * vérifier la tracabilité des variables envoyées elles sont à null tout le temps (je viens juste de
-         * trouver ca). Si tu peux tu repars depuis COntrolButton là ou on va chercher les variables dans
-         * la vue et tu vérifies à chaqu étapes que les variables des formulaires sont bien récupérées.
-         * Je suis quasi sur que le soucis vient de la récupération depuis le formulaire... Ton objectif c'est
-         * juste de faire en sorte qu'ici les variables récupérées en réseau soit pas à null
-         */
     }
 
     private void initClient() throws IOException,ClassNotFoundException
@@ -192,19 +186,6 @@ class ThreadPartie extends Thread
         oos.writeObject(monPseudo);
         oos.writeInt(monSkin);
         oos.flush();
-        System.out.println(pseudoAdversaire);
-        System.out.println(skinAdversaire);
-        System.out.println(modePartie);
-        System.out.println(jeSuisBlanc);
-        partie.initPartie(
-                monPseudo,
-                pseudoAdversaire,
-                modePartie,
-                true,
-                monSkin,
-                skinAdversaire);
-        /**
-         * todo MarieLucile : idem ici
-         */
+        partie.initPartie(monPseudo, pseudoAdversaire, modePartie, true, monSkin, skinAdversaire);
     }
 }

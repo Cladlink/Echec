@@ -57,6 +57,7 @@ class ControlMenu implements ActionListener
         }
         else if (e.getSource().equals(vue.getRetourMenuPrincipal()))
         {
+            ChronoMode.setHorsJeu(true);
             vue.setJMenuBar(null);
             vue.afficherMenu();
         }

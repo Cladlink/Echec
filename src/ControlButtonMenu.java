@@ -31,7 +31,7 @@ class ControlButtonMenu implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        String pseudo ="";
+        String pseudo;
         if(e.getSource().equals(vue.getNouveauJoueur()))
         {
             pseudo = vue.messagePop("Entrez un nouveau pseudo :");
@@ -95,7 +95,7 @@ class ControlButtonMenu implements ActionListener
             MusiqueChess.stopMedievalTheme();
 
             // ajout SD
-	    /* TO DO:
+        /* TO DO:
 	       si partie en réseau :
 	          - invalider la vue (setEnable ??)
 	          - créer un ThreadPartie serveur
@@ -122,7 +122,7 @@ class ControlButtonMenu implements ActionListener
         else if(e.getSource().equals(vue.getRejoindrePartieReseau()))
         {
             int choixJoueur = Integer.parseInt(vue.getGrSkinBlanc().getSelection().getActionCommand());
-            String pseudoJoueur = vue.getListeJoueursBlancs().getSelectedItem().toString();
+            String pseudoJoueur = vue.getListeJoueursNoirs().getSelectedItem().toString();
             accueil.setAdresseIpReseau(vue.messagePop("Entrez l'adresse IP de l'adversaire :"));
             if(accueil.getAdresseIpReseau() == null)
                 return;
@@ -144,9 +144,10 @@ class ControlButtonMenu implements ActionListener
             vue.setEnabled(false);
             accueil.initPartieReseau();
             ThreadPartie threadClient = new ThreadPartie(
-                    accueil.getPartie(), this.controlButton, 1234, false,
+                       accueil.getPartie(), this.controlButton, 1234, false,
                     accueil.getAdresseIpReseau(), choixJoueur, pseudoJoueur);
             threadClient.run();
+            System.out.println("coucou");
             vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
             vue.creerWidgetPartie();
             accueil.getPartie().getBoard().majCasesAtteignable();

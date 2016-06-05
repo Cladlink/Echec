@@ -20,11 +20,13 @@ class ChronoMode
     private Timer chronoNoir;
     private TimerTask tt;
     private int secondeBlanc=0, minuteBlanc=0, secondeNoir=0, minuteNoir=0;
+    private static boolean horsJeu;
 
     ChronoMode(Vue vue, Accueil accueil, ControlButton cb)
     {
         this.accueil = accueil;
         this.cb = cb;
+        horsJeu = false;
         // ajout SD
         ActionListener alBlanc = new ActionListener() {
             @Override
@@ -142,7 +144,11 @@ class ChronoMode
             @Override
             public void run()
             {
-                cb.finDeJeuTemps();
+                if (!horsJeu)
+                {
+                    cb.finDeJeuTemps();
+                    horsJeu = true;
+                }
             }
         };
 
@@ -168,8 +174,12 @@ class ChronoMode
                 dateBlancDepart = tempsActuel;
                 isDateBlancDepart = true;
             }
-            else if (tempsActuel.after(dateBlancDepart))
+            else if (tempsActuel.after(dateBlancDepart) && !horsJeu)
+            {
                 cb.finDeJeuTemps();
+                horsJeu = true;
+
+            }
         }
         //tour noir
         else
@@ -182,7 +192,10 @@ class ChronoMode
                 isDateNoirDepart = true;
             }
             if (tempsActuel.after(dateNoirDepart))
+            {
                 cb.finDeJeuTemps();
+                horsJeu = true;
+            }
         }
         //verifie chaque seconde le temps
         TimerTask tt = new TimerTask()
@@ -195,4 +208,6 @@ class ChronoMode
         tm = new java.util.Timer();
         tm.schedule(tt, 1000);
     }
+
+    static void setHorsJeu(boolean horsJeu) { ChronoMode.horsJeu = horsJeu; }
 }

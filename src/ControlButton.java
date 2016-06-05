@@ -39,7 +39,7 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
                 accueil.getPartie().saveHistorique();
                 Partie.deleteSave(joueurBlanc, joueurNoir);
                 vue.setJMenuBar(null);
-                vue.afficherMenu();
+                   vue.afficherMenu();
             }
     }
 
@@ -73,18 +73,12 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
 	     - valider la vue
 	 */
 
-
+        enableView(true);
         if(accueil.getPartie().getModePartie() == 2) //Temps par tour
-        {
             chrono.tourLimite();
-            //kevin : appele l'algo pour savoir si partie fini ou pas
-            if (accueil.getPartie().getModePartie() == 2)
-                chrono.tourLimite();
-            else if (accueil.getPartie().getModePartie() == 3)
-                chrono.tempsLimite();
-            //change de joueur donc chrono inversé
-            chrono.stopChrono();
-        }
+        if (accueil.getPartie().getModePartie() == 3)
+            chrono.tempsLimite();
+        chrono.stopChrono();
         vue.setEnabled(true);
     }
 
