@@ -7,6 +7,7 @@ import java.net.Socket;
 /**
   Created by cladlink on 12/04/16.
  */
+
 class ThreadPartie extends Thread
 {
     private String monPseudo, pseudoAdversaire;
@@ -26,14 +27,31 @@ class ThreadPartie extends Thread
     private ObjectOutputStream oos;
     private int id; // =1 si joueur blanc et 2 si joueur noir
     
-    public ThreadPartie(Partie partie, ControlButton controller, int port, boolean isServer,
-                        String ipServer)
+    ThreadPartie(Partie partie, ControlButton controller, int port, boolean isServer,
+                        String ipServer, int choixJoueur, String pseudo)
     {
         this.partie = partie;
         this.controller = controller;
         this.port = port;
         this.isServer = isServer;
         this.ipServer = ipServer;
+        this.skinAdversaire = choixJoueur;
+        this.pseudoAdversaire = pseudo;
+        this.modePartie = 1;
+    }
+
+    ThreadPartie(Partie partie, ControlButton controller, int port, boolean isServer,
+                 String ipServer, int choixJoueur, String pseudo, int modePartie)
+    {
+        this.partie = partie;
+        this.controller = controller;
+        this.port = port;
+        this.isServer = isServer;
+        this.ipServer = ipServer;
+        this.monSkin = choixJoueur;
+        this.monPseudo = pseudo;
+        this.modePartie = 1;
+        this.jeSuisBlanc = partie.jeSuisBlanc();
     }
 
     @Override
@@ -85,7 +103,8 @@ class ThreadPartie extends Thread
                     oos.writeObject(partie.getCaseSrc().getRow());
                     oos.writeObject(partie.getCaseSrc().getColumn());
                     oos.writeObject(partie.getCaseDest().getRow());
-                    oos.writeObject(0); // on se casse pas la tête pour l'instant : on voit si ca marche sans chrono
+                    // on se casse pas la tête pour l'instant : on voit si ca marche en mode normal
+                    oos.writeObject(0);
                     oos.writeObject(0);
                     oos.writeObject(0.0);
                     oos.writeObject(0.0);
@@ -129,16 +148,7 @@ class ThreadPartie extends Thread
 
     private void initServer() throws IOException,ClassNotFoundException
     {
-        if (Math.ceil(Math.random()) == 1)
-        {
-            jeSuisBlanc = true;
-            id = 1;
-        }
-        else
-        {
-            jeSuisBlanc = false;
-            id = 2;
-        }
+
         conn = new ServerSocket(port);
         comm = conn.accept();
         oos = new ObjectOutputStream(comm.getOutputStream());
@@ -148,12 +158,12 @@ class ThreadPartie extends Thread
         // envoi : mon pseudo, mon skin, mode partie, qui est blanc
         // recoi : autre pseudo, autre skin,*
         oos.writeObject(pseudoAdversaire);
-        oos.writeInt(monSkin);
+        oos.writeInt(skinAdversaire);
         oos.writeInt(modePartie);
         oos.writeBoolean(!jeSuisBlanc);
         oos.flush();
-        pseudoAdversaire = (String)ois.readObject();
-        skinAdversaire = ois.readInt();
+        monPseudo = (String)ois.readObject();
+        monSkin = ois.readInt();
         partie.initPartie(monPseudo, pseudoAdversaire, modePartie, true, monSkin, skinAdversaire);
     }
 
@@ -173,6 +183,10 @@ class ThreadPartie extends Thread
         oos.writeObject(monPseudo);
         oos.writeInt(monSkin);
         oos.flush();
+        System.out.println(pseudoAdversaire);
+        System.out.println(skinAdversaire);
+        System.out.println(modePartie);
+        System.out.println(jeSuisBlanc);
         partie.initPartie(
                 monPseudo,
                 pseudoAdversaire,

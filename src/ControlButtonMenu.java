@@ -106,9 +106,10 @@ class ControlButtonMenu implements ActionListener
             int choixJoueur = Integer.parseInt(vue.getGrSkinBlanc().getSelection().getActionCommand());
             String pseudoJoueur = vue.getListeJoueursBlancs().getSelectedItem().toString();
             vue.setEnabled(false);
-
-            ThreadPartie tp = new ThreadPartie(accueil.getPartie(), controlButton, 1234, true, "127.0.0.1");
             accueil.initPartieReseau();
+
+            ThreadPartie tp = new ThreadPartie(
+                    accueil.getPartie(), controlButton, 1234, true, "127.0.0.1", choixJoueur, pseudoJoueur, 1);
             tp.run();
             vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
             vue.creerWidgetPartie();
@@ -120,6 +121,8 @@ class ControlButtonMenu implements ActionListener
         }
         else if(e.getSource().equals(vue.getRejoindrePartieReseau()))
         {
+            int choixJoueur = Integer.parseInt(vue.getGrSkinBlanc().getSelection().getActionCommand());
+            String pseudoJoueur = vue.getListeJoueursBlancs().getSelectedItem().toString();
             accueil.setAdresseIpReseau(vue.messagePop("Entrez l'adresse IP de l'adversaire :"));
             if(accueil.getAdresseIpReseau() == null)
                 return;
@@ -139,9 +142,10 @@ class ControlButtonMenu implements ActionListener
              */
 
             vue.setEnabled(false);
-            ThreadPartie threadClient = new ThreadPartie(
-                    accueil.getPartie(), this.controlButton, 1234, false, accueil.getAdresseIpReseau());
             accueil.initPartieReseau();
+            ThreadPartie threadClient = new ThreadPartie(
+                    accueil.getPartie(), this.controlButton, 1234, false,
+                    accueil.getAdresseIpReseau(), choixJoueur, pseudoJoueur);
             threadClient.run();
             vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
             vue.creerWidgetPartie();
@@ -188,4 +192,5 @@ class ControlButtonMenu implements ActionListener
             vue.creerWidgetFormulaireReseau();
         }
     }
+
 }

@@ -36,7 +36,7 @@ class Partie
     private long chronoJoueurNoir; // temps total alloué en ms au joueur 2 (=noir) (mode TIMERPARTY)
     
     private boolean echecBlanc;
-    private     boolean echecNoir;
+    private boolean echecNoir;
 
     private ArrayList<String> historique;
 
@@ -45,6 +45,19 @@ class Partie
     final static int MODE_TIMERTURN = 2;
     final static int MODE_TIMERPARTY = 3;
 
+    /**
+     * Partie
+     * Constructeur pour une partie déjà existante chargée depuis la base de données.
+     * @param joueurBlanc (joueur blanc)
+     * @param joueurNoir (joueur noir)
+     * @param tourBlanc (A qui était le tour avant la sauvegarde)
+     * @param historique (Historique de la partie avant sauvegarde)
+     * @param choixJoueurBlanc (le skin blanc)
+     * @param choixJoueurNoir (le skin noir)
+     * @param board (le plateau tel qu'il était avant la sauvegarde)
+     * @param cimetiereBlanc (le cimetière blanc tel qu'il était avant la sauvegarde)
+     * @param cimetiereNoir (le cimetière noir tel qu'il était avant la sauvegarde)
+     */
     Partie(Joueur joueurBlanc, Joueur joueurNoir, boolean tourBlanc, ArrayList<String> historique, int choixJoueurBlanc,
            int choixJoueurNoir, Board board, ArrayList<Piece> cimetiereBlanc, ArrayList<Piece> cimetiereNoir)
     {
@@ -90,13 +103,15 @@ class Partie
     }
 
     /**
+     * Partie
+     * Constructeur pour les parties en local
      *
-     * @param pseudo ()
-     * @param pseudoAdversaire ()
-     * @param modePartie ()
-     * @param netPartie ()
-     * @param choixJoueurB ()
-     * @param choixJoueurN ()
+     * @param pseudo (joueur courant)
+     * @param pseudoAdversaire (joueur adverse)
+     * @param modePartie (1 = partie normale, 2 = partie tour limité, 3 = partie temps limité)
+     * @param netPartie (true si la partie est en réseau)
+     * @param choixJoueurB (skin joueurBlanc)
+     * @param choixJoueurN (skin joueurNoir)
      */
     Partie(String pseudo, String pseudoAdversaire, int modePartie,
            boolean netPartie, int choixJoueurB, int choixJoueurN)
@@ -104,6 +119,16 @@ class Partie
         initPartie(pseudo, pseudoAdversaire, modePartie, netPartie, choixJoueurB, choixJoueurN);
     }
 
+    /**
+     * initPartie
+     * initialise la partie et ses attributs
+     * @param pseudo (joueur courant)
+     * @param pseudoAdversaire (joueur adverse)
+     * @param modePartie (1 = partie normale, 2 = partie tour limité, 3 = partie temps limité)
+     * @param netPartie (true si la partie est en réseau)
+     * @param choixJoueurB (skin joueurBlanc)
+     * @param choixJoueurN (skin joueurNoir)
+     */
     void initPartie(String pseudo, String pseudoAdversaire, int modePartie,
                             boolean netPartie, int choixJoueurB, int choixJoueurN)
     {
@@ -156,47 +181,13 @@ class Partie
         historique = new ArrayList<>();
     }
 
-    Partie(){}
-
     /**
+     * Partie
+     * Constructeur de Partie vide en attente de toutes les informations de l'adversaire
+     * UNIQUEMENT POUR LES PARTIES EN RESEAU
      *
-     * @param pseudo
-     * @param modePartie
      */
-    Partie(String pseudo, int modePartie)
-    {
-        piecesBlanchesPlateau = new ArrayList<>();
-        piecesNoiresPlateau = new ArrayList<>();
-        cimetiereBlanc = new ArrayList<>();
-        cimetiereNoir = new ArrayList<>();
-
-        // On créé le plateau
-        board = new Board(this);
-        tourBlanc = true;
-
-        // ajout SD
-        idCurrentPlayer = 1;
-
-        netPartie = true;
-        this.modePartie = modePartie;
-
-        echecBlanc = false;
-        echecNoir = false;
-        partieFinie = false;
-
-        this.endOfTurn = false;
-
-        historique = new ArrayList<>();
-
-        boolean jeSuisBlanc = jeSuisBlanc();
-
-        if (jeSuisBlanc)
-            this.joueurBlanc = new Joueur(true, pseudo);
-        else
-            this.joueurNoir = new Joueur(false, pseudo);
-    }
-
-
+    Partie(){}
 
     /**
      * jeSuisBlanc
@@ -204,7 +195,7 @@ class Partie
      *
      * @return (retourne une valeur au hazard blanc ou noir)
      */
-    private boolean jeSuisBlanc()
+    boolean jeSuisBlanc()
     {
         Random rand = new Random();
         return rand.nextBoolean();
@@ -446,7 +437,7 @@ class Partie
 
     /**
      * attenteAction
-     * comportent d'attente qu'une pièce soit jouer quelque soit le tour.
+     * comportant d'attente qu'une pièce soit jouer quelque soit le tour.
      *
      */
     synchronized void attenteAction()
