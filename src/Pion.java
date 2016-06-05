@@ -7,9 +7,10 @@ class Pion extends Piece
 {
 
     /**
-     * Pion
-     * @param caseInitiale
-     * @param blanc
+     * Pion todo
+     *
+     * @param caseInitiale ()
+     * @param blanc ()
      */
     Pion(Case caseInitiale, boolean blanc)
     {

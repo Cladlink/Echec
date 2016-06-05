@@ -52,6 +52,72 @@ class ControlButtonMenu implements ActionListener
             vue.majListeJoueur();
             vue.afficherFormulaire();
         }
+        else if( e.getSource().equals(vue.getRetourMenu()) )
+            vue.afficherMenu();
+        else if(e.getSource().equals(vue.getRejoindrePartie()))
+            vue.creerWidgetRejoindrePartieReseau();
+        else if(e.getSource().equals(vue.getNouvellePartie()))
+            vue.afficherFormulaire();
+        else if(e.getSource().equals(vue.getPartieRandom()))
+        {
+            accueil.lancementPartie("anonymous", "anonymous",1 ,1 , 1, false);
+            vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
+            vue.creerWidgetPartie();
+            accueil.getPartie().getBoard().majCasesAtteignable();
+            vue.setControlButtonMenu(new ControlButton(accueil, vue));
+            vue.setControlMotion(new ControlButton(accueil, vue));
+            vue.initMenuPartie();
+            vue.setControlMenu(new ControlMenu(accueil, vue));
+            vue.setVisible(true);
+        }
+        else if( e.getSource().equals(vue.getLancerPartie()) )
+        {
+            int modePartie = Integer.parseInt(vue.getGrTypePartie().getSelection().getActionCommand());
+            int choixJoueurB = Integer.parseInt(vue.getGrSkinBlanc().getSelection().getActionCommand());
+            int choixJOueurN = Integer.parseInt(vue.getGrSkinNoir().getSelection().getActionCommand());
+            String pseudoB = vue.getListeJoueursBlancs().getSelectedItem().toString();
+            String pseudoN = vue.getListeJoueursNoirs().getSelectedItem().toString();
+
+            if( pseudoB.equals(pseudoN) )
+            {
+                vue.jOptionMessage("Vous ne pouvez pas jouer contre vous-même !");
+                return;
+            }
+            accueil.lancementPartie(pseudoB, pseudoN, choixJoueurB, choixJOueurN, modePartie, false);
+            vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
+            vue.creerWidgetPartie();
+            accueil.getPartie().getBoard().majCasesAtteignable();
+            vue.setControlButtonMenu(new ControlButton(accueil, vue));
+            vue.setControlMotion(new ControlButton(accueil, vue));
+            vue.initMenuPartie();
+            vue.setControlMenu(new ControlMenu(accueil, vue));
+            vue.setVisible(true);
+            MusiqueChess.stopMedievalTheme();
+
+            // ajout SD
+	    /* TO DO:
+	       si partie en réseau :
+	          - invalider la vue (setEnable ??)
+	          - créer un ThreadPartie serveur
+	     */
+        }
+        else if(e.getSource().equals(vue.getLancerPartieReseau()))
+        {
+            int choixJoueur = Integer.parseInt(vue.getGrSkinBlanc().getSelection().getActionCommand());
+            String pseudoJoueur = vue.getListeJoueursBlancs().getSelectedItem().toString();
+            vue.setEnabled(false);
+
+            ThreadPartie tp = new ThreadPartie(accueil.getPartie(), controlButton, 1234, true, "127.0.0.1");
+            accueil.initPartieReseau();
+            tp.run();
+            vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
+            vue.creerWidgetPartie();
+            accueil.getPartie().getBoard().majCasesAtteignable();
+            vue.setControlButtonMenu(new ControlButton(accueil, vue));
+            vue.initMenuPartie();
+            vue.setControlMenu(new ControlMenu(accueil, vue));
+            vue.setVisible(true);
+        }
         else if(e.getSource().equals(vue.getRejoindrePartieReseau()))
         {
             accueil.setAdresseIpReseau(vue.messagePop("Entrez l'adresse IP de l'adversaire :"));
@@ -73,77 +139,10 @@ class ControlButtonMenu implements ActionListener
              */
 
             vue.setEnabled(false);
-            ThreadPartie threadClient = new ThreadPartie(accueil.getPartie(), this.controlButton, 1234, false,
-                    accueil.getAdresseIpReseau());
-
-            accueil.rejoindrePartieReseau(accueil.getPseudoReseau(), accueil.getChoixSkinReseau());
-            vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
-            vue.creerWidgetPartie();
-            accueil.getPartie().getBoard().majCasesAtteignable();
-            vue.setControlButtonMenu(new ControlButton(accueil, vue));
-            vue.initMenuPartie();
-            vue.setControlMenu(new ControlMenu(accueil, vue));
-            vue.setVisible(true);
-        }
-        else if(e.getSource().equals(vue.getNouvellePartie()))
-            vue.afficherFormulaire();
-        else if(e.getSource().equals(vue.getPartieRandom()))
-        {
-            accueil.lancementPartie("anonymous", "anonymous",1 ,1 , 1, false);
-            vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
-            vue.creerWidgetPartie();
-            accueil.getPartie().getBoard().majCasesAtteignable();
-            vue.setControlButtonMenu(new ControlButton(accueil, vue));
-            vue.setControlMotion(new ControlButton(accueil, vue));
-            vue.initMenuPartie();
-            vue.setControlMenu(new ControlMenu(accueil, vue));
-            vue.setVisible(true);
-        }
-        else if( e.getSource().equals(vue.getRetourMenu()) )
-            vue.afficherMenu();
-        else if(e.getSource().equals(vue.getRejoindrePartie()))
-            vue.creerWidgetRejoindrePartieReseau();
-
-        else if( e.getSource().equals(vue.getLancerPartie()) )
-        {
-            int modePartie = Integer.parseInt(vue.getGrTypePartie().getSelection().getActionCommand());
-            int choixJoueurB = Integer.parseInt(vue.getGrSkinBlanc().getSelection().getActionCommand());
-            int choixJOueurN = Integer.parseInt(vue.getGrSkinNoir().getSelection().getActionCommand());
-            String pseudoB = vue.getListeJoueursBlancs().getSelectedItem().toString();
-            String pseudoN = vue.getListeJoueursNoirs().getSelectedItem().toString();
-
-            if( pseudoB.equals(pseudoN) )
-            {
-                vue.jOptionMessage("Vous ne pouvez pas jouer contre vous-même !");
-                return;
-            }
-                accueil.lancementPartie(pseudoB, pseudoN, choixJoueurB, choixJOueurN, modePartie, false);
-                vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
-                vue.creerWidgetPartie();
-                accueil.getPartie().getBoard().majCasesAtteignable();
-                vue.setControlButtonMenu(new ControlButton(accueil, vue));
-                vue.setControlMotion(new ControlButton(accueil, vue));
-                vue.initMenuPartie();
-                vue.setControlMenu(new ControlMenu(accueil, vue));
-                vue.setVisible(true);
-                MusiqueChess.stopMedievalTheme();
-
-	    // ajout SD
-	    /* TO DO:
-	       si partie en réseau :
-	          - invalider la vue (setEnable ??)
-	          - créer un ThreadPartie serveur
-	     */
-        }
-        else if(e.getSource().equals(vue.getLancerPartieReseau()))
-        {
-            int choixJoueur = Integer.parseInt(vue.getGrSkinBlanc().getSelection().getActionCommand());
-            String pseudoJoueur = vue.getListeJoueursBlancs().getSelectedItem().toString();
-            vue.setEnabled(false);
-
-            ThreadPartie tp = new ThreadPartie(accueil.getPartie(), controlButton, 1234, true, "127.0.0.1");
-            tp.run();
-            accueil.lancementPartieReseau(pseudoJoueur, choixJoueur);
+            ThreadPartie threadClient = new ThreadPartie(
+                    accueil.getPartie(), this.controlButton, 1234, false, accueil.getAdresseIpReseau());
+            accueil.initPartieReseau();
+            threadClient.run();
             vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
             vue.creerWidgetPartie();
             accueil.getPartie().getBoard().majCasesAtteignable();

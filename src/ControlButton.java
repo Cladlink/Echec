@@ -11,9 +11,6 @@ import javax.swing.Timer;
  */
 class ControlButton extends MouseAdapter implements MouseMotionListener
 {
-
-    //variable pour mode de partie
-
     private String joueurBlanc, joueurNoir;
     private Accueil accueil;
     private Vue vue;
@@ -25,9 +22,6 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
         this.vue = vue;
         this.chrono = new ChronoMode(vue, accueil, this);
     }
-
-    // ajout SD : lance le chrono du joueur courant
-
 
     /**
      * finDeJeuTemps
@@ -54,20 +48,24 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
     // que la partie est en réseau
 
     /**
+     * enableView
+     * invalide ou non les éléments de la vue qui doivent être invalidé lors de l'attente de la partie
+     * en réseau ou du joueur si ce n'est pas son tour
+     * UNIQUEMENT POUR LA PARTIE EN RESEAU
      *
-     * @param state ()
+     * @param state (si true la vue est disponible, sinon non)
      */
-    public void enableView(boolean state)
+    void enableView(boolean state)
     {
         vue.setEnabled(!state);
     }
 
-    // ajout SD : déclenche le début du tour pour partie réseau et joueur courant
-
     /**
+     * debutTour
+     * déclanche le début du tour pour la partie en réseau et le joueur courant
      *
      */
-    public void debutTour()
+    void debutTour()
     {
 	/* todo:
 	     - si mode temps par tour: appeler partie.tourLimite() + lancer le chrono visuel
@@ -84,20 +82,30 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
                 chrono.tourLimite();
             else if (accueil.getPartie().getModePartie() == 3)
                 chrono.tempsLimite();
-
             //change de joueur donc chrono inversé
             chrono.stopChrono();
         }
-        else if(accueil.getPartie().getModePartie() == 3) //temps par partie
-        {
-            //todo : Michael
-        }
-
         vue.setEnabled(true);
     }
 
-    // ajout SD : met à jour modèle+vue en fonction des infos recues, partie en
-    // réseau uniquement
+    /**
+     * updatePartie
+     * met à jour le model + la vue en fonction des infos reçues
+     * UNIQUEMENT POUR LA PARTIE EN RESEAU
+     *
+     * @param rowSrc (rang de la case source)
+     * @param colSrc (colonne de la case source)
+     * @param rowDest (rang de la case destination)
+     * @param colDest (colonne de la case destination)
+     * @param typeRoque (roque = 0 si pas de roque, roque = 1 si petitRoque, roque = 2 si grandRoque)
+     * @param typePromo (promo = 0 si pas de promo,
+     *                  promo = 1 si Tour,
+     *                  promo = 2 si Cavalier,
+     *                  promo = 3 si Fou,
+     *                  promo = 4 si Reine
+     * @param chronoJoueurBlanc (etat du chrono du joueur blanc)
+     * @param chronoJoueurNoir (etat du chrono du joueur noir)
+     */
     public void updatePartie(int rowSrc, int colSrc, int rowDest, int colDest, int typeRoque, int typePromo, long chronoJoueurBlanc, long chronoJoueurNoir) {
 
 	/* todo: quasi identique au cas normal
@@ -150,14 +158,14 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
                     accueil.setCasesAtteignables(null);
                     accueil.getPartie().setTourBlanc(!accueil.getPartie().isTourBlanc());// changer joueur courant.
                     accueil.getPartie().getBoard().majCasesAtteignable();
-		    /* ajout SD :
-		       - arrêter chrono si besoin
-		       - appeler coupFait()
-		    */
+                    /* ajout SD :
+                       - arrêter chrono si besoin
+                       - appeler coupFait()
+                    */
 
-		    /* ajout SD : test à ajouter en premier
-		       - si partieFinie est déjà à true -> perdu à cause du temps -> message
-		     */
+                    /* ajout SD : test à ajouter en premier
+                       - si partieFinie est déjà à true -> perdu à cause du temps -> message
+                     */
                     if (accueil.getPartie().isEchecEtMat())
                     {
                         // ajout SD : mettre à jour partie.partieFinie
@@ -217,17 +225,25 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
         }
     }
 
+    /**
+     * mouseMoved
+     * Au passage de la souris sur une case, met à jour
+     * @param e
+     */
     @Override
-    public void mouseMoved(MouseEvent e) {
-
+    public void mouseMoved(MouseEvent e)
+    {
+        int row, column;
         Point point = e.getPoint();
-        /**
-         * Modifier ça : s'amuser avec les coordonnées pour trouver le bon calibrage
-         */
-        // int row = (int) ((point.getY() - 100) / 80) ;
-        // int column = (int) ((point.getX() - 450 ) / 80);
-        int row = (int) ((point.getY() - 20) / 80) ;
-        int column = (int) ((point.getX() - 360 ) / 80);
+        if ( (int)point.getY() - 20 > 0 )
+            row = (int) ((point.getY() - 20) / 80) ;
+        else
+            row = -1;
+
+        if ( (int)point.getX() - 360 > 0 )
+            column = (int) ((point.getX() - 360 ) / 80);
+        else
+            column = -1;
         // pour rester dans le plateau
         String barreStatutMessage = "";
         if (row >= 0
@@ -262,7 +278,11 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
                     barreStatutMessage += 'H';
                     break;
             }
-            barreStatutMessage += " " + (Math.abs(row-8));
+
+            if (row != -1 && column != -1)
+                barreStatutMessage += " " + (Math.abs(row-8));
+            else
+                barreStatutMessage = "     ";
             vue.getVueEchiquier().getBs().setStatutText(barreStatutMessage);
             vue.getVueEchiquier().repaint();
         }
@@ -270,7 +290,8 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
 
     }
 
-    public void mouseDragged(MouseEvent e){
+    public void mouseDragged(MouseEvent e)
+    {
 
     }
 

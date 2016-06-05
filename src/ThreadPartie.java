@@ -9,7 +9,6 @@ import java.net.Socket;
  */
 class ThreadPartie extends Thread
 {
-    private Joueur moi;
     private String monPseudo, pseudoAdversaire;
     private int monSkin, skinAdversaire;
     private int modePartie;
@@ -60,7 +59,6 @@ class ThreadPartie extends Thread
             {
                 e.printStackTrace();
             }
-        
 
         // ajout SD
         try
@@ -70,6 +68,7 @@ class ThreadPartie extends Thread
             // si je suis le joueur courant
                 if ( id == partie.getIdCurrentPlayer() )
                 {
+
                     /*todo :
                         - début du tour (via controleur)
                         - attendre fin tour
@@ -80,27 +79,44 @@ class ThreadPartie extends Thread
                         typeroque = 0 si pas de roque, = 1 petit roque, = 2 grand roque
                         typepromo = 0 si pas de promo, = 1,2,... (type pièce) si promo
                     */
+
                     controller.debutTour();
                     partie.waitFinTour();
-                    oos.writeObject(partie.getCaseSrc());
-                    oos.writeObject(partie.getCaseDest());
+                    oos.writeObject(partie.getCaseSrc().getRow());
+                    oos.writeObject(partie.getCaseSrc().getColumn());
+                    oos.writeObject(partie.getCaseDest().getRow());
+                    oos.writeObject(0); // on se casse pas la tête pour l'instant : on voit si ca marche sans chrono
+                    oos.writeObject(0);
+                    oos.writeObject(0.0);
+                    oos.writeObject(0.0);
                     oos.writeObject(partie.isPartieFinie());
                 }
                 else
                 {
                      /*
-                     todo :
                        - invalider la vue (via controleur)
                        - recevoir les infos
-                       - si partiFinie == true : l'autre joueur à dépassé son temps de jeu (partie ou tour)  -> j'ai gagné
+                       - si partiFinie == true : l'autre joueur à dépassé son temps de jeu (partie ou tour)  ->
+                       j'ai gagné
                        - sinon appeler control.updatePartie()
                      */
 
-                    
+                    controller.enableView(false);
+                    int srcX = ois.readInt();
+                    int srcY = ois.readInt();
+                    int destX = ois.readInt();
+                    int destY = ois.readInt();
+                    int roque = ois.readInt();
+                    int promo = ois.readInt();
+                    long chronoBlanc = ois.readLong();
+                    long chronoNoir = ois.readLong();
+                    boolean partieFinie = ois.readBoolean();
+
+                    if (partieFinie)
+                        stop = true;
+                    else
+                        controller.updatePartie(srcX, srcY, destX, destY, roque, promo, chronoBlanc, chronoNoir);
                 }
-                // - si partieFinie == true -> stop = true
-                if(partie.isPartieFinie())
-                    stop = true;
 
             }
         }
@@ -113,22 +129,28 @@ class ThreadPartie extends Thread
 
     private void initServer() throws IOException,ClassNotFoundException
     {
+        if (Math.ceil(Math.random()) == 1)
+        {
+            jeSuisBlanc = true;
+            id = 1;
+        }
+        else
+        {
+            jeSuisBlanc = false;
+            id = 2;
+        }
         conn = new ServerSocket(port);
         comm = conn.accept();
         oos = new ObjectOutputStream(comm.getOutputStream());
         oos.flush();
         ois = new ObjectInputStream(comm.getInputStream());
         // échanger les infos (pseudos, qui joue en premier, ...)
-        oos.writeObject(monPseudo);
-        oos.writeInt(monSkin);
-        oos.flush();
         // envoi : mon pseudo, mon skin, mode partie, qui est blanc
         // recoi : autre pseudo, autre skin,*
-
         oos.writeObject(pseudoAdversaire);
         oos.writeInt(monSkin);
         oos.writeInt(modePartie);
-        oos.writeBoolean(jeSuisBlanc);
+        oos.writeBoolean(!jeSuisBlanc);
         oos.flush();
         pseudoAdversaire = (String)ois.readObject();
         skinAdversaire = ois.readInt();
@@ -151,6 +173,12 @@ class ThreadPartie extends Thread
         oos.writeObject(monPseudo);
         oos.writeInt(monSkin);
         oos.flush();
-        partie.initPartie(monPseudo, pseudoAdversaire, modePartie, true, monSkin, skinAdversaire);
+        partie.initPartie(
+                monPseudo,
+                pseudoAdversaire,
+                modePartie,
+                true,
+                monSkin,
+                skinAdversaire);
     }
 }

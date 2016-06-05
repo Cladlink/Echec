@@ -71,7 +71,7 @@ class Accueil
         nouvellePartieTitre = "Lancer une partie locale";
         rejoindrePartieTitre = "Rejoindre une partie en réseau";
         nouveauJoueurTitre = "Nouveau joueur";
-        creditTitre = "Credits";
+            creditTitre = "Credits";
         chargerPartieTitre = "Charger une partie locale";
         retourMenuTitre = "Retour";
         lancerPartieTitre = "Lancer la partie";
@@ -134,23 +134,10 @@ class Accueil
      * lancementPartieReseau
      *
      *
-     * @param pseudo ()
-     * @param choixSkin ()
      */
-    void lancementPartieReseau(String pseudo, int choixSkin)
+    void initPartieReseau()
     {
-        this.partie = new Partie(pseudo, choixSkin);
-    }
-
-    /**
-      rejoindrePartieReseau
-
-     * @param pseudo ()
-     * @param choixSkin ()
-     */
-    void rejoindrePartieReseau(String pseudo, int choixSkin)
-    {
-	    // instaciation de Partie avec ipserver
+        this.partie = new Partie();
     }
 
     /**

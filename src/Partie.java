@@ -36,7 +36,7 @@ class Partie
     private long chronoJoueurNoir; // temps total alloué en ms au joueur 2 (=noir) (mode TIMERPARTY)
     
     private boolean echecBlanc;
-    private boolean echecNoir;
+    private     boolean echecNoir;
 
     private ArrayList<String> historique;
 
@@ -626,7 +626,6 @@ class Partie
             }
         }
 
-
         // Si un roque a eu lieu
         int diff = Math.abs(Character.getNumericValue(dernierCoup.charAt(2)) - Character.getNumericValue(dernierCoup.charAt(4)));
         boolean deplacementsRoi = false;
@@ -784,19 +783,28 @@ class Partie
     synchronized int getModePartie() {
         return modePartie;
     }
-    int getChoixJoueurBlanc() {
+    synchronized int getChoixJoueurBlanc() {
         return choixJoueurBlanc;
     }
-    int getChoixJoueurNoir() {
+    synchronized int getChoixJoueurNoir() {
         return choixJoueurNoir;
     }
-    ArrayList<String> getHistorique() {
+    synchronized ArrayList<String> getHistorique() {
         return historique;
     }
-    boolean isPartieFinie() {
+    synchronized boolean isPartieFinie() {
         return partieFinie;
     }
-    void setPartieFinie(boolean partieFinie) {
+    synchronized void setPartieFinie(boolean partieFinie) {
         this.partieFinie = partieFinie;
+    }
+    synchronized int getIdCurrentPlayer() {
+        return idCurrentPlayer;
+    }
+    synchronized Case getCaseSrc() {
+        return caseSrc;
+    }
+    synchronized Case getCaseDest() {
+        return caseDest;
     }
 }
