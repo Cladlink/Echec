@@ -154,6 +154,7 @@ class ThreadPartie extends Thread
         oos = new ObjectOutputStream(comm.getOutputStream());
         oos.flush();
         ois = new ObjectInputStream(comm.getInputStream());
+
         // échanger les infos (pseudos, qui joue en premier, ...)
         // envoi : mon pseudo, mon skin, mode partie, qui est blanc
         // recoi : autre pseudo, autre skin,*
@@ -165,6 +166,14 @@ class ThreadPartie extends Thread
         monPseudo = (String)ois.readObject();
         monSkin = ois.readInt();
         partie.initPartie(monPseudo, pseudoAdversaire, modePartie, true, monSkin, skinAdversaire);
+        /**
+         * todo MarieLucile :
+         * vérifier la tracabilité des variables envoyées elles sont à null tout le temps (je viens juste de
+         * trouver ca). Si tu peux tu repars depuis COntrolButton là ou on va chercher les variables dans
+         * la vue et tu vérifies à chaqu étapes que les variables des formulaires sont bien récupérées.
+         * Je suis quasi sur que le soucis vient de la récupération depuis le formulaire... Ton objectif c'est
+         * juste de faire en sorte qu'ici les variables récupérées en réseau soit pas à null
+         */
     }
 
     private void initClient() throws IOException,ClassNotFoundException
@@ -194,5 +203,8 @@ class ThreadPartie extends Thread
                 true,
                 monSkin,
                 skinAdversaire);
+        /**
+         * todo MarieLucile : idem ici
+         */
     }
 }
