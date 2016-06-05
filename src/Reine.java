@@ -3,6 +3,7 @@
  */
 class Reine extends Piece
 {
+
     /**
      * Reine todo
      * @param caseInitiale

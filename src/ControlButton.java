@@ -72,7 +72,6 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
 	     - sinon si mode temps partie : (re)démarrer le chrono visuel
 	     - valider la vue
 	 */
-
         enableView(true);
         if(accueil.getPartie().getModePartie() == 2) //Temps par tour
             chrono.tourLimite();
@@ -100,7 +99,9 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
      * @param chronoJoueurBlanc (etat du chrono du joueur blanc)
      * @param chronoJoueurNoir (etat du chrono du joueur noir)
      */
-    public void updatePartie(int rowSrc, int colSrc, int rowDest, int colDest, int typeRoque, int typePromo, long chronoJoueurBlanc, long chronoJoueurNoir) {
+    public void updatePartie(int rowSrc, int colSrc, int rowDest,int colDest, int typeRoque,
+                             int typePromo, long chronoJoueurBlanc, long chronoJoueurNoir)
+    {
 
 	/* todo: quasi identique au cas normal
 	   - mettre à jour les chrono,
@@ -199,12 +200,12 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
                         vue.jOptionMessage("ECHEC !");
                     }
                     vue.repaint();
-		    /* ajout SD :
-		      - si mode réseau appeler partie.finTour()
-		      - sinon si partie pas finie :
-		          - si mode temps par tour : lancer le chrono visuel
-			  - sinon si mode temps partie : (re)demarrer le chrono visuel
-		    */
+                    /* ajout SD :
+                      - si mode réseau appeler partie.finTour()
+                      - sinon si partie pas finie :
+                          - si mode temps par tour : lancer le chrono visuel
+                      - sinon si mode temps partie : (re)demarrer le chrono visuel
+                    */
 
                     //kevin : appele l'algo pour savoir si partie fini ou pas
                     if (accueil.getPartie().getModePartie() == 2)
@@ -222,7 +223,7 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
     /**
      * mouseMoved
      * Au passage de la souris sur une case, met à jour
-     * @param e
+     * @param e ()
      */
     @Override
     public void mouseMoved(MouseEvent e)

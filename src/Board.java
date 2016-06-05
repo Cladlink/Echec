@@ -203,7 +203,6 @@ class Board
                 && !destination.getPiece().blanc )
                 && destination.getPiece() instanceof Pion )
             vue.choixPiece( (Pion)destination.getPiece() );
-        // todo fait appel à la vue. Est ce acceptable vu qu'on est dans le model?
     }
 
     /**

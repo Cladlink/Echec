@@ -3,7 +3,6 @@
  */
 
 /*
- todo visuel promotion
  todo reseau
  todo historique visuel (KEVIN ?!?)
  todo animation (Marie-Lucile)

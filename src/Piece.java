@@ -11,12 +11,12 @@ abstract class Piece
     protected ArrayList<Case> casesAtteignables;
 
     protected ImageIcon skin;
-    protected static String adresseImageNoire;
-    protected static String adresseImageBlanche;
-    protected static String adresseImageNoireProf;
-    protected static String adresseImageBlancheProf;
-    protected static String adresseImageNoireEleve;
-    protected static String adresseImageBlancheEleve;
+    protected String adresseImageNoire;
+    protected String adresseImageBlanche;
+    protected String adresseImageNoireProf;
+    protected String adresseImageBlancheProf;
+    protected String adresseImageNoireEleve;
+    protected String adresseImageBlancheEleve;
 
     /**
      * Pièce (constructeur)

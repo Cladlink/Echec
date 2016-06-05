@@ -569,21 +569,57 @@ class Vue extends JFrame
      */
     void choixPiece(Pion pion)
     {
+
         ImageIcon[] piecesPossibles = new ImageIcon[4];
         if (pion.blanc)
-        {// todo revoir promotion
-            piecesPossibles[0] = new ImageIcon("Cavalier");
-            piecesPossibles[1] = new ImageIcon("Tour");
-            piecesPossibles[2] = new ImageIcon("Fou");
-            piecesPossibles[3] = new ImageIcon("Reine");
+        {
+            if (accueil.getPartie().getChoixJoueurBlanc() == 1)
+            {
+                piecesPossibles[0] = new ImageIcon("img/pions/TourBlanc.png");
+                piecesPossibles[1] = new ImageIcon("img/pions/CavalierBlanc.png");
+                piecesPossibles[2] = new ImageIcon("img/pions/FouBlanc.png");
+                piecesPossibles[3] = new ImageIcon("img/pions/ReineBlanc.png");
+            }
+            else if (accueil.getPartie().getChoixJoueurBlanc() == 2)
+            {
+                piecesPossibles[0] = new ImageIcon("img/BlancProf/CavalierBlanc.png");
+                piecesPossibles[1] = new ImageIcon("img/BlancProf/TourBlanc.png");
+                piecesPossibles[2] = new ImageIcon("img/BlancProf/FouBlanc.png");
+                piecesPossibles[3] = new ImageIcon("img/BlancProf/ReineBlanc.png");
+            }
+            else if (accueil.getPartie().getChoixJoueurBlanc() == 3)
+            {
+                piecesPossibles[0] = new ImageIcon("img/BlancEleve/TourBlanc.png");
+                piecesPossibles[1] = new ImageIcon("img/BlancEleve/CavalierBlanc.png");
+                piecesPossibles[2] = new ImageIcon("img/BlancEleve/FouBlanc.png");
+                piecesPossibles[3] = new ImageIcon("img/BlancEleve/ReineBlanc.png");
+            }
         }
         else
         {
-            piecesPossibles[0] = new ImageIcon("Cavalier");
-            piecesPossibles[1] = new ImageIcon("Tour");
-            piecesPossibles[2] = new ImageIcon("Fou");
-            piecesPossibles[3] = new ImageIcon("Reine");
+            if (accueil.getPartie().getChoixJoueurNoir() == 1)
+            {
+                piecesPossibles[0] = new ImageIcon("img/pions/CavalierNoir.png");
+                piecesPossibles[1] = new ImageIcon("img/pions/TourNoir.png");
+                piecesPossibles[2] = new ImageIcon("img/pions/FouNoir.png");
+                piecesPossibles[3] = new ImageIcon("img/pions/ReineNoir.png");
+            }
+            else if (accueil.getPartie().getChoixJoueurNoir() == 2)
+            {
+                piecesPossibles[0] = new ImageIcon("img/NoirProf/CavalierNoir.png");
+                piecesPossibles[1] = new ImageIcon("img/NoirProf/TourNoir.png");
+                piecesPossibles[2] = new ImageIcon("img/NoirProf/FouNoir.png");
+                piecesPossibles[3] = new ImageIcon("img/NoirProf/ReineNoir.png");
+            }
+            else if (accueil.getPartie().getChoixJoueurNoir() == 3)
+            {
+                piecesPossibles[0] = new ImageIcon("img/NoirEleve/CavalierNoir.png");
+                piecesPossibles[1] = new ImageIcon("img/NoirEleve/TourNoir.png");
+                piecesPossibles[2] = new ImageIcon("img/NoirEleve/FouNoir.png");
+                piecesPossibles[3] = new ImageIcon("img/NoirEleve/ReineNoir.png");
+            }
         }
+        
         int pieceSelected;
         do
         {
