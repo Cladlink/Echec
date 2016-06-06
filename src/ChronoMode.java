@@ -10,17 +10,14 @@ import java.util.TimerTask;
  */
 class ChronoMode
 {
-    private java.util.Timer timer;
     private Accueil accueil;
     private ControlButton cb;
     private boolean isDateBlancDepart, isDateNoirDepart;
-    private Date dateBlancDepart, dateNoirDepart;
     private java.util.Timer tm;
     private Timer chronoBlanc;
     private Timer chronoNoir;
-    private TimerTask tt;
-    private int secondeBlanc=0, minuteBlanc=0, secondeNoir=0, minuteNoir=0;
     private static boolean horsJeu;
+    private int compteurB = 30, compteurN = 30;
 
     ChronoMode(Vue vue, Accueil accueil, ControlButton cb)
     {
@@ -28,7 +25,8 @@ class ChronoMode
         this.cb = cb;
         horsJeu = false;
         // ajout SD
-        ActionListener alBlanc = new ActionListener() {
+        ActionListener alBlanc = new ActionListener()
+        {
             @Override
             public void actionPerformed(ActionEvent exprLambda) {
                 // décrementer le chrono du joueur blanc si > 0
@@ -36,71 +34,32 @@ class ChronoMode
                 // sinon invalider vue + arrêter chrono
 
                 //decremente de 1 la seconde
-                secondeBlanc--;
-                if (secondeBlanc < 0) {
-                    secondeBlanc = 59;
-                    minuteBlanc--;
-                }
-                if (minuteBlanc >= 0 && secondeBlanc >= 0) {
                     //maj des variables dans VueTimer
-                    vue.getVueEchiquier().getChronoBlanc().setSeconde(secondeBlanc);
-                    vue.getVueEchiquier().getChronoBlanc().setMinute(minuteBlanc);
+                    vue.getVueEchiquier().getChronoBlanc().setSeconde(compteurB%60);
+                    vue.getVueEchiquier().getChronoBlanc().setMinute(compteurB/60);
                     vue.repaint();
-                }
+
             }
         };
         chronoBlanc = new Timer(1000, alBlanc);
 
-        ActionListener alNoir = new ActionListener() {
+        ActionListener alNoir = new ActionListener()
+        {
             @Override
-            public void actionPerformed(ActionEvent exprLambda) {
+            public void actionPerformed(ActionEvent exprLambda)
+            {
                 // décrementer le chrono du joueur noir si > 0
                 // si chrono > 0 vue.repaint(...);
                 // sinon invalider vue + arrêter chrono
                 //decremente de 1 la seconde
-                secondeNoir--;
-                if (secondeNoir < 0) {
-                    secondeNoir = 59;
-                    minuteNoir--;
-                }
-                if (minuteNoir >= 0 && secondeNoir >= 0) {
                     //maj des variables dans VueTimer
-                    vue.getVueEchiquier().getChronoNoir().setSeconde(secondeNoir);
-                    vue.getVueEchiquier().getChronoNoir().setMinute(minuteNoir);
-
+                    vue.getVueEchiquier().getChronoNoir().setSeconde(compteurN%60);
+                    vue.getVueEchiquier().getChronoNoir().setMinute(compteurN/60);
                     vue.repaint();
-                }
             }
         };
         chronoNoir = new Timer(1000, alNoir);
 
-        startChrono();
-    }
-    void startChrono()
-    {
-	/* TO DO:
-	   - si mode temps par tour : mettre à 30s chronoJoueurBlanc/Noir selon le joueur courant
-	   - si joueur courant == blanc -> démarrer chronoBlanc sinon chronoNoir
-	 */
-
-        //initialisation du chrono
-        if (accueil.getPartie() != null)
-        {
-            if (accueil.getPartie().getModePartie() == 2)
-            {
-                secondeBlanc = 30;
-                minuteBlanc = 0;
-                secondeNoir = 30;
-                minuteNoir = 0;
-            }
-            else if (accueil.getPartie().getModePartie() == 3)
-            {
-                secondeBlanc = 0;
-                minuteBlanc = 15;
-                secondeNoir = 0;
-                minuteNoir = 15;
-            }
-        }
     }
 
     // ajout SD : arrête le chrono du joueur courant
@@ -124,10 +83,9 @@ class ChronoMode
         }
         if (accueil.getPartie().getModePartie() == 2)
             if (accueil.getPartie().isTourBlanc())
-                secondeBlanc = 30;
+                compteurB = 30;
             else
-                secondeNoir = 30;
-
+                compteurN = 30;
     }
 
     /**
@@ -135,73 +93,99 @@ class ChronoMode
      */
     synchronized void tourLimite()
     {
-        if (timer != null)
-            timer.cancel();
+        if (tm != null)
+            tm.cancel();
         // ajout SD : mettre tm en attribut sinon inaccessible par d'autres méthodes
-        timer = new java.util.Timer();
-        tt = new TimerTask()
+        if (accueil.getPartie().isTourBlanc())
+        {
+            System.out.println(compteurB);
+            if (tm != null)
+                tm.cancel();
+            compteurB--;
+            if (!isDateBlancDepart)
+                isDateBlancDepart = true;
+            else if (compteurB == 0 && !horsJeu)
+            {
+                cb.finDeJeuTemps();
+                horsJeu = true;
+            }
+        }
+        else
+        {
+            System.out.println(compteurN);
+            if (tm != null)
+                tm.cancel();
+            //tour noir
+            compteurN--;
+            if (!isDateNoirDepart)
+            {
+                isDateNoirDepart = true;
+            }
+            if (compteurN == 0 && !horsJeu)
+            {
+                cb.finDeJeuTemps();
+                horsJeu = true;
+            }
+        }
+        TimerTask tt2 = new TimerTask()
         {
             @Override
             public void run()
             {
-                if (!horsJeu)
-                {
-                    cb.finDeJeuTemps();
-                    horsJeu = true;
-                }
+                tourLimite();
             }
         };
-
-        timer.schedule(tt, 30000);
+        tm = new java.util.Timer();
+        tm.schedule(tt2, 1000);
     }
 
     /**
      *
      */
-    synchronized void tempsLimite()
+    void tempsLimite()
     {
-        Calendar calendar = Calendar.getInstance(); // creates calendar
-        calendar.setTime(new Date()); // sets calendar time/date
-
-        Date tempsActuel = calendar.getTime();
         //tour blanc
-        if ( accueil.getPartie().isTourBlanc())
+        if (accueil.getPartie().isTourBlanc())
         {
-            if (!isDateBlancDepart )
-            {
-                calendar.add(Calendar.MINUTE,15);
-                tempsActuel = calendar.getTime();
-                dateBlancDepart = tempsActuel;
+            if (tm != null)
+                tm.cancel();
+
+
+            compteurB--;
+            if (!isDateBlancDepart)
                 isDateBlancDepart = true;
-            }
-            else if (tempsActuel.after(dateBlancDepart) && !horsJeu)
+            else if (compteurB == 0 && !horsJeu)
             {
                 cb.finDeJeuTemps();
                 horsJeu = true;
-
             }
         }
-        //tour noir
         else
         {
+            if (tm != null)
+                tm.cancel();
+            else
+            {
+                compteurB = 300;
+                compteurN = 300;
+            }
+            //tour noir
+            compteurN--;
             if (!isDateNoirDepart)
             {
-                calendar.add(Calendar.MINUTE,15);
-                tempsActuel = calendar.getTime();
-                dateNoirDepart = tempsActuel;
                 isDateNoirDepart = true;
             }
-            if (tempsActuel.after(dateNoirDepart))
+            if (compteurN == 0 && !horsJeu)
             {
                 cb.finDeJeuTemps();
                 horsJeu = true;
             }
         }
-        //verifie chaque seconde le temps
         TimerTask tt = new TimerTask()
         {
             @Override
-            public void run() {
+            public void run()
+            {
                 tempsLimite();
             }
         };

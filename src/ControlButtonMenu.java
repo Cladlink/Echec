@@ -84,15 +84,7 @@ class ControlButtonMenu implements ActionListener
                 return;
             }
             accueil.lancementPartie(pseudoB, pseudoN, choixJoueurB, choixJOueurN, modePartie, false);
-            vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
-            vue.creerWidgetPartie();
-            accueil.getPartie().getBoard().majCasesAtteignable();
-            vue.setControlButtonMenu(new ControlButton(accueil, vue));
-            vue.setControlMotion(new ControlButton(accueil, vue));
-            vue.initMenuPartie();
-            vue.setControlMenu(new ControlMenu(accueil, vue));
-            vue.setVisible(true);
-            MusiqueChess.stopMedievalTheme();
+            initPartie(pseudoB, pseudoN);
 
             // ajout SD
         /* TO DO:
@@ -193,5 +185,18 @@ class ControlButtonMenu implements ActionListener
             vue.creerWidgetFormulaireReseau();
         }
     }
-
+    private void initPartie(String pseudoB, String pseudoN)
+    {
+        controlButton.setJoueurBlanc(pseudoB);
+        controlButton.setJoueurNoir(pseudoN);
+        vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
+        vue.creerWidgetPartie();
+        accueil.getPartie().getBoard().majCasesAtteignable();
+        vue.setControlButtonMenu(controlButton);
+        vue.setControlMotion(controlButton);
+        vue.initMenuPartie();
+        vue.setControlMenu(new ControlMenu(accueil, vue));
+        vue.setVisible(true);
+        MusiqueChess.stopMedievalTheme();
+    }
 }

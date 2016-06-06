@@ -5,8 +5,7 @@ class ControlGroup
 {
     private Accueil accueil;
     private Vue vue;
-    ControlButtonMenu controlButtonMenu;
-
+    private ControlButtonMenu controlButtonMenu;
     private ControlMenu controlMenu;
     private ControlButton controlButton;
 

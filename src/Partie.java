@@ -132,7 +132,6 @@ class Partie
     void initPartie(String pseudo, String pseudoAdversaire, int modePartie,
                             boolean netPartie, int choixJoueurB, int choixJoueurN)
     {
-
         if (pseudo.equals("anonymous"))
             this.joueurBlanc = new Joueur(true);
         else

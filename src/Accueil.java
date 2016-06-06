@@ -126,7 +126,7 @@ class Accueil
     void lancementPartie(String pseudo, String pseudoAdversaire,
                                 int choixJB, int choixJN, int modePartie, boolean netPartie)
     {
-	    this.partie = new Partie(pseudo, pseudoAdversaire, modePartie, netPartie, choixJB, choixJN);
+        this.partie = new Partie(pseudo, pseudoAdversaire, modePartie, netPartie, choixJB, choixJN);
     }
 
     // ajout SD : méthodes spécifique pour le réseau

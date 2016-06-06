@@ -163,12 +163,14 @@ class BDDManager
      * main
      * ce main n'est utiliser que pour créer les tables.
      */
-    static void main(String[] args)
+    public static void main(String[] args)
     {
         BDDManager bdd = new BDDManager();
         bdd.start();
         //bdd.lire("src/BDDechec.sql");
+        bdd.edit("DELETE FROM SAUVEGARDE;");
         bdd.edit("DELETE FROM HISTORIQUE;");
+        bdd.edit("DELETE FROM JOUEUR;");
         //bdd.edit("drop table JOUEUR;");
         /*bdd.edit("INSERT INTO JOUEUR (pseudoJoueur, nbPartiesJoueur, nbPartiesGagneesJoueur," +
                 " nbPartiesPerduesJoueur, nbPartiesAbandonneeJoueur, partieEnCoursJoueur, trophee1, trophee2, trophee3)" +
@@ -178,11 +180,11 @@ class BDDManager
                 " VALUES (\"titi\", 0, 0, 0, 0, 0, false, false, false);");*/
        //bdd.edit("INSERT INTO HISTORIQUE VALUES (null, 26, 28, '2015-2-12', 'PB1213-PB1213-PB1213-PB1213-PB1213-PB1213-PB1213');");
         //bdd.edit("INSERT INTO SAUVEGARDE VALUES (null, 25, 26, null, true, 'PB12-PN13-RN65', 14);");
-        /*ArrayList<ArrayList<String>> test = bdd.ask("DELETE FROM HISTORIQUE;");
+        ArrayList<ArrayList<String>> test = bdd.ask("SELECT * FROM JOUEUR;");
         for (int i = 0; i < test.size(); i++)
         {
             System.out.println(test.get(i));
-        }*/
+        }
 
         /*ArrayList<ArrayList<String>> test = bdd.ask("SELECT idJoueur FROM JOUEUR WHERE pseudoJoueur = 'Camille';");
         for (int i = 0; i < test.size(); i++)

@@ -1,7 +1,4 @@
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  Created by cladlink on 03/05/16.
@@ -11,7 +8,6 @@ class VueTimer
     private Partie partie;
     private boolean isBlanc;
     private int minute, seconde;
-    private Timer chrono;
     private DigitalNumber digitDizaineMinute, digitMinute, digitDizaineSeconde, digitSeconde;
 
     VueTimer(Partie partie, boolean isBlanc)
@@ -25,7 +21,7 @@ class VueTimer
         }
         else if (partie.getModePartie() == 3)
         {
-            minute = 15;
+            minute = 5;
             seconde = 0;
         }
     }

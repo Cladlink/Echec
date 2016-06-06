@@ -7,7 +7,6 @@
  todo reseau
  todo historique visuel (KEVIN ?!?)
  todo animation (Marie-Lucile)
- +++ todo IA (voir GNU Chess)
  todo relire tout
  */
 public class Chess

@@ -16,6 +16,11 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
     private Vue vue;
     private ChronoMode chrono;
 
+    /**
+     * ControlButton
+     * @param accueil ()
+     * @param vue ()
+     */
     ControlButton(Accueil accueil, Vue vue)
     {
         this.accueil = accueil;
@@ -33,14 +38,16 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
         accueil.getPartie().setPartieFinie(true);
         if (accueil.getPartie().getModePartie() == 2
                 || accueil.getPartie().getModePartie() == 3)
-            if (accueil.getPartie().isPartieFinie())
-            {
-                vue.jOptionMessage("vous avez perdu !");
-                accueil.getPartie().saveHistorique();
-                Partie.deleteSave(joueurBlanc, joueurNoir);
-                vue.setJMenuBar(null);
-                   vue.afficherMenu();
-            }
+            vue.jOptionMessage("vous avez perdu !");
+            accueil.getPartie().saveHistorique();
+            Partie.deleteSave(joueurBlanc, joueurNoir);
+            vue.setJMenuBar(null);
+               vue.afficherMenu();
+
+        if (accueil.getPartie().isTourBlanc())
+            Joueur.ajouteVictoire(joueurNoir, joueurBlanc);
+        else
+            Joueur.ajouteVictoire(joueurBlanc, joueurNoir);
     }
 
     // ajout SD : valide ou invalide (selon state) les élément de la vue qui ne doivent plus
@@ -167,9 +174,9 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
                         vue.jOptionMessage("ECHEC ET MAT !");
 
                         if (accueil.getPartie().isTourBlanc())
-                            Joueur.ajouteVictoire(joueurBlanc, joueurNoir);
-                        else
                             Joueur.ajouteVictoire(joueurNoir, joueurBlanc);
+                        else
+                            Joueur.ajouteVictoire(joueurBlanc, joueurNoir);
 
                         // ajout SD : à ne faire que si la partie n'est pas en réseau
                         // ou si je suis le serveur
@@ -182,11 +189,8 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
                     {
                         // ajout SD : mettre à jour partie.partieFinie
                         vue.jOptionMessage("PAT");
+                        Joueur.ajoutePat(joueurBlanc, joueurNoir);
 
-                        if (accueil.getPartie().isTourBlanc())
-                            Joueur.ajoutePat(joueurBlanc, joueurNoir);
-                        else
-                            Joueur.ajoutePat(joueurNoir, joueurBlanc);
 
                         // ajout SD : à ne faire que si la partie n'est pas en réseau
                         // ou si je suis le serveur
@@ -310,5 +314,21 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
     public void mouseExited(MouseEvent e)
     {
 
+    }
+
+    public String getJoueurBlanc() {
+        return joueurBlanc;
+    }
+
+    public void setJoueurBlanc(String joueurBlanc) {
+        this.joueurBlanc = joueurBlanc;
+    }
+
+    public String getJoueurNoir() {
+        return joueurNoir;
+    }
+
+    public void setJoueurNoir(String joueurNoir) {
+        this.joueurNoir = joueurNoir;
     }
 }
