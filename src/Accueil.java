@@ -198,7 +198,6 @@ class Accueil
         String nbPiecesB = elementsPartie.get(0).get(6);
         String nbPiecesN = elementsPartie.get(0).get(7);
 
-
         partie = new Partie(jb, jn, auTourDuBlanc, histoCoupsJoues, skinJoueurBlanc, skinJoueurNoir,
                 board, piecesCimetiereB, piecesCimetiereN);
         board.setPartie(partie);
