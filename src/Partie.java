@@ -188,12 +188,6 @@ class Partie
      */
     Partie(){}
 
-    Partie (String pseudoBlanc, String pseudoNoir){
-        this.joueurBlanc = new Joueur(true, pseudoBlanc);
-        this.joueurBlanc = new Joueur(false, pseudoNoir);
-
-    }
-
     /**
      * jeSuisBlanc
      * Décide aleatoirement si le joueur qui créer la partie est blanc
@@ -441,17 +435,6 @@ class Partie
     }
 
     /**
-     * attenteAction
-     * comportant d'attente qu'une pièce soit jouer quelque soit le tour.
-     *
-     */
-    synchronized void attenteAction()
-    {
-
-    }
-
-
-    /**
      * isEchec
      * Verifie si après un coup joué le roi adverse est en echec.
      *
@@ -692,58 +675,6 @@ class Partie
         historique.remove(historique.size()-1);
         board.majCasesAtteignable();
 
-    }
-
-    /**
-     * requeteHistorique
-     *
-     * @return ()
-     */
-    synchronized ArrayList<ArrayList<ArrayList<String>>> requeteHistorique()
-    {
-        String requete = "SELECT JOUEUR.pseudoJoueur," +
-                "HISTORIQUE.datePartie" +
-                " FROM HISTORIQUE" +
-                " JOIN JOUEUR" +
-                " ON HISTORIQUE.joueurBlancPartie = JOUEUR.idJoueur"+
-                " WHERE JOUEUR.idJoueur = HISTORIQUE.joueurBlancPartie;";
-
-        bdd.start();
-        ArrayList<ArrayList<String>> nomJoueurBlancEtDate = bdd.ask(requete);
-
-        requete = "SELECT JOUEUR.pseudoJoueur," +
-                "HISTORIQUE.datePartie" +
-                " FROM HISTORIQUE" +
-                " JOIN JOUEUR" +
-                " ON HISTORIQUE.joueurNoirPartie = JOUEUR.idJoueur"+
-                " WHERE JOUEUR.idJoueur = HISTORIQUE.joueurNoirPartie;";
-        ArrayList<ArrayList<String>> nomJoueurNoir = bdd.ask(requete);
-        bdd.stop();
-
-        ArrayList<ArrayList<ArrayList<String>>> historiqueRecup = new ArrayList<>();
-        historiqueRecup.add(nomJoueurBlancEtDate);
-        historiqueRecup.add(nomJoueurNoir);
-
-        return historiqueRecup;
-    }
-
-    /**
-     * requeteCoupsHistorique
-     *
-     * @param id ()
-     * @return ()
-     */
-    ArrayList<ArrayList<String>> requeteCoupsHistorique(int id)
-    {
-        //on recupere l'historique de la partie
-        String requete = "SELECT HISTORIQUE.coupsJouee, HISTORIQUE.idHistorique"+
-                " FROM HISTORIQUE" +
-                " WHERE idHistorique = "+id+";";
-        bdd.start();
-        ArrayList<ArrayList<String>> historiqueCoupRecup = bdd.ask(requete);
-        bdd.stop();
-
-        return historiqueCoupRecup;
     }
 
     // getters / setters

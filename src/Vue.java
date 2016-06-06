@@ -12,7 +12,7 @@ import java.util.ArrayList;
 class Vue extends JFrame
 {
     private VueEchiquier vueEchiquier;
-    private ControlButtonHistorique controlButtonHistorique;
+    private ControlButtonHistorique controlButtonHistorique; // todo pas bon du tout HERESIE
     private Partie partieHisto;
 
     private JMenuItem quitter;
@@ -630,63 +630,6 @@ class Vue extends JFrame
     }
 
     /**
-     *
-     * @param historiqueRecup
-     * @return
-     */
-    int choixHistoriqueAConsulter(ArrayList<ArrayList<ArrayList<String>>> historiqueRecup) {
-        int nombreDePartie = historiqueRecup.get(0).size();
-        // 5 partie affiché en largeur : on regarde combien il faudra de ligne
-        int nombreLigne = nombreDePartie / 5;
-
-        JPanel pHistorique = new JPanel();
-        pHistorique.setLayout(new BoxLayout(pHistorique, BoxLayout.Y_AXIS));
-
-        JScrollPane listHistoriquePane = new JScrollPane(pHistorique);
-
-        JPanel pGlobal = new JPanel();
-        pGlobal.setLayout(new BoxLayout(pGlobal, BoxLayout.Y_AXIS));
-
-        JPanel pTitreColonne = new JPanel(new GridLayout(0, 4));
-        pTitreColonne.add(new JLabel("n°"));
-        pTitreColonne.add(new JLabel("Joueur blanc"));
-        pTitreColonne.add(new JLabel("Date"));
-        pTitreColonne.add(new JLabel("Joueur noir"));
-
-        for (int i = 0; i < nombreDePartie; i++)
-        {
-            //joueur1
-            JPanel joueurBlanc = new JPanel();
-            joueurBlanc.add(new Label(historiqueRecup.get(0).get(i).get(0)));
-            //joueur2
-            JPanel joueurNoir = new JPanel();
-            joueurNoir.add(new Label(historiqueRecup.get(1).get(i).get(0)));
-            //date
-            JPanel date = new JPanel();
-            date.add(new Label(historiqueRecup.get(0).get(i).get(1)));
-
-            //créer un jPanel puis l'ajoute dans pHistorique
-            JPanel pPartie = new JPanel(new GridLayout(0, 4));
-            pPartie.add(new JLabel(String.valueOf(i)));
-            pPartie.add(joueurBlanc);
-            pPartie.add(date);
-            pPartie.add(joueurNoir);
-
-            pHistorique.add(pPartie);
-        }
-
-        pGlobal.add(pTitreColonne);
-        pGlobal.add(listHistoriquePane);
-
-        Object[] choixHisto = new Object[nombreDePartie];
-        for (int i = 0; i < nombreDePartie; i++)
-            choixHisto[i] = i;
-
-        return JOptionPane.showOptionDialog(this, pGlobal,
-                "Choix de l'historique", JOptionPane.INFORMATION_MESSAGE, 2, null, choixHisto, null);
-    }
-
-    /**
      * Affiche toutes les parties sauvegardées pour que l'utilisateur puisse en choisir une pour la continuer
      */
     void historiquePartie()
@@ -884,7 +827,7 @@ class Vue extends JFrame
         VueEchiquier vueEchiquierHisto = new VueEchiquier(partieHisto.getBoard(), accueilHisto, this);
         vueHisto = new JFrame();
 
-        //on créer le controlButton
+        //on créer le controlButton todo de la merde
         controlButtonHistorique = new ControlButtonHistorique(this, histoCoups, partieHisto.getBoard(), vueHisto);
         precedent = new JButton("Precedent");
         precedent.addActionListener(controlButtonHistorique);
@@ -922,112 +865,9 @@ class Vue extends JFrame
         vueHisto.repaint();
     }
 
-    public void vueHistoExit(){
+    void vueHistoExit()
+    {
         vueHisto.dispose();
-    }
-
-    String lectureHumaineDeHistorique(String stringHistorique)
-    {
-        String reponse;
-
-        //type piece
-        if (stringHistorique.charAt(0) == 'p')
-            reponse = "Pion ";
-        else if (stringHistorique.charAt(0) == 't')
-            reponse = "Tour ";
-        else if (stringHistorique.charAt(0) == 'f')
-            reponse = "Fou ";
-        else if (stringHistorique.charAt(0) == 'c')
-            reponse = "Cavalier ";
-        else if (stringHistorique.charAt(0) == 'r')
-            reponse = "Roi ";
-        else
-            reponse = "Reine ";
-        //position départ
-        reponse += positionEnChar(String.valueOf(Math.abs(Integer.parseInt(String.valueOf(stringHistorique.charAt(2)))-8)).charAt(0));
-        reponse += Math.abs(Integer.parseInt(String.valueOf(stringHistorique.charAt(3)))-8);
-        //position final
-        reponse += positionEnChar(String.valueOf(Math.abs(Integer.parseInt(String.valueOf(stringHistorique.charAt(4)))-8)).charAt(0));
-        reponse += Math.abs(Integer.parseInt(String.valueOf(stringHistorique.charAt(5)))-8);
-        //si la une piece a été bouffé
-        if (stringHistorique.length() >= 7)
-        {
-            reponse += " en tuant ";
-            if (stringHistorique.charAt(7) == 'p')
-                reponse += "Pion ";
-            else if (stringHistorique.charAt(7) == 't')
-                reponse += "Tour ";
-            else if (stringHistorique.charAt(7) == 'f')
-                reponse += "Fou ";
-            else if (stringHistorique.charAt(7) == 'c')
-                reponse += "Cavalier ";
-            else if (stringHistorique.charAt(7) == 'r')
-                reponse += "Roi ";
-            else
-                reponse += "Reine ";
-        }
-        System.out.println(reponse);
-        return reponse;
-    }
-
-    private String positionEnChar(char position)
-    {
-        if (position == '8')
-            return  "A";
-        else if (position == '7')
-            return "B";
-        else if (position == '6')
-            return "C";
-        else if (position == '5')
-            return "D";
-        else if (position == '4')
-            return "E";
-        else if (position == '3')
-            return "F";
-        else if (position == '2')
-            return "G";
-        else if (position == '1')
-            return "H";
-        return " ";
-    }
-
-    /**
-     * afficherHistorique
-     * 
-     * @param histoCoups ()
-     */
-    void afficherHistorique(ArrayList<ArrayList<String>> histoCoups)
-    {
-        JPanel titreColonne = new JPanel(new GridLayout(0, 3));
-        titreColonne.add(new JLabel("n° coups"));
-        titreColonne.add(new JLabel("Joueur blanc"));
-        titreColonne.add(new JLabel("Joueur noir"));
-
-        JPanel tableauCoup = new JPanel(new GridLayout(0, 3));
-        for (int i = 0; i < histoCoups.size(); i++) {
-            //ajoute le numéro
-            tableauCoup.add(new JLabel(String.valueOf(i)));
-            if (i % 2 == 0)
-            {//si coups blanc
-                tableauCoup.add(new JLabel(histoCoups.get(0).get(i)));
-                tableauCoup.add(new JLabel());
-            }
-            else
-            {//sinon coup noir
-                tableauCoup.add(new JLabel());
-                tableauCoup.add(new JLabel(histoCoups.get(0).get(i)));
-            }
-        }
-        JScrollPane pScroll = new JScrollPane();
-        pScroll.add(tableauCoup);
-
-        JPanel pGlobal = new JPanel();
-        pGlobal.setLayout(new BoxLayout(pGlobal, BoxLayout.Y_AXIS));
-
-        pGlobal.add(titreColonne);
-        pGlobal.add(pScroll);
-
-        JOptionPane.showMessageDialog(this, pGlobal, "Historique", JOptionPane.INFORMATION_MESSAGE);
     }
 
     // getters & setters

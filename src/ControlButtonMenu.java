@@ -102,7 +102,7 @@ class ControlButtonMenu implements ActionListener
 
             ThreadPartie tp = new ThreadPartie(
                     accueil.getPartie(), controlButton, 1234, true, "127.0.0.1", choixJoueur, pseudoJoueur, 1);
-            tp.run();
+            tp.start();
             vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
             vue.creerWidgetPartie();
             accueil.getPartie().getBoard().majCasesAtteignable();
