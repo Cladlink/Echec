@@ -4,17 +4,18 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
- * Created by sakalypse on 05/06/16.
+ Created by sakalypse on 05/06/16.
  */
-public class ControlButtonHistorique implements ActionListener {
+class ControlButtonHistorique implements ActionListener {
 
-    Vue vue;
-    ArrayList<String> ListhistoriqueLocal;
-    Board board;
-    int indice;
-    JFrame vueHisto;
+    private Vue vue;
+    private ArrayList<String> ListhistoriqueLocal;
+    private Board board;
+    private int indice;
+    private JFrame vueHisto;
 
-    ControlButtonHistorique(Vue vue, ArrayList<String> ListhistoriqueLocal, Board board, JFrame vueHisto){
+    ControlButtonHistorique(Vue vue, ArrayList<String> ListhistoriqueLocal, Board board, JFrame vueHisto)
+    {
         this.vue = vue;
         this.ListhistoriqueLocal = ListhistoriqueLocal;
         this.board = board;

@@ -5,10 +5,10 @@ import java.util.Vector;
 /**
  Created by cladlink on 17/05/16.
  */
-class chessComboBox extends JComboBox
+class ChessComboBox extends JComboBox
 {
 
-    chessComboBox(Vector<String> liste)
+    ChessComboBox(Vector<String> liste)
     {
         super(liste);
 

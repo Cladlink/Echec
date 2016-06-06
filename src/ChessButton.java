@@ -5,12 +5,12 @@ import java.awt.geom.RoundRectangle2D;
 /**
  Created by cladlink on 16/05/16.
  */
-class chessButton extends JButton
+class ChessButton extends JButton
 {
 
     Font police = new Font("Cardinal", Font.BOLD, 27);
 
-    chessButton(String text)
+    ChessButton(String text)
     {
         super(text, null);
         setBorderPainted(false);

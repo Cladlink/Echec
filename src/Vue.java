@@ -33,20 +33,20 @@ class Vue extends JFrame
     private JLabel skinNoir;
     private JLabel background;
 
-    private chessButton partieRandom;
-    private chessButton nouvellePartie;
-    private chessButton rejoindrePartie;
-    private chessButton nouveauJoueur;
-    private chessButton credit;
-    private chessButton chargerPartie;
-    private chessButton retourMenu;
-    private chessButton lancerPartie;
-    private chessButton quitterJeu;
-    private chessButton statsJoueur;
-    private chessButton creerPartieReseau;
-    private chessButton lancerPartieReseau;
-    private chessButton rejoindrePartieReseau;
-    private chessButton historiquePartie;
+    private ChessButton partieRandom;
+    private ChessButton nouvellePartie;
+    private ChessButton rejoindrePartie;
+    private ChessButton nouveauJoueur;
+    private ChessButton credit;
+    private ChessButton chargerPartie;
+    private ChessButton retourMenu;
+    private ChessButton lancerPartie;
+    private ChessButton quitterJeu;
+    private ChessButton statsJoueur;
+    private ChessButton creerPartieReseau;
+    private ChessButton lancerPartieReseau;
+    private ChessButton rejoindrePartieReseau;
+    private ChessButton historiquePartie;
 
     private JRadioButton partieNormale;
     private JRadioButton partieTempsCoupsLimites;
@@ -63,8 +63,8 @@ class Vue extends JFrame
     private ButtonGroup grSkinBlanc;
     private ButtonGroup grSkinNoir;
 
-    private chessComboBox listeJoueursBlancs;
-    private chessComboBox listeJoueursNoirs;
+    private ChessComboBox listeJoueursBlancs;
+    private ChessComboBox listeJoueursNoirs;
 
     private JButton suivant, precedent, retour;
     private JFrame vueHisto;
@@ -103,20 +103,20 @@ class Vue extends JFrame
         skinBlanc = new JLabel(accueil.getSkinLabel());
         skinNoir = new JLabel(accueil.getSkinLabel());
 
-        nouvellePartie = new chessButton(accueil.getNouvellePartieTitre());
-        rejoindrePartie = new chessButton(accueil.getRejoindrePartieTitre());
-        nouveauJoueur = new chessButton(accueil.getNouveauJoueurTitre());
-        credit = new chessButton(accueil.getCreditTitre());
-        chargerPartie = new chessButton(accueil.getChargerPartieTitre());
-        retourMenu = new chessButton(accueil.getRetourMenuTitre());
-        lancerPartie = new chessButton(accueil.getLancerPartieTitre());
-        quitterJeu = new chessButton(accueil.getQuitterJeuTitre());
-        partieRandom = new chessButton(accueil.getPartieRandomTitre());
-        statsJoueur = new chessButton(accueil.getStatsJoueurTitre());
-        creerPartieReseau = new chessButton(accueil.getCreerPartieReseauTitre());
-        lancerPartieReseau = new chessButton(accueil.getLancerPartieReseauTitre());
-        rejoindrePartieReseau = new chessButton(accueil.getRejoindrePartieReseauTitre());
-        historiquePartie = new chessButton(accueil.getHistoriquePartieTitre());
+        nouvellePartie = new ChessButton(accueil.getNouvellePartieTitre());
+        rejoindrePartie = new ChessButton(accueil.getRejoindrePartieTitre());
+        nouveauJoueur = new ChessButton(accueil.getNouveauJoueurTitre());
+        credit = new ChessButton(accueil.getCreditTitre());
+        chargerPartie = new ChessButton(accueil.getChargerPartieTitre());
+        retourMenu = new ChessButton(accueil.getRetourMenuTitre());
+        lancerPartie = new ChessButton(accueil.getLancerPartieTitre());
+        quitterJeu = new ChessButton(accueil.getQuitterJeuTitre());
+        partieRandom = new ChessButton(accueil.getPartieRandomTitre());
+        statsJoueur = new ChessButton(accueil.getStatsJoueurTitre());
+        creerPartieReseau = new ChessButton(accueil.getCreerPartieReseauTitre());
+        lancerPartieReseau = new ChessButton(accueil.getLancerPartieReseauTitre());
+        rejoindrePartieReseau = new ChessButton(accueil.getRejoindrePartieReseauTitre());
+        historiquePartie = new ChessButton(accueil.getHistoriquePartieTitre());
 
         partieNormale = new JRadioButton(accueil.getPartieNormaleTitre(), true);
         partieNormale.setActionCommand("1");
@@ -144,8 +144,8 @@ class Vue extends JFrame
         grSkinBlanc = new ButtonGroup();
         grSkinNoir = new ButtonGroup();
 
-        listeJoueursBlancs = new chessComboBox(accueil.majListeJoueur());
-        listeJoueursNoirs = new chessComboBox(accueil.majListeJoueur());
+        listeJoueursBlancs = new ChessComboBox(accueil.majListeJoueur());
+        listeJoueursNoirs = new ChessComboBox(accueil.majListeJoueur());
 
         // Création des groupes de RadioButton
         grTypePartie.add(partieNormale);
@@ -240,8 +240,8 @@ class Vue extends JFrame
      */
     void majListeJoueur()
     {
-        listeJoueursBlancs = new chessComboBox(accueil.majListeJoueur());
-        listeJoueursNoirs = new chessComboBox(accueil.majListeJoueur());
+        listeJoueursBlancs = new ChessComboBox(accueil.majListeJoueur());
+        listeJoueursNoirs = new ChessComboBox(accueil.majListeJoueur());
     }
 
     /**
@@ -1038,36 +1038,36 @@ class Vue extends JFrame
     JMenuItem getHistorique() { return historique; }
     JMenuItem getUndo() { return undo; }
     JMenuItem getQuitter() { return quitter; }
-    chessButton getLancerPartie() { return lancerPartie; }
-    chessButton getCredit() { return credit; }
+    ChessButton getLancerPartie() { return lancerPartie; }
+    ChessButton getCredit() { return credit; }
     ButtonGroup getGrTypePartie() { return grTypePartie; }
     ButtonGroup getGrReseau() { return grReseau; }
     ButtonGroup getGrSkinBlanc() { return grSkinBlanc; }
     ButtonGroup getGrSkinNoir() { return grSkinNoir; }
     JComboBox<String> getListeJoueursBlancs() { return listeJoueursBlancs; }
     JComboBox<String> getListeJoueursNoirs() { return listeJoueursNoirs; }
-    chessButton getNouveauJoueur() { return nouveauJoueur; }
-    chessButton getRejoindrePartie() { return rejoindrePartie; }
-    chessButton getNouvellePartie() {return nouvellePartie; }
-    chessButton getRetourMenu() { return retourMenu; }
-    chessButton getQuitterJeu() { return quitterJeu; }
-    chessButton getPartieRandom() { return partieRandom; }
-    chessButton getChargerPartie() {
+    ChessButton getNouveauJoueur() { return nouveauJoueur; }
+    ChessButton getRejoindrePartie() { return rejoindrePartie; }
+    ChessButton getNouvellePartie() {return nouvellePartie; }
+    ChessButton getRetourMenu() { return retourMenu; }
+    ChessButton getQuitterJeu() { return quitterJeu; }
+    ChessButton getPartieRandom() { return partieRandom; }
+    ChessButton getChargerPartie() {
         return chargerPartie;
     }
-    chessButton getStatsJoueur() {
+    ChessButton getStatsJoueur() {
         return statsJoueur;
     }
     JMenuItem getRetourMenuPrincipal() {
         return retourMenuPrincipal;
     }
-    chessButton getCreerPartieReseau() {
+    ChessButton getCreerPartieReseau() {
         return creerPartieReseau;
     }
-    chessButton getLancerPartieReseau() {
+    ChessButton getLancerPartieReseau() {
         return lancerPartieReseau;
     }
-    chessButton getRejoindrePartieReseau() {
+    ChessButton getRejoindrePartieReseau() {
         return rejoindrePartieReseau;
     }
     JButton getSuivant(){
@@ -1079,7 +1079,7 @@ class Vue extends JFrame
     JButton getRetour(){
         return retour;
     }
-    chessButton getHistoriquePartie(){
+    ChessButton getHistoriquePartie(){
         return historiquePartie;
     }
 }
