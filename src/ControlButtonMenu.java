@@ -156,12 +156,15 @@ class ControlButtonMenu implements ActionListener
         else if(e.getSource().equals(vue.getChargerPartie()))
         {
             vue.historiquePartie();
-            if( accueil.getPartieSelectionneePourChargement() != null)
-                accueil.load(accueil.getPartieSelectionneePourChargement().split(" ")[0]);
-            else
+
+            if( accueil.getPartieSelectionneePourChargement().equals(""))
             {
                 System.err.println("escape");
                 return;
+            }
+            else
+            {
+                accueil.load(accueil.getPartieSelectionneePourChargement().split(" ")[0]);
             }
             vue.setVueEchiquier(new VueEchiquier( accueil.getPartie().getBoard(), accueil, vue));
             vue.creerWidgetPartie();
@@ -183,6 +186,16 @@ class ControlButtonMenu implements ActionListener
         else if(e.getSource().equals(vue.getCreerPartieReseau()))
         {
             vue.creerWidgetFormulaireReseau();
+        }
+        else if (e.getSource().equals(vue.getHistoriquePartie()))
+        {
+            vue.choixHistoriqueAConsulter();
+            if(accueil.getPartieAVisualiser().equals(""))
+            {
+                System.err.println("escape");
+                return;
+            }
+            vue.afficherHistoriqueLocal(vue.recupererHistoCoupsPartie(accueil.getPartieAVisualiser()));
         }
     }
     private void initPartie(String pseudoB, String pseudoN)

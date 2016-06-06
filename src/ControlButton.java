@@ -1,10 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimerTask;
-import javax.swing.Timer;
 
 /**
  Created by Michael on 06/04/16.

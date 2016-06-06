@@ -40,7 +40,7 @@ class Board
      * plateauDeBase
      * "soulage" le constructeur sur le placement des pièces au début d'une partie
      */
-    private void plateauDeBase()
+    public void plateauDeBase()
     {
         boolean white = true;
 

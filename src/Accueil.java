@@ -49,9 +49,11 @@ class Accueil
     private String creerPartieReseauTitre;
     private String lancerPartieReseauTitre;
     private String rejoindrePartieReseauTitre;
+    private String historiquePartieTitre;
 
     private String partieSelectionneePourChargement;
     private String pseudoChoisi;
+    private String partieAVisualiser;
 
 
     /**
@@ -80,6 +82,7 @@ class Accueil
         creerPartieReseauTitre = "Lancer une partie en réseau";
         lancerPartieReseauTitre = "Lancer la partie";
         rejoindrePartieReseauTitre = "Rejoindre la partie";
+        historiquePartieTitre = "Historique des parties";
 
         partieNormaleTitre = "normale";
         partieTempsCoupsLimitesTitre = "temps limité par coup";
@@ -95,6 +98,7 @@ class Accueil
 
         partieSelectionneePourChargement = "";
         pseudoChoisi = "";
+        partieAVisualiser = "";
 
         pseudoReseau = "";
         adresseIpReseau = "";
@@ -443,5 +447,14 @@ class Accueil
     }
     String getRejoindrePartieReseauTitre() {
         return rejoindrePartieReseauTitre;
+    }
+    String getHistoriquePartieTitre() {
+        return historiquePartieTitre;
+    }
+    String getPartieAVisualiser() {
+        return partieAVisualiser;
+    }
+    void setPartieAVisualiser(String partieAVisualiser) {
+        this.partieAVisualiser = partieAVisualiser;
     }
 }

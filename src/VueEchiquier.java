@@ -20,8 +20,9 @@ class VueEchiquier extends JPanel
 
     private Graphics g;
 
-    VueEchiquier(Board board, Accueil accueil, Vue vue)
+    VueEchiquier(Board board, Accueil accueil, Vue vue)  //passer en parametre caseSrc
     {
+
         this.vue = vue;
         this.accueil = accueil;
         this.board = board;
@@ -36,7 +37,6 @@ class VueEchiquier extends JPanel
         bs = new VueBarreStatut(accueil.getPartie(), this);
         chronoBlanc = new VueTimer(accueil.getPartie(), true);
         chronoNoir = new VueTimer(accueil.getPartie(), false);
-
     }
 
     @Override
@@ -57,7 +57,7 @@ class VueEchiquier extends JPanel
         super.paintComponent(g);
         g.drawImage(bg.getImage(), 0, 0, 1380, 768, null);
         this.g = g;
-        if(vue.getAccueil().getPartie().isTourBlanc())
+        if(accueil.getPartie().isTourBlanc())
         {
             g.setColor(Color.WHITE);
             g.drawRect(355, 15, 650, 650);
@@ -104,21 +104,46 @@ class VueEchiquier extends JPanel
             }
         }
 
-
         // on dessine toutes les pièces
+        Case caseSrc = accueil.getCaseMemoire();
+        Case caseDest = accueil.getPartie().getCaseDest();
+        int k = 0;
+        if(caseSrc != null) {
+            System.out.println(caseSrc.getRow());
+            k = caseSrc.getRow();
+        }
         for (int i = 0; i < board.getPlateau().length; i++)
             for (int j = 0; j < board.getPlateau().length; j++)
                 if (board.getPlateau()[i][j].getPiece() != null)
-                    g.drawImage(board.getPlateau()[i][j].getPiece().skin.getImage(),
-                            j * board.getSizeCase() + 360,
-                            i * board.getSizeCase() + 20,
-                            null);
+                {
+                    if(board.getPlateau()[i][j] == caseSrc && caseSrc!= null)
+                    {
+                        while (k < 12)
+                        {
+                            g.drawImage(board.getPlateau()[i][j].getPiece().skin.getImage(),
+                                    j * (board.getSizeCase() + 1) + 360,
+                                    i * (board.getSizeCase() + 1) + 20,
+                                    null);
+                            k++;
+                        }
+                    }
+                    else
+                    {
+                        g.drawImage(board.getPlateau()[i][j].getPiece().skin.getImage(),
+                                j * board.getSizeCase() + 360,
+                                i * board.getSizeCase() + 20,
+                                null);
+                    }
+                }
+
         gyBlanc.paintMe(g, 110, 150);
         gyNoir.paintMe(g, 1060, 150);
         bs.paintMe(g, 0, getHeight());
         chronoBlanc.paintMe(g, 160, 80, vue);
         chronoNoir.paintMe(g, 1110, 80, vue);
     }
+
+
     Vue getVue() { return vue; }
     void setVue(Vue vue) { this.vue = vue; }
     Board getBoard() { return board; }

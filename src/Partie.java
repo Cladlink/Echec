@@ -188,6 +188,12 @@ class Partie
      */
     Partie(){}
 
+    Partie (String pseudoBlanc, String pseudoNoir){
+        this.joueurBlanc = new Joueur(true, pseudoBlanc);
+        this.joueurBlanc = new Joueur(false, pseudoNoir);
+
+    }
+
     /**
      * jeSuisBlanc
      * Décide aleatoirement si le joueur qui créer la partie est blanc
@@ -796,5 +802,8 @@ class Partie
     }
     synchronized Case getCaseDest() {
         return caseDest;
+    }
+    boolean isNetPartie() {
+        return netPartie;
     }
 }

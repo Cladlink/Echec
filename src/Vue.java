@@ -12,6 +12,8 @@ import java.util.ArrayList;
 class Vue extends JFrame
 {
     private VueEchiquier vueEchiquier;
+    private ControlButtonHistorique controlButtonHistorique;
+    private Partie partieHisto;
 
     private JMenuItem quitter;
     private JMenuItem undo;
@@ -44,6 +46,7 @@ class Vue extends JFrame
     private chessButton creerPartieReseau;
     private chessButton lancerPartieReseau;
     private chessButton rejoindrePartieReseau;
+    private chessButton historiquePartie;
 
     private JRadioButton partieNormale;
     private JRadioButton partieTempsCoupsLimites;
@@ -62,6 +65,9 @@ class Vue extends JFrame
 
     private chessComboBox listeJoueursBlancs;
     private chessComboBox listeJoueursNoirs;
+
+    private JButton suivant, precedent, retour;
+    private JFrame vueHisto;
 
     /**
      * Vue
@@ -110,6 +116,7 @@ class Vue extends JFrame
         creerPartieReseau = new chessButton(accueil.getCreerPartieReseauTitre());
         lancerPartieReseau = new chessButton(accueil.getLancerPartieReseauTitre());
         rejoindrePartieReseau = new chessButton(accueil.getRejoindrePartieReseauTitre());
+        historiquePartie = new chessButton(accueil.getHistoriquePartieTitre());
 
         partieNormale = new JRadioButton(accueil.getPartieNormaleTitre(), true);
         partieNormale.setActionCommand("1");
@@ -358,13 +365,13 @@ class Vue extends JFrame
         JPanel centre = new JPanel(new GridLayout(11, 1, 0, 10));
         centre.setOpaque(false);
         centre.add(Box.createVerticalGlue());
-        centre.add(Box.createVerticalGlue());
         centre.add(nouvellePartie);
         centre.add(chargerPartie);
         centre.add(creerPartieReseau);
         centre.add(rejoindrePartie);
         centre.add(partieRandom);
         centre.add(statsJoueur);
+        centre.add(historiquePartie);
         centre.add(credit);
         centre.add(quitterJeu);
 
@@ -411,6 +418,7 @@ class Vue extends JFrame
         creerPartieReseau.addActionListener(listener);
         lancerPartieReseau.addActionListener(listener);
         rejoindrePartieReseau.addActionListener(listener);
+        historiquePartie.addActionListener(listener);
     }
 
     void creerWidgetRejoindrePartieReseau()
@@ -569,57 +577,21 @@ class Vue extends JFrame
      */
     void choixPiece(Pion pion)
     {
-
         ImageIcon[] piecesPossibles = new ImageIcon[4];
         if (pion.blanc)
-        {
-            if (accueil.getPartie().getChoixJoueurBlanc() == 1)
-            {
-                piecesPossibles[0] = new ImageIcon("img/pions/TourBlanc.png");
-                piecesPossibles[1] = new ImageIcon("img/pions/CavalierBlanc.png");
-                piecesPossibles[2] = new ImageIcon("img/pions/FouBlanc.png");
-                piecesPossibles[3] = new ImageIcon("img/pions/ReineBlanc.png");
-            }
-            else if (accueil.getPartie().getChoixJoueurBlanc() == 2)
-            {
-                piecesPossibles[0] = new ImageIcon("img/BlancProf/CavalierBlanc.png");
-                piecesPossibles[1] = new ImageIcon("img/BlancProf/TourBlanc.png");
-                piecesPossibles[2] = new ImageIcon("img/BlancProf/FouBlanc.png");
-                piecesPossibles[3] = new ImageIcon("img/BlancProf/ReineBlanc.png");
-            }
-            else if (accueil.getPartie().getChoixJoueurBlanc() == 3)
-            {
-                piecesPossibles[0] = new ImageIcon("img/BlancEleve/TourBlanc.png");
-                piecesPossibles[1] = new ImageIcon("img/BlancEleve/CavalierBlanc.png");
-                piecesPossibles[2] = new ImageIcon("img/BlancEleve/FouBlanc.png");
-                piecesPossibles[3] = new ImageIcon("img/BlancEleve/ReineBlanc.png");
-            }
+        {// todo revoir promotion
+            piecesPossibles[0] = new ImageIcon("Cavalier");
+            piecesPossibles[1] = new ImageIcon("Tour");
+            piecesPossibles[2] = new ImageIcon("Fou");
+            piecesPossibles[3] = new ImageIcon("Reine");
         }
         else
         {
-            if (accueil.getPartie().getChoixJoueurNoir() == 1)
-            {
-                piecesPossibles[0] = new ImageIcon("img/pions/CavalierNoir.png");
-                piecesPossibles[1] = new ImageIcon("img/pions/TourNoir.png");
-                piecesPossibles[2] = new ImageIcon("img/pions/FouNoir.png");
-                piecesPossibles[3] = new ImageIcon("img/pions/ReineNoir.png");
-            }
-            else if (accueil.getPartie().getChoixJoueurNoir() == 2)
-            {
-                piecesPossibles[0] = new ImageIcon("img/NoirProf/CavalierNoir.png");
-                piecesPossibles[1] = new ImageIcon("img/NoirProf/TourNoir.png");
-                piecesPossibles[2] = new ImageIcon("img/NoirProf/FouNoir.png");
-                piecesPossibles[3] = new ImageIcon("img/NoirProf/ReineNoir.png");
-            }
-            else if (accueil.getPartie().getChoixJoueurNoir() == 3)
-            {
-                piecesPossibles[0] = new ImageIcon("img/NoirEleve/CavalierNoir.png");
-                piecesPossibles[1] = new ImageIcon("img/NoirEleve/TourNoir.png");
-                piecesPossibles[2] = new ImageIcon("img/NoirEleve/FouNoir.png");
-                piecesPossibles[3] = new ImageIcon("img/NoirEleve/ReineNoir.png");
-            }
+            piecesPossibles[0] = new ImageIcon("Cavalier");
+            piecesPossibles[1] = new ImageIcon("Tour");
+            piecesPossibles[2] = new ImageIcon("Fou");
+            piecesPossibles[3] = new ImageIcon("Reine");
         }
-        
         int pieceSelected;
         do
         {
@@ -662,7 +634,7 @@ class Vue extends JFrame
      * @param historiqueRecup
      * @return
      */
-    int choixHistorique(ArrayList<ArrayList<ArrayList<String>>> historiqueRecup) {
+    int choixHistoriqueAConsulter(ArrayList<ArrayList<ArrayList<String>>> historiqueRecup) {
         int nombreDePartie = historiqueRecup.get(0).size();
         // 5 partie affiché en largeur : on regarde combien il faudra de ligne
         int nombreLigne = nombreDePartie / 5;
@@ -724,7 +696,16 @@ class Vue extends JFrame
         bdd.start();
 
         // On récupère les id des joueurs ayants sauvegardé une partie
-        ArrayList<ArrayList<String>> idJoueursSauvegarde = bdd.ask("SELECT SAUVEGARDE.joueurBlancSave, joueurNoirSave FROM SAUVEGARDE;");
+        ArrayList<ArrayList<String>> idJoueursSauvegarde = bdd.ask("SELECT SAUVEGARDE.joueurBlancSave, " +
+                "" +
+                "joueurNoirSave FROM SAUVEGARDE;");
+
+        if(idJoueursSauvegarde.isEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "Il n'y a pas de partie enregistrée.", "Charger une partie interrompue",
+                    JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
 
         String[][] pseudosJoueurs = new String[idJoueursSauvegarde.size()][2];
 
@@ -760,6 +741,85 @@ class Vue extends JFrame
         bdd.stop();
     }
 
+    void choixHistoriqueAConsulter()
+    {
+        int i,j;
+        BDDManager bdd = new BDDManager();
+        bdd.start();
+
+        // On récupère les id des joueurs ayants sauvegardé une partie
+        ArrayList<ArrayList<String>> idJoueursHistorique = bdd.ask("SELECT joueurBlancPartie, joueurNoirPartie" +
+                " FROM HISTORIQUE;");
+
+        if(idJoueursHistorique.isEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "Il n'y a pas d'historique disponible.", "Voir l'historique d'une partie"
+                    , JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        ArrayList<ArrayList<String>> datesParties = bdd.ask("SELECT dateHistorique FROM HISTORIQUE;");
+
+        String[][] pseudosJoueurs = new String[idJoueursHistorique.size()][2];
+
+        String[] joueursBlancs = new String[idJoueursHistorique.size()];
+        String[] joueursNoirs = new String[idJoueursHistorique.size()];
+        String[] date = new String[datesParties.size()];
+
+        // On récupère les pseudos corespondants à chaque id récupérés précédamment
+        for (i = 0; i < idJoueursHistorique.size(); i++)
+        {
+            for(j=0; j<idJoueursHistorique.get(i).size(); j++)
+            {
+                pseudosJoueurs[i][j] = bdd.ask("SELECT JOUEUR.pseudoJoueur FROM JOUEUR WHERE JOUEUR.idJoueur = "
+                        + idJoueursHistorique.get(i).get(j) + ";").get(0).get(0) + "";
+            }
+            joueursBlancs[i] = pseudosJoueurs[i][0];
+            joueursNoirs[i] = pseudosJoueurs[i][1];
+        }
+        for (i = 0; i < datesParties.size(); i++)
+        {
+            for(j=0; j<datesParties.get(i).size(); j++)
+            {
+                date[i] = datesParties.get(i).get(j);
+            }
+        }
+
+        // On crée une liste qui va être affichée dans une fenetre popup pour que l'utilisateur choisisse
+        // quelle sauvegarde il veut reprendre
+        String[] possibilitesParties = new String[idJoueursHistorique.size()];
+        for(i=0; i<possibilitesParties.length; i++)
+            possibilitesParties[i] = joueursBlancs[i] + " VS " + joueursNoirs[i] + " le " + date[i];
+
+        // On crée la boite de dialogue
+        accueil.setPartieAVisualiser((String) JOptionPane.showInputDialog(null, "De quelle partie voulez-vous charger l'historique ?",
+                "Voir l'historique d'une partie", JOptionPane.QUESTION_MESSAGE, null, possibilitesParties,
+                possibilitesParties[0]));
+
+        bdd.stop();
+    }
+
+    ArrayList<String> recupererHistoCoupsPartie(String joueursEtDate)
+    {
+        BDDManager bdd = new BDDManager();
+        bdd.start();
+
+        // joueurEtDate au format : "pseudo1 VS pseudo2 le date"
+        String joueurBlanc = joueursEtDate.split(" ")[0];
+        String joueurNoir = joueursEtDate.split(" ")[2];
+        String date = joueursEtDate.split(" ")[4] + " " + joueursEtDate.split(" ")[5];
+
+        String idJB = bdd.ask("SELECT idJoueur FROM JOUEUR WHERE pseudoJoueur LIKE '" + joueurBlanc + "';").get(0).get(0);
+        String idJN = bdd.ask("SELECT idJoueur FROM JOUEUR WHERE pseudoJoueur LIKE '" + joueurNoir + "';").get(0).get(0);
+        String requete = "SELECT coupsJouee FROM HISTORIQUE "
+                + "WHERE joueurBlancPartie = " + idJB
+                + " AND joueurNoirPartie = " + idJN
+                + " AND dateHistorique = '" + date
+                + "';";
+        ArrayList<ArrayList<String>> histo = bdd.ask(requete);
+        bdd.stop();
+        return histo.get(0);
+    }
 
     void statistiquesJoueur()
     {
@@ -802,49 +862,6 @@ class Vue extends JFrame
         bdd.stop();
     }
 
-    /**
-     * pseudoJoueurReseau
-     */
-    void pseudoJoueurReseau()
-    {
-        int i;
-        BDDManager bdd = new BDDManager();
-        bdd.start();
-
-        ArrayList<ArrayList<String>> listeJoueur = bdd.ask("SELECT * FROM JOUEUR;");
-
-        String[] pseudoJoueurs = new String[listeJoueur.size()];
-        for(i=0;i<listeJoueur.size(); i++)
-            pseudoJoueurs[i] = listeJoueur.get(i).get(1);
-
-        accueil.setPseudoReseau((String) JOptionPane.showInputDialog(null, "Choisissez un pseudo :",
-                "Pseudo", JOptionPane.QUESTION_MESSAGE, null, pseudoJoueurs,
-                pseudoJoueurs[0]));
-
-        bdd.stop();
-    }
-
-    void skinReseau()
-    {
-        String[] choix = {"Normal", "Profeseur", "Elève"};
-
-        String skin = ((String)JOptionPane.showInputDialog(null, "Choisissez un skin pour vos pièces :", "Choix du skin",
-                JOptionPane.QUESTION_MESSAGE, null, choix, choix[0]));
-
-        switch (skin)
-        {
-            case "Normal":
-                accueil.setChoixSkinReseau(1);
-                break;
-            case "Professeur":
-                accueil.setChoixSkinReseau(2);
-                break;
-            case "Elève":
-                accueil.setChoixSkinReseau(3);
-                break;
-        }
-    }
-
 
     /**
      *
@@ -852,59 +869,61 @@ class Vue extends JFrame
      */
     void afficherHistoriqueLocal(ArrayList<String> histoCoups)
     {
+        //todo : faire un getter pour isNetPartie dans Partie.java
+        //todo : copier la classe ControlButtonHistorique.java
+        //todo : mettre JButton suivant et precedent et retour en attribut de classe + faire les getters
+        //todo : mettre plateauDeBase public
+        //todo : mettre 'VueEchiquer vueHisto' en attribut de la classe
 
-        JLabel numero = new JLabel("n°");
-        JLabel jb = new JLabel("Joueur blanc");
-        JLabel jn = new JLabel("Joueur noir");
+        //on recupere la partie en cours pour avoir les infos
 
-        JPanel colonneNum = new JPanel();
-        colonneNum.setLayout(new BoxLayout(colonneNum, BoxLayout.Y_AXIS));
-        colonneNum.add(numero);
-        colonneNum.add(Box.createVerticalStrut(15));
+        //On créer une nouvelle partie
+        Accueil accueilHisto = new Accueil();
+        accueilHisto.lancementPartie("joueurBlanc", "joueurNoir", 1, 1, 1, false);
+        partieHisto = accueilHisto.getPartie();
+        VueEchiquier vueEchiquierHisto = new VueEchiquier(partieHisto.getBoard(), accueilHisto, this);
+        vueHisto = new JFrame();
 
-        JPanel colonneJB = new JPanel();
-        colonneJB.setLayout(new BoxLayout(colonneJB, BoxLayout.Y_AXIS));
-        colonneJB.add(jb);
-        colonneJB.add(Box.createVerticalStrut(15));
+        //on créer le controlButton
+        controlButtonHistorique = new ControlButtonHistorique(this, histoCoups, partieHisto.getBoard(), vueHisto);
+        precedent = new JButton("Precedent");
+        precedent.addActionListener(controlButtonHistorique);
+        suivant = new JButton("Suivant");
+        suivant.addActionListener(controlButtonHistorique);
+        retour = new JButton("retour");
+        retour.addActionListener(controlButtonHistorique);
 
-        JPanel colonneJN = new JPanel();
-        colonneJN.setLayout(new BoxLayout(colonneJN, BoxLayout.Y_AXIS));
-        colonneJN.add(jn);
-        colonneJN.add(Box.createVerticalStrut(15));
+        JPanel panelBoard = new JPanel();
+        panelBoard.setLayout(new GridLayout(1,1));
+        panelBoard.add(vueEchiquierHisto);
 
-        for (int i = 0;i<histoCoups.size();i++)
-        {
-            //ajoute le numéro
-            colonneNum.add(new JLabel(String.valueOf(i+1)));
-            colonneNum.add(Box.createVerticalStrut(6));
-            if (i%2 == 0)
-            {//si coups blanc
-                colonneJB.add(new JLabel(lectureHumaineDeHistorique(histoCoups.get(i))));
-                colonneJB.add(Box.createVerticalStrut(6));
-                colonneJN.add(Box.createVerticalStrut(21));
-            }
-            else
-            {//sinon coup noir
-                colonneJB.add(Box.createVerticalStrut(21));
-                colonneJN.add(new JLabel(lectureHumaineDeHistorique(histoCoups.get(i))));
-                colonneJN.add(Box.createVerticalStrut(6));
-            }
-        }
+        JPanel panelButton = new JPanel();
+        panelButton.add(precedent);
+        panelButton.add(suivant);
+        panelButton.add(retour);
 
-        JPanel tableau = new JPanel();
-        tableau.add(colonneNum);
-        tableau.add(colonneJB);
-        tableau.add(colonneJN);
+        JPanel panelGeneral = new JPanel();
+        panelGeneral.setLayout(new BoxLayout(panelGeneral, BoxLayout.Y_AXIS));
+        panelGeneral.add(panelBoard);
+        panelGeneral.add(panelButton);
 
-        JScrollPane pScroll = new JScrollPane(tableau,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        pScroll.setPreferredSize(new Dimension(500,200));
+        //creation de la vue
+        vueHisto.setUndecorated(true);
+        Toolkit tk = Toolkit.getDefaultToolkit();
+        xSize = (int) tk.getScreenSize().getWidth();
+        ySize = (int) tk.getScreenSize().getHeight();
+        vueHisto.setSize(xSize, ySize);
+        vueHisto.setTitle("Historique");
+        vueHisto.setResizable(false);
+        vueHisto.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        vueHisto.setVisible(true);
+        vueHisto.setContentPane(panelGeneral);
 
-        JPanel pGlobal = new JPanel();
-        pGlobal.setLayout(new BoxLayout(pGlobal, BoxLayout.Y_AXIS));
-        pGlobal.add(pScroll);
+        vueHisto.repaint();
+    }
 
-        JOptionPane.showMessageDialog( this, pGlobal, "Historique des coups jouées", JOptionPane.INFORMATION_MESSAGE );
+    public void vueHistoExit(){
+        vueHisto.dispose();
     }
 
     String lectureHumaineDeHistorique(String stringHistorique)
@@ -1050,5 +1069,17 @@ class Vue extends JFrame
     }
     chessButton getRejoindrePartieReseau() {
         return rejoindrePartieReseau;
+    }
+    JButton getSuivant(){
+        return suivant;
+    }
+    JButton getPrecedent(){
+        return precedent;
+    }
+    JButton getRetour(){
+        return retour;
+    }
+    chessButton getHistoriquePartie(){
+        return historiquePartie;
     }
 }
