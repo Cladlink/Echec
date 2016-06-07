@@ -107,15 +107,19 @@ class Pion extends Piece
         switch (choix)
         {
             case 1 :
+                emplacementPiece.getBoard().getPartie().setPromote(1);
                 emplacementPiece.setPiece(new Cavalier(this.emplacementPiece, this.blanc));
                 break;
             case 2 :
+                emplacementPiece.getBoard().getPartie().setPromote(2);
                 emplacementPiece.setPiece(new Tour(this.emplacementPiece, this.blanc));
                 break;
             case 3 :
+                emplacementPiece.getBoard().getPartie().setPromote(3);
                 emplacementPiece.setPiece(new Fou(this.emplacementPiece, this.blanc));
                 break;
             case 4 :
+                emplacementPiece.getBoard().getPartie().setPromote(4);
                 emplacementPiece.setPiece(new Reine(this.emplacementPiece, this.blanc));
                 break;
         }

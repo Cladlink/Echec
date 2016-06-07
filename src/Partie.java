@@ -30,6 +30,7 @@ class Partie
     private boolean endOfTurn; // pour signaler la fin d'un tour (mode réseau)
     private Case caseSrc; // pour conserver quel coup vient d'être joueur -> envoi par réseau
     private Case caseDest; // pour conserver quel coup vient d'être joueur -> envoi par réseau
+    private int promote = 0;
     
     private boolean echecBlanc;
     private boolean echecNoir;
@@ -725,5 +726,11 @@ class Partie
     }
     synchronized boolean isNetPartie() { return netPartie; }
 
+    public void setPromote(int promote) {
+        this.promote = promote;
+    }
 
+    public int getPromote() {
+        return promote;
+    }
 }

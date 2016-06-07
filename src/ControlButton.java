@@ -111,24 +111,41 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
         Case caseSrc = accueil.getPartie().getBoard().getPlateau()[rowSrc][colSrc];
         Case caseDest = accueil.getPartie().getBoard().getPlateau()[rowDest][colDest];
 
-        accueil.getPartie().getBoard().deplacer(caseSrc, caseDest, vue);
-        if (typePromo == 0);
-
-        else if (typePromo == 1)
+        if (typePromo == 0)
+            accueil.getPartie().getBoard().deplacer(caseSrc, caseDest, vue);
+        else
         {
+            boolean blanc = caseSrc.getPiece().blanc;
 
-        }
-        else if(typePromo == 2)
-        {
+            if (blanc)
+            {
+                accueil.getPartie().getPiecesBlanchesPlateau().remove(caseSrc.getPiece());
+                accueil.getPartie().getCimetiereBlanc().add(caseSrc.getPiece());
 
-        }
-        else if(typePromo == 3)
-        {
+            }
+            else
+            {
+                accueil.getPartie().getPiecesNoiresPlateau().remove(caseSrc.getPiece());
+                accueil.getPartie().getCimetiereNoir().add(caseSrc.getPiece());
+            }
+            caseSrc.setPiece(null);
 
-        }
-        else if(typePromo == 4)
-        {
-
+            if (typePromo == 1)
+            {
+                caseDest.setPiece(new Cavalier(caseDest, blanc));
+            }
+            else if(typePromo == 2)
+            {
+                caseDest.setPiece(new Tour(caseDest, blanc));
+            }
+            else if(typePromo == 3)
+            {
+                caseDest.setPiece(new Fou(caseDest, blanc));
+            }
+            else if(typePromo == 4)
+            {
+                caseDest.setPiece(new Reine(caseDest, blanc));
+            }
         }
 
 	/*

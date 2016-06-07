@@ -120,26 +120,34 @@ class ThreadPartie extends Thread
                 if ( id == partie.getIdCurrentPlayer() )
                 {
                     System.out.println("C'est à moi de jouer");
+
+
+
+
+
                     /*todo
-                        - début du tour (via controleur)
-                        - attendre fin tour
-                           - envoyer les infos
-                        Rq: pour faciliter, on peut envoyer tout le temps les même infos qqs soit le mode
-                        par exemple: rowsrc,colsrc,rowdest,coldest, typeroque, typepromo, chronojoueurblanc,chronojoueurnoir,partiefinie
-                        les 4 premiers servent aux déplacements (sauf roque)
-                        typepromo = 0 si pas de promo, = 1,2,... (type pièce) si promo
+                    Rq: pour faciliter, on peut envoyer tout le temps les même infos qqs soit le mode
+                    par exemple: rowsrc,colsrc,rowdest,coldest, typeroque, typepromo, chronojoueurblanc,chronojoueurnoir,partiefinie
+                    les 4 premiers servent aux déplacements
+                    typepromo = 0 si pas de promo, = 1,2,... (type pièce) si promo
                     */
                     controller.debutTour();
                     partie.waitFinTour();
-                    oos.writeInt(partie.getCaseSrc().getRow());
-                    oos.writeInt(partie.getCaseSrc().getColumn());
-                    oos.writeInt(partie.getCaseDest().getRow());
-                    oos.writeInt(partie.getCaseDest().getColumn());
-                    oos.writeInt(0);
+                    int rowSrc = partie.getCaseSrc().getRow();
+                    int colSrc = partie.getCaseSrc().getColumn();
+                    int rowDest = partie.getCaseDest().getRow();
+                    int colDest = partie.getCaseDest().getColumn();
+                    int promote = partie.getPromote();
+                    oos.writeInt(rowSrc);
+                    oos.writeInt(colSrc);
+                    oos.writeInt(rowDest);
+                    oos.writeInt(colDest);
+                    oos.writeInt(promote);
                     oos.writeDouble(0.0);
                     oos.writeDouble(0.0);
                     oos.writeBoolean(partie.isPartieFinie());
                     oos.flush();
+                    partie.setPromote(0);
                 }
                 else
                 {

@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  Created by cladlink on 06/04/16.
@@ -20,7 +18,6 @@ class VueEchiquier extends JPanel
     private VueBarreStatut bs;
     private VueTimer chronoBlanc, chronoNoir;
 
-    private Graphics g;
 
     VueEchiquier(Board board, Accueil accueil, Vue vue)  //passer en parametre caseSrc
     {
@@ -58,7 +55,6 @@ class VueEchiquier extends JPanel
         boolean isDepPossible = false, isDepPossiblePiece = false;
         super.paintComponent(g);
         g.drawImage(bg.getImage(), 0, 0, 1380, 768, null);
-        this.g = g;
         if(accueil.getPartie().isTourBlanc())
         {
             g.setColor(Color.WHITE);

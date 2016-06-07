@@ -197,10 +197,8 @@ class Board
         // deplace
         caseCliquee.getPiece().deplacer(destination);
         // test de la promotion
-        if( ( ( destination.getRow() == 0
-                && destination.getPiece().blanc )
-                || ( destination.getRow() == 7)
-                && !destination.getPiece().blanc )
+        if(  ( destination.getRow() == 0 && destination.getPiece().blanc )
+                || ( ( destination.getRow() == 7) && !destination.getPiece().blanc )
                 && destination.getPiece() instanceof Pion )
             vue.choixPiece( (Pion)destination.getPiece() );
     }
