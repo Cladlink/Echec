@@ -30,10 +30,6 @@ class Partie
     private boolean endOfTurn; // pour signaler la fin d'un tour (mode réseau)
     private Case caseSrc; // pour conserver quel coup vient d'être joueur -> envoi par réseau
     private Case caseDest; // pour conserver quel coup vient d'être joueur -> envoi par réseau
-
-    // ajout SD : pour gérer la partie avec chrono limite pour chaque joueur
-    private long chronoJoueurBlanc; // temps total alloué en ms au joueur 1 (=blanc) (mode TIMERPARTY)
-    private long chronoJoueurNoir; // temps total alloué en ms au joueur 2 (=noir) (mode TIMERPARTY)
     
     private boolean echecBlanc;
     private boolean echecNoir;
@@ -160,13 +156,6 @@ class Partie
         // choix du mode de la partie
         this.modePartie = modePartie;
 
-        // ajout SD : init chrono : par défaut 15 minutes -> à changer pour le mettre en construction
-        if (modePartie == MODE_TIMERPARTY)
-        {
-            chronoJoueurBlanc = 90000;
-            chronoJoueurNoir  = 90000;
-        }
-
         // pour la partie en réseau
         this.netPartie = netPartie;
         this.endOfTurn = false;
@@ -210,10 +199,12 @@ class Partie
      */
     synchronized void coupFait(Case caseSrc, Case caseDest)
     {
+        this.caseSrc = caseSrc;
+        this.caseDest = caseDest;
         /* todo:
            - mettre à jour caseSrc et caseDest,
-           - si mode temps par tour : annuler le timer tm
-           - sinon si mode temps partie :
+           - si mode temps par tour : annuler le timer tm todo
+           - sinon si mode temps partie :todo
               - cf. rq ci-dessous
               - si chrono joueur courant <=0 partieFinie = true
 
@@ -236,7 +227,7 @@ class Partie
     
     // ajout SD : attente fin de tour pour le thread du joueur courant et partie réseau
     // uniquement
-    public synchronized void waitFinTour()
+    synchronized void waitFinTour()
     {
 
         while (!endOfTurn)
@@ -344,7 +335,6 @@ class Partie
      */
     synchronized boolean save()
     {
-        bdd.start();
         int i, j;
 
         saveHistorique();
@@ -368,7 +358,7 @@ class Partie
                 "WHERE HISTORIQUE.joueurBlancPartie = " + joueurBlanc.getId() +
                 " AND HISTORIQUE.joueurNoirPartie = " + joueurNoir.getId() + ";";
 
-
+        bdd.start();
         ArrayList<ArrayList<String>> resultat = bdd.ask(requeteIdhistorique);
         ArrayList<String> resultat2 = resultat.get(0);
         int idHistorique = Integer.parseInt(resultat2.get(0));
@@ -701,7 +691,8 @@ class Partie
     }
     synchronized ArrayList<Piece> getCimetiereNoir() {
         return cimetiereNoir;
-    }    synchronized ArrayList<Piece> getPiecesBlanchesPlateau() {
+    }
+    synchronized ArrayList<Piece> getPiecesBlanchesPlateau() {
         return piecesBlanchesPlateau;
     }
     synchronized ArrayList<Piece> getPiecesNoiresPlateau() {
@@ -725,16 +716,14 @@ class Partie
     synchronized void setPartieFinie(boolean partieFinie) {
         this.partieFinie = partieFinie;
     }
-    synchronized int getIdCurrentPlayer() {
-        return idCurrentPlayer;
-    }
+    synchronized int getIdCurrentPlayer() { return idCurrentPlayer; }
     synchronized Case getCaseSrc() {
         return caseSrc;
     }
     synchronized Case getCaseDest() {
         return caseDest;
     }
-    boolean isNetPartie() {
-        return netPartie;
-    }
+    synchronized boolean isNetPartie() { return netPartie; }
+
+
 }

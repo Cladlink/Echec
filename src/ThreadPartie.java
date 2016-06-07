@@ -19,6 +19,7 @@ class ThreadPartie extends Thread
     private ServerSocket conn;
     private Socket comm;
     private ControlButton controller;
+    private ControlButtonMenu cbm;
     private int port;
 
     // ajout SD
@@ -26,9 +27,22 @@ class ThreadPartie extends Thread
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
     private int id; // =1 si joueur blanc et 2 si joueur noir
-    
+
+    /**
+     * ThreadPartie
+     *
+     *
+     * @param partie ()
+     * @param controller ()
+     * @param port ()
+     * @param isServer ()
+     * @param ipServer ()
+     * @param choixJoueur ()
+     * @param pseudo ()
+     * @param cbm ()
+     */
     ThreadPartie(Partie partie, ControlButton controller, int port, boolean isServer,
-                        String ipServer, int choixJoueur, String pseudo)
+                        String ipServer, int choixJoueur, String pseudo, ControlButtonMenu cbm)
     {
         this.partie = partie;
         this.controller = controller;
@@ -37,10 +51,25 @@ class ThreadPartie extends Thread
         this.ipServer = ipServer;
         this.monSkin = choixJoueur;
         this.monPseudo = pseudo;
+        this.cbm = cbm;
     }
 
+    /**
+     * ThreadPartie
+     *
+     *
+     * @param partie ()
+     * @param controller ()
+     * @param port ()
+     * @param isServer ()
+     * @param ipServer ()
+     * @param choixJoueur ()
+     * @param pseudo ()
+     * @param modePartie ()
+     * @param cbm ()
+     */
     ThreadPartie(Partie partie, ControlButton controller, int port, boolean isServer,
-                 String ipServer, int choixJoueur, String pseudo, int modePartie)
+                 String ipServer, int choixJoueur, String pseudo, int modePartie, ControlButtonMenu cbm)
     {
         this.partie = partie;
         this.controller = controller;
@@ -49,10 +78,15 @@ class ThreadPartie extends Thread
         this.ipServer = ipServer;
         this.monSkin = choixJoueur;
         this.monPseudo = pseudo;
-        this.modePartie = 1;
+        this.modePartie = modePartie;
         this.jeSuisBlanc = partie.jeSuisBlanc();
+        this.cbm = cbm;
     }
 
+    /**
+     * run
+     *
+     */
     @Override
     public void run()
     {
@@ -85,33 +119,31 @@ class ThreadPartie extends Thread
             // si je suis le joueur courant
                 if ( id == partie.getIdCurrentPlayer() )
                 {
-
-                    /*todo :
+                    System.out.println("C'est à moi de jouer");
+                    /*todo
                         - début du tour (via controleur)
                         - attendre fin tour
-                        - envoyer les infos
+                           - envoyer les infos
                         Rq: pour faciliter, on peut envoyer tout le temps les même infos qqs soit le mode
                         par exemple: rowsrc,colsrc,rowdest,coldest, typeroque, typepromo, chronojoueurblanc,chronojoueurnoir,partiefinie
                         les 4 premiers servent aux déplacements (sauf roque)
-                        typeroque = 0 si pas de roque, = 1 petit roque, = 2 grand roque
                         typepromo = 0 si pas de promo, = 1,2,... (type pièce) si promo
                     */
                     controller.debutTour();
                     partie.waitFinTour();
-
-                    oos.writeObject(partie.getCaseSrc().getRow());
-                    oos.writeObject(partie.getCaseSrc().getColumn());
-                    oos.writeObject(partie.getCaseDest().getRow());
-                    oos.writeObject(partie.getCaseDest().getColumn());
-                    // on se casse pas la tête pour l'instant : on voit si ca marche en mode normal
-                    oos.writeObject(0);
-                    oos.writeObject(0);
-                    oos.writeObject(0.0);
-                    oos.writeObject(0.0);
-                    oos.writeObject(partie.isPartieFinie());
+                    oos.writeInt(partie.getCaseSrc().getRow());
+                    oos.writeInt(partie.getCaseSrc().getColumn());
+                    oos.writeInt(partie.getCaseDest().getRow());
+                    oos.writeInt(partie.getCaseDest().getColumn());
+                    oos.writeInt(0);
+                    oos.writeDouble(0.0);
+                    oos.writeDouble(0.0);
+                    oos.writeBoolean(partie.isPartieFinie());
+                    oos.flush();
                 }
                 else
                 {
+                    System.out.println("C'est à l'adversaire de jouer");
                      /*
                        - invalider la vue (via controleur)
                        - recevoir les infos
@@ -119,36 +151,38 @@ class ThreadPartie extends Thread
                        j'ai gagné
                        - sinon appeler control.updatePartie()
                      */
-
                     controller.enableView(false);
                     int srcX = ois.readInt();
                     int srcY = ois.readInt();
                     int destX = ois.readInt();
                     int destY = ois.readInt();
-                    int roque = ois.readInt();
+
                     int promo = ois.readInt();
                     long chronoBlanc = ois.readLong();
                     long chronoNoir = ois.readLong();
                     boolean partieFinie = ois.readBoolean();
-
                     if (partieFinie)
                         stop = true;
                     else
-                        controller.updatePartie(srcX, srcY, destX, destY, roque, promo, chronoBlanc, chronoNoir);
+                        controller.updatePartie(srcX, srcY, destX, destY, promo, chronoBlanc, chronoNoir);
+                    partie.setTourBlanc(!partie.isTourBlanc());
                 }
-
             }
         }
         catch (IOException e)
         {
             e.printStackTrace();
         }
-
     }
 
+    /**
+     * initServer
+     *
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private void initServer() throws IOException,ClassNotFoundException
     {
-
         conn = new ServerSocket(port);
         comm = conn.accept();
         oos = new ObjectOutputStream(comm.getOutputStream());
@@ -165,11 +199,17 @@ class ThreadPartie extends Thread
         oos.flush();
         pseudoAdversaire = (String)ois.readObject();
         skinAdversaire = ois.readInt();
-        System.out.println(monPseudo);
-        System.out.println(pseudoAdversaire);
         partie.initPartie(monPseudo, pseudoAdversaire, modePartie, true, monSkin, skinAdversaire);
+        setId();
+        cbm.initPartie();
     }
 
+    /**
+     * initClient
+     *
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private void initClient() throws IOException,ClassNotFoundException
     {
         comm = new Socket(ipServer, port);
@@ -186,6 +226,21 @@ class ThreadPartie extends Thread
         oos.writeObject(monPseudo);
         oos.writeInt(monSkin);
         oos.flush();
-        partie.initPartie(monPseudo, pseudoAdversaire, modePartie, true, monSkin, skinAdversaire);
+        setId();
+        partie.initPartie(pseudoAdversaire, monPseudo, modePartie, true, monSkin, skinAdversaire);
+        cbm.initPartie();
+    }
+
+    /**
+     * setID
+     * définit l'ID en fonction de si le joueur est blanc ou noir
+     *
+     */
+    private void setId()
+    {
+        if (jeSuisBlanc)
+            id = 1;
+        else
+            id = 2;
     }
 }

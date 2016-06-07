@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  Created by cladlink on 06/04/16.
@@ -103,46 +105,22 @@ class VueEchiquier extends JPanel
                 isDepPossiblePiece = false;
             }
         }
-
         // on dessine toutes les pièces
-        Case caseSrc = accueil.getCaseMemoire();
-        Case caseDest = accueil.getPartie().getCaseDest();
-        int k = 0;
-        if(caseSrc != null) {
-            System.out.println(caseSrc.getRow());
-            k = caseSrc.getRow();
-        }
         for (int i = 0; i < board.getPlateau().length; i++)
             for (int j = 0; j < board.getPlateau().length; j++)
                 if (board.getPlateau()[i][j].getPiece() != null)
                 {
-                    if(board.getPlateau()[i][j] == caseSrc && caseSrc!= null)
-                    {
-                        while (k < 12)
-                        {
-                            g.drawImage(board.getPlateau()[i][j].getPiece().skin.getImage(),
-                                    j * (board.getSizeCase() + 1) + 360,
-                                    i * (board.getSizeCase() + 1) + 20,
-                                    null);
-                            k++;
-                        }
-                    }
-                    else
-                    {
-                        g.drawImage(board.getPlateau()[i][j].getPiece().skin.getImage(),
-                                j * board.getSizeCase() + 360,
-                                i * board.getSizeCase() + 20,
-                                null);
-                    }
+                    g.drawImage(board.getPlateau()[i][j].getPiece().skin.getImage(),
+                            j * board.getSizeCase() + 360,
+                            i * board.getSizeCase() + 20,
+                            null);
                 }
-
         gyBlanc.paintMe(g, 110, 150);
         gyNoir.paintMe(g, 1060, 150);
         bs.paintMe(g, 0, getHeight());
         chronoBlanc.paintMe(g, 160, 80, vue);
         chronoNoir.paintMe(g, 1110, 80, vue);
     }
-
 
     Vue getVue() { return vue; }
     void setVue(Vue vue) { this.vue = vue; }

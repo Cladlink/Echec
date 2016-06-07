@@ -237,8 +237,7 @@ class Board
      */
     private void deplacerPetitRoque(Case[][] plateau, int row, int column)
     {
-        Piece tourRoque;
-        tourRoque = plateau[row][column + 3].getPiece();
+        Piece tourRoque = plateau[row][column + 3].getPiece();
 
         plateau[row][column + 3].setPiece(null);
         tourRoque.emplacementPiece = plateau[row][column + 1];

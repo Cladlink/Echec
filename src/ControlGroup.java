@@ -17,7 +17,6 @@ class ControlGroup
         controlButtonMenu = new ControlButtonMenu(accueil, vue, controlButton);
         controlMenu = new ControlMenu(accueil, vue);
         vue.display();
-        MusiqueChess.playMedievalTheme();
     }
 
 

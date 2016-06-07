@@ -4,9 +4,11 @@
 
 /*
  todo caller Musique
+ todo son
  todo reseau
  todo historique visuel (KEVIN ?!?)
  todo animation (Marie-Lucile)
+ todo sauvegarde bug (ne pas permettre une deuxième save entre deux joueurs)
  todo relire tout
  */
 public class Chess

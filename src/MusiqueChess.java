@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 /**
  Created by cladlink on 26/05/16.
  */
-public class MusiqueChess
+class MusiqueChess
 {
     private static MediaPlayer mp;
     private static final String PERCU = "Musique/Percu.mp3";
@@ -17,11 +17,12 @@ public class MusiqueChess
     {
         JFXPanel jfxPanel = new JFXPanel();
         mp = new MediaPlayer(new Media(Paths.get(MEDIEVAL_THEME).toUri().toString()));
-        //mp.play();
+        mp.play();
         mp.setCycleCount(MediaPlayer.INDEFINITE);
     }
     static void stopMedievalTheme()
     {
-        mp.stop();
+        if (mp != null)
+            mp.stop();
     }
 }

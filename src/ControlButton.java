@@ -1,3 +1,4 @@
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
      */
     void enableView(boolean state)
     {
-        vue.setEnabled(!state);
+        vue.setEnabled(state);
     }
 
     /**
@@ -70,18 +71,20 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
      */
     void debutTour()
     {
-	/* todo:
+	/*
 	     - si mode temps par tour: appeler partie.tourLimite() + lancer le chrono visuel
 	     - sinon si mode temps partie : (re)démarrer le chrono visuel
 	     - valider la vue
 	 */
-        enableView(true);
         if(accueil.getPartie().getModePartie() == 2) //Temps par tour
             chrono.tourLimite();
         if (accueil.getPartie().getModePartie() == 3)
             chrono.tempsLimite();
-        chrono.stopChrono();
-        vue.setEnabled(true);
+        if (accueil.getPartie().getModePartie() == 2 || accueil.getPartie().getModePartie() == 3)
+            chrono.stopChrono();
+        enableView(true);
+        accueil.setCasesAtteignables(null);
+        accueil.getPartie().getBoard().majCasesAtteignable();
     }
 
     /**
@@ -93,7 +96,6 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
      * @param colSrc (colonne de la case source)
      * @param rowDest (rang de la case destination)
      * @param colDest (colonne de la case destination)
-     * @param typeRoque (roque = 0 si pas de roque, roque = 1 si petitRoque, roque = 2 si grandRoque)
      * @param typePromo (promo = 0 si pas de promo,
      *                  promo = 1 si Tour,
      *                  promo = 2 si Cavalier,
@@ -102,14 +104,37 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
      * @param chronoJoueurBlanc (etat du chrono du joueur blanc)
      * @param chronoJoueurNoir (etat du chrono du joueur noir)
      */
-    public void updatePartie(int rowSrc, int colSrc, int rowDest,int colDest, int typeRoque,
+    void updatePartie(int rowSrc, int colSrc, int rowDest,int colDest,
                              int typePromo, long chronoJoueurBlanc, long chronoJoueurNoir)
     {
 
-	/* todo: quasi identique au cas normal
-	   - mettre à jour les chrono,
+        Case caseSrc = accueil.getPartie().getBoard().getPlateau()[rowSrc][colSrc];
+        Case caseDest = accueil.getPartie().getBoard().getPlateau()[rowDest][colDest];
+
+        accueil.getPartie().getBoard().deplacer(caseSrc, caseDest, vue);
+        if (typePromo == 0);
+
+        else if (typePromo == 1)
+        {
+
+        }
+        else if(typePromo == 2)
+        {
+
+        }
+        else if(typePromo == 3)
+        {
+
+        }
+        else if(typePromo == 4)
+        {
+
+        }
+
+	/*
+	   - mettre à jour les chrono, todo
 	   - tester si roque
-	   - faire le dplt + éventuellement promo
+	   - faire le dplt + éventuellement promo OK + todo
 
 	   - reste quasi identique au cas normal excepté appel à finTour() qu'il ne faut pas faire
 	 */
@@ -134,9 +159,7 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
                     && column >=0
                     && column <=7)
             {
-                if (accueil.getPartie().getBoard().getPlateau()[row][column].getPiece() != null)
-                    System.out.println(accueil.getPartie().getBoard().getPlateau()[row][column].getPiece());
-                // si je clique sur une pièce  qui est au joueur dont c'est le tour
+                // si je clique sur une pièce qui est au joueur dont c'est le tour
                 if ( plateau[row][column].getPiece() != null
                         && accueil.getPartie().isTourBlanc() == plateau[row][column].getPiece().isBlanc() )
                 {
@@ -154,16 +177,17 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
                     // pour tester ce cas là.
                     accueil.getPartie().getBoard().deplacer(accueil.getCaseMemoire(), plateau[row][column], this.vue);
                     accueil.setCasesAtteignables(null);
-                    accueil.getPartie().setTourBlanc(!accueil.getPartie().isTourBlanc());// changer joueur courant.
+                    accueil.getPartie().setTourBlanc(!accueil.getPartie().isTourBlanc()); // changer joueur courant.
                     accueil.getPartie().getBoard().majCasesAtteignable();
                     /* ajout SD :
-                       - arrêter chrono si besoin
+                       - arrêter chrono si besoin todo
                        - appeler coupFait()
                     */
-
+                    accueil.getPartie().coupFait(accueil.getCaseMemoire(), plateau[row][column]);
                     /* ajout SD : test à ajouter en premier
-                       - si partieFinie est déjà à true -> perdu à cause du temps -> message
+                       - si partieFinie est déjà à true -> perdu à cause du temps -> message todo
                      */
+
                     if (accueil.getPartie().isEchecEtMat())
                     {
                         // ajout SD : mettre à jour partie.partieFinie
@@ -186,8 +210,6 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
                         // ajout SD : mettre à jour partie.partieFinie
                         vue.jOptionMessage("PAT");
                         Joueur.ajoutePat(joueurBlanc, joueurNoir);
-
-
                         // ajout SD : à ne faire que si la partie n'est pas en réseau
                         // ou si je suis le serveur
                         accueil.getPartie().saveHistorique();
@@ -200,20 +222,19 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
                         vue.jOptionMessage("ECHEC !");
                     }
                     vue.repaint();
+
+                    accueil.getPartie().finTour();
                     /* ajout SD :
                       - si mode réseau appeler partie.finTour()
                       - sinon si partie pas finie :
-                          - si mode temps par tour : lancer le chrono visuel
-                      - sinon si mode temps partie : (re)demarrer le chrono visuel
+                          - si mode temps par tour : lancer le chrono visuel todo
+                      - sinon si mode temps partie : (re)demarrer le chrono visuel todo
                     */
 
-                    //kevin : appele l'algo pour savoir si partie fini ou pas
                     if (accueil.getPartie().getModePartie() == 2)
                         chrono.tourLimite();
                     else if (accueil.getPartie().getModePartie() == 3)
                         chrono.tempsLimite();
-
-                    //change de joueur donc chrono inversé
                     chrono.stopChrono();
                 }
             }
@@ -284,7 +305,7 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
 
 
     }
-
+    @Override
     public void mouseDragged(MouseEvent e)
     {
 
@@ -312,19 +333,6 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
 
     }
 
-    public String getJoueurBlanc() {
-        return joueurBlanc;
-    }
-
-    public void setJoueurBlanc(String joueurBlanc) {
-        this.joueurBlanc = joueurBlanc;
-    }
-
-    public String getJoueurNoir() {
-        return joueurNoir;
-    }
-
-    public void setJoueurNoir(String joueurNoir) {
-        this.joueurNoir = joueurNoir;
-    }
+    void setJoueurBlanc(String joueurBlanc) { this.joueurBlanc = joueurBlanc; }
+    void setJoueurNoir(String joueurNoir) { this.joueurNoir = joueurNoir; }
 }
