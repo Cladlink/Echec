@@ -562,7 +562,7 @@ class Partie
         pieceBougee.setEmplacementPiece(board.getPlateau()[rowDepart][columnDepart]);
 
         // veut dire qu'une piece est mangée
-        if(tabCoupDecoupe.length > 7)
+        if(tabCoupDecoupe.length > 7 && tabCoupDecoupe[6].equals("!"))
         {
             Piece pieceMangee;
             if(isBlanc)
@@ -661,7 +661,8 @@ class Partie
             }
         }
 
-        if(tabCoupDecoupe.length  == 7 || tabCoupDecoupe.length == 10)
+        // En cas de promotion
+        if(tabCoupDecoupe.length  == 8 || tabCoupDecoupe.length == 11)
         {
             pieceBougee.emplacementPiece.setPiece(null);
             pieceBougee.emplacementPiece.setPiece(
