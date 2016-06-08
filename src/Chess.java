@@ -3,8 +3,7 @@
  */
 
 /*
- todo caller Musique
- todo son
+ todo caller Musique + sons
  todo reseau
  todo historique visuel (KEVIN ?!?)
  todo animation (Marie-Lucile)
@@ -22,6 +21,7 @@ public class Chess
             {
                 Accueil accueil = new Accueil();
                 ControlGroup controler = new ControlGroup(accueil);
+                MusiqueChess.playMedievalTheme();
             }
         });
     }

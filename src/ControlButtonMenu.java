@@ -50,6 +50,42 @@ class ControlButtonMenu implements ActionListener
             vue.majListeJoueur();
             vue.afficherFormulaire();
         }
+        else if(e.getSource().equals(vue.getNouveauJoueurRejoindreReseau()))
+        {
+            pseudo = vue.messagePop("Entrez un nouveau pseudo :");
+            if (pseudo == null)
+                return;
+
+            Vector<String> listeJoueurs = Joueur.listeJoueurs();
+            for (String listeJoueur : listeJoueurs)
+                if (listeJoueur.equals(pseudo))
+                {
+                    vue.jOptionMessage("Ce pseudo n'est pas disponible");
+                    return;
+                }
+
+            Joueur.inscriptionJoueur(pseudo);
+            vue.majListeJoueur();
+            vue.creerWidgetRejoindrePartieReseau();
+        }
+        else if(e.getSource().equals(vue.getNouveauJoueurLancerReseau()))
+        {
+            pseudo = vue.messagePop("Entrez un nouveau pseudo :");
+            if (pseudo == null)
+                return;
+
+            Vector<String> listeJoueurs = Joueur.listeJoueurs();
+            for (String listeJoueur : listeJoueurs)
+                if (listeJoueur.equals(pseudo))
+                {
+                    vue.jOptionMessage("Ce pseudo n'est pas disponible");
+                    return;
+                }
+
+            Joueur.inscriptionJoueur(pseudo);
+            vue.majListeJoueur();
+            vue.creerWidgetFormulaireReseau();
+        }
         else if( e.getSource().equals(vue.getRetourMenu()) )
             vue.afficherMenu();
         else if(e.getSource().equals(vue.getRejoindrePartie()))
@@ -124,15 +160,22 @@ class ControlButtonMenu implements ActionListener
             threadClient.start();
         }
         else if(e.getSource().equals(vue.getCredit()))
-            vue.jOptionMessage("Jeu développé par : \n Michael BOUTBOUL\n Marie-Lucile CANIARD\n Sylvain GUYOT" +
-                    "\n Kevin LIMACHER\n Gabriel MERCIER\n Adonis N'DOLO.");
+            vue.jOptionMessage("Jeu développé par : \n" +
+                    "Michael BOUTBOUL\n" +
+                    "Marie-Lucile CANIARD\n" +
+                    "Sylvain GUYOT \n" +
+                    "Kevin LIMACHER\n" +
+                    "Gabriel MERCIER\n" +
+                    "Adonis N'DOLO\n" +
+                    "Baptiste SORIN.");
         else if (e.getSource().equals(vue.getQuitterJeu()))
             System.exit(0);
         else if(e.getSource().equals(vue.getChargerPartie()))
         {
             vue.historiquePartie();
 
-            if( accueil.getPartieSelectionneePourChargement().equals(""))
+            if(accueil.getPartieSelectionneePourChargement() == null
+                    || accueil.getPartieSelectionneePourChargement().equals(""))
             {
                 System.err.println("escape");
                 return;

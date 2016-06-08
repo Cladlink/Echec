@@ -289,7 +289,7 @@ class Partie
         }
         // test pour la promotion
         if ( piece instanceof Pion && ( destination.getRow() == 0  || destination.getRow() == 7 ) )
-            coup += '?';
+            coup+='?';
 
         historique.add(coup);
     }
@@ -354,6 +354,15 @@ class Partie
     synchronized boolean save()
     {
         int i, j;
+        bdd.start();
+
+        ArrayList<ArrayList<String>> saveDejaExistante = bdd.ask("SELECT SAUVEGARDE.idSauvegarde FROM SAUVEGARDE " +
+                "WHERE joueurBlancSave = " + joueurBlanc.getId() +
+                " AND joueurNoirSave = " + joueurNoir.getId() + ";");
+
+        if(!saveDejaExistante.isEmpty())
+            return false;
+        bdd.stop();
 
         saveHistorique();
         // sauvegarde de l'état du plateau au moment de l'intéruption de la partie
@@ -375,8 +384,8 @@ class Partie
         String requeteIdhistorique = "SELECT HISTORIQUE.idHistorique FROM HISTORIQUE " +
                 "WHERE HISTORIQUE.joueurBlancPartie = " + joueurBlanc.getId() +
                 " AND HISTORIQUE.joueurNoirPartie = " + joueurNoir.getId() + ";";
-
         bdd.start();
+
         ArrayList<ArrayList<String>> resultat = bdd.ask(requeteIdhistorique);
         ArrayList<String> resultat2 = resultat.get(0);
         int idHistorique = Integer.parseInt(resultat2.get(0));
@@ -544,8 +553,10 @@ class Partie
      * Annule le dernier coup joué. Ne fonctionne que si au tour de l'adversaire de jouer.
      *
      */
-    synchronized void undo()
+    synchronized boolean undo()
     {
+        if(historique.size()-1 < 0)
+            return false;
         String dernierCoup = historique.get(historique.size()-1);
         String[] tabCoupDecoupe = dernierCoup.split("");
         boolean isBlanc = tabCoupDecoupe[1].equals("b");
@@ -682,6 +693,7 @@ class Partie
         tourBlanc = !tourBlanc;
         historique.remove(historique.size()-1);
         board.majCasesAtteignable();
+        return true;
     }
 
     synchronized void undoHisto(String coupAAnnuler) {

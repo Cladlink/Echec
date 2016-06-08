@@ -120,6 +120,8 @@ class Vue extends JFrame
         suivant = new JButton("Suivant");
         precedent = new JButton("Precedent");
         retour = new JButton("Retour");
+        nouveauJoueurRejoindreReseau = new ChessButton("Nouveau joueur");
+        nouveauJoueurLancerReseau = new ChessButton("Nouveau joueur");
 
         partieNormale = new JRadioButton(accueil.getPartieNormaleTitre(), true);
         partieNormale.setActionCommand("1");
@@ -330,7 +332,7 @@ class Vue extends JFrame
 
         JPanel nouveauJ = new JPanel(new GridLayout(6, 1, 0, 30));
         nouveauJ.setOpaque(false);
-        nouveauJ.add(nouveauJoueur);
+        nouveauJ.add(nouveauJoueurLancerReseau);
         nouveauJ.add(lancerPartieReseau);
         nouveauJ.add(Box.createVerticalGlue());
         nouveauJ.add(Box.createVerticalGlue());
@@ -445,7 +447,7 @@ class Vue extends JFrame
         JPanel nouveauJ = new JPanel(new GridLayout(6, 1, 0, 30));
         nouveauJ.setOpaque(false);
         nouveauJ.add(Box.createVerticalGlue());
-        nouveauJ.add(nouveauJoueur);
+        nouveauJ.add(nouveauJoueurRejoindreReseau);
         nouveauJ.add(rejoindrePartieReseau);
         nouveauJ.add(Box.createVerticalGlue());
         nouveauJ.add(retourMenu);
@@ -905,8 +907,6 @@ class Vue extends JFrame
     // getters & setters
     VueEchiquier getVueEchiquier() { return vueEchiquier; }
     void setVueEchiquier(VueEchiquier vueEchiquier) { this.vueEchiquier = vueEchiquier; }
-    Accueil getAccueil() { return accueil; }
-    void setAccueil(Accueil accueil) { this.accueil = accueil; }
     JMenuItem getHistorique() { return historique; }
     JMenuItem getUndo() { return undo; }
     JMenuItem getQuitter() { return quitter; }
@@ -956,5 +956,11 @@ class Vue extends JFrame
     }
     JFrame getVueHisto() {
         return vueHisto;
+    }
+    ChessButton getNouveauJoueurRejoindreReseau() {
+        return nouveauJoueurRejoindreReseau;
+    }
+    ChessButton getNouveauJoueurLancerReseau() {
+        return nouveauJoueurLancerReseau;
     }
 }

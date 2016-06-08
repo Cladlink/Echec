@@ -11,7 +11,7 @@ class ControlMenu implements ActionListener
     private Vue vue;
 
     /**
-     * ControlMenu todo
+     * ControlMenu
      * @param accueil ()
      * @param vue ()
      */
@@ -32,33 +32,52 @@ class ControlMenu implements ActionListener
     {
         if (e.getSource().equals(vue.getQuitter()))
         {
-            boolean sauvegarde = vue.boolJOptionPane("Voulez-vous sauvegarder avant de quitter ?");
-            if (sauvegarde)
+            if (!(accueil.getPartie().getHistorique().size() == 0))
             {
-                accueil.getPartie().save();
-                System.exit(0);
+                boolean sauvegarde = vue.boolJOptionPane("Voulez-vous sauvegarder avant de quitter ?");
+                if (sauvegarde)
+                {
+                    if (!accueil.getPartie().save())
+                        vue.jOptionMessage("Vous ne pouvez pas enregistrer car vous avez déjà une partie interrompue.");
+                    System.exit(0);
+                }
             }
             else
                 System.exit(0);
         }
+        else if (e.getSource().equals(vue.getRetourMenuPrincipal()))
+        {
+            ChronoMode.setHorsJeu(true);
+            if (!(accueil.getPartie().getHistorique().size() == 0))
+            {
+                boolean sauvegarde = vue.boolJOptionPane("Voulez-vous sauvegarder avant de quitter ?");
+                if (sauvegarde)
+                {
+                    if(!accueil.getPartie().save())
+                        vue.jOptionMessage("Vous ne pouvez pas enregistrer car vous avez déjà une partie interrompue.");
+                    System.exit(0);
+                }
+
+            }
+            else
+                System.exit(0);
+
+            vue.setJMenuBar(null);
+            vue.afficherMenu();
+        }
         else if (e.getSource().equals(vue.getUndo()))
         {
-            boolean undo = vue.boolJOptionPane("voulez-vous annuler le dernier coup ?");
+            boolean undo = vue.boolJOptionPane("Voulez-vous annuler le dernier coup ?");
             if (undo)
             {
-                accueil.getPartie().undo();
+                if(!accueil.getPartie().undo())
+                    vue.jOptionMessage("Il n'y a plus de coup à annuler.");
                 vue.repaint();
             }
         }
         else if (e.getSource().equals(vue.getHistorique()))
         {
             vue.afficherHistoriqueLocal();
-        }
-        else if (e.getSource().equals(vue.getRetourMenuPrincipal()))
-        {
-            ChronoMode.setHorsJeu(true);
-            vue.setJMenuBar(null);
-            vue.afficherMenu();
         }
     }
 }
