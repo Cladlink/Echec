@@ -289,8 +289,25 @@ class Partie
         }
         // test pour la promotion
         if ( piece instanceof Pion && ( destination.getRow() == 0  || destination.getRow() == 7 ) )
-            coup+='?';
+            coup += '?';
 
+        historique.add(coup);
+    }
+
+    void pieceChoisiePromoSave()
+    {
+        String coup = historique.get(historique.size()-1);
+
+        if(promote == 1)
+            coup += 'c';
+        else if(promote == 2)
+            coup += 't';
+        else if(promote == 3)
+            coup += 'f';
+        else if(promote == 4)
+            coup += 'q';
+
+        historique.remove(historique.size()-1);
         historique.add(coup);
     }
 
@@ -665,7 +682,144 @@ class Partie
         tourBlanc = !tourBlanc;
         historique.remove(historique.size()-1);
         board.majCasesAtteignable();
+    }
 
+    synchronized void undoHisto(String coupAAnnuler) {
+        String[] tabCoupDecoupe = coupAAnnuler.split("");
+        boolean isBlanc = tabCoupDecoupe[1].equals("b");
+
+        int columnDepart = Integer.parseInt(tabCoupDecoupe[2]);
+        int rowDepart = Integer.parseInt(tabCoupDecoupe[3]);
+        int columnArrivee = Integer.parseInt(tabCoupDecoupe[4]);
+        int rowArrivee = Integer.parseInt(tabCoupDecoupe[5]);
+
+        // Recupération de la pièce qui a été bougée au dernière tour
+        Piece pieceBougee = board.getPlateau()[rowArrivee][columnArrivee].getPiece();
+        board.getPlateau()[rowArrivee][columnArrivee].setPiece(null);
+        board.getPlateau()[rowDepart][columnDepart].setPiece(pieceBougee);
+        pieceBougee.setEmplacementPiece(board.getPlateau()[rowDepart][columnDepart]);
+
+        // veut dire qu'une piece est mangée
+        if (tabCoupDecoupe.length > 7)
+        {
+            Piece pieceMangee;
+            if (isBlanc)
+            {
+                pieceMangee = cimetiereNoir.get(cimetiereNoir.size() - 1);
+                cimetiereNoir.remove(cimetiereNoir.size() - 1);
+                piecesNoiresPlateau.add(pieceMangee);
+            } else
+            {
+                pieceMangee = cimetiereBlanc.get(cimetiereBlanc.size() - 1);
+                cimetiereBlanc.remove(getCimetiereBlanc().size() - 1);
+                piecesBlanchesPlateau.add(pieceMangee);
+            }
+            board.getPlateau()[rowArrivee][columnArrivee].setPiece(pieceMangee);
+            pieceMangee.setEmplacementPiece(board.getPlateau()[rowArrivee][columnArrivee]);
+        }
+
+        // Si c'est une tour qui a été déplacée on autorise de nouveau le roque si c'est son premier déplacement
+        boolean deplacementsTour = false;
+        if (pieceBougee instanceof Tour) {
+            if (isBlanc) {
+                for (int i = 0; i < historique.size() - 1; i++)   // historique.size()-1  --> pour ne pas prendre en compte la ligne que l'on veut annuler
+                    if (historique.get(i).split("")[0].equals("t") && historique.get(i).split("")[1].equals("b")) {
+                        deplacementsTour = true;
+                        break;
+                    }
+
+                if (!deplacementsTour) {
+                    ((Roi) board.getRoiBlanc()).setPetitRoque(true);
+                    ((Roi) board.getRoiBlanc()).setGrandRoque(true);
+                }
+            } else {
+                for (int i = 0; i < historique.size() - 1; i++)   // historique.size()-1  --> pour ne pas prendre en compte la ligne que l'on veut annuler
+                    if (historique.get(i).split("")[0].equals("t") && historique.get(i).split("")[1].equals("n")) {
+                        deplacementsTour = true;
+                        break;
+                    }
+
+                if (!deplacementsTour) {
+                    ((Roi) board.getRoiNoir()).setPetitRoque(true);
+                    ((Roi) board.getRoiNoir()).setGrandRoque(true);
+                }
+            }
+        }
+
+        // Si un roque a eu lieu
+        int diff = Math.abs(Character.getNumericValue(coupAAnnuler.charAt(2)) - Character.getNumericValue(coupAAnnuler.charAt(4)));
+        boolean deplacementsRoi = false;
+        if (pieceBougee instanceof Roi) {
+            if (isBlanc) {
+                for (int i = 0; i < historique.size() - 1; i++)   // historique.size()-1  --> pour ne pas prendre en compte la ligne que l'on veut annuler
+                    if (historique.get(i).split("")[0].equals("r") && historique.get(i).split("")[1].equals("b")) {
+                        deplacementsRoi = true;
+                        break;
+                    }
+            } else {
+                for (int i = 0; i < historique.size() - 1; i++)   // historique.size()-1  --> pour ne pas prendre en compte la ligne que l'on veut annuler
+                    if (historique.get(i).split("")[0].equals("r") && historique.get(i).split("")[1].equals("n")) {
+                        deplacementsRoi = true;
+                        break;
+                    }
+            }
+
+            if (!deplacementsRoi) {
+                ((Roi) pieceBougee).setPetitRoque(true);
+                ((Roi) pieceBougee).setGrandRoque(true);
+            }
+
+            if (diff == 3) {
+                Piece tourGrandRoque = board.getPlateau()[rowArrivee][columnArrivee + 1].getPiece();
+                tourGrandRoque.setEmplacementPiece(board.getPlateau()[rowArrivee][columnArrivee - 1]);
+                board.getPlateau()[rowArrivee][columnArrivee + 1].setPiece(null);
+                board.getPlateau()[rowArrivee][columnArrivee - 1].setPiece(tourGrandRoque);
+                ((Roi) pieceBougee).setGrandRoque(true);
+                ((Roi) pieceBougee).setPetitRoque(true);
+            }
+            if (diff == 2) {
+                Piece tourPetitRoque = board.getPlateau()[rowArrivee][columnArrivee - 1].getPiece();
+                tourPetitRoque.setEmplacementPiece(board.getPlateau()[rowArrivee][columnArrivee + 1]);
+                board.getPlateau()[rowArrivee][columnArrivee - 1].setPiece(null);
+                board.getPlateau()[rowArrivee][columnArrivee + 1].setPiece(tourPetitRoque);
+                ((Roi) pieceBougee).setPetitRoque(true);
+                ((Roi) pieceBougee).setGrandRoque(true);
+            }
+        }
+
+        if (tabCoupDecoupe.length == 7 || tabCoupDecoupe.length == 10) {
+            pieceBougee.emplacementPiece.setPiece(null);
+            pieceBougee.emplacementPiece.setPiece(
+                    new Pion(pieceBougee.emplacementPiece, pieceBougee.blanc));
+            if (pieceBougee.blanc) {
+                piecesBlanchesPlateau.remove(piecesBlanchesPlateau.size() - 1);
+                piecesBlanchesPlateau.add(pieceBougee.emplacementPiece.getPiece());
+                cimetiereBlanc.remove(cimetiereBlanc.size() - 1);
+            } else {
+                piecesNoiresPlateau.remove(piecesNoiresPlateau.size() - 1);
+                piecesNoiresPlateau.add(pieceBougee.emplacementPiece.getPiece());
+                cimetiereNoir.remove(cimetiereNoir.size() - 1);
+            }
+        }
+
+        if((tabCoupDecoupe.length > 6 && tabCoupDecoupe[6].equals("?")) || (tabCoupDecoupe.length > 9 && tabCoupDecoupe[9].equals("?")))
+        {
+            Pion pion = new Pion(board.getPlateau()[rowDepart][columnArrivee], isBlanc);
+            if(isBlanc)
+            {
+                piecesBlanchesPlateau.add(pion);
+                cimetiereBlanc.remove(cimetiereBlanc.size() - 1);
+            }
+            else
+            {
+                piecesNoiresPlateau.add(pion);
+                cimetiereNoir.remove(cimetiereNoir.size() - 1);
+            }
+            board.getPlateau()[rowDepart][columnDepart].setPiece(null);
+            board.getPlateau()[rowDepart][columnDepart].setPiece(pion);
+        }
+
+        tourBlanc = !tourBlanc;
     }
 
     // getters / setters

@@ -53,7 +53,7 @@ class Accueil
 
     private String partieSelectionneePourChargement;
     private String pseudoChoisi;
-    private String partieAVisualiser;
+    private String  partieAVisualiser;
 
 
     /**
@@ -250,8 +250,6 @@ class Accueil
                     board.setRoiNoir(roiNoir);
                     plateau[xCase][yCase].setPiece(roiNoir);
                 }
-
-
             }
         }
         for (i = 0; i < board.getPlateau().length; i++)

@@ -6,53 +6,98 @@ import java.util.ArrayList;
 /**
  Created by sakalypse on 05/06/16.
  */
-class ControlButtonHistorique implements ActionListener {
+class ControlButtonHistorique implements ActionListener
+{
 
+    private ArrayList<String> histoCoups;
     private Vue vue;
-    private ArrayList<String> ListhistoriqueLocal;
-    private Board board;
+    private Accueil accueil;
     private int indice;
-    private JFrame vueHisto;
+    private ControlButton controlButton;
 
-    ControlButtonHistorique(Vue vue, ArrayList<String> ListhistoriqueLocal, Board board, JFrame vueHisto)
+    ControlButtonHistorique(Accueil accueil, Vue vue, ControlButton controlButton)
     {
+        this.controlButton = controlButton;
         this.vue = vue;
-        this.ListhistoriqueLocal = ListhistoriqueLocal;
-        this.board = board;
-        this.vueHisto = vueHisto;
-        indice = 0;//ListhistoriqueLocal.size()-1;
+        this.accueil = accueil;
+        indice = 0;
+        vue.setButtonHistoControl(this);
+        histoCoups = new ArrayList<>();
     }
 
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        board.plateauDeBase();
-
+        boolean indiceChange = false;
+        boolean indiceSup = false;
+        int typePromo;
+        JFrame vueHisto = vue.getVueHisto();
+        histoCoups = vue.recupererHistoCoupsPartie( accueil.getPartieAVisualiser() );
+        histoCoups.add(0,null);
         if (e.getSource().equals(vue.getSuivant()))
-            if (indice+1<=ListhistoriqueLocal.size())
+        {
+            if (indice + 1 < histoCoups.size())
             {
                 indice++;
+                indiceChange = true;
+                indiceSup = true;
             }
+        }
         else if (e.getSource().equals(vue.getPrecedent()))
-            if (indice-1>=0)
+        {
+            if (indice > 0)
             {
                 indice--;
+                indiceChange=true;
             }
+        }
         else if  (e.getSource().equals(vue.getRetour()))
         {
+            indice = 0;
             vue.vueHistoExit();
             return;
         }
-        for (int i=0; i<indice; i++)
+        if (indiceChange)
         {
-            int cDepart = Integer.parseInt(String.valueOf(ListhistoriqueLocal.get(i).charAt(2)));
-            int rDepart = Integer.parseInt(String.valueOf(ListhistoriqueLocal.get(i).charAt(3)));
-            Case caseDepart = board.getPlateau()[rDepart][cDepart];
-            int cFinal = Integer.parseInt(String.valueOf(ListhistoriqueLocal.get(i).charAt(4)));
-            int rFinal = Integer.parseInt(String.valueOf(ListhistoriqueLocal.get(i).charAt(5)));
-            Case caseFinal = board.getPlateau()[rFinal][cFinal];
-            board.deplacer(caseDepart, caseFinal, vue);
+            System.out.println(histoCoups.get(indice));
+            if (indiceSup)
+            {
+                int cDepart = Integer.parseInt(String.valueOf(histoCoups.get(indice).charAt(2)));
+                int rDepart = Integer.parseInt(String.valueOf(histoCoups.get(indice).charAt(3)));
+                int cFinal = Integer.parseInt(String.valueOf(histoCoups.get(indice).charAt(4)));
+                int rFinal = Integer.parseInt(String.valueOf(histoCoups.get(indice).charAt(5)));
+
+                typePromo = 0;
+                // En cas de promotion
+                if(histoCoups.get(indice).split("").length > 9
+                        && histoCoups.get(indice).split("")[9].equals("?"))
+                {
+                    if (histoCoups.get(indice).split("")[10].equals("c"))
+                        typePromo = 1;
+                    else if (histoCoups.get(indice).split("")[10].equals("t"))
+                        typePromo = 2;
+                    else if (histoCoups.get(indice).split("")[10].equals("f"))
+                        typePromo = 3;
+                    else if (histoCoups.get(indice).split("")[10].equals("q"))
+                        typePromo = 4;
+                }
+                else if(histoCoups.get(indice).split("").length > 6
+                        && histoCoups.get(indice).split("")[6].equals("?"))
+                {
+                    if(histoCoups.get(indice).split("")[7].equals("c"))
+                        typePromo = 1;
+                    else if (histoCoups.get(indice).split("")[7].equals("t"))
+                        typePromo = 2;
+                    else if (histoCoups.get(indice).split("")[7].equals("f"))
+                        typePromo = 3;
+                    else if (histoCoups.get(indice).split("")[7].equals("q"))
+                        typePromo = 4;
+                }
+                controlButton.updatePartie(rDepart, cDepart, rFinal, cFinal, typePromo, 0, 0);
+            }
+            else
+                accueil.getPartie().undoHisto(histoCoups.get(indice+1));
+            vueHisto.repaint();
         }
-        vueHisto.repaint();
     }
 }

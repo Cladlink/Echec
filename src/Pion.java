@@ -100,8 +100,8 @@ class Pion extends Piece
             piecesCimetiere = emplacementPiece.getBoard().getPartie().getCimetiereNoir();
         }
 
-        piecesEnJeu.remove(this);
         piecesCimetiere.add(this);
+        piecesEnJeu.remove(this);
 
         emplacementPiece.setPiece(null);
         switch (choix)

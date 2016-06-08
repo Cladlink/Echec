@@ -52,8 +52,7 @@ class ControlMenu implements ActionListener
         }
         else if (e.getSource().equals(vue.getHistorique()))
         {
-            ArrayList<String> ListhistoriqueLocal = accueil.getPartie().getHistorique();
-            vue.afficherHistoriqueLocal(ListhistoriqueLocal);
+            vue.afficherHistoriqueLocal();
         }
         else if (e.getSource().equals(vue.getRetourMenuPrincipal()))
         {

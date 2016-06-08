@@ -6,14 +6,14 @@ import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  *Created by mlucile on 12/05/16.
  */
 class Vue extends JFrame
 {
     private VueEchiquier vueEchiquier;
-    private ControlButtonHistorique controlButtonHistorique; // todo pas bon du tout HERESIE
-    private Partie partieHisto;
 
     private JMenuItem quitter;
     private JMenuItem undo;
@@ -117,6 +117,9 @@ class Vue extends JFrame
         lancerPartieReseau = new ChessButton(accueil.getLancerPartieReseauTitre());
         rejoindrePartieReseau = new ChessButton(accueil.getRejoindrePartieReseauTitre());
         historiquePartie = new ChessButton(accueil.getHistoriquePartieTitre());
+        suivant = new JButton("Suivant");
+        precedent = new JButton("Precedent");
+        retour = new JButton("Retour");
 
         partieNormale = new JRadioButton(accueil.getPartieNormaleTitre(), true);
         partieNormale.setActionCommand("1");
@@ -796,9 +799,12 @@ class Vue extends JFrame
                 + " AND joueurNoirPartie = " + idJN
                 + " AND dateHistorique = '" + date
                 + "';";
-        ArrayList<ArrayList<String>> histo = bdd.ask(requete);
+        String histo = bdd.ask(requete).get(0).get(0);
+        ArrayList<String> coups = new ArrayList<>();
+        for(int i=0; i<histo.split("-").length; i++)
+            coups.add(histo.split("-")[i]);
         bdd.stop();
-        return histo.get(0);
+        return coups;
     }
 
     void statistiquesJoueur()
@@ -843,35 +849,24 @@ class Vue extends JFrame
     }
 
 
+
+    void setButtonHistoControl(ActionListener listener)
+    {
+        suivant.addActionListener(listener);
+        precedent.addActionListener(listener);
+        retour.addActionListener(listener);
+    }
+
+
     /**
      *
      * @param histoCoups
      */
-    void afficherHistoriqueLocal(ArrayList<String> histoCoups)
+    void afficherHistoriqueLocal()
     {
-        //todo : faire un getter pour isNetPartie dans Partie.java
-        //todo : copier la classe ControlButtonHistorique.java
-        //todo : mettre JButton suivant et precedent et retour en attribut de classe + faire les getters
-        //todo : mettre plateauDeBase public
-        //todo : mettre 'VueEchiquer vueHisto' en attribut de la classe
-
-        //on recupere la partie en cours pour avoir les infos
-
         //On créer une nouvelle partie
-        Accueil accueilHisto = new Accueil();
-        accueilHisto.lancementPartie("joueurBlanc", "joueurNoir", 1, 1, 1, false);
-        partieHisto = accueilHisto.getPartie();
-        VueEchiquier vueEchiquierHisto = new VueEchiquier(partieHisto.getBoard(), accueilHisto, this);
+        VueEchiquier vueEchiquierHisto = new VueEchiquier(accueil.getPartie().getBoard(), accueil, this);
         vueHisto = new JFrame();
-
-        //on créer le controlButton todo de la merde
-        controlButtonHistorique = new ControlButtonHistorique(this, histoCoups, partieHisto.getBoard(), vueHisto);
-        precedent = new JButton("Precedent");
-        precedent.addActionListener(controlButtonHistorique);
-        suivant = new JButton("Suivant");
-        suivant.addActionListener(controlButtonHistorique);
-        retour = new JButton("retour");
-        retour.addActionListener(controlButtonHistorique);
 
         JPanel panelBoard = new JPanel();
         panelBoard.setLayout(new GridLayout(1,1));
@@ -958,5 +953,8 @@ class Vue extends JFrame
     }
     ChessButton getHistoriquePartie(){
         return historiquePartie;
+    }
+    JFrame getVueHisto() {
+        return vueHisto;
     }
 }

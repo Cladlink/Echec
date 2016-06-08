@@ -179,6 +179,7 @@ class Board
     {
         // ajoute le coup dans l'historique
         partie.historiqueCoups(caseCliquee, destination);
+
         // si la case destination contient une pièce
         if (destination.getPiece() != null)
             if (destination.getPiece().blanc)
@@ -200,7 +201,11 @@ class Board
         if(  ( destination.getRow() == 0 && destination.getPiece().blanc )
                 || ( ( destination.getRow() == 7) && !destination.getPiece().blanc )
                 && destination.getPiece() instanceof Pion )
-            vue.choixPiece( (Pion)destination.getPiece() );
+        {
+            vue.choixPiece((Pion) destination.getPiece());
+            partie.pieceChoisiePromoSave();
+        }
+
     }
 
     /**

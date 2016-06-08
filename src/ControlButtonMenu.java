@@ -162,12 +162,13 @@ class ControlButtonMenu implements ActionListener
         else if (e.getSource().equals(vue.getHistoriquePartie()))
         {
             vue.choixHistoriqueAConsulter();
-            if(accueil.getPartieAVisualiser().equals(""))
+            if(accueil.getPartieAVisualiser() == null || accueil.getPartieAVisualiser().equals(""))
             {
                 System.err.println("escape");
                 return;
             }
-            vue.afficherHistoriqueLocal(vue.recupererHistoCoupsPartie(accueil.getPartieAVisualiser()));
+            accueil.lancementPartie("joueurBlanc", "joueurNoir", 1, 1, 1, false);
+            vue.afficherHistoriqueLocal();
         }
     }
     void initPartie()

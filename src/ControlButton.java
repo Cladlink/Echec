@@ -119,16 +119,28 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
 
             if (blanc)
             {
-                accueil.getPartie().getPiecesBlanchesPlateau().remove(caseSrc.getPiece());
                 accueil.getPartie().getCimetiereBlanc().add(caseSrc.getPiece());
-
+                accueil.getPartie().getPiecesBlanchesPlateau().remove(caseSrc.getPiece());
             }
             else
             {
-                accueil.getPartie().getPiecesNoiresPlateau().remove(caseSrc.getPiece());
                 accueil.getPartie().getCimetiereNoir().add(caseSrc.getPiece());
+                accueil.getPartie().getPiecesNoiresPlateau().remove(caseSrc.getPiece());
             }
             caseSrc.setPiece(null);
+
+            if(caseDest.getPiece() != null)
+            {
+                if(blanc)
+                {
+                    accueil.getPartie().getCimetiereNoir().add(caseDest.getPiece());
+                    accueil.getPartie().getPiecesNoiresPlateau().remove(caseDest.getPiece());
+                }
+                else{
+                    accueil.getPartie().getCimetiereBlanc().add(caseDest.getPiece());
+                    accueil.getPartie().getPiecesBlanchesPlateau().remove(caseDest.getPiece());
+                }
+            }
 
             if (typePromo == 1)
             {

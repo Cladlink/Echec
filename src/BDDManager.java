@@ -168,9 +168,9 @@ class BDDManager
         BDDManager bdd = new BDDManager();
         bdd.start();
         //bdd.lire("src/BDDechec.sql");
-        bdd.edit("DELETE FROM SAUVEGARDE;");
-        bdd.edit("DELETE FROM HISTORIQUE;");
-        bdd.edit("DELETE FROM JOUEUR;");
+        //bdd.edit("DELETE FROM SAUVEGARDE;");
+        //bdd.edit("DELETE FROM HISTORIQUE;");
+        //bdd.edit("DELETE FROM JOUEUR;");
         //bdd.edit("DELETE FROM HISTORIQUE;");
         //bdd.edit("drop table JOUEUR;");
         /*bdd.edit("INSERT INTO JOUEUR (pseudoJoueur, nbPartiesJoueur, nbPartiesGagneesJoueur," +
@@ -187,7 +187,7 @@ class BDDManager
             System.out.println(test.get(i));
         }*/
 
-        ArrayList<ArrayList<String>> test = bdd.ask("SELECT * FROM JOUEUR;");
+        ArrayList<ArrayList<String>> test = bdd.ask("SELECT * FROM HISTORIQUE;");
         for (int i = 0; i < test.size(); i++)
         {
             System.out.println(test.get(i));
