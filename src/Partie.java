@@ -548,6 +548,7 @@ class Partie
         return true;
     }
 
+
     /**
      * undo
      * Annule le dernier coup joué. Ne fonctionne que si au tour de l'adversaire de jouer.
