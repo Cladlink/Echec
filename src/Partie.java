@@ -289,7 +289,7 @@ class Partie
         }
         // test pour la promotion
         if ( piece instanceof Pion && ( destination.getRow() == 0  || destination.getRow() == 7 ) )
-            coup+='?';
+            coup += '?';
 
         historique.add(coup);
     }
