@@ -18,7 +18,13 @@ class VueEchiquier extends JPanel
     private VueBarreStatut bs;
     private VueTimer chronoBlanc, chronoNoir;
 
-
+    /**
+     * VueEchiquier
+     *
+     * @param board ()
+     * @param accueil ()
+     * @param vue ()
+     */
     VueEchiquier(Board board, Accueil accueil, Vue vue)  //passer en parametre caseSrc
     {
 

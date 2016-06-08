@@ -152,13 +152,6 @@ class ThreadPartie extends Thread
                 else
                 {
                     System.out.println("C'est à l'adversaire de jouer");
-                     /*
-                       - invalider la vue (via controleur)
-                       - recevoir les infos
-                       - si partiFinie == true : l'autre joueur à dépassé son temps de jeu (partie ou tour)  ->
-                       j'ai gagné
-                       - sinon appeler control.updatePartie()
-                     */
                     controller.enableView(false);
                     int srcX = ois.readInt();
                     int srcY = ois.readInt();
@@ -182,7 +175,6 @@ class ThreadPartie extends Thread
             e.printStackTrace();
         }
     }
-
     /**
      * initServer
      *
@@ -207,7 +199,10 @@ class ThreadPartie extends Thread
         oos.flush();
         pseudoAdversaire = (String)ois.readObject();
         skinAdversaire = ois.readInt();
-        partie.initPartie(monPseudo, pseudoAdversaire, modePartie, true, monSkin, skinAdversaire);
+        if (jeSuisBlanc)
+            partie.initPartie(pseudoAdversaire, monPseudo, modePartie, true, skinAdversaire, monSkin);
+        else
+            partie.initPartie(monPseudo, pseudoAdversaire, modePartie, true, monSkin, skinAdversaire);
         setId();
         cbm.initPartie();
     }
@@ -235,7 +230,12 @@ class ThreadPartie extends Thread
         oos.writeInt(monSkin);
         oos.flush();
         setId();
-        partie.initPartie(pseudoAdversaire, monPseudo, modePartie, true, monSkin, skinAdversaire);
+
+        if (jeSuisBlanc)
+            partie.initPartie(pseudoAdversaire, monPseudo, modePartie, true, skinAdversaire, monSkin);
+        else
+            partie.initPartie(monPseudo, pseudoAdversaire, modePartie, true, monSkin, skinAdversaire);
+
         cbm.initPartie();
     }
 

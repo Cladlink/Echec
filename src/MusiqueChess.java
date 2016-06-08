@@ -1,7 +1,6 @@
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-
 import java.nio.file.Paths;
 
 /**
@@ -11,7 +10,7 @@ class MusiqueChess
 {
     private static MediaPlayer mp;
     private static final String PERCU = "Musique/Percu.mp3";
-    private static final String MEDIEVAL_THEME = "Musique/MedievalTheme.mp3";
+    private static final String MEDIEVAL_THEME = "Musique/VamoAllaFlamenco.MP3";
 
     static void playMedievalTheme()
     {
@@ -22,7 +21,6 @@ class MusiqueChess
     }
     static void stopMedievalTheme()
     {
-        if (mp != null)
-            mp.stop();
+        if (mp != null) mp.stop();
     }
 }

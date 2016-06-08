@@ -11,18 +11,14 @@ class Accueil
     private String adresseIpReseau;
     private String pseudoReseau;
     private int choixSkinReseau;
-
     private final BDDManager bdd = new BDDManager();
     private ArrayList<Case> casesAtteignables; // move to partie
     private Partie partie;
     private Case caseMemoire; // move to partie
-
     private String partieRandomTitre;
     private String partieNormaleTitre;
     private String partieTempsCoupsLimitesTitre;
     private String partieTempsLimiteTitre;
-    private String reseauOuiTitre;
-    private String reseauNonTitre;
     private String skinBlancNormalTitre;
     private String skinBlancProfsTitre;
     private String skinBlancElevesTitre;
@@ -35,7 +31,6 @@ class Accueil
     private String joueurNoirLabel;
     private String typePartieLabel;
     private String skinLabel;
-    private String reseauLabel;
 
     private String nouvellePartieTitre;
     private String rejoindrePartieTitre;
@@ -68,7 +63,6 @@ class Accueil
         joueurNoirLabel = "Selectionnez le joueur 2 :";
         typePartieLabel = "Type de partie :";
         skinLabel = "Skin des pièces :";
-        reseauLabel = "Voulez-vous faire une partie en réseau ?";
 
         nouvellePartieTitre = "Lancer une partie locale";
         rejoindrePartieTitre = "Rejoindre une partie en réseau";
@@ -87,8 +81,6 @@ class Accueil
         partieNormaleTitre = "normale";
         partieTempsCoupsLimitesTitre = "temps limité par coup";
         partieTempsLimiteTitre = "temps limité";
-        reseauOuiTitre = "oui";
-        reseauNonTitre = "non";
         skinBlancNormalTitre = "classique";
         skinBlancProfsTitre = "professeurs";
         skinBlancElevesTitre = "élèves";
@@ -236,6 +228,8 @@ class Accueil
                 plateau[xCase][yCase].setPiece(new Tour(plateau[xCase][yCase], couleurBlanc));
             else if(pieceParPiece[i].charAt(2) == 'f')
                 plateau[xCase][yCase].setPiece(new Fou(plateau[xCase][yCase], couleurBlanc));
+            else if(pieceParPiece[i].charAt(2) == 'q')
+                plateau[xCase][yCase].setPiece(new Reine(plateau[xCase][yCase], couleurBlanc));
             else if(pieceParPiece[i].charAt(2) == 'r')
             {
                 if (couleurBlanc)
@@ -293,17 +287,6 @@ class Accueil
             piecesCimetiereN.add(new Reine(cim, false));
 
     }
-
-    /**
-     * attenteDebutPartie
-     * comportement d'attente du début de la partie
-     *
-     */
-    synchronized void attenteDebutPartie()
-    {
-
-    }
-
     // getters & setters
     Partie getPartie() {
         return partie;
@@ -332,9 +315,6 @@ class Accueil
     String getSkinLabel() {
         return skinLabel;
     }
-    String getReseauLabel() {
-        return reseauLabel;
-    }
     String getNouvellePartieTitre() {
         return nouvellePartieTitre;
     }
@@ -352,12 +332,6 @@ class Accueil
     }
     String getPartieTempsLimiteTitre() {
         return partieTempsLimiteTitre;
-    }
-    String getReseauOuiTitre() {
-        return reseauOuiTitre;
-    }
-    String getReseauNonTitre() {
-        return reseauNonTitre;
     }
     String getSkinBlancNormalTitre() {
         return skinBlancNormalTitre;
@@ -398,15 +372,12 @@ class Accueil
     String getPartieRandomTitre() {
         return partieRandomTitre;
     }
-
     String getPartieSelectionneePourChargement() {
         return partieSelectionneePourChargement;
     }
-
     void setPartieSelectionneePourChargement(String partieSelectionneePourChargement) {
         this.partieSelectionneePourChargement = partieSelectionneePourChargement;
     }
-
     String getStatsJoueurTitre() {
         return statsJoueurTitre;
     }
@@ -416,14 +387,8 @@ class Accueil
     void setPseudoChoisi(String pseudoChoisi) {
         this.pseudoChoisi = pseudoChoisi;
     }
-    int getChoixSkinReseau() {
-        return choixSkinReseau;
-    }
     void setChoixSkinReseau(int choixSkinReseau) {
         this.choixSkinReseau = choixSkinReseau;
-    }
-    String getPseudoReseau() {
-        return pseudoReseau;
     }
     void setPseudoReseau(String pseudoReseau) {
         this.pseudoReseau = pseudoReseau;
@@ -439,9 +404,6 @@ class Accueil
     }
     String getLancerPartieReseauTitre() {
         return lancerPartieReseauTitre;
-    }
-    void setLancerPartieReseauTitre(String lancerPartieReseauTitre) {
-        this.lancerPartieReseauTitre = lancerPartieReseauTitre;
     }
     String getRejoindrePartieReseauTitre() {
         return rejoindrePartieReseauTitre;
