@@ -9,11 +9,12 @@ class DigitalNumber
 
     /**
      * DigitalNumber
+     *définit le placement des leds pour chaque chiffres
      *
-     * @param x ()
-     * @param y ()
-     * @param k ()
-     * TODO adonis
+     * @param x (abcisse)
+     * @param y (ordonné)
+     * @param k (coefficient)
+     *
      */
     DigitalNumber(int x, int y, int k)
     {
@@ -29,9 +30,9 @@ class DigitalNumber
 
     /**
      * setNumber
-     * @param num
+     * définit les polygones qu'il faut définir pour afficher un chiffre
      *
-     * TODO adonis
+     * @param num (numero de 0 à 9 pour l'affichage digital
      */
     void setNumber(int num)
     {

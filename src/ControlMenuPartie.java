@@ -5,17 +5,17 @@ import java.util.ArrayList;
 /**
   Created by cladlink on 06/04/16.
  */
-class ControlMenu implements ActionListener
+class ControlMenuPartie implements ActionListener
 {
     private Accueil accueil;
     private Vue vue;
 
     /**
-     * ControlMenu
+     * ControlMenuPartie
      * @param accueil ()
      * @param vue ()
      */
-    ControlMenu(Accueil accueil, Vue vue)
+    ControlMenuPartie(Accueil accueil, Vue vue)
     {
         this.accueil = accueil;
         this.vue = vue;
@@ -39,8 +39,9 @@ class ControlMenu implements ActionListener
                 {
                     if (!accueil.getPartie().save())
                         vue.jOptionMessage("Vous ne pouvez pas enregistrer car vous avez déjà une partie interrompue.");
-                    System.exit(0);
+                     System.exit(0);
                 }
+                System.exit(0);
             }
             else
                 System.exit(0);
@@ -55,12 +56,8 @@ class ControlMenu implements ActionListener
                 {
                     if(!accueil.getPartie().save())
                         vue.jOptionMessage("Vous ne pouvez pas enregistrer car vous avez déjà une partie interrompue.");
-                    System.exit(0);
                 }
-
             }
-            else
-                System.exit(0);
 
             vue.setJMenuBar(null);
             vue.afficherMenu();
@@ -74,10 +71,6 @@ class ControlMenu implements ActionListener
                     vue.jOptionMessage("Il n'y a plus de coup à annuler.");
                 vue.repaint();
             }
-        }
-        else if (e.getSource().equals(vue.getHistorique()))
-        {
-            vue.afficherHistoriqueLocal();
         }
     }
 }

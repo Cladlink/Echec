@@ -27,41 +27,13 @@ class Case
         this.board = board;
         this.isWhite = isWhite;
     }
-
-    /**
-     * Case
-     * Constructeur de copie
-     *
-     * @param old (case d'origine)
-     */
-    Case(Case old)
-    {
-        this.row = old.row;
-        this.column = old.column;
-        this.piece = old.piece;
-        this.board = old.board;
-        this.isWhite = old.isWhite;
-    }
     Case(){}
 
-
     // getters & setters
-    int getRow() {
-        return row;
-    }
-    int getColumn() {
-        return column;
-    }
-    Piece getPiece() {
-        return piece;
-    }
-    void setPiece(Piece piece) {
-        this.piece = piece;
-    }
-    Board getBoard() {
-        return board;
-    }
-    boolean isWhite() {
-        return isWhite;
-    }
+    int getRow() { return row; }
+    int getColumn() { return column; }
+    Piece getPiece() { return piece; }
+    void setPiece(Piece piece) { this.piece = piece; }
+    Board getBoard() { return board; }
+    boolean isWhite() { return isWhite; }
 }

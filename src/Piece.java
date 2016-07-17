@@ -18,6 +18,9 @@ abstract class Piece
     protected String adresseImageNoireEleve;
     protected String adresseImageBlancheEleve;
 
+    protected int relX, relY;
+    protected int incX, incY;
+
     /**
      * Pièce (constructeur)
      *
@@ -138,4 +141,27 @@ abstract class Piece
     void setEmplacementPiece(Case emplacementPiece) { this.emplacementPiece = emplacementPiece; }
     boolean isBlanc() { return blanc; }
     void setBlanc(boolean blanc) { this.blanc = blanc; }
+    int getRelX(){
+        return relX;
+    }
+    int getRelY(){
+        return relY;
+    }
+    int getIncX(){        return incX;
+    }
+    int getIncY(){
+        return incY;
+    }
+    void setRelX(int x){
+        relX = x;
+    }
+    void setRelY(int y){
+        relY = y;
+    }
+    void setIncX(int x){
+        incX = x;
+    }
+    void setIncY(int y){
+        incY = y;
+    }
 }

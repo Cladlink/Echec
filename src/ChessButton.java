@@ -7,9 +7,12 @@ import java.awt.geom.RoundRectangle2D;
  */
 class ChessButton extends JButton
 {
-
-    Font police = new Font("Cardinal", Font.BOLD, 27);
-
+    /**
+     * ChessButton
+     * Construit le bouton héritant de JButton (méthode factorisant les éléments personnalisés de chaque boutons).
+     *
+     * @param text (texte du bouton)
+     */
     ChessButton(String text)
     {
         super(text, null);
@@ -19,9 +22,17 @@ class ChessButton extends JButton
         setBackground(Color.black);
         setForeground(Color.white);
         setFocusable(false);
+        Font police = new Font("Cardinal", Font.BOLD, 27);
         setFont(police);
 
     }
+
+    /**
+     * paintComponent
+     * paint le bouton
+     *
+     * @param g (pinceau graphique)
+     */
     @Override
     public void paintComponent(Graphics g)
     {
@@ -32,7 +43,6 @@ class ChessButton extends JButton
             g2.fillRect(3, 3, getWidth() - 6, getHeight() - 6);
         }
         super.paintComponent(g);
-
         g2.setColor(new Color(128, 0, 128));
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setStroke(new BasicStroke(1.2f));

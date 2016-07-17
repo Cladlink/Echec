@@ -1,24 +1,29 @@
-
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
+import static java.lang.Thread.sleep;
+
 /**
  Created by Michael on 06/04/16.
  */
-class ControlButton extends MouseAdapter implements MouseMotionListener
+
+class ControlPartie extends MouseAdapter implements MouseMotionListener
 {
     private String joueurBlanc, joueurNoir;
     private Accueil accueil;
     private Vue vue;
     private ChronoMode chrono;
 
+
     /**
-     * ControlButton
-     * @param accueil ()
-     * @param vue ()
+     * ControlPartie
+     * Controlleur d'une partie
+     *
+     * @param accueil (model)
+     * @param vue (vue)
      */
-    ControlButton(Accueil accueil, Vue vue)
+    ControlPartie(Accueil accueil, Vue vue)
     {
         this.accueil = accueil;
         this.vue = vue;
@@ -47,10 +52,6 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
             Joueur.ajouteVictoire(joueurBlanc, joueurNoir);
     }
 
-    // ajout SD : valide ou invalide (selon state) les élément de la vue qui ne doivent plus
-    // être en interaction avec l'utilisateur quand ce n'est pas son tour et
-    // que la partie est en réseau
-
     /**
      * enableView
      * invalide ou non les éléments de la vue qui doivent être invalidé lors de l'attente de la partie
@@ -71,11 +72,6 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
      */
     void debutTour()
     {
-	/*
-	     - si mode temps par tour: appeler partie.tourLimite() + lancer le chrono visuel
-	     - sinon si mode temps partie : (re)démarrer le chrono visuel
-	     - valider la vue
-	 */
         if(accueil.getPartie().getModePartie() == 2) //Temps par tour
             chrono.tourLimite();
         if (accueil.getPartie().getModePartie() == 3)
@@ -83,7 +79,7 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
         if (accueil.getPartie().getModePartie() == 2 || accueil.getPartie().getModePartie() == 3)
             chrono.stopChrono();
         enableView(true);
-        accueil.setCasesAtteignables(null);
+        accueil.getPartie().setCasesAtteignables(null);
         accueil.getPartie().getBoard().majCasesAtteignable();
     }
 
@@ -107,7 +103,6 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
     void updatePartie(int rowSrc, int colSrc, int rowDest,int colDest,
                              int typePromo, long chronoJoueurBlanc, long chronoJoueurNoir)
     {
-
         Case caseSrc = accueil.getPartie().getBoard().getPlateau()[rowSrc][colSrc];
         Case caseDest = accueil.getPartie().getBoard().getPlateau()[rowDest][colDest];
 
@@ -128,7 +123,6 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
                 accueil.getPartie().getPiecesNoiresPlateau().remove(caseSrc.getPiece());
             }
             caseSrc.setPiece(null);
-
             if(caseDest.getPiece() != null)
             {
                 if(blanc)
@@ -136,37 +130,21 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
                     accueil.getPartie().getCimetiereNoir().add(caseDest.getPiece());
                     accueil.getPartie().getPiecesNoiresPlateau().remove(caseDest.getPiece());
                 }
-                else{
+                else
+                {
                     accueil.getPartie().getCimetiereBlanc().add(caseDest.getPiece());
                     accueil.getPartie().getPiecesBlanchesPlateau().remove(caseDest.getPiece());
                 }
             }
-
             if (typePromo == 1)
-            {
                 caseDest.setPiece(new Cavalier(caseDest, blanc));
-            }
             else if(typePromo == 2)
-            {
                 caseDest.setPiece(new Tour(caseDest, blanc));
-            }
             else if(typePromo == 3)
-            {
                 caseDest.setPiece(new Fou(caseDest, blanc));
-            }
             else if(typePromo == 4)
-            {
                 caseDest.setPiece(new Reine(caseDest, blanc));
-            }
         }
-
-	/*
-	   - mettre à jour les chrono, todo
-	   - tester si roque
-	   - faire le dplt + éventuellement promo OK + todo
-
-	   - reste quasi identique au cas normal excepté appel à finTour() qu'il ne faut pas faire
-	 */
     }
 
     /**
@@ -194,32 +172,35 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
                 {
                     ArrayList<Case> casesAtteignables =
                             accueil.getPartie().getBoard().getPlateau()[row][column].getPiece().casesAtteignables;
-                    accueil.setCasesAtteignables(casesAtteignables);
-                    accueil.setCaseMemoire(accueil.getPartie().getBoard().getPlateau()[row][column]);
+                    accueil.getPartie().setCasesAtteignables(casesAtteignables);
+                    accueil.getPartie().setCaseMemoire(accueil.getPartie().getBoard().getPlateau()[row][column]);
                     vue.repaint();
                 }
-                else if(accueil.getCasesAtteignables() != null
-                        && accueil.getCasesAtteignables().contains(plateau[row][column])
-                        && accueil.getPartie().isTourBlanc() == accueil.getCaseMemoire().getPiece().isBlanc() )
+                else if(accueil.getPartie().getCasesAtteignables() != null
+                        && accueil.getPartie().getCasesAtteignables().contains(plateau[row][column]) )
                 {
                     // ajout SD : à modifier pour ne pas passer la vue en param -> ajouter un attribut is Promotion
                     // pour tester ce cas là.
-                    accueil.getPartie().getBoard().deplacer(accueil.getCaseMemoire(), plateau[row][column], this.vue);
-                    accueil.setCasesAtteignables(null);
+                    
+                    vue.getVueEchiquier().deplacementAnimation(accueil.getPartie().getCaseMemoire(),  plateau[row][column],
+                            accueil.getPartie().getCaseMemoire().getPiece());
+                    
+                    try
+                    {
+                        sleep(1);
+                    }
+                    catch(InterruptedException ex)
+                    {
+                        ex.printStackTrace();
+                    }
+                    accueil.getPartie().getBoard().deplacer(accueil.getPartie().getCaseMemoire(), plateau[row][column], this.vue);
+                    accueil.getPartie().setCasesAtteignables(null);
                     accueil.getPartie().setTourBlanc(!accueil.getPartie().isTourBlanc()); // changer joueur courant.
                     accueil.getPartie().getBoard().majCasesAtteignable();
-                    /* ajout SD :
-                       - arrêter chrono si besoin todo
-                       - appeler coupFait()
-                    */
-                    accueil.getPartie().coupFait(accueil.getCaseMemoire(), plateau[row][column]);
-                    /* ajout SD : test à ajouter en premier
-                       - si partieFinie est déjà à true -> perdu à cause du temps -> message todo
-                     */
+                    accueil.getPartie().coupFait(accueil.getPartie().getCaseMemoire(), plateau[row][column]);
 
                     if (accueil.getPartie().isEchecEtMat())
                     {
-                        // ajout SD : mettre à jour partie.partieFinie
                         vue.jOptionMessage("ECHEC ET MAT !");
 
                         if (accueil.getPartie().isTourBlanc())
@@ -247,19 +228,9 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
                         vue.afficherMenu();
                     }
                     else if (accueil.getPartie().isEchec())
-                    {
                         vue.jOptionMessage("ECHEC !");
-                    }
                     vue.repaint();
-
                     accueil.getPartie().finTour();
-                    /* ajout SD :
-                      - si mode réseau appeler partie.finTour()
-                      - sinon si partie pas finie :
-                          - si mode temps par tour : lancer le chrono visuel todo
-                      - sinon si mode temps partie : (re)demarrer le chrono visuel todo
-                    */
-
                     if (accueil.getPartie().getModePartie() == 2)
                         chrono.tourLimite();
                     else if (accueil.getPartie().getModePartie() == 3)
@@ -323,12 +294,11 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
                     barreStatutMessage += 'H';
                     break;
             }
-
             if (row != -1 && column != -1)
                 barreStatutMessage += " " + (Math.abs(row-8));
             else
                 barreStatutMessage = "     ";
-            vue.getVueEchiquier().getBs().setStatutText(barreStatutMessage);
+            vue.getVueEchiquier().getBarreStatut().setStatutText(barreStatutMessage);
             vue.getVueEchiquier().repaint();
         }
 
@@ -341,8 +311,7 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
     }
 
     /**
-     * mouseEntered
-     * Définit les évènements lorsque la souris entre dans la zone définit
+     * mouseEntered (inutilisé)
      * @param e (contient l'evenement)
      */
     @Override
@@ -352,8 +321,7 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
     }
 
     /**
-     * mouseExited
-     * Définit les évènements lorsque la souris sort de la zone définit
+     * mouseExited (inutilisé)
      * @param e (contient l'évènement)
      */
     @Override
@@ -362,6 +330,7 @@ class ControlButton extends MouseAdapter implements MouseMotionListener
 
     }
 
+    // setters
     void setJoueurBlanc(String joueurBlanc) { this.joueurBlanc = joueurBlanc; }
     void setJoueurNoir(String joueurNoir) { this.joueurNoir = joueurNoir; }
 }

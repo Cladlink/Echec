@@ -24,6 +24,13 @@ class Joueur
         this.pseudo = "Anonyme";
     }
 
+    /**
+     * Joueur
+     * création du joueur si son nom n'est pas "anonyme"
+     *
+     * @param isBlanc (couleur du joueur)
+     * @param pseudo (pseudonyme du joueur)
+     */
     Joueur(boolean isBlanc, String pseudo)
     {
         this.isBlanc = isBlanc;
@@ -69,14 +76,21 @@ class Joueur
         bdd.stop();
     }
 
+    /**
+     * listeJoueurs
+     *
+     *
+     * @return (retourne une liste de joueur)
+     */
     static Vector<String> listeJoueurs()
     {
         bdd.start();
         ArrayList<ArrayList<String>> joueurs = bdd.ask("SELECT JOUEUR.pseudoJoueur FROM JOUEUR;");
         Vector<String> listeJoueurs = new Vector<>();
-        for(int i=0; i<joueurs.size(); i++)
-            for (int j = 0; j < joueurs.get(i).size(); j++)
-                listeJoueurs.add(joueurs.get(i).get(j));
+        for (ArrayList<String> joueur : joueurs)
+            for (String aJoueur : joueur)
+                listeJoueurs.add(aJoueur);
+
         bdd.stop();
 
         return listeJoueurs;

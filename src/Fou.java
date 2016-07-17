@@ -1,13 +1,16 @@
 /**
  Created by baptiste on 31/03/16.
  */
+
 class Fou extends Piece
 {
 
     /**
-     * Fou TODO
-     * @param caseInitiale ()
-     * @param isBlanc ()
+     * Fou
+     * Classe représentant le fou
+     *
+     * @param caseInitiale (case de début de partie)
+     * @param isBlanc (couleur du fou)
      */
     Fou(Case caseInitiale, boolean isBlanc)
     {
@@ -109,6 +112,13 @@ class Fou extends Piece
         }
     }
 
+    /**
+     * peutAtteindreRoi
+     * cette méthode détermine si le fou peut atteindre le roi
+     *
+     * @param caseRoi (case qui contient le roi)
+     * @return (retourne true si peut atteindre le roi)
+     */
     @Override
     public boolean peutAtteindreRoi(Case caseRoi)
     {

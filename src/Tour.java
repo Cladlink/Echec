@@ -7,9 +7,10 @@ class Tour extends Piece
 
     /**
      * Tour
+     * classe définissant le comportement de la tour
      *
-     * @param caseInitiale ()
-     * @param isBlanc ()
+     * @param caseInitiale (case de base de la tour)
+     * @param isBlanc (couleur de la tour)
      */
     Tour(Case caseInitiale, boolean isBlanc)
     {
@@ -104,6 +105,13 @@ class Tour extends Piece
         }
     }
 
+    /**
+     * peutAtteindreRoi
+     * définit si le roi peut être atteint
+     *
+     * @param caseRoi case qui contient le roi
+     * @return (retourne true si le roi peut être atteint)
+     */
     @Override
     public boolean peutAtteindreRoi(Case caseRoi)
     {

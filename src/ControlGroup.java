@@ -1,25 +1,29 @@
 /**
- * Created by mlucile on 27/04/16.
+ Created by mlucile on 27/04/16.
  */
 class ControlGroup
 {
     private Accueil accueil;
     private Vue vue;
-    private ControlButtonMenu controlButtonMenu;
-    private ControlMenu controlMenu;
-    private ControlButton controlButton;
-    private ControlButtonHistorique controlButtonHistorique;
+    private ControlMenuAccueil controlMenuAccueil;
+    private ControlMenuPartie controlMenuPartie;
+    private ControlPartie controlPartie;
+    private ControlHistorique controlHistorique;
 
+    /**
+     * ControlGroup
+     * (créé l'ensmeble des éléments du model MVC
+     *
+     * @param accueil (Base du Model)
+     */
     ControlGroup(Accueil accueil)
     {
         vue = new Vue(accueil);
         this.accueil = accueil;
-        controlButton = new ControlButton(accueil, vue);
-        controlButtonHistorique = new ControlButtonHistorique(accueil, vue, controlButton);
-        controlButtonMenu = new ControlButtonMenu(accueil, vue, controlButton);
-        controlMenu = new ControlMenu(accueil, vue);
+        controlPartie = new ControlPartie(accueil, vue);
+        controlHistorique = new ControlHistorique(accueil, vue, controlPartie);
+        controlMenuAccueil = new ControlMenuAccueil(accueil, vue, controlPartie);
+        controlMenuPartie = new ControlMenuPartie(accueil, vue);
         vue.display();
     }
-
-
 }

@@ -7,7 +7,6 @@ import java.net.Socket;
 /**
   Created by cladlink on 12/04/16.
  */
-
 class ThreadPartie extends Thread
 {
     private String monPseudo, pseudoAdversaire;
@@ -16,10 +15,9 @@ class ThreadPartie extends Thread
     private boolean jeSuisBlanc;
     private Partie partie;
     private boolean isServer;
-    private ServerSocket conn;
     private Socket comm;
-    private ControlButton controller;
-    private ControlButtonMenu cbm;
+    private ControlPartie controller;
+    private ControlMenuAccueil cbm;
     private int port;
 
     // ajout SD
@@ -30,19 +28,19 @@ class ThreadPartie extends Thread
 
     /**
      * ThreadPartie
+     * initie la partie pour le client
      *
-     *
-     * @param partie ()
-     * @param controller ()
-     * @param port ()
-     * @param isServer ()
-     * @param ipServer ()
-     * @param choixJoueur ()
-     * @param pseudo ()
-     * @param cbm ()
+     * @param partie (model)
+     * @param controller (controller de la partie)
+     * @param port (port de communication)
+     * @param isServer (suis-je serveur)
+     * @param ipServer (ip de communication)
+     * @param choixJoueur (choix du skin du joueur)
+     * @param pseudo (pseudonyme du joueur)
+     * @param cbm (controlleur du menu d'accueil)
      */
-    ThreadPartie(Partie partie, ControlButton controller, int port, boolean isServer,
-                        String ipServer, int choixJoueur, String pseudo, ControlButtonMenu cbm)
+    ThreadPartie(Partie partie, ControlPartie controller, int port, boolean isServer,
+                 String ipServer, int choixJoueur, String pseudo, ControlMenuAccueil cbm)
     {
         this.partie = partie;
         this.controller = controller;
@@ -56,20 +54,20 @@ class ThreadPartie extends Thread
 
     /**
      * ThreadPartie
+     * initie la partie pour le serveur
      *
-     *
-     * @param partie ()
-     * @param controller ()
-     * @param port ()
-     * @param isServer ()
-     * @param ipServer ()
-     * @param choixJoueur ()
-     * @param pseudo ()
-     * @param modePartie ()
-     * @param cbm ()
+     * @param partie (model)
+     * @param controller (controller de la partie)
+     * @param port (port de communication)
+     * @param isServer (suis-je serveur)
+     * @param ipServer (ip de communication)
+     * @param choixJoueur (choix du skin du joueur)
+     * @param pseudo (pseudonyme du joueur)
+     * @param modePartie (mode de la partie)
+     * @param cbm (controlleur du menu d'accueil)
      */
-    ThreadPartie(Partie partie, ControlButton controller, int port, boolean isServer,
-                 String ipServer, int choixJoueur, String pseudo, int modePartie, ControlButtonMenu cbm)
+    ThreadPartie(Partie partie, ControlPartie controller, int port, boolean isServer,
+                 String ipServer, int choixJoueur, String pseudo, int modePartie, ControlMenuAccueil cbm)
     {
         this.partie = partie;
         this.controller = controller;
@@ -111,26 +109,13 @@ class ThreadPartie extends Thread
                 e.printStackTrace();
             }
 
-        // ajout SD
         try
         {
             while (!stop)
             {
-            // si je suis le joueur courant
                 if ( id == partie.getIdCurrentPlayer() )
                 {
                     System.out.println("C'est à moi de jouer");
-
-
-
-
-
-                    /*todo
-                    Rq: pour faciliter, on peut envoyer tout le temps les même infos qqs soit le mode
-                    par exemple: rowsrc,colsrc,rowdest,coldest, typeroque, typepromo, chronojoueurblanc,chronojoueurnoir,partiefinie
-                    les 4 premiers servent aux déplacements
-                    typepromo = 0 si pas de promo, = 1,2,... (type pièce) si promo
-                    */
                     controller.debutTour();
                     partie.waitFinTour();
                     int rowSrc = partie.getCaseSrc().getRow();
@@ -167,6 +152,7 @@ class ThreadPartie extends Thread
                     else
                         controller.updatePartie(srcX, srcY, destX, destY, promo, chronoBlanc, chronoNoir);
                     partie.setTourBlanc(!partie.isTourBlanc());
+                    partie.setCaseDest(partie.getBoard().getPlateau()[destX][destY]);
                 }
             }
         }
@@ -177,21 +163,18 @@ class ThreadPartie extends Thread
     }
     /**
      * initServer
+     * initie les sockets pour le serveur
      *
      * @throws IOException
      * @throws ClassNotFoundException
      */
     private void initServer() throws IOException,ClassNotFoundException
     {
-        conn = new ServerSocket(port);
+        ServerSocket conn = new ServerSocket(port);
         comm = conn.accept();
         oos = new ObjectOutputStream(comm.getOutputStream());
         oos.flush();
         ois = new ObjectInputStream(comm.getInputStream());
-
-        // échanger les infos (pseudos, qui joue en premier, ...)
-        // envoi : mon pseudo, mon skin, mode partie, qui est blanc
-        // recoi : autre pseudo, autre skin,*
         oos.writeObject(monPseudo);
         oos.writeInt(monSkin);
         oos.writeInt(modePartie);
@@ -209,6 +192,7 @@ class ThreadPartie extends Thread
 
     /**
      * initClient
+     * initialise les sockets pour le client
      *
      * @throws IOException
      * @throws ClassNotFoundException
@@ -219,9 +203,6 @@ class ThreadPartie extends Thread
         ois = new ObjectInputStream(comm.getInputStream());
         oos = new ObjectOutputStream(comm.getOutputStream());
         oos.flush();
-        // échanger les infos (pseudos, qui joue en premier, ...)
-        // recoi : autre pseudo, autre skin, mode partie, qui est blanc
-        // envoi : mon pseudo, mon skin
         pseudoAdversaire = (String)ois.readObject();
         skinAdversaire = ois.readInt();
         modePartie = ois.readInt();
@@ -230,12 +211,10 @@ class ThreadPartie extends Thread
         oos.writeInt(monSkin);
         oos.flush();
         setId();
-
         if (jeSuisBlanc)
             partie.initPartie(pseudoAdversaire, monPseudo, modePartie, true, skinAdversaire, monSkin);
         else
             partie.initPartie(monPseudo, pseudoAdversaire, modePartie, true, monSkin, skinAdversaire);
-
         cbm.initPartie();
     }
 

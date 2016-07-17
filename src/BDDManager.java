@@ -7,11 +7,11 @@ import java.io.*;
 
 class BDDManager
 {
-    private final String BDD_URL = "jdbc:mysql://bdd.midway.ovh/KfK3f9Z7rd4v467z?useSSL=false";
-    private final String BDD_USER = "KfK3f9Z7rd4v467z";
-    private final String BDD_PASSWORD =  "Cbup4w7aJ9hGSsJz";
-    private Connection cn;
-    private Statement st;
+    private final String BDD_URL = "jdbc:mysql://localhost";
+    private final String BDD_USER = "root";
+    private final String BDD_PASSWORD =  "Patate123";
+    private Connection connection;
+    private Statement statement;
 
 
     /**
@@ -23,8 +23,9 @@ class BDDManager
         try
         {
             Class.forName("com.mysql.jdbc.Driver");
-            cn = DriverManager.getConnection(BDD_URL, BDD_USER, BDD_PASSWORD);
-            st = cn.createStatement();
+            connection = DriverManager.getConnection(BDD_URL, BDD_USER, BDD_PASSWORD);
+            statement = connection.createStatement();
+            edit("USE ECHEC;");
         }
         catch (SQLException | ClassNotFoundException e)
         {
@@ -41,8 +42,8 @@ class BDDManager
 
         try
         {
-            cn.close();
-            st.close();
+            connection.close();
+            statement.close();
         }
         catch (SQLException e)
         {
@@ -60,7 +61,7 @@ class BDDManager
         System.out.println(requete);
         try
         {
-            st.executeUpdate(requete);
+            statement.executeUpdate(requete);
         }
         catch (SQLException e)
         {
@@ -81,7 +82,7 @@ class BDDManager
 
         try
         {
-            ResultSet rs = st.executeQuery(requete);
+            ResultSet rs = statement.executeQuery(requete);
             ResultSetMetaData rsmd = rs.getMetaData();
             int nbcols = rsmd.getColumnCount();
 
@@ -167,7 +168,7 @@ class BDDManager
     {
         BDDManager bdd = new BDDManager();
         bdd.start();
-        //bdd.lire("src/BDDechec.sql");
+        bdd.lire("src/BDDechec.sql");
         //bdd.edit("DELETE FROM SAUVEGARDE;");
         //bdd.edit("DELETE FROM HISTORIQUE;");
         //bdd.edit("DELETE FROM JOUEUR;");

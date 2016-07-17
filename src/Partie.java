@@ -18,14 +18,15 @@ class Partie
     private ArrayList<Piece> piecesBlanchesPlateau;
     private ArrayList<Piece> piecesNoiresPlateau;
 
+    private ArrayList<Case> casesAtteignables;
+    private Case caseMemoire;
+
     private Board board;
     private boolean tourBlanc;
     // ajout SD : plus partique de gérer avec un id que un boolean
     private int idCurrentPlayer; // = 1 si joueur courant = blanc, = 2 sinon
-    
 
     private int modePartie; // 0 = partie sans temps ; 1 = temps partie limitée; 2 = temps tour limités
-    private boolean netPartie;
     // ajout SD
     private boolean endOfTurn; // pour signaler la fin d'un tour (mode réseau)
     private Case caseSrc; // pour conserver quel coup vient d'être joueur -> envoi par réseau
@@ -86,9 +87,6 @@ class Partie
 
         // choix du mode de la partie
         this.modePartie = 1;
-
-        // pour la partie en réseau
-        this.netPartie = false;
 
         // Le roi est protégé en début de partie, il n'y a donc pas d'échec
         echecBlanc = false;
@@ -158,7 +156,6 @@ class Partie
         this.modePartie = modePartie;
 
         // pour la partie en réseau
-        this.netPartie = netPartie;
         this.endOfTurn = false;
 
         // Le roi est protégé en début de partie, il n'y a donc pas d'échec
@@ -194,40 +191,34 @@ class Partie
     // pour appeler cette méthode
 
     /**
+     * CoupFait
+     * permet d'enregistrer les mouvements qui ont été fait.
      *
-     * @param caseSrc ()
-     * @param caseDest ()
+     * @param caseSrc (case de départ du mouvement)
+     * @param caseDest (case d'arrivé du mouvement)
      */
     synchronized void coupFait(Case caseSrc, Case caseDest)
     {
         this.caseSrc = caseSrc;
         this.caseDest = caseDest;
-        /* todo:
-           - mettre à jour caseSrc et caseDest,
-           - si mode temps par tour : annuler le timer tm todo
-           - sinon si mode temps partie :todo
-              - cf. rq ci-dessous
-              - si chrono joueur courant <=0 partieFinie = true
 
-              Rq sur les chronos : soit la Vue du chrono se base sur chronoJoueurBlanc/Noir pour faire son
-              affichage, soit elle se base sur un autre attribut. Dans le premier cas, on peut avoir un Timer (swing)
-              qui a accès à chronoJoueurBlanc/Noir et qui le décrémente de 1000 toutes les secondes avant de faire
-              un repaint() sur l'emplacement visuel du chrono. Dans le deuxième cas, le Timer swing décremente un
-              autre attribut et quand le coup est joué, le chrono s'arrête et on prend sa valeur pour la retrancher
-              de chronoJoueurBlanc/Noir.
-         */
     }
 
-    // ajout SD : à la fin du tour courant : débloquer le thread courant pour qu'il
-    // envoi à l'autre quel coup a été joué
+    /**
+     * finTour
+     * reveil le thread à la fin d'un tour
+     */
     synchronized void finTour()
     {
         endOfTurn = true;
         notifyAll();
     }
-    
-    // ajout SD : attente fin de tour pour le thread du joueur courant et partie réseau
-    // uniquement
+
+
+    /**
+     * waitFinTour
+     * Fin
+     */
     synchronized void waitFinTour()
     {
 
@@ -255,10 +246,7 @@ class Partie
 
         //recupere le type de piece
         Piece piece = caseCliquee.getPiece();
-
-
         coup += histoTypePiece(piece);
-
         //recupere la couleur de la piece
         if ( piece.isBlanc() )
             coup += 'b';
@@ -294,6 +282,11 @@ class Partie
         historique.add(coup);
     }
 
+    /**
+     * pieceChoisisPromoSave
+     * assiste la construction de l'historique dans le cas d'une promotion, ajoute à un coup quelle pièce a été choisie
+     *
+     */
     void pieceChoisiePromoSave()
     {
         String coup = historique.get(historique.size()-1);
@@ -334,10 +327,10 @@ class Partie
     }
 
     /**
-     *
-     *
-     * @param joueurBlanc ()
-     * @param joueurNoir ()
+     * deleteSave
+     * détruit la sauvegarde à la fin d'une partie
+     * @param joueurBlanc (nom du joueur blanc)
+     * @param joueurNoir (nom du joueur noir)
      */
     synchronized static void deleteSave (String joueurBlanc, String joueurNoir)
     {
@@ -435,6 +428,11 @@ class Partie
         return true;
     }
 
+    /**
+     * saveHistorique
+     * sauvegarde l'historique dans la base de données
+     *
+     */
     synchronized void saveHistorique()
     {
         bdd.start();
@@ -509,15 +507,12 @@ class Partie
     synchronized boolean isPat()
     {
         int i;
-
         // s'il ne reste que deux rois
         if(piecesBlanchesPlateau.size() == 1 && piecesNoiresPlateau.size() == 1)
             return true;
-
         // Utilisation de variables locales pour les tests suivants
         ArrayList<Piece> piecesJoueurEnCours;
         ArrayList<Piece> piecesAutreJoueur;
-
         if(tourBlanc)
         {
             piecesJoueurEnCours = piecesBlanchesPlateau;
@@ -528,19 +523,16 @@ class Partie
             piecesJoueurEnCours = piecesNoiresPlateau;
             piecesAutreJoueur = piecesBlanchesPlateau;
         }
-
         // S'il reste les deux roi plus un cavalier pour la pièce en cours...
         if(piecesJoueurEnCours.size()== 2
                 && piecesJoueurEnCours.get(1) instanceof Cavalier
                 && piecesAutreJoueur.size() == 1)
                 return true;
-
         // ... ou pour le joueur adverse (faisable en un seul test mais plus lisible comme ça)
         else if(piecesAutreJoueur.size()== 2
                 && piecesAutreJoueur.get(1) instanceof Cavalier
                 && piecesJoueurEnCours.size() == 1)
                 return true;
-
         // si aucun déplacement n'est possible et que le roi n'est pas en échec
         for (i = 0; i < piecesJoueurEnCours.size(); i++)
             if (isEchec() || !piecesJoueurEnCours.get(i).casesAtteignables.isEmpty())
@@ -561,7 +553,6 @@ class Partie
         String dernierCoup = historique.get(historique.size()-1);
         String[] tabCoupDecoupe = dernierCoup.split("");
         boolean isBlanc = tabCoupDecoupe[1].equals("b");
-
         int columnDepart = Integer.parseInt(tabCoupDecoupe[2]);
         int rowDepart = Integer.parseInt(tabCoupDecoupe[3]);
         int columnArrivee = Integer.parseInt(tabCoupDecoupe[4]);
@@ -572,6 +563,7 @@ class Partie
         board.getPlateau()[rowArrivee][columnArrivee].setPiece(null);
         board.getPlateau()[rowDepart][columnDepart].setPiece(pieceBougee);
         pieceBougee.setEmplacementPiece(board.getPlateau()[rowDepart][columnDepart]);
+
 
         // veut dire qu'une piece est mangée
         if(tabCoupDecoupe.length > 7 && tabCoupDecoupe[6].equals("!"))
@@ -592,20 +584,19 @@ class Partie
             board.getPlateau()[rowArrivee][columnArrivee].setPiece(pieceMangee);
             pieceMangee.setEmplacementPiece(board.getPlateau()[rowArrivee][columnArrivee]);
         }
-
-        // Si c'est une tour qui a été déplacée on autorise de nouveau le roque si c'est son premier déplacement
         boolean deplacementsTour = false;
         if(pieceBougee instanceof Tour)
         {
             if(isBlanc)
             {
-                for (int i = 0; i < historique.size() - 1; i++)   // historique.size()-1  --> pour ne pas prendre en compte la ligne que l'on veut annuler
-                    if (historique.get(i).split("")[0].equals("t") && historique.get(i).split("")[1].equals("b")) {
+                for (int i = 0; i < historique.size() - 1; i++)
+                    if (historique.get(i).split("")[0].equals("t") && historique.get(i).split("")[1].equals("b"))
+                    {
                         deplacementsTour = true;
                         break;
                     }
-
-                if (!deplacementsTour) {
+                if (!deplacementsTour)
+                {
                     ((Roi)board.getRoiBlanc()).setPetitRoque(true);
                     ((Roi)board.getRoiBlanc()).setGrandRoque(true);
                 }
@@ -613,12 +604,13 @@ class Partie
             else
             {
                 for (int i = 0; i < historique.size() - 1; i++)   // historique.size()-1  --> pour ne pas prendre en compte la ligne que l'on veut annuler
-                    if (historique.get(i).split("")[0].equals("t") && historique.get(i).split("")[1].equals("n")) {
+                    if (historique.get(i).split("")[0].equals("t") && historique.get(i).split("")[1].equals("n"))
+                    {
                         deplacementsTour = true;
                         break;
                     }
-
-                if (!deplacementsTour) {
+                if (!deplacementsTour)
+                {
                     ((Roi)board.getRoiNoir()).setPetitRoque(true);
                     ((Roi)board.getRoiNoir()).setGrandRoque(true);
                 }
@@ -633,7 +625,8 @@ class Partie
             if(isBlanc)
             {
                 for (int i = 0; i < historique.size() - 1; i++)   // historique.size()-1  --> pour ne pas prendre en compte la ligne que l'on veut annuler
-                    if (historique.get(i).split("")[0].equals("r") && historique.get(i).split("")[1].equals("b")) {
+                    if (historique.get(i).split("")[0].equals("r") && historique.get(i).split("")[1].equals("b"))
+                    {
                         deplacementsRoi = true;
                         break;
                     }
@@ -641,7 +634,8 @@ class Partie
             else
             {
                 for (int i = 0; i < historique.size() - 1; i++)   // historique.size()-1  --> pour ne pas prendre en compte la ligne que l'on veut annuler
-                    if (historique.get(i).split("")[0].equals("r") && historique.get(i).split("")[1].equals("n")) {
+                    if (historique.get(i).split("")[0].equals("r") && historique.get(i).split("")[1].equals("n"))
+                    {
                         deplacementsRoi = true;
                         break;
                     }
@@ -652,7 +646,6 @@ class Partie
                 ((Roi)pieceBougee).setPetitRoque(true);
                 ((Roi)pieceBougee).setGrandRoque(true);
             }
-
             if(diff == 3)
             {
                 Piece tourGrandRoque = board.getPlateau()[rowArrivee][columnArrivee+1].getPiece();
@@ -662,7 +655,7 @@ class Partie
                 ((Roi) pieceBougee).setGrandRoque(true);
                 ((Roi) pieceBougee).setPetitRoque(true);
             }
-            if(diff == 2)
+            else if(diff == 2)
             {
                 Piece tourPetitRoque = board.getPlateau()[rowArrivee][columnArrivee - 1].getPiece();
                 tourPetitRoque.setEmplacementPiece(board.getPlateau()[rowArrivee][columnArrivee + 1]);
@@ -677,17 +670,16 @@ class Partie
         if(tabCoupDecoupe.length  == 8 || tabCoupDecoupe.length == 11)
         {
             pieceBougee.emplacementPiece.setPiece(null);
-            pieceBougee.emplacementPiece.setPiece(
-                    new Pion(pieceBougee.emplacementPiece, pieceBougee.blanc));
+            pieceBougee.emplacementPiece.setPiece(new Pion(pieceBougee.emplacementPiece, pieceBougee.blanc));
             if (pieceBougee.blanc)
             {
-                piecesBlanchesPlateau.remove(piecesBlanchesPlateau.size()-1);
+                piecesBlanchesPlateau.remove(pieceBougee);
                 piecesBlanchesPlateau.add(pieceBougee.emplacementPiece.getPiece());
                 cimetiereBlanc.remove(cimetiereBlanc.size()-1);
             }
             else
             {
-                piecesNoiresPlateau.remove(piecesNoiresPlateau.size()-1);
+                piecesNoiresPlateau.remove(pieceBougee);
                 piecesNoiresPlateau.add(pieceBougee.emplacementPiece.getPiece());
                 cimetiereNoir.remove(cimetiereNoir.size()-1);
             }
@@ -698,7 +690,14 @@ class Partie
         return true;
     }
 
-    synchronized void undoHisto(String coupAAnnuler) {
+    /**
+     * undoHisto
+     * même algo que pour undo mais pour l'affichage de l'historique
+     *
+     * @param coupAAnnuler (coup ... à annuler)
+     */
+    synchronized void undoHisto(String coupAAnnuler)
+    {
         String[] tabCoupDecoupe = coupAAnnuler.split("");
         boolean isBlanc = tabCoupDecoupe[1].equals("b");
 
@@ -712,7 +711,6 @@ class Partie
         board.getPlateau()[rowArrivee][columnArrivee].setPiece(null);
         board.getPlateau()[rowDepart][columnDepart].setPiece(pieceBougee);
         pieceBougee.setEmplacementPiece(board.getPlateau()[rowDepart][columnDepart]);
-
         // veut dire qu'une piece est mangée
         if (tabCoupDecoupe.length > 7)
         {
@@ -722,7 +720,8 @@ class Partie
                 pieceMangee = cimetiereNoir.get(cimetiereNoir.size() - 1);
                 cimetiereNoir.remove(cimetiereNoir.size() - 1);
                 piecesNoiresPlateau.add(pieceMangee);
-            } else
+            }
+            else
             {
                 pieceMangee = cimetiereBlanc.get(cimetiereBlanc.size() - 1);
                 cimetiereBlanc.remove(getCimetiereBlanc().size() - 1);
@@ -731,59 +730,71 @@ class Partie
             board.getPlateau()[rowArrivee][columnArrivee].setPiece(pieceMangee);
             pieceMangee.setEmplacementPiece(board.getPlateau()[rowArrivee][columnArrivee]);
         }
-
         // Si c'est une tour qui a été déplacée on autorise de nouveau le roque si c'est son premier déplacement
         boolean deplacementsTour = false;
-        if (pieceBougee instanceof Tour) {
-            if (isBlanc) {
+        if (pieceBougee instanceof Tour)
+        {
+            if (isBlanc)
+            {
                 for (int i = 0; i < historique.size() - 1; i++)   // historique.size()-1  --> pour ne pas prendre en compte la ligne que l'on veut annuler
-                    if (historique.get(i).split("")[0].equals("t") && historique.get(i).split("")[1].equals("b")) {
+                    if (historique.get(i).split("")[0].equals("t") && historique.get(i).split("")[1].equals("b"))
+                    {
                         deplacementsTour = true;
                         break;
                     }
-
-                if (!deplacementsTour) {
+                if (!deplacementsTour)
+                {
                     ((Roi) board.getRoiBlanc()).setPetitRoque(true);
                     ((Roi) board.getRoiBlanc()).setGrandRoque(true);
                 }
-            } else {
+            }
+            else
+            {
                 for (int i = 0; i < historique.size() - 1; i++)   // historique.size()-1  --> pour ne pas prendre en compte la ligne que l'on veut annuler
-                    if (historique.get(i).split("")[0].equals("t") && historique.get(i).split("")[1].equals("n")) {
+                    if (historique.get(i).split("")[0].equals("t") && historique.get(i).split("")[1].equals("n"))
+                    {
                         deplacementsTour = true;
                         break;
                     }
-
-                if (!deplacementsTour) {
+                if (!deplacementsTour)
+                {
                     ((Roi) board.getRoiNoir()).setPetitRoque(true);
                     ((Roi) board.getRoiNoir()).setGrandRoque(true);
                 }
             }
         }
-
         // Si un roque a eu lieu
         int diff = Math.abs(Character.getNumericValue(coupAAnnuler.charAt(2)) - Character.getNumericValue(coupAAnnuler.charAt(4)));
         boolean deplacementsRoi = false;
-        if (pieceBougee instanceof Roi) {
-            if (isBlanc) {
-                for (int i = 0; i < historique.size() - 1; i++)   // historique.size()-1  --> pour ne pas prendre en compte la ligne que l'on veut annuler
-                    if (historique.get(i).split("")[0].equals("r") && historique.get(i).split("")[1].equals("b")) {
+        if (pieceBougee instanceof Roi)
+        {
+            if (isBlanc)
+            {
+                for (int i = 0; i < historique.size() - 1; i++)
+                    if (historique.get(i).split("")[0].equals("r") && historique.get(i).split("")[1].equals("b"))
+                    {
                         deplacementsRoi = true;
                         break;
                     }
-            } else {
-                for (int i = 0; i < historique.size() - 1; i++)   // historique.size()-1  --> pour ne pas prendre en compte la ligne que l'on veut annuler
-                    if (historique.get(i).split("")[0].equals("r") && historique.get(i).split("")[1].equals("n")) {
+            }
+            else
+            {
+                for (int i = 0; i < historique.size() - 1; i++)
+                    if (historique.get(i).split("")[0].equals("r") && historique.get(i).split("")[1].equals("n"))
+                    {
                         deplacementsRoi = true;
                         break;
                     }
             }
 
-            if (!deplacementsRoi) {
+            if (!deplacementsRoi)
+            {
                 ((Roi) pieceBougee).setPetitRoque(true);
                 ((Roi) pieceBougee).setGrandRoque(true);
             }
 
-            if (diff == 3) {
+            if (diff == 3)
+            {
                 Piece tourGrandRoque = board.getPlateau()[rowArrivee][columnArrivee + 1].getPiece();
                 tourGrandRoque.setEmplacementPiece(board.getPlateau()[rowArrivee][columnArrivee - 1]);
                 board.getPlateau()[rowArrivee][columnArrivee + 1].setPiece(null);
@@ -791,7 +802,8 @@ class Partie
                 ((Roi) pieceBougee).setGrandRoque(true);
                 ((Roi) pieceBougee).setPetitRoque(true);
             }
-            if (diff == 2) {
+            if (diff == 2)
+            {
                 Piece tourPetitRoque = board.getPlateau()[rowArrivee][columnArrivee - 1].getPiece();
                 tourPetitRoque.setEmplacementPiece(board.getPlateau()[rowArrivee][columnArrivee + 1]);
                 board.getPlateau()[rowArrivee][columnArrivee - 1].setPiece(null);
@@ -801,21 +813,21 @@ class Partie
             }
         }
 
-        if (tabCoupDecoupe.length == 7 || tabCoupDecoupe.length == 10) {
+        if (tabCoupDecoupe.length == 8 || tabCoupDecoupe.length == 11) {
             pieceBougee.emplacementPiece.setPiece(null);
-            pieceBougee.emplacementPiece.setPiece(
-                    new Pion(pieceBougee.emplacementPiece, pieceBougee.blanc));
-            if (pieceBougee.blanc) {
+            pieceBougee.emplacementPiece.setPiece(new Pion(pieceBougee.emplacementPiece, pieceBougee.blanc));
+            if (pieceBougee.blanc)
+            {
                 piecesBlanchesPlateau.remove(piecesBlanchesPlateau.size() - 1);
                 piecesBlanchesPlateau.add(pieceBougee.emplacementPiece.getPiece());
                 cimetiereBlanc.remove(cimetiereBlanc.size() - 1);
-            } else {
+            } else
+            {
                 piecesNoiresPlateau.remove(piecesNoiresPlateau.size() - 1);
                 piecesNoiresPlateau.add(pieceBougee.emplacementPiece.getPiece());
                 cimetiereNoir.remove(cimetiereNoir.size() - 1);
             }
         }
-
         if((tabCoupDecoupe.length > 6 && tabCoupDecoupe[6].equals("?")) || (tabCoupDecoupe.length > 9 && tabCoupDecoupe[9].equals("?")))
         {
             Pion pion = new Pion(board.getPlateau()[rowDepart][columnArrivee], isBlanc);
@@ -837,68 +849,35 @@ class Partie
     }
 
     // getters / setters
-    synchronized Joueur getJoueurBlanc() {
-        return joueurBlanc;
-    }
-    synchronized Joueur getJoueurNoir() {
-        return joueurNoir;
-    }
-    synchronized Board getBoard() {
-        return board;
-    }
-    synchronized boolean isTourBlanc() {
-        return tourBlanc;
-    }
-    synchronized void setTourBlanc(boolean tourBlanc) {
+    synchronized Joueur getJoueurBlanc() { return joueurBlanc; }
+    synchronized Joueur getJoueurNoir() { return joueurNoir; }
+    synchronized Board getBoard() { return board; }
+    synchronized boolean isTourBlanc() { return tourBlanc; }
+    synchronized void setTourBlanc(boolean tourBlanc)
+    {
         this.tourBlanc = tourBlanc;
-	// ajout SD
-	if (tourBlanc) idCurrentPlayer = 1;
-	else idCurrentPlayer = 2;
+        // ajout SD
+        if (tourBlanc) idCurrentPlayer = 1;
+        else idCurrentPlayer = 2;
     }
-    synchronized ArrayList<Piece> getCimetiereBlanc() {
-        return cimetiereBlanc;
-    }
-    synchronized ArrayList<Piece> getCimetiereNoir() {
-        return cimetiereNoir;
-    }
-    synchronized ArrayList<Piece> getPiecesBlanchesPlateau() {
-        return piecesBlanchesPlateau;
-    }
-    synchronized ArrayList<Piece> getPiecesNoiresPlateau() {
-        return piecesNoiresPlateau;
-    }
-    synchronized int getModePartie() {
-        return modePartie;
-    }
-    synchronized int getChoixJoueurBlanc() {
-        return choixJoueurBlanc;
-    }
-    synchronized int getChoixJoueurNoir() {
-        return choixJoueurNoir;
-    }
-    synchronized ArrayList<String> getHistorique() {
-        return historique;
-    }
-    synchronized boolean isPartieFinie() {
-        return partieFinie;
-    }
-    synchronized void setPartieFinie(boolean partieFinie) {
-        this.partieFinie = partieFinie;
-    }
+    synchronized ArrayList<Piece> getCimetiereBlanc() { return cimetiereBlanc; }
+    synchronized ArrayList<Piece> getCimetiereNoir() { return cimetiereNoir; }
+    synchronized ArrayList<Piece> getPiecesBlanchesPlateau() { return piecesBlanchesPlateau; }
+    synchronized ArrayList<Piece> getPiecesNoiresPlateau() { return piecesNoiresPlateau; }
+    synchronized int getModePartie() { return modePartie; }
+    synchronized int getChoixJoueurBlanc() { return choixJoueurBlanc; }
+    synchronized int getChoixJoueurNoir() { return choixJoueurNoir; }
+    synchronized ArrayList<String> getHistorique() { return historique; }
+    synchronized boolean isPartieFinie() { return partieFinie; }
+    synchronized void setPartieFinie(boolean partieFinie) { this.partieFinie = partieFinie; }
     synchronized int getIdCurrentPlayer() { return idCurrentPlayer; }
-    synchronized Case getCaseSrc() {
-        return caseSrc;
-    }
-    synchronized Case getCaseDest() {
-        return caseDest;
-    }
-    synchronized boolean isNetPartie() { return netPartie; }
-
-    public void setPromote(int promote) {
-        this.promote = promote;
-    }
-
-    public int getPromote() {
-        return promote;
-    }
+    synchronized Case getCaseSrc() { return caseSrc; }
+    synchronized Case getCaseDest() { return caseDest; }
+    synchronized void setPromote(int promote) { this.promote = promote; }
+    synchronized int getPromote() { return promote; }
+    synchronized void setCaseDest(Case caseDest) { this.caseDest = caseDest; }
+    ArrayList<Case> getCasesAtteignables() { return casesAtteignables; }
+    void setCasesAtteignables(ArrayList<Case> casesAtteignables) { this.casesAtteignables = casesAtteignables; }
+    Case getCaseMemoire() { return caseMemoire; }
+    void setCaseMemoire(Case caseMemoire) { this.caseMemoire = caseMemoire; }
 }

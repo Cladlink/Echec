@@ -11,10 +11,10 @@ class VueBarreStatut
 
     /**
      * VueBarreStatut
+     * affiche le nom des joueurs et la case survolée par la souris
      *
-     * @param partie ()
-     * @param vueEchiquier ()
-     *
+     * @param partie (model)
+     * @param vueEchiquier (jpanel qui affiche la barre de statut)
      */
     VueBarreStatut(Partie partie, VueEchiquier vueEchiquier)
     {
@@ -43,6 +43,11 @@ class VueBarreStatut
         g.drawString(joueurNoir, xBase + 1200, yBase -32);
     }
 
+    /**
+     * setStatutText
+     * met à jour le texte de la barre de statut
+     * @param statutText (texte de la barre de statut)
+     */
     void setStatutText(String statutText) {
         this.statutText = statutText;
     }

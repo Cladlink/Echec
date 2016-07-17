@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Vector;
 
 /**
@@ -7,94 +6,23 @@ import java.util.Vector;
  */
 class Accueil
 {
-    // attribut pour pesudorezo, ipserveur,skinrzo
     private String adresseIpReseau;
-    private String pseudoReseau;
-    private int choixSkinReseau;
     private final BDDManager bdd = new BDDManager();
-    private ArrayList<Case> casesAtteignables; // move to partie
     private Partie partie;
-    private Case caseMemoire; // move to partie
-    private String partieRandomTitre;
-    private String partieNormaleTitre;
-    private String partieTempsCoupsLimitesTitre;
-    private String partieTempsLimiteTitre;
-    private String skinBlancNormalTitre;
-    private String skinBlancProfsTitre;
-    private String skinBlancElevesTitre;
-    private String skinNoirNormalTitre;
-    private String skinNoirProfsTitre;
-    private String skinNoirElevesTitre;
-
-    private String titreLabel;
-    private String joueurBlancLabel;
-    private String joueurNoirLabel;
-    private String typePartieLabel;
-    private String skinLabel;
-
-    private String nouvellePartieTitre;
-    private String rejoindrePartieTitre;
-    private String nouveauJoueurTitre;
-    private String creditTitre;
-    private String chargerPartieTitre;
-    private String retourMenuTitre;
-    private String lancerPartieTitre;
-    private String quitterTitre;
-    private String statsJoueurTitre;
-    private String creerPartieReseauTitre;
-    private String lancerPartieReseauTitre;
-    private String rejoindrePartieReseauTitre;
-    private String historiquePartieTitre;
-
     private String partieSelectionneePourChargement;
     private String pseudoChoisi;
-    private String  partieAVisualiser;
-
+    private String partieAVisualiser;
 
     /**
      *Accueil
-     * Model de "l'avant partie"
+     * Model de "l'avant partie" c'est à dire de la partie des éléments qui composent le menu d'accueil
      */
     Accueil()
     {
-        partieRandomTitre = "Partie rapide";
-        titreLabel = "Echecs";
-        joueurBlancLabel = "Selectionnez le joueur 1 :";
-        joueurNoirLabel = "Selectionnez le joueur 2 :";
-        typePartieLabel = "Type de partie :";
-        skinLabel = "Skin des pièces :";
-
-        nouvellePartieTitre = "Lancer une partie locale";
-        rejoindrePartieTitre = "Rejoindre une partie en réseau";
-        nouveauJoueurTitre = "Nouveau joueur";
-            creditTitre = "Credits";
-        chargerPartieTitre = "Charger une partie locale";
-        retourMenuTitre = "Retour";
-        lancerPartieTitre = "Lancer la partie";
-        quitterTitre = "Quitter";
-        statsJoueurTitre = "Statistiques des joueurs";
-        creerPartieReseauTitre = "Lancer une partie en réseau";
-        lancerPartieReseauTitre = "Lancer la partie";
-        rejoindrePartieReseauTitre = "Rejoindre la partie";
-        historiquePartieTitre = "Historique des parties";
-
-        partieNormaleTitre = "normale";
-        partieTempsCoupsLimitesTitre = "temps limité par coup";
-        partieTempsLimiteTitre = "temps limité";
-        skinBlancNormalTitre = "classique";
-        skinBlancProfsTitre = "professeurs";
-        skinBlancElevesTitre = "élèves";
-        skinNoirNormalTitre = "classique";
-        skinNoirProfsTitre = "professeurs";
-        skinNoirElevesTitre = "élèves";
-
         partieSelectionneePourChargement = "";
         pseudoChoisi = "";
         partieAVisualiser = "";
-
-        pseudoReseau = "";
         adresseIpReseau = "";
-        choixSkinReseau = 0;
     }
 
     /**
@@ -102,10 +30,7 @@ class Accueil
      * met à jour la liste de joueur dans le formulaire de partie
      * @return (liste des joueurs à jour)
      */
-    Vector<String> majListeJoueur()
-    {
-        return Joueur.listeJoueurs();
-    }
+    Vector<String> majListeJoueur() { return Joueur.listeJoueurs(); }
 
 
     /**
@@ -148,76 +73,50 @@ class Accueil
         bdd.start();
         int idJoueurBlancChargement = Integer.parseInt(bdd.ask("SELECT idJoueur FROM JOUEUR WHERE pseudoJoueur = '"
                 + pseudoBlanc + "';").get(0).get(0));
-
         // On récupère toutes les infos nécessaires au lancement de la partie qui concerne le joueur blanc
         ArrayList<ArrayList<String>> elementsPartie = bdd.ask("SELECT * FROM SAUVEGARDE WHERE joueurBlancSave = "
                 + idJoueurBlancChargement + ";");
-
         // Récupération de l'historique
         int idHistorique = Integer.parseInt(elementsPartie.get(0).get(5));
         String histo = bdd.ask("SELECT * FROM HISTORIQUE WHERE idHistorique = " + idHistorique + ";").get(0).get(3);
         ArrayList<String> histoCoupsJoues = new ArrayList<>();
         for(i=0; i<histo.split("-").length; i++)
             histoCoupsJoues.add(histo.split("-")[i]);
-
         // Définition du joueur qui a la main
-        boolean auTourDuBlanc;
-        if(histoCoupsJoues.get(histoCoupsJoues.size()-1).charAt(1) == 'n')
-            auTourDuBlanc = true;
-        else
-            auTourDuBlanc = false;
-
-
+        boolean auTourDuBlanc = histoCoupsJoues.get(histoCoupsJoues.size() - 1).charAt(1) == 'n';
         // Récupération du choix du skin de chaque joueur
         int skinJoueurBlanc = Integer.parseInt(elementsPartie.get(0).get(8));
         int skinJoueurNoir = Integer.parseInt(elementsPartie.get(0).get(9));
-
         // Création du plateau a l'identique
-        boolean white = false;
         String listeEmplacementPieces = elementsPartie.get(0).get(4);
         String[] pieceParPiece = listeEmplacementPieces.split("-");
         Case[][] plateau = new Case[8][8];
         Board board = new Board(partie, plateau);
-        int xCase;
-        int yCase;
+        int xCase, yCase;
         boolean couleurBlanc;
-
         // Définition des deux joueurs
-        Joueur jb = new Joueur(true, pseudoBlanc);
-        int idJoueurN = Integer.parseInt(elementsPartie.get(0).get(2));
-        String pseudoNoir = bdd.ask("SELECT pseudoJoueur FROM JOUEUR WHERE idJoueur = " + idJoueurN + ";").get(0).get(0);
-        Joueur jn = new Joueur(false, pseudoNoir);
-
+        Joueur joueurBlanc = new Joueur(true, pseudoBlanc);
+        int idJoueurNoir = Integer.parseInt(elementsPartie.get(0).get(2));
+        String pseudoNoir = bdd.ask("SELECT pseudoJoueur FROM JOUEUR WHERE idJoueur = " + idJoueurNoir + ";").get(0).get(0);
+        Joueur joueurNoir = new Joueur(false, pseudoNoir);
         // Définition des cimetières
-        ArrayList<Piece> piecesCimetiereB = new ArrayList<>();
-        ArrayList<Piece> piecesCimetiereN = new ArrayList<>();
-        String nbPiecesB = elementsPartie.get(0).get(6);
-        String nbPiecesN = elementsPartie.get(0).get(7);
+        ArrayList<Piece> piecesCimetiereBlanc = new ArrayList<>();
+        ArrayList<Piece> piecesCimetiereNoir = new ArrayList<>();
+        String nbPieceBlanc = elementsPartie.get(0).get(6);
+        String nbPieceNoir = elementsPartie.get(0).get(7);
 
-        partie = new Partie(jb, jn, auTourDuBlanc, histoCoupsJoues, skinJoueurBlanc, skinJoueurNoir,
-                board, piecesCimetiereB, piecesCimetiereN);
+        partie = new Partie(joueurBlanc, joueurNoir, auTourDuBlanc, histoCoupsJoues, skinJoueurBlanc, skinJoueurNoir,
+                board, piecesCimetiereBlanc, piecesCimetiereNoir);
         board.setPartie(partie);
         //initie les cases vides avec leurs couleurs
-        for (i = 0; i < plateau.length; i++)
-        {
-            for (int j = 0; j < plateau[i].length; j++)
-            {
-                plateau[i][j] = new Case(i, j, null, board, white);
-                white = !white;
-            }
-            white =!white;
-        }
+        initieCasesVides(plateau, board);
         for(i=0; i<pieceParPiece.length; i++)
         {
-            System.out.println(pieceParPiece[i]);
             // coordonnées de la case ou se trouve la pièce
             xCase = Character.getNumericValue(pieceParPiece[i].charAt(0));
             yCase = Character.getNumericValue(pieceParPiece[i].charAt(1));
             // couleur de la piece
-            if(pieceParPiece[i].charAt(3) == 'b')
-                couleurBlanc = true;
-            else
-                couleurBlanc = false;
+            couleurBlanc = pieceParPiece[i].charAt(3) == 'b';
             Roi roiBlanc, roiNoir;
             // en fonction du type de la piece on crée de nouvelles pièces sur le plateau
             if(pieceParPiece[i].charAt(2) == 'p')
@@ -231,7 +130,6 @@ class Accueil
             else if(pieceParPiece[i].charAt(2) == 'q')
                 plateau[xCase][yCase].setPiece(new Reine(plateau[xCase][yCase], couleurBlanc));
             else if(pieceParPiece[i].charAt(2) == 'r')
-            {
                 if (couleurBlanc)
                 {
                     roiBlanc = new Roi(plateau[xCase][yCase], true);
@@ -244,177 +142,87 @@ class Accueil
                     board.setRoiNoir(roiNoir);
                     plateau[xCase][yCase].setPiece(roiNoir);
                 }
-            }
         }
         for (i = 0; i < board.getPlateau().length; i++)
-        {
             for (int j = 0; j < board.getPlateau()[i].length; j++)
-            {
                 if (board.getPlateau()[i][j].getPiece() != null
                         && board.getPlateau()[i][j].getPiece().blanc)
-                {
                     partie.getPiecesBlanchesPlateau().add(board.getPlateau()[i][j].getPiece());
-                }
                 else if (board.getPlateau()[i][j].getPiece() != null
                         && !board.getPlateau()[i][j].getPiece().blanc)
-                {
                     partie.getPiecesNoiresPlateau().add(board.getPlateau()[i][j].getPiece());
-                }
-            }
-        }
         Case cim = new Case(8, 8, null, board ,true);
-        // Pour les blancs
-        for(i=0; i<Character.getNumericValue(nbPiecesB.charAt(0)); i++)
-            piecesCimetiereB.add(new Pion(cim, true));
-        for(i=0; i<Character.getNumericValue(nbPiecesB.charAt(1)); i++)
-            piecesCimetiereB.add(new Tour(cim, true));
-        for(i=0; i<Character.getNumericValue(nbPiecesB.charAt(2)); i++)
-            piecesCimetiereB.add(new Cavalier(cim, true));
-        for(i=0; i<Character.getNumericValue(nbPiecesB.charAt(3)); i++)
-            piecesCimetiereB.add(new Fou(cim, true));
-        for(i=0; i<Character.getNumericValue(nbPiecesB.charAt(4)); i++)
-            piecesCimetiereB.add(new Reine(cim, true));
-        // Pour les noirs
-        for(i=0; i<Character.getNumericValue(nbPiecesN.charAt(0)); i++)
-            piecesCimetiereN.add(new Pion(cim, false));
-        for(i=0; i<Character.getNumericValue(nbPiecesN.charAt(1)); i++)
-            piecesCimetiereN.add(new Tour(cim, false));
-        for(i=0; i<Character.getNumericValue(nbPiecesN.charAt(2)); i++)
-            piecesCimetiereN.add(new Cavalier(cim, false));
-        for(i=0; i<Character.getNumericValue(nbPiecesN.charAt(3)); i++)
-            piecesCimetiereN.add(new Fou(cim, false));
-        for(i=0; i<Character.getNumericValue(nbPiecesN.charAt(4)); i++)
-            piecesCimetiereN.add(new Reine(cim, false));
+        loadCimetiere(piecesCimetiereBlanc, piecesCimetiereNoir, nbPieceBlanc, nbPieceNoir, cim);
+    }
 
+    /**
+     * initieCasesVides
+     * initie le plateau de cases vides
+     *
+     * @param plateau (plateau de cases)
+     * @param board (objet qui contient le plateau)
+     */
+    private void initieCasesVides( Case[][] plateau, Board board)
+    {
+        int i;
+        boolean white = false;
+        for (i = 0; i < plateau.length; i++)
+        {
+            for (int j = 0; j < plateau[i].length; j++)
+            {
+                plateau[i][j] = new Case(i, j, null, board, white);
+                white = !white;
+            }
+            white =!white;
+        }
     }
+
+    /**
+     * loadCimetiere
+     * Place les pièces dans le cimetières
+     *
+     * @param piecesCimetiereBlanc (pièces du cimetière blanc)
+     * @param piecesCimetiereNoir (pièces du cimetière noir)
+     * @param nbPiecesBlanches (nombre de pièces blanches par type)
+     * @param nbPiecesNoires (nombre de pièces noires par type)
+     * @param caseFictiveCimetiere ( case fictive représentant le cimetiere)
+     */
+    private void loadCimetiere(ArrayList<Piece> piecesCimetiereBlanc, ArrayList<Piece> piecesCimetiereNoir,
+                               String nbPiecesBlanches, String nbPiecesNoires, Case caseFictiveCimetiere)
+    {
+        int i;
+        for(i=0; i<Character.getNumericValue(nbPiecesBlanches.charAt(0)); i++)
+            piecesCimetiereBlanc.add(new Pion(caseFictiveCimetiere, true));
+        for(i=0; i<Character.getNumericValue(nbPiecesBlanches.charAt(1)); i++)
+            piecesCimetiereBlanc.add(new Tour(caseFictiveCimetiere, true));
+        for(i=0; i<Character.getNumericValue(nbPiecesBlanches.charAt(2)); i++)
+            piecesCimetiereBlanc.add(new Cavalier(caseFictiveCimetiere, true));
+        for(i=0; i<Character.getNumericValue(nbPiecesBlanches.charAt(3)); i++)
+            piecesCimetiereBlanc.add(new Fou(caseFictiveCimetiere, true));
+        for(i=0; i<Character.getNumericValue(nbPiecesBlanches.charAt(4)); i++)
+            piecesCimetiereBlanc.add(new Reine(caseFictiveCimetiere, true));
+
+        for(i=0; i<Character.getNumericValue(nbPiecesNoires.charAt(0)); i++)
+            piecesCimetiereNoir.add(new Pion(caseFictiveCimetiere, false));
+        for(i=0; i<Character.getNumericValue(nbPiecesNoires.charAt(1)); i++)
+            piecesCimetiereNoir.add(new Tour(caseFictiveCimetiere, false));
+        for(i=0; i<Character.getNumericValue(nbPiecesNoires.charAt(2)); i++)
+            piecesCimetiereNoir.add(new Cavalier(caseFictiveCimetiere, false));
+        for(i=0; i<Character.getNumericValue(nbPiecesNoires.charAt(3)); i++)
+            piecesCimetiereNoir.add(new Fou(caseFictiveCimetiere, false));
+        for(i=0; i<Character.getNumericValue(nbPiecesNoires.charAt(4)); i++)
+            piecesCimetiereNoir.add(new Reine(caseFictiveCimetiere, false));
+    }
+
     // getters & setters
-    Partie getPartie() {
-        return partie;
-    }
-    ArrayList<Case> getCasesAtteignables() {
-        return casesAtteignables;
-    }
-    void setCasesAtteignables(ArrayList<Case> casesAtteignables) {
-        this.casesAtteignables = casesAtteignables;
-    }
-    Case getCaseMemoire() {
-        return caseMemoire;
-    }
-    void setCaseMemoire(Case caseMemoire) {
-        this.caseMemoire = caseMemoire;
-    }
-    String getJoueurBlancLabel() {
-        return joueurBlancLabel;
-    }
-    String getJoueurNoirLabel() {
-        return joueurNoirLabel;
-    }
-    String getTypePartieLabel() {
-        return typePartieLabel;
-    }
-    String getSkinLabel() {
-        return skinLabel;
-    }
-    String getNouvellePartieTitre() {
-        return nouvellePartieTitre;
-    }
-    String getRejoindrePartieTitre() {
-        return rejoindrePartieTitre;
-    }
-    String getNouveauJoueurTitre() {
-        return nouveauJoueurTitre;
-    }
-    String getPartieNormaleTitre() {
-        return partieNormaleTitre;
-    }
-    String getPartieTempsCoupsLimitesTitre() {
-        return partieTempsCoupsLimitesTitre;
-    }
-    String getPartieTempsLimiteTitre() {
-        return partieTempsLimiteTitre;
-    }
-    String getSkinBlancNormalTitre() {
-        return skinBlancNormalTitre;
-    }
-    String getSkinBlancProfsTitre() {
-        return skinBlancProfsTitre;
-    }
-    String getSkinBlancElevesTitre() {
-        return skinBlancElevesTitre;
-    }
-    String getSkinNoirNormalTitre() {
-        return skinNoirNormalTitre;
-    }
-    String getSkinNoirProfsTitre() {
-        return skinNoirProfsTitre;
-    }
-    String getSkinNoirElevesTitre() {
-        return skinNoirElevesTitre;
-    }
-    String getTitreLabel() {
-        return titreLabel;
-    }
-    String getCreditTitre() {
-        return creditTitre;
-    }
-    String getChargerPartieTitre() {
-        return chargerPartieTitre;
-    }
-    String getRetourMenuTitre() {
-        return retourMenuTitre;
-    }
-    String getLancerPartieTitre() {
-        return lancerPartieTitre;
-    }
-    String getQuitterJeuTitre() {
-        return quitterTitre;
-    }
-    String getPartieRandomTitre() {
-        return partieRandomTitre;
-    }
-    String getPartieSelectionneePourChargement() {
-        return partieSelectionneePourChargement;
-    }
-    void setPartieSelectionneePourChargement(String partieSelectionneePourChargement) {
-        this.partieSelectionneePourChargement = partieSelectionneePourChargement;
-    }
-    String getStatsJoueurTitre() {
-        return statsJoueurTitre;
-    }
-    String getPseudoChoisi() {
-        return pseudoChoisi;
-    }
-    void setPseudoChoisi(String pseudoChoisi) {
-        this.pseudoChoisi = pseudoChoisi;
-    }
-    void setChoixSkinReseau(int choixSkinReseau) {
-        this.choixSkinReseau = choixSkinReseau;
-    }
-    void setPseudoReseau(String pseudoReseau) {
-        this.pseudoReseau = pseudoReseau;
-    }
-    String getAdresseIpReseau() {
-        return adresseIpReseau;
-    }
-    void setAdresseIpReseau(String adresseIpReseau) {
-        this.adresseIpReseau = adresseIpReseau;
-    }
-    String getCreerPartieReseauTitre() {
-        return creerPartieReseauTitre;
-    }
-    String getLancerPartieReseauTitre() {
-        return lancerPartieReseauTitre;
-    }
-    String getRejoindrePartieReseauTitre() {
-        return rejoindrePartieReseauTitre;
-    }
-    String getHistoriquePartieTitre() {
-        return historiquePartieTitre;
-    }
-    String getPartieAVisualiser() {
-        return partieAVisualiser;
-    }
-    void setPartieAVisualiser(String partieAVisualiser) {
-        this.partieAVisualiser = partieAVisualiser;
-    }
+    Partie getPartie() { return partie; }
+    String getPartieSelectionneePourChargement() { return partieSelectionneePourChargement; }
+    void setPartieSelectionneePourChargement(String partieSelectionneePourChargement)
+    { this.partieSelectionneePourChargement = partieSelectionneePourChargement; }
+    String getPseudoChoisi() { return pseudoChoisi; }
+    void setPseudoChoisi(String pseudoChoisi) { this.pseudoChoisi = pseudoChoisi; }
+    String getAdresseIpReseau() { return adresseIpReseau; }
+    void setAdresseIpReseau(String adresseIpReseau) { this.adresseIpReseau = adresseIpReseau; }
+    String getPartieAVisualiser() { return partieAVisualiser; }
+    void setPartieAVisualiser(String partieAVisualiser) { this.partieAVisualiser = partieAVisualiser; }
 }

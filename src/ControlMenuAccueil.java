@@ -5,28 +5,32 @@ import java.util.Vector;
 /**
  Created by mlucile on 12/05/16.
  */
-class ControlButtonMenu implements ActionListener
+class ControlMenuAccueil implements ActionListener
 {
-    private ControlButton controlButton;
+    private ControlPartie controlPartie;
     private Vue vue;
     private Accueil accueil;
 
     /**
+     * ControlMenuAccueil
+     * Controlleur du menu d'accueil
      *
-     * @param accueil ()
-     * @param vue ()
+     * @param accueil (model)
+     * @param vue (vue)
      */
-    ControlButtonMenu(Accueil accueil, Vue vue, ControlButton controlButton)
+    ControlMenuAccueil(Accueil accueil, Vue vue, ControlPartie controlPartie)
     {
         this.accueil = accueil;
         this.vue = vue;
         vue.setButtonControl(this);
-        this.controlButton = controlButton;
+        this.controlPartie = controlPartie;
     }
 
     /**
+     * actionPerformed
+     * définit l'action de chaque bouton du menu d'accueil
      *
-     * @param e ()
+     * @param e (event de type clic)
      */
     @Override
     public void actionPerformed(ActionEvent e)
@@ -37,7 +41,6 @@ class ControlButtonMenu implements ActionListener
             pseudo = vue.messagePop("Entrez un nouveau pseudo :");
             if (pseudo == null)
                 return;
-
             Vector<String> listeJoueurs = Joueur.listeJoueurs();
             for (String listeJoueur : listeJoueurs)
                 if (listeJoueur.equals(pseudo))
@@ -45,7 +48,6 @@ class ControlButtonMenu implements ActionListener
                     vue.jOptionMessage("Ce pseudo n'est pas disponible");
                     return;
                 }
-
             Joueur.inscriptionJoueur(pseudo);
             vue.majListeJoueur();
             vue.afficherFormulaire();
@@ -55,7 +57,6 @@ class ControlButtonMenu implements ActionListener
             pseudo = vue.messagePop("Entrez un nouveau pseudo :");
             if (pseudo == null)
                 return;
-
             Vector<String> listeJoueurs = Joueur.listeJoueurs();
             for (String listeJoueur : listeJoueurs)
                 if (listeJoueur.equals(pseudo))
@@ -63,7 +64,6 @@ class ControlButtonMenu implements ActionListener
                     vue.jOptionMessage("Ce pseudo n'est pas disponible");
                     return;
                 }
-
             Joueur.inscriptionJoueur(pseudo);
             vue.majListeJoueur();
             vue.creerWidgetRejoindrePartieReseau();
@@ -73,7 +73,6 @@ class ControlButtonMenu implements ActionListener
             pseudo = vue.messagePop("Entrez un nouveau pseudo :");
             if (pseudo == null)
                 return;
-
             Vector<String> listeJoueurs = Joueur.listeJoueurs();
             for (String listeJoueur : listeJoueurs)
                 if (listeJoueur.equals(pseudo))
@@ -81,7 +80,6 @@ class ControlButtonMenu implements ActionListener
                     vue.jOptionMessage("Ce pseudo n'est pas disponible");
                     return;
                 }
-
             Joueur.inscriptionJoueur(pseudo);
             vue.majListeJoueur();
             vue.creerWidgetFormulaireReseau();
@@ -95,13 +93,13 @@ class ControlButtonMenu implements ActionListener
         else if(e.getSource().equals(vue.getPartieRandom()))
         {
             accueil.lancementPartie("anonymous", "anonymous",1 ,1 , 1, false);
-            vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
+            vue.setVueEchiquier(new VueEchiquier(accueil, vue));
             vue.creerWidgetPartie();
             accueil.getPartie().getBoard().majCasesAtteignable();
-            vue.setControlButtonMenu(new ControlButton(accueil, vue));
-            vue.setControlMotion(new ControlButton(accueil, vue));
+            vue.setControlButtonMenu(new ControlPartie(accueil, vue));
+            vue.setControlMotion(new ControlPartie(accueil, vue));
             vue.initMenuPartie();
-            vue.setControlMenu(new ControlMenu(accueil, vue));
+            vue.setControlMenu(new ControlMenuPartie(accueil, vue));
             vue.setVisible(true);
         }
         else if( e.getSource().equals(vue.getLancerPartie()) )
@@ -129,7 +127,7 @@ class ControlButtonMenu implements ActionListener
             accueil.initPartieReseau();
 
             ThreadPartie tp = new ThreadPartie(
-                    accueil.getPartie(), controlButton, 1234, true, "127.0.0.1", choixJoueur, pseudoJoueur, 1, this);
+                    accueil.getPartie(), controlPartie, 1234, true, "127.0.0.1", choixJoueur, pseudoJoueur, 1, this);
             tp.start();
         }
         else if(e.getSource().equals(vue.getRejoindrePartieReseau()))
@@ -139,23 +137,10 @@ class ControlButtonMenu implements ActionListener
             accueil.setAdresseIpReseau(vue.messagePop("Entrez l'adresse IP de l'adversaire :"));
             if(accueil.getAdresseIpReseau() == null)
                 return;
-            accueil.setPseudoReseau(vue.getListeJoueursNoirs().getSelectedItem().toString());
-            accueil.setChoixSkinReseau(Integer.parseInt(vue.getGrSkinBlanc().getSelection().getActionCommand()));
             vue.jOptionMessage("Veuillez patienter...");
-
-            // ajout SD : à modifier, notamment sur les pseudos puisque à priori le joueur client
-            // ne connait pas forcément le pseudo de l'autre.
-            //accueil.rejoindrePartieReseau(pseudo, skin); //modePartie);
-            // ajout SD : voir pour le choix de qui est blanc/noir (aléatoire)
-            // + skins
-            /* TO DO:
-               - invalider la vue (setEnable ??)
-               - créer un ThreadPartie client
-             */
-
             vue.setEnabled(false);
             accueil.initPartieReseau();
-            ThreadPartie threadClient = new ThreadPartie(accueil.getPartie(), this.controlButton, 1234, false,
+            ThreadPartie threadClient = new ThreadPartie(accueil.getPartie(), this.controlPartie, 1234, false,
                     accueil.getAdresseIpReseau(), choixJoueur, pseudoJoueur, this);
             threadClient.start();
         }
@@ -183,13 +168,13 @@ class ControlButtonMenu implements ActionListener
             else
                 accueil.load(accueil.getPartieSelectionneePourChargement().split(" ")[0]);
 
-            vue.setVueEchiquier(new VueEchiquier( accueil.getPartie().getBoard(), accueil, vue));
+            vue.setVueEchiquier(new VueEchiquier(accueil, vue));
             vue.creerWidgetPartie();
             accueil.getPartie().getBoard().majCasesAtteignable();
-            vue.setControlButtonMenu(new ControlButton(accueil, vue));
+            vue.setControlButtonMenu(new ControlPartie(accueil, vue));
 
             vue.initMenuPartie();
-            vue.setControlMenu(new ControlMenu(accueil, vue));
+            vue.setControlMenu(new ControlMenuPartie(accueil, vue));
             vue.setVisible(true);
         }
         else if(e.getSource().equals(vue.getStatsJoueur()))
@@ -214,17 +199,23 @@ class ControlButtonMenu implements ActionListener
             vue.afficherHistoriqueLocal();
         }
     }
+
+    /**
+     * initPartie
+     * ensemble d'éléments nécessaire à la création d'une partie
+     *
+     */
     void initPartie()
     {
-        controlButton.setJoueurBlanc(accueil.getPartie().getJoueurBlanc().getPseudo());
-        controlButton.setJoueurNoir(accueil.getPartie().getJoueurNoir().getPseudo());
-        vue.setVueEchiquier(new VueEchiquier(accueil.getPartie().getBoard(), accueil, vue));
+        controlPartie.setJoueurBlanc(accueil.getPartie().getJoueurBlanc().getPseudo());
+        controlPartie.setJoueurNoir(accueil.getPartie().getJoueurNoir().getPseudo());
+        vue.setVueEchiquier(new VueEchiquier(accueil, vue));
         vue.creerWidgetPartie();
         accueil.getPartie().getBoard().majCasesAtteignable();
-        vue.setControlButtonMenu(controlButton);
-        vue.setControlMotion(controlButton);
+        vue.setControlButtonMenu(controlPartie);
+        vue.setControlMotion(controlPartie);
         vue.initMenuPartie();
-        vue.setControlMenu(new ControlMenu(accueil, vue));
+        vue.setControlMenu(new ControlMenuPartie(accueil, vue));
         vue.setVisible(true);
         MusiqueChess.stopMedievalTheme();
     }

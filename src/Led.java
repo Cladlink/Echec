@@ -5,17 +5,18 @@ import java.awt.*;
  */
 class Led
 {
-    private Polygon polygon;        // forme
-    private boolean lightOn = false;        // état de la led
+    private Polygon polygon;
+    private boolean lightOn = false;
 
     /**
      * Led
-     * @param x ()
-     * @param y ()
-     * @param k ()
-     * @param orientation ()
+     * définit un polygone selon un abscisse, un ordonné, un coefficient et une oriention
      *
-     * Todo adonis
+     * @param x (abcisse)
+     * @param y (ordonné)
+     * @param k (coefficient)
+     * @param orientation (vertical ou horizonal)
+     *
      */
     Led(int x, int y, int k, String orientation)
     {
@@ -55,6 +56,12 @@ class Led
         g2.fillPolygon(polygon);
     }
 
+    /**
+     * setState
+     * allume ou eteint un polygone
+     *
+     * @param s (true si allumé)
+     */
     void setState(boolean s)
     {
         lightOn=s;

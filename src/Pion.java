@@ -7,10 +7,11 @@ class Pion extends Piece
 {
 
     /**
-     * Pion todo
+     * Pion
+     * classe déterminant le comportement du Pion
      *
-     * @param caseInitiale ()
-     * @param blanc ()
+     * @param caseInitiale (case de base du pion)
+     * @param blanc (couleur du pion)
      */
     Pion(Case caseInitiale, boolean blanc)
     {
@@ -108,11 +109,11 @@ class Pion extends Piece
         {
             case 1 :
                 emplacementPiece.getBoard().getPartie().setPromote(1);
-                emplacementPiece.setPiece(new Cavalier(this.emplacementPiece, this.blanc));
+                emplacementPiece.setPiece(new Tour(this.emplacementPiece, this.blanc));
                 break;
             case 2 :
                 emplacementPiece.getBoard().getPartie().setPromote(2);
-                emplacementPiece.setPiece(new Tour(this.emplacementPiece, this.blanc));
+                emplacementPiece.setPiece(new Cavalier(this.emplacementPiece, this.blanc));
                 break;
             case 3 :
                 emplacementPiece.getBoard().getPartie().setPromote(3);

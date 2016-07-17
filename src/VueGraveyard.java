@@ -12,9 +12,11 @@ class VueGraveyard
     private boolean isBlanc;
 
     /**
-     * VueGraveYard todo
-     * @param partie ()
-     * @param isBlanc ()
+     * VueGraveYard
+     * visuel des cimetières
+     *
+     * @param partie (model)
+     * @param isBlanc (true s'il s'agit du cimetière blanc, false pour le noir)
      */
     VueGraveyard(Partie partie, boolean isBlanc)
     {
@@ -76,7 +78,6 @@ class VueGraveyard
                 imgReine = cimetiere.get(i).skin.getImage();
             }
         }
-
         //dessine
         if (pion!=0)
         {
@@ -103,7 +104,6 @@ class VueGraveyard
             g.drawString(String.valueOf(reine), xBase + 60, yBase +150 + ecartEntrePiece * 5);
             g.drawImage(imgReine, xBase + 80, yBase +100 + ecartEntrePiece * 5, taillePiece, taillePiece, null);
         }
-
         g.setFont(new Font("TimesRoman", Font.PLAIN, 12));
     }
 }

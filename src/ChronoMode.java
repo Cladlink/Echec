@@ -1,8 +1,6 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.TimerTask;
 
 /**
@@ -11,34 +9,35 @@ import java.util.TimerTask;
 class ChronoMode
 {
     private Accueil accueil;
-    private ControlButton cb;
+    private ControlPartie controlPartie;
     private boolean isDateBlancDepart, isDateNoirDepart;
-    private java.util.Timer tm;
-    private Timer chronoBlanc;
-    private Timer chronoNoir;
+    private java.util.Timer jTimer;
+    private Timer chronoBlanc, chronoNoir;
     private static boolean horsJeu;
-    private int compteurB = 30, compteurN = 30;
+    private int compteurBlanc = 30, compteurNoir = 30;
 
-    ChronoMode(Vue vue, Accueil accueil, ControlButton cb)
+    /**
+     * ChronoMode
+     * Si une partie contient un mode de jeu nécessitant des timers, cette classe est utilisée.
+     *
+     * @param vue (La vue pour mettre à jour les chronomètres)
+     * @param accueil (base du model)
+     * @param controlPartie (controlButton, nécessaire pour accéder à la méthode finDeTempsPartie)
+     */
+    ChronoMode(Vue vue, Accueil accueil, ControlPartie controlPartie)
     {
         this.accueil = accueil;
-        this.cb = cb;
+        this.controlPartie = controlPartie;
         horsJeu = false;
-        // ajout SD
+
         ActionListener alBlanc = new ActionListener()
         {
             @Override
-            public void actionPerformed(ActionEvent exprLambda) {
-                // décrementer le chrono du joueur blanc si > 0
-                // si chrono > 0 vue.repaint(...);
-                // sinon invalider vue + arrêter chrono
-
-                //decremente de 1 la seconde
-                    //maj des variables dans VueTimer
-                    vue.getVueEchiquier().getChronoBlanc().setSeconde(compteurB%60);
-                    vue.getVueEchiquier().getChronoBlanc().setMinute(compteurB/60);
-                    vue.repaint();
-
+            public void actionPerformed(ActionEvent exprLambda)
+            {
+                vue.getVueEchiquier().getChronoBlanc().setSeconde(compteurBlanc %60);
+                vue.getVueEchiquier().getChronoBlanc().setMinute(compteurBlanc /60);
+                vue.repaint();
             }
         };
         chronoBlanc = new Timer(1000, alBlanc);
@@ -48,21 +47,13 @@ class ChronoMode
             @Override
             public void actionPerformed(ActionEvent exprLambda)
             {
-                // décrementer le chrono du joueur noir si > 0
-                // si chrono > 0 vue.repaint(...);
-                // sinon invalider vue + arrêter chrono
-                //decremente de 1 la seconde
-                    //maj des variables dans VueTimer
-                    vue.getVueEchiquier().getChronoNoir().setSeconde(compteurN%60);
-                    vue.getVueEchiquier().getChronoNoir().setMinute(compteurN/60);
-                    vue.repaint();
+                vue.getVueEchiquier().getChronoNoir().setSeconde(compteurNoir %60);
+                vue.getVueEchiquier().getChronoNoir().setMinute(compteurNoir /60);
+                vue.repaint();
             }
         };
         chronoNoir = new Timer(1000, alNoir);
-
     }
-
-    // ajout SD : arrête le chrono du joueur courant
 
     /**
      * stopChrono
@@ -83,51 +74,51 @@ class ChronoMode
         }
         if (accueil.getPartie().getModePartie() == 2)
             if (accueil.getPartie().isTourBlanc())
-                compteurB = 30;
+                compteurBlanc = 30;
             else
-                compteurN = 30;
+                compteurNoir = 30;
     }
 
     /**
+     * tourLimite
+     * méthode définissant le chronomètre avec un temps limité par tour
      *
      */
     synchronized void tourLimite()
     {
-        if (tm != null)
-            tm.cancel();
-        // ajout SD : mettre tm en attribut sinon inaccessible par d'autres méthodes
+        if (jTimer != null)
+            jTimer.cancel();
+        // ajout SD : mettre jTimer en attribut sinon inaccessible par d'autres méthodes
         if (accueil.getPartie().isTourBlanc())
         {
-            System.out.println(compteurB);
-            if (tm != null)
-                tm.cancel();
-            compteurB--;
+            if (jTimer != null)
+                jTimer.cancel();
+            compteurBlanc--;
             if (!isDateBlancDepart)
                 isDateBlancDepart = true;
-            else if (compteurB == 0 && !horsJeu)
+            else if (compteurBlanc == 0 && !horsJeu)
             {
-                cb.finDeJeuTemps();
+                controlPartie.finDeJeuTemps();
                 horsJeu = true;
             }
         }
         else
         {
-            System.out.println(compteurN);
-            if (tm != null)
-                tm.cancel();
+            if (jTimer != null)
+                jTimer.cancel();
             //tour noir
-            compteurN--;
+            compteurNoir--;
             if (!isDateNoirDepart)
             {
                 isDateNoirDepart = true;
             }
-            if (compteurN == 0 && !horsJeu)
+            if (compteurNoir == 0 && !horsJeu)
             {
-                cb.finDeJeuTemps();
+                controlPartie.finDeJeuTemps();
                 horsJeu = true;
             }
         }
-        TimerTask tt2 = new TimerTask()
+        TimerTask timerTaskTourLimite = new TimerTask()
         {
             @Override
             public void run()
@@ -135,11 +126,13 @@ class ChronoMode
                 tourLimite();
             }
         };
-        tm = new java.util.Timer();
-        tm.schedule(tt2, 1000);
+        jTimer = new java.util.Timer();
+        jTimer.schedule(timerTaskTourLimite, 1000);
     }
 
     /**
+     * tempsLimite
+     * méthode définissant le chronomètre avec un temps limité par partie
      *
      */
     void tempsLimite()
@@ -147,41 +140,39 @@ class ChronoMode
         //tour blanc
         if (accueil.getPartie().isTourBlanc())
         {
-            if (tm != null)
-                tm.cancel();
-
-
-            compteurB--;
+            if (jTimer != null)
+                jTimer.cancel();
+            compteurBlanc--;
             if (!isDateBlancDepart)
                 isDateBlancDepart = true;
-            else if (compteurB == 0 && !horsJeu)
+            else if (compteurBlanc == 0 && !horsJeu)
             {
-                cb.finDeJeuTemps();
+                controlPartie.finDeJeuTemps();
                 horsJeu = true;
             }
         }
         else
         {
-            if (tm != null)
-                tm.cancel();
+            if (jTimer != null)
+                jTimer.cancel();
             else
             {
-                compteurB = 300;
-                compteurN = 300;
+                compteurBlanc = 300;
+                compteurNoir = 300;
             }
             //tour noir
-            compteurN--;
+            compteurNoir--;
             if (!isDateNoirDepart)
             {
                 isDateNoirDepart = true;
             }
-            if (compteurN == 0 && !horsJeu)
+            if (compteurNoir == 0 && !horsJeu)
             {
-                cb.finDeJeuTemps();
+                controlPartie.finDeJeuTemps();
                 horsJeu = true;
             }
         }
-        TimerTask tt = new TimerTask()
+        TimerTask timerTaskTempsLimite = new TimerTask()
         {
             @Override
             public void run()
@@ -189,9 +180,15 @@ class ChronoMode
                 tempsLimite();
             }
         };
-        tm = new java.util.Timer();
-        tm.schedule(tt, 1000);
+        jTimer = new java.util.Timer();
+        jTimer.schedule(timerTaskTempsLimite, 1000);
     }
 
+    /**
+     * setHorsJeu
+     * définit si la partie est hors jeu ou non
+     *
+     * @param horsJeu (variable définissant que la partie est terminée)
+     */
     static void setHorsJeu(boolean horsJeu) { ChronoMode.horsJeu = horsJeu; }
 }

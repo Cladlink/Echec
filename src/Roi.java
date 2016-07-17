@@ -7,9 +7,11 @@ class Roi extends Piece
     private boolean petitRoque;
 
     /**
-     * Roi todo
-     * @param caseInitiale
-     * @param isBlanc
+     * Roi
+     * classe définissant le comportement du roi
+     *
+     * @param caseInitiale (définit la case de départ du roi)
+     * @param isBlanc (définit la couleur du roi )
      */
     Roi(Case caseInitiale, boolean isBlanc)
     {
@@ -110,15 +112,9 @@ class Roi extends Piece
     {
         int gapRow = Math.abs( emplacementPiece.getRow() - caseRoi.getRow() );
         int gapCol = Math.abs( emplacementPiece.getColumn() - caseRoi.getColumn() );
-
         return gapRow <= 1 && gapCol <= 1;
     }
 
-    public void setGrandRoque(boolean grandRoque) {
-        this.grandRoque = grandRoque;
-    }
-
-    public void setPetitRoque(boolean petitRoque) {
-        this.petitRoque = petitRoque;
-    }
+    void setGrandRoque(boolean grandRoque) { this.grandRoque = grandRoque; }
+    void setPetitRoque(boolean petitRoque) { this.petitRoque = petitRoque; }
 }

@@ -4,9 +4,6 @@ import java.util.ArrayList;
  */
 class Board
 {
-    private final int row = 8;
-    private final int column = 8;
-    private final int sizeCase = 80;
     private Case[][] plateau;
     private Partie partie;
     private Piece roiNoir, roiBlanc;
@@ -16,10 +13,11 @@ class Board
      *
      * initie le plateau
      * la case mémoire à un emplacement vide
-     *
      */
     Board(Partie partie)
     {
+        int row = 8;
+        int column = 8;
         plateau = new Case[row][column];
         this.partie = partie;
         plateauDeBase();
@@ -27,7 +25,7 @@ class Board
 
     /**
      * Board (Constructeur)
-     *
+     * initie Board avec un plateau déjà existant
      *
      */
     Board(Partie partie, Case[][] plateau)
@@ -40,13 +38,11 @@ class Board
      * plateauDeBase
      * "soulage" le constructeur sur le placement des pièces au début d'une partie
      */
-    public void plateauDeBase()
+    private void plateauDeBase()
     {
         boolean white = true;
-
         ArrayList<Piece> piecesBlanchesPlateau = partie.getPiecesBlanchesPlateau();
         ArrayList<Piece> piecesNoiresPlateau = partie.getPiecesNoiresPlateau();
-
         //initie les cases vides avec leurs couleurs
         for (int i = 0; i < plateau.length; i++)
         {
@@ -61,12 +57,10 @@ class Board
         piecesBlanchesPlateau.add(roiBlanc);
         Piece reineBlanche = new Reine(plateau[7][3], true);
         piecesBlanchesPlateau.add(reineBlanche);
-
         roiNoir = new Roi(plateau[0][4], false);
         piecesNoiresPlateau.add(roiNoir);
         Piece reineNoire = new Reine(plateau[0][3], false);
         piecesNoiresPlateau.add(reineNoire);
-
         Piece tourBlanche1 = new Tour(plateau[7][0], true);
         piecesBlanchesPlateau.add(tourBlanche1);
         Piece tourBlanche2 = new Tour(plateau[7][7], true);
@@ -75,7 +69,6 @@ class Board
         piecesNoiresPlateau.add(tourNoire1);
         Piece tourNoire2 = new Tour(plateau[0][7], false);
         piecesNoiresPlateau.add(tourNoire2);
-
         Piece cavalierBlanc1 = new Cavalier(plateau[7][1], true);
         piecesBlanchesPlateau.add(cavalierBlanc1);
         Piece cavalierBlanc2 = new Cavalier(plateau[7][6], true);
@@ -84,7 +77,6 @@ class Board
         piecesNoiresPlateau.add(cavalierNoir1);
         Piece cavalierNoir2 = new Cavalier(plateau[0][6], false);
         piecesNoiresPlateau.add(cavalierNoir2);
-
         Piece fouBlanc1 = new Fou(plateau[7][2], true);
         piecesBlanchesPlateau.add(fouBlanc1);
         Piece fouBlanc2 = new Fou(plateau[7][5], true);
@@ -93,7 +85,6 @@ class Board
         piecesNoiresPlateau.add(fouNoir1);
         Piece fouNoir2 = new Fou(plateau[0][5], false);
         piecesNoiresPlateau.add(fouNoir2);
-
         Piece pionBlanc1 = new Pion(plateau[6][0], true);
         piecesBlanchesPlateau.add(pionBlanc1);
         Piece pionBlanc2 = new Pion(plateau[6][1], true);
@@ -110,7 +101,6 @@ class Board
         piecesBlanchesPlateau.add(pionBlanc7);
         Piece pionBlanc8 = new Pion(plateau[6][7], true);
         piecesBlanchesPlateau.add(pionBlanc8);
-
         Piece pionNoir1 = new Pion(plateau[1][0], false);
         piecesNoiresPlateau.add(pionNoir1);
         Piece pionNoir2 = new Pion(plateau[1][1], false);
@@ -127,7 +117,6 @@ class Board
         piecesNoiresPlateau.add(pionNoir7);
         Piece pionNoir8 = new Pion(plateau[1][7], false);
         piecesNoiresPlateau.add(pionNoir8);
-
         //Coté des pièces blanches, en bas du plateau
         plateau[7][0].setPiece(tourBlanche1);
         plateau[7][1].setPiece(cavalierBlanc1);
@@ -137,7 +126,6 @@ class Board
         plateau[7][5].setPiece(fouBlanc2);
         plateau[7][6].setPiece(cavalierBlanc2);
         plateau[7][7].setPiece(tourBlanche2);
-
         plateau[6][0].setPiece(pionBlanc1);
         plateau[6][1].setPiece(pionBlanc2);
         plateau[6][2].setPiece(pionBlanc3);
@@ -146,7 +134,6 @@ class Board
         plateau[6][5].setPiece(pionBlanc6);
         plateau[6][6].setPiece(pionBlanc7);
         plateau[6][7].setPiece(pionBlanc8);
-
         //Coté des pièces noires, en haut du plateau
         plateau[0][0].setPiece(tourNoire1);
         plateau[0][1].setPiece(cavalierNoir1);
@@ -156,7 +143,6 @@ class Board
         plateau[0][5].setPiece(fouNoir2);
         plateau[0][6].setPiece(cavalierNoir2);
         plateau[0][7].setPiece(tourNoire2);
-
         plateau[1][0].setPiece(pionNoir1);
         plateau[1][1].setPiece(pionNoir2);
         plateau[1][2].setPiece(pionNoir3);
@@ -179,7 +165,6 @@ class Board
     {
         // ajoute le coup dans l'historique
         partie.historiqueCoups(caseCliquee, destination);
-
         // si la case destination contient une pièce
         if (destination.getPiece() != null)
             if (destination.getPiece().blanc)
@@ -205,7 +190,6 @@ class Board
             vue.choixPiece((Pion) destination.getPiece());
             partie.pieceChoisiePromoSave();
         }
-
     }
 
     /**
@@ -241,7 +225,6 @@ class Board
     private void deplacerPetitRoque(Case[][] plateau, int row, int column)
     {
         Piece tourRoque = plateau[row][column + 3].getPiece();
-
         plateau[row][column + 3].setPiece(null);
         tourRoque.emplacementPiece = plateau[row][column + 1];
         plateau[row][column + 1].setPiece(tourRoque);
@@ -283,30 +266,13 @@ class Board
             pej.deplacementPossible();
         }
     }
-
     //getters & setters
-    Case[][] getPlateau() {
-        return plateau;
-    }
-    Partie getPartie() {
-        return partie;
-    }
-    int getSizeCase() {
-        return sizeCase;
-    }
-    Piece getRoiNoir() {
-        return roiNoir;
-    }
-    Piece getRoiBlanc() {
-        return roiBlanc;
-    }
-    void setPartie(Partie partie) {
-        this.partie = partie;
-    }
-    void setRoiBlanc(Piece roiBlanc) {
-        this.roiBlanc = roiBlanc;
-    }
-    void setRoiNoir(Piece roiNoir) {
-        this.roiNoir = roiNoir;
-    }
+    Case[][] getPlateau() { return plateau; }
+    Partie getPartie() { return partie; }
+    int getSizeCase() { return 80; }
+    Piece getRoiNoir() { return roiNoir; }
+    Piece getRoiBlanc() { return roiBlanc; }
+    void setPartie(Partie partie) { this.partie = partie; }
+    void setRoiBlanc(Piece roiBlanc) { this.roiBlanc = roiBlanc; }
+    void setRoiNoir(Piece roiNoir) { this.roiNoir = roiNoir; }
 }

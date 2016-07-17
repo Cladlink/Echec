@@ -12,13 +12,22 @@ class MusiqueChess
     private static final String PERCU = "Musique/Percu.mp3";
     private static final String MEDIEVAL_THEME = "Musique/VamoAllaFlamenco.MP3";
 
+    /**
+     * playMedievalTheme
+     * démarre la musique du thème médiéval
+     */
     static void playMedievalTheme()
     {
         JFXPanel jfxPanel = new JFXPanel();
         mp = new MediaPlayer(new Media(Paths.get(MEDIEVAL_THEME).toUri().toString()));
-        //mp.play();
+        mp.play();
         mp.setCycleCount(MediaPlayer.INDEFINITE);
     }
+
+    /**
+     * stopMedievalTheme
+     * arrete le thème médieval
+     */
     static void stopMedievalTheme()
     {
         if (mp != null) mp.stop();

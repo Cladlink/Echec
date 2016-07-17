@@ -5,9 +5,11 @@ class Reine extends Piece
 {
 
     /**
-     * Reine todo
-     * @param caseInitiale
-     * @param isBlanc
+     * Reine
+     * classe définissant le comportement de la reine
+     *
+     * @param caseInitiale (placement de départ de la reine)
+     * @param isBlanc (couleur de la reine)
      */
     Reine(Case caseInitiale, boolean isBlanc)
     {
@@ -149,6 +151,13 @@ class Reine extends Piece
         }
     }
 
+    /**
+     * peutAtteindreRoi
+     * définit si le la reine peut atteindre le roi
+     *
+     * @param caseRoi (case qui contient le roi)
+     * @return (retourne true si le roi peut être atteint)
+     */
     @Override
     public boolean peutAtteindreRoi(Case caseRoi)
     {

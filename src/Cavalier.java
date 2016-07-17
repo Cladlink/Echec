@@ -4,9 +4,11 @@
 class Cavalier extends Piece
 {
     /**
-     * Cavalier todo
-     * @param caseInitiale ()
-     * @param isBlanc ()
+     * Cavalier
+     * Classe représentant le cavalier
+     *
+     * @param caseInitiale (case du départ)
+     * @param isBlanc (couleur du cavalier)
      */
     Cavalier(Case caseInitiale, boolean isBlanc)
     {
@@ -93,9 +95,10 @@ class Cavalier extends Piece
     }
 
     /**
-     * peutAtteindreRoi tod
-     * @param caseRoi case qui contient le roi
-     * @return ()
+     * peutAtteindreRoi
+     *
+     * @param caseRoi (case qui contient le roi)
+     * @return (retourne si le cavalier peut atteindre le roi)
      */
     @Override
     public boolean peutAtteindreRoi(Case caseRoi)
@@ -103,6 +106,7 @@ class Cavalier extends Piece
         int gapRow = Math.abs( emplacementPiece.getRow() - caseRoi.getRow() );
         int gapCol = Math.abs( emplacementPiece.getColumn() - caseRoi.getColumn() );
 
-        return (gapRow == 2 && gapCol == 1) || (gapRow == 1 && gapCol == 2);
+        return (gapRow == 2 && gapCol == 1)
+                || (gapRow == 1 && gapCol == 2);
     }
 }
